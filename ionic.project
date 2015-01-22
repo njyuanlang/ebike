@@ -1,6 +1,6 @@
 {
   "name": "ebike",
-  "app_id": "",
+  "app_id": "com.extensivepro.ebike",
   "gulpStartupTasks": [
     "sass",
     "watch"
