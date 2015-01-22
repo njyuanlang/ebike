@@ -1,0 +1,27 @@
+<ion-view title="注册">
+  <ion-content class="scroll-bg padding">
+    <form ng-submit="tryMerchantRegister()">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">商户名</span>
+          <input type="text" ng-model="merchant.name" placeholder="例如：泛盈百货" ui-event="{ blur : 'blurCb($event)' }" required>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">商户全称</span>
+          <input type="text" ng-model="merchant.fullName" placeholder="例如：泛盈百货有限公司" required>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">电话</span>
+          <input type="text" ng-model="merchant.telephone" required>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">地址</span>
+          <input type="text" ng-model="merchant.address" placeholder="可选择填写">
+        </label>
+      </div>
+      <div>
+        <button class="button button-block button-positive" type="submit">提交</button>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>

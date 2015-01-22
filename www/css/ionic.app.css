@@ -18,6 +18,10 @@ $dark:                            #444 !default;
   background: url('../img/bg.png') no-repeat center center fixed;
   background-size: cover; }
 
+.cruise-bg {
+  background: url('../img/cruise-bg.png') no-repeat center center fixed;
+  background-size: cover; }
+
 /*!
   Ionicons, v1.5.2
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
