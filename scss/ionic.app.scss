@@ -18,15 +18,18 @@ $dark:                            #444 !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
+$base-background-color:           #000 !default;
+$base-color:                      #fff !default;
 $stable:                          #333a54 !default;
+$positive:                        #56fa89 !default;
 
 $button-stable-text:              #fff !default;
 $button-stable-border:            #333a54 !default;
 $button-stable-active-bg:         #e5e5e5 !default;
 $button-stable-active-border:     #a2a2a2 !default;
 
-$default-bg:                          '../img/bg.png';
-$cruise-bg:                          '../img/cruise-bg.png';
+$default-bg:                      '../img/bg.png';
+$cruise-bg:                       '../img/cruise-bg.png';
 
 .scroll-bg {
   background: url($default-bg) no-repeat center center fixed;
