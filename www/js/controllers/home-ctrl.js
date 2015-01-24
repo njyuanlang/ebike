@@ -56,8 +56,5 @@ controllers
       $scope.bleState += "Bluetooth is Failure notify "+JSON.stringify(arguments)
       $q.reject(reason)
     })
-    .then(function (result) {
-      $scope.bleState += "Bluetooth is notify222 "+bytesToString(result)
-    })
   }
 })

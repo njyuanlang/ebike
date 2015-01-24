@@ -1,30 +1,34 @@
 <ion-view hide-back-button="true">
   <ion-content class="scroll-bg padding">
     <h1 class="padding text-center">易帮客</h1>
-    <form>
+    <form class="padding">
       <div class="list list-inset">
 
-        <label class="item item-input">
+        <label class="item item-input padding">
+          <i class="icon ion-person placeholder-icon"></i>
           <input type="text" placeholder="输入手机号码" ng-model="loginData.username" required>
         </label>
-        <label class="item item-input">
-          <input type="password" placeholder="密码" ng-model="loginData.password" required>
+      </div>
+      <div class="list list-inset">
+        <label class="item item-input padding">
+          <i class="icon ion-locked placeholder-icon"></i>
+          <input type="password" placeholder="输入密码" ng-model="loginData.password" required>
         </label>
 
       </div>
     </form>
     <div class="row">
       <div class="col col-50">
-        <button class="button button-block button-positive" type="button" ng-click="tryRegister(loginData)">游客登录</button>
+        <button class="button button-block button-positive" type="button" >游客登录</button>
       </div>
       <div class="col col-50">
         <button class="button button-block button-positive" type="button" ng-click="tryLogin(loginData)">登录</button>
       </div>
     </div>
         
-    <div class="row">
+    <div class="row padding">
       <a class="col col-50">忘记密码？</a>
-      <a class="col col-50">免费注册</a>
+      <a class="col col-50 text-right">免费注册</a>
     </div>
   </ion-content>
 </ion-view>
