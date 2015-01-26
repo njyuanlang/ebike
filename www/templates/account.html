@@ -1,0 +1,36 @@
+<ion-view title="个人信息">
+  <ion-content has-header="true" class="scroll-bg padding">
+    <div class="list card">
+
+      <div class="item item-avatar" ng-click="openModal()">
+        <img src="img/user-icon.png">
+        <h2>{{entity.name}}</h2>
+        <small>
+          {{entity.created | date : 'yyyy-MM-dd'}}
+        </small>
+        
+        <span class="item-note"><i class="icon ion-ios7-arrow-right"></i></span>
+        
+      </div>
+      <div class="item item-icon-left">
+        <i class="icon ion-ios7-barcode-outline padding"></i>
+        <span class="padding">
+          编号
+        </span>
+        <span class="item-note positive">
+          {{entity.code}}
+        </span>
+      </div>
+      <div class="item item-icon-left">
+        <i class="icon ion-ios7-star-outline padding"></i>
+        <span class="padding">
+          型号
+        </span>
+        <span class="item-note positive">
+          {{entity.model}}
+        </span>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

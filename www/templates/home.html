@@ -1,18 +1,23 @@
-<ion-header-bar class="bar-stable">
-  <a class="button button-icon icon ion-navicon" href="#/menu"></a>
-  <h1 class="title">易帮客</h1>
-  <button class="button" ng-click="batteryDieEndure()">无电续航</button>
-</ion-header-bar>
-<ion-content class="scroll-bg">
-  <div class="light">BLE: {{bleState}}</div>
-  <div class="row padding">
-    <img src="./img/ionic.png">
-  </div>
-  <div class="row row-responsive-sm">
-    <div class="col padding">
-      <div class="progress-radial progress-75">
-        <div class="overlay">25%</div>
+<ion-view title="易帮客" hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <a class="button button-icon icon ion-navicon" href="#/menu"></a>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <a class="button" ng-click="batteryDieEndure()">无电续航</a>
+  </ion-nav-buttons>
+  
+  <ion-content class="scroll-bg">
+    <div class="light">BLE: {{bleState}}</div>
+    <div class="row padding">
+      <img src="./img/ionic.png">
+    </div>
+    <div class="row row-responsive-sm">
+      <div class="col padding">
+        <div class="progress-radial progress-75">
+          <div class="overlay">25%</div>
+        </div>
       </div>
     </div>
-  </div>
-</ion-content>
+  </ion-content>
+  
+</ion-view>
