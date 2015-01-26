@@ -11,4 +11,7 @@ controllers
     created: Date.now()
   }
 
+  $scope.logout = function () {
+    $state.go('login')
+  }
 })

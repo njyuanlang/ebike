@@ -5,32 +5,22 @@
       <div class="item item-avatar" ng-click="openModal()">
         <img src="img/user-icon.png">
         <h2>{{entity.name}}</h2>
-        <small>
+        <small class="calm">
           {{entity.created | date : 'yyyy-MM-dd'}}
         </small>
+        <span class="item-note"><i class="icon ion-ios7-arrow-right"></i></span>        
         
-        <span class="item-note"><i class="icon ion-ios7-arrow-right"></i></span>
-        
-      </div>
-      <div class="item item-icon-left">
-        <i class="icon ion-ios7-barcode-outline padding"></i>
-        <span class="padding">
-          编号
-        </span>
-        <span class="item-note positive">
-          {{entity.code}}
-        </span>
-      </div>
-      <div class="item item-icon-left">
-        <i class="icon ion-ios7-star-outline padding"></i>
-        <span class="padding">
-          型号
-        </span>
-        <span class="item-note positive">
-          {{entity.model}}
-        </span>
       </div>
     </div>
+    <div class="list card">
+      <a class="item item-icon-left">
+        <i class="icon ion-ios7-locked-outline"></i>修改密码
+      </a>
+    </div>
+
+    <a ng-click="logout()" class="button button-full button-assertive icon ion-log-out">
+      退出
+    </a>    
 
   </ion-content>
 </ion-view>

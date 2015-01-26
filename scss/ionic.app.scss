@@ -31,9 +31,11 @@ $positive:                        #56fa89 !default;
 $base-background-color:           #000 !default;
 $base-color:                      #fff !default;
 
-// Forms
+// Items
 // -------------------------------
 
+$item-avatar-width:               80px !default;
+$item-avatar-height:              80px !default;
 
 // Buttons
 // -------------------------------
@@ -80,15 +82,10 @@ $user-bg:                       '../img/user-bg.png';
 //    border-right: 1px solid $light;
 
     > img:first-child {
-      max-width: 40px;
-      max-hegith: 40px;
+      max-width: 60px;
+      max-hegith: 60px;
     }
   }
-}
-
-.menu-grid > img {
-  max-width: 40px;
-  max-hegith: 40px;
 }
 
 // Include all of Ionic
