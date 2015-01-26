@@ -22,6 +22,20 @@ $dark:                            #444 !default;
   background: url('../img/cruise-bg.png') no-repeat center center fixed;
   background-size: cover; }
 
+.user-bg {
+  background: url('../img/user-bg.png') no-repeat center center;
+  background-size: cover; }
+
+.menu-grid .row .col {
+  border: 1px solid #505866; }
+  .menu-grid .row .col > img:first-child {
+    max-width: 40px;
+    max-hegith: 40px; }
+
+.menu-grid > img {
+  max-width: 40px;
+  max-hegith: 40px; }
+
 /*!
   Ionicons, v1.5.2
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
@@ -7030,8 +7044,8 @@ a.button {
   float: left;
   margin-right: 30px;
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   border: 2px solid #2f3439;
   background-color: #56fa89; }
@@ -7041,12 +7055,12 @@ a.button {
  * ------------------------------------- */
 .progress-radial .overlay {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: 180px;
+  height: 180px;
   background-color: #fffde8;
   border-radius: 50%;
-  margin-left: 20px;
-  margin-top: 20px;
+  margin-left: 60px;
+  margin-top: 60px;
   text-align: center;
   line-height: 60px;
   font-size: 16px; }

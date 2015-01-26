@@ -56,6 +56,13 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers'])
       controller: 'CruiseCtrl'
     })
 
+    // menu 
+    .state('menu', {
+      url: "/menu",
+      templateUrl: "templates/menu.html",
+      controller: 'MenuCtrl'
+    })
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
 

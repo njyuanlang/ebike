@@ -48,8 +48,12 @@ $button-stable-border:            #333a54 !default;
 $button-stable-active-bg:         #e5e5e5 !default;
 $button-stable-active-border:     #a2a2a2 !default;
 
+// Backgrounds
+// -------------------------------
+
 $default-bg:                      '../img/bg.png';
 $cruise-bg:                       '../img/cruise-bg.png';
+$user-bg:                       '../img/user-bg.png';
 
 .scroll-bg {
   background: url($default-bg) no-repeat center center fixed;
@@ -59,6 +63,32 @@ $cruise-bg:                       '../img/cruise-bg.png';
 .cruise-bg {
   background: url($cruise-bg) no-repeat center center fixed;
   background-size: cover;
+}
+
+.user-bg {
+  background: url($user-bg) no-repeat center center;
+  background-size: cover;
+}
+
+// Menus
+// -------------------------------
+.menu-grid .row {
+
+  .col {
+    border: 1px solid $light;
+//    border-bottom: 1px solid $light;
+//    border-right: 1px solid $light;
+
+    > img:first-child {
+      max-width: 40px;
+      max-hegith: 40px;
+    }
+  }
+}
+
+.menu-grid > img {
+  max-width: 40px;
+  max-hegith: 40px;
 }
 
 // Include all of Ionic
@@ -77,8 +107,8 @@ $backColor:                           #2f3439;
   float: left;
   margin-right: 30px;
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   border: 2px solid $backColor; // remove gradient color
   background-color: $barColor; // default 100%
@@ -89,12 +119,12 @@ $backColor:                           #2f3439;
  * ------------------------------------- */  
 .progress-radial .overlay {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: 180px;
+  height: 180px;
   background-color: $overlayColor;
   border-radius: 50%;
-  margin-left: 20px;
-  margin-top: 20px;
+  margin-left: 60px;
+  margin-top: 60px;
   text-align: center;
   line-height: 60px;
   font-size: 16px;
