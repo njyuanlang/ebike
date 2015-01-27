@@ -76,21 +76,29 @@ controllers
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state) {
+.controller('BikesAddCtrl', function($scope, $state, $cordovaBLE, $q) {
   
-  $scope.entities = [
-    {
-      "name": "ABC123"
-    },
-    {
-      "name": "DEF456"
-    }
-  ]
-  
-  $scope.doScan = function () {
-    
+  $scope.entities = []
+
+  function scanSuccessCb(result) {
+    $scope.entities.push(result)
   }
+  
+  function scanErrorCb(reason) {
+    $scope.$broadcast('scroll.refreshComplete')
+  }
+  
+  function doScan() {
+    $scope.entities = []
+    
+    $cordovaBLE.scan([], 10, scanSuccessCb, scanErrorCb)
+  }
+  $scope.doScan = doScan
 
   $scope.selectEntity = function (item) {
+  }
+  
+  $scope.init = function () {
+    doScan()
   }
 })
