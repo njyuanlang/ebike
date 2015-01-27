@@ -4,7 +4,7 @@ controllers
   $scope.loginData = {}
   
   $scope.tryLogin = function (loginData) {
-    $state.go('home')
+    // $state.go('home')
   }
 
   $scope.tryRegister = function (loginData) {
@@ -16,3 +16,16 @@ controllers
 .controller('RegisterCtrl', function($scope, $state) {
 
 })
+
+.controller('AccountCtrl', function($scope, $state) {
+  
+  $scope.entity = {
+    name: 'Guan Bo',
+    created: Date.now()
+  }
+
+  $scope.logout = function () {
+    $state.go('login')
+  }
+})
+
