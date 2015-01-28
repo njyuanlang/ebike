@@ -76,7 +76,7 @@ controllers
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, $cordovaBLE, $q) {
+.controller('BikesAddCtrl', function($scope, $state, ActiveBike, $timeout, $ionicLoading) {
   
   $scope.entities = []
 
@@ -90,12 +90,35 @@ controllers
   
   function doScan() {
     $scope.entities = []
-    
-    $cordovaBLE.scan([], 10, scanSuccessCb, scanErrorCb)
+    ActiveBike.scan(scanSuccessCb, scanErrorCb)
+    $timeout(function () {
+      $scope.$broadcast('scroll.refreshComplete')
+    }, 10000)
   }
   $scope.doScan = doScan
 
   $scope.selectEntity = function (item) {
+    
+    ActiveBike.connect(item)
+    .then(function (result) {
+      return $ionicLoading.show({
+        template: '连接到爱车'+item.name,
+        duration: 3000
+      })
+    })
+    .then(function () {
+      $state.go('home')
+    })
+    
+    $ionicLoading.show({
+      template:'正在连接'+item.name+"...",
+      duration: 5000
+    }).then(function () {
+      $ionicLoading.show({
+        template: "无法连接到爱车",
+        duration: 3000
+      })
+    })
   }
   
   $scope.init = function () {

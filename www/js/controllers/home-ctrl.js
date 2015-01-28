@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, $cordovaBLE, $q) {
+.controller('HomeCtrl', function($scope, $state, $cordovaBLE, $q, ActiveBike, $timeout) {
   
   window.addEventListener("orientationchange", function() {
     // alert(window.orientation)
@@ -26,35 +26,84 @@ controllers
     return String.fromCharCode.apply(null, new Uint8Array(buffer));
   }
   
-  $scope.batteryDieEndure = function () {
-    
-    var serviceUUID = 'FFE0'
-    var characteristicUUID = 'FFE1'
+  function byteToDecString(buffer) {
+    return new Uint8Array(buffer)[0].toString(10)
+  }
+  
+  function notificationSuccess(result) {
+    $scope.bleState += "SUCCESS: " + byteToDecString(result)
+    $scope.$apply()
+  }
+  function notificationError(reason) {
+    $scope.bleState += "ERROR: "+JSON.stringify(arguments)
+    $scope.$apply()
+  }
+  function fresh() {
+    var services = [
+      {
+        uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
+        characteristics: [
+          "0000D00A-D102-11E1-9B23-00025B00A5A5"
+          // , "0000D00B-1021-1E19-B230-00250B00A5A5"
+        ]
+      }
+    ]
       
-    $scope.bleState = "Bluetooth is scaning"
-    $cordovaBLE.scan([], 10).then(function (result) {
-      $scope.bleState = "Bluetooth is ON "+JSON.stringify(result)
-      $scope.peripheral = result
-      return $cordovaBLE.connect(result.id)
+    $scope.bleState = "Bluetooth is Start Notification"
+    // ActiveBike.read("0000D000-D102-11E1-9B23-00025B00A5A5", "0000D00A-D102-11E1-9B23-00025B00A5A5")
+    // .then(function (result) {
+    //   $scope.bleState += "SUCCESS: "+ byteToDecString(result)
+    // }, function (reason) {
+    //   $scope.bleState += "ERROR: "+JSON.stringify(arguments)
+    // })
+    // ActiveBike.startNotifications(services, notificationSuccess, notificationError)
+    ActiveBike.startNotification("0000D000-D102-11E1-9B23-00025B00A5A5", 
+      "0000D00A-D102-11E1-9B23-00025B00A5A5", 
+      function (result) {
+        $scope.bleState += "Power: " + byteToDecString(result)
+        $scope.$apply()
+      }, function (reason) {
+        $scope.bleState += "ERROR: "+JSON.stringify(arguments)
+        $scope.$apply()
+      }
+    )
+    ActiveBike.startNotification("0000D000-D102-11E1-9B23-00025B00A5A5", 
+    "0000D00B-1021-1E19-B230-00250B00A5A5", 
+    function (result) {
+      $scope.bleState += "MILES: " + byteToDecString(result)
+      $scope.$apply()
     }, function (reason) {
-      $scope.bleState = "Bluetooth is DISABLED"+JSON.stringify(arguments)
-      $q.reject(reason)
+      $scope.bleState += "ERROR: "+JSON.stringify(arguments)
+      $scope.$apply()
     })
-    .then(function (result) {
-      $scope.bleState += "Bluetooth is Connected "+JSON.stringify(result)
-      var promise = $cordovaBLE.notify($scope.peripheral.id, serviceUUID, characteristicUUID)
-      $cordovaBLE.writeCommand($scope.peripheral.id, serviceUUID, characteristicUUID, stringToBytes('a'))
-      return promise
-    }, function (reason) {
-      $scope.bleState += "Bluetooth is Failure Connect"+JSON.stringify(arguments)
-      $q.reject(reason)
-    })
-    .then(function (result) {
-      $scope.bleState += "Bluetooth is notify "+bytesToString(result)
-      return $cordovaBLE.notify($scope.peripheral.id, serviceUUID, characteristicUUID)
-    }, function (reason) {
-      $scope.bleState += "Bluetooth is Failure notify "+JSON.stringify(arguments)
-      $q.reject(reason)
-    })
+    
+    // .then(function (result) {
+    //   $scope.bleState += "Bluetooth is Connected "+JSON.stringify(result)
+    //   var promise = $cordovaBLE.notify($scope.peripheral.id, serviceUUID, characteristicUUID)
+    //   $cordovaBLE.writeCommand($scope.peripheral.id, serviceUUID, characteristicUUID, stringToBytes('a'))
+    //   return promise
+    // }, function (reason) {
+    //   $scope.bleState += "Bluetooth is Failure Connect"+JSON.stringify(arguments)
+    //   $q.reject(reason)
+    // })
+    // .then(function (result) {
+    //   $scope.bleState += "Bluetooth is notify "+bytesToString(result)
+    //   return $cordovaBLE.notify($scope.peripheral.id, serviceUUID, characteristicUUID)
+    // }, function (reason) {
+    //   $scope.bleState += "Bluetooth is Failure notify "+JSON.stringify(arguments)
+    //   $q.reject(reason)
+    // })
+  }
+  
+  $scope.batteryDieEndure = function () {
+    fresh()
+  }
+  
+  $scope.init = function () {
+    ActiveBike.scan()
+    
+    $timeout(function () {
+      ActiveBike.connect()
+    }, 2000)
   }
 })
