@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, $cordovaBLE, $q, ActiveBike, $timeout) {
+.controller('HomeCtrl', function($scope, $state, BLEServices, $q, ActiveBike, $timeout) {
   
   window.addEventListener("orientationchange", function() {
     // alert(window.orientation)
@@ -30,25 +30,8 @@ controllers
     return new Uint8Array(buffer)[0].toString(10)
   }
   
-  function notificationSuccess(result) {
-    $scope.bleState += "SUCCESS: " + byteToDecString(result)
-    $scope.$apply()
-  }
-  function notificationError(reason) {
-    $scope.bleState += "ERROR: "+JSON.stringify(arguments)
-    $scope.$apply()
-  }
   function fresh() {
-    var services = [
-      {
-        uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
-        characteristics: [
-          "0000D00A-D102-11E1-9B23-00025B00A5A5"
-          // , "0000D00B-1021-1E19-B230-00250B00A5A5"
-        ]
-      }
-    ]
-      
+    var service = BLEServices.realtimeService
     $scope.bleState = "Bluetooth is Start Notification"
     // ActiveBike.read("0000D000-D102-11E1-9B23-00025B00A5A5", "0000D00A-D102-11E1-9B23-00025B00A5A5")
     // .then(function (result) {
@@ -57,19 +40,14 @@ controllers
     //   $scope.bleState += "ERROR: "+JSON.stringify(arguments)
     // })
     // ActiveBike.startNotifications(services, notificationSuccess, notificationError)
-    ActiveBike.startNotification("0000D000-D102-11E1-9B23-00025B00A5A5", 
-      "0000D00A-D102-11E1-9B23-00025B00A5A5", 
-      function (result) {
+    ActiveBike.startNotification(service.uuid, service.power, function (result) {
         $scope.bleState += "Power: " + byteToDecString(result)
         $scope.$apply()
-      }, function (reason) {
+    }, function (reason) {
         $scope.bleState += "ERROR: "+JSON.stringify(arguments)
         $scope.$apply()
-      }
-    )
-    ActiveBike.startNotification("0000D000-D102-11E1-9B23-00025B00A5A5", 
-    "0000D00B-1021-1E19-B230-00250B00A5A5", 
-    function (result) {
+    })
+    ActiveBike.startNotification(service.uuid, service.mileage, function (result) {
       $scope.bleState += "MILES: " + byteToDecString(result)
       $scope.$apply()
     }, function (reason) {

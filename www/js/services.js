@@ -61,16 +61,23 @@ angular.module('ebike.services', [])
       var bikeId = this.get().id
       return $cordovaBLE.read(bikeId, serviceUUID, characteristicUUID)
     },
-    startNotifications: function (services, successCb, errorCb) {
-      var bikeId = this.get().id
-      services.forEach(function (service) {
-        service.characteristics.forEach(function (characteristic) {
-          $cordovaBLE.startNotification(bikeId, service.uuid, characteristic, successCb, errorCb)
-        })
-      })
-    },
     startNotification: function (service, characteristic, successCb, errorCb) {
       $cordovaBLE.startNotification(this.get().id, service, characteristic, successCb, errorCb)
+    },
+    stopNotification: function (service, characteristic, successCb, errorCb) {
+      $cordovaBLE.stopNotification(this.get().id, service, characteristic, successCb, errorCb)
+    }
+  }
+})
+
+.factory('BLEServices', function () {
+  return {
+    realtimeService: {
+      uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
+      power: "0000D00A-D102-11E1-9B23-00025B00A5A5",
+      mileage: "0000D00B-1021-1E19-B230-00250B00A5A5",
+      speead: "0000D00C-D102-11E1-9B23-00025B00A5A5",
+      current: "0000D00D-D102-11E1-9B23-00025B00A5A5"
     }
   }
 })
