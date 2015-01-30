@@ -6,18 +6,45 @@
     <a class="button" ng-click="batteryDieEndure()">无电续航</a>
   </ion-nav-buttons>
   
-  <ion-content class="scroll-bg padding">
-    <div class="light">BLE: {{bleState}}</div>
-    <!-- <div class="row">
-      <img src="./img/ionic.png">
-    </div> -->
-    <!-- <div class="row row-responsive-sm">
-      <div class="col padding">
-        <div class="progress-radial progress-75">
-          <div class="overlay">25%</div>
+  <ion-content class="scroll-bg">
+    <div class="row row-responsive-sm">
+      <div class="col col-25 round-button">
+        <div class="round-button-circle">
+          <a href="#/test" class="round-button">
+            <h3>{{healthScore}}<small>分</small></h3>
+            检测
+          </a>
         </div>
       </div>
-    </div> -->
+    </div>
+    <div class="row">
+      <div class="progress-radial progress-75">
+        <div class="overlay">
+          <h1>{{powerPercent}}<small>%</small></h1>
+          <label>剩余电量</label>
+        </div>
+      </div>
+    </div>
+    <div class="row text-center">
+      <h1 class="text-center">剩余<b>{{mileage}}</b>续航公里</h1>
+    </div>
+    <div class="state">
+      <div class="row">
+        <a class="col-33 button-large" ng-class="{active: workstate === 'downhill'}">
+          <img src="img/downhill.png">省电
+        </a>
+        <a class="col-33 button-large">
+          <img src="img/normal.png">正常
+        </a>
+        <a class="col-33 button-large">
+          <img src="img/uphill.png">爬坡
+        </a>
+      </div>
+      
+    </div>
+    <div class="row">
+      <div class="light">BLE: {{bleState}}</div>
+    </div>
   </ion-content>
   
 </ion-view>

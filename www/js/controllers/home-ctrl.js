@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, BLEServices, $q, ActiveBike, $timeout) {
+.controller('HomeCtrl', function($scope, $state, $q, ActiveBike, $timeout) {
   
   window.addEventListener("orientationchange", function() {
     // alert(window.orientation)
@@ -13,42 +13,22 @@ controllers
   
   // var deregistration = $rootScope.$on('$stateChangeStart', cleanUp);
   
-  function stringToBytes(string) {
-    var array = new Uint8Array(string.length);
-    for (var i = 0, l = string.length; i < l; i++) {
-      array[i] = string.charCodeAt(i);
-     }
-     return array.buffer;
-  }
-
-  // ASCII only
-  function bytesToString(buffer) {
-    return String.fromCharCode.apply(null, new Uint8Array(buffer));
-  }
+  $scope.powerPercent = 0
+  $scope.mileage = 0
+  $scope.healthScore = 100
+  $scope.workstate = 'downhill'
   
-  function byteToDecString(buffer) {
-    return new Uint8Array(buffer)[0].toString(10)
-  }
-  
-  function fresh() {
-    var service = BLEServices.realtimeService
+  function startNotify() {
     $scope.bleState = "Bluetooth is Start Notification"
-    // ActiveBike.read("0000D000-D102-11E1-9B23-00025B00A5A5", "0000D00A-D102-11E1-9B23-00025B00A5A5")
-    // .then(function (result) {
-    //   $scope.bleState += "SUCCESS: "+ byteToDecString(result)
-    // }, function (reason) {
-    //   $scope.bleState += "ERROR: "+JSON.stringify(arguments)
-    // })
-    // ActiveBike.startNotifications(services, notificationSuccess, notificationError)
-    ActiveBike.startNotification(service.uuid, service.power, function (result) {
-        $scope.bleState += "Power: " + byteToDecString(result)
-        $scope.$apply()
+    ActiveBike.startNotifyPower(function (result) {
+      $scope.powerPercent = result || 0
+      $scope.$apply()
     }, function (reason) {
-        $scope.bleState += "ERROR: "+JSON.stringify(arguments)
-        $scope.$apply()
+      $scope.bleState += "ERROR: "+JSON.stringify(arguments)
+      $scope.$apply()
     })
-    ActiveBike.startNotification(service.uuid, service.mileage, function (result) {
-      $scope.bleState += "MILES: " + byteToDecString(result)
+    ActiveBike.startNotifyMileage(function (result) {
+      $scope.mileage = result || 0
       $scope.$apply()
     }, function (reason) {
       $scope.bleState += "ERROR: "+JSON.stringify(arguments)
@@ -73,8 +53,24 @@ controllers
     // })
   }
   
+  function test() {
+    ActiveBike.startNotifyTest(function (result) {
+      $scope.healthScore = result || 100
+    }, function (reason) {
+      
+    })
+  }
+  
+  function workstate() {
+    ActiveBike.state()
+    .then(function (result) {
+      
+    }, function (reason) {
+      
+    })
+  }
   $scope.batteryDieEndure = function () {
-    fresh()
+    startNotify()
   }
   
   $scope.init = function () {
