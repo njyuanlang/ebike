@@ -96,6 +96,33 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
       templateUrl: "templates/bikes-add.html",
       controller: 'BikesAddCtrl'
     })
+    // messages
+    .state('messages', {
+      url: "/messages",
+      templateUrl: "templates/messages.html",
+      controller: 'MessagesCtrl'
+    })
+    .state('messages-detail', {
+      url: "/messages/detail",
+      templateUrl: "templates/messages-detail.html",
+      controller: 'MessagesDetailCtrl'
+    })
+    // services
+    .state('services', {
+      url: "/services",
+      templateUrl: "templates/services.html"
+    })
+    // help
+    .state('help', {
+      url: "/help",
+      templateUrl: "templates/help.html"
+    })
+    // about
+    .state('about', {
+      url: "/about",
+      templateUrl: "templates/about.html"
+    })
+    
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
