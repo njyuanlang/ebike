@@ -49,6 +49,13 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
       controller: 'HomeCtrl'
     })
 
+    // test 
+    .state('test', {
+      url: "/test",
+      templateUrl: "templates/test.html",
+      controller: 'TestCtrl'
+    })
+
     // dashboard 
     .state('cruise', {
       url: "/cruise",

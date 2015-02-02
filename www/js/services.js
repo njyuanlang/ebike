@@ -39,7 +39,7 @@ angular.module('ebike.services', [])
   }
 })
 
-.factory('ActiveBike', function ($localstorage, $cordovaBLE) {
+.factory('ActiveBike', function ($localstorage, $cordovaBLE, $q) {
   var key = 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
   var services = {
     remind: {
@@ -76,6 +76,14 @@ angular.module('ebike.services', [])
     var array = new Uint8Array(string.length);
     for (var i = 0, l = string.length; i < l; i++) {
       array[i] = string.charCodeAt(i);
+     }
+     return array.buffer;
+  }
+  
+  function hexToBytes(hexs) {
+    var array = new Uint8Array(string.length);
+    for (var i = 0, l = hexs.length; i < l; i++) {
+      array[i] = hexs[i]
      }
      return array.buffer;
   }
@@ -130,11 +138,15 @@ angular.module('ebike.services', [])
         successCb(byteToDecString(result))
       }, errorCb)
     },
-    startNotifyTest: function (successCb, errorCb) {
+    test: function () {
+      var q = $q.defer()
       var service = services.test
-      $cordovaBLE.startNotification(this.get().id, service.uuid, service.test, function (result) {
-        successCb(byteToDecString(result))
-      }, errorCb)
+      $cordovaBLE.read(this.get().id, service.uuid, service.test).then(function (result) {
+        return q.resolve(byteToDecString(result))
+      }, q.reject)
+      // var order = service.order
+      // $cordovaBLE.writeCommand(this.get().id, order.uuid, order.order, stringToBytes([0x81, 0x81]))
+      return q.promise;
     },
     state: function () {
       var service = services.state

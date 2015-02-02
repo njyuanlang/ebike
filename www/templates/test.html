@@ -1,0 +1,30 @@
+<ion-view title="检测" ng-init="init()">
+  <ion-nav-buttons side="right">
+    <a class="button" ng-click="init()">一键修复</a>
+  </ion-nav-buttons>
+  
+  <ion-content class="scroll-bg">
+    BLE:{{ble}}
+    <div class="row col">
+      <h1 class="text-center">{{testState}}</h1>
+    </div>
+    <div class="row">
+      <div class="col round-button">
+        <div class="round-button-circle">
+          <a class="round-button">
+            <h1>{{testScore}} <small>分</small></h1>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row" ng-repeat="entity in entities">
+      <div class="col-25">{{entity.name}}</div>
+      <div class="col-50">
+        <progress max="100" value="{{entity.progress}}"></progress>
+      </div>
+      <div class="col-25">{{entity.state}}</div>      
+    </div>
+  </ion-content>
+  
+</ion-view>

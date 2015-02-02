@@ -51,13 +51,17 @@ controllers
     //   $scope.bleState += "Bluetooth is Failure notify "+JSON.stringify(arguments)
     //   $q.reject(reason)
     // })
+      
+    test()
   }
   
   function test() {
-    ActiveBike.startNotifyTest(function (result) {
+    $scope.bleState = "Bluetooth is Start TEST"
+    ActiveBike.test().then(function (result) {
+      $scope.bleState += "Test success: "+JSON.stringify(arguments)
       $scope.healthScore = result || 100
     }, function (reason) {
-      
+      $scope.bleState += "TEST ERROR: "+JSON.stringify(arguments)
     })
   }
   
@@ -70,7 +74,7 @@ controllers
     })
   }
   $scope.batteryDieEndure = function () {
-    startNotify()
+    test()
   }
   
   $scope.init = function () {

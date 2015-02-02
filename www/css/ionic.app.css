@@ -27,10 +27,36 @@ $dark:                            #444 !default;
   background-size: cover; }
 
 .menu-grid .row .col {
-  border: 1px solid #505866; }
+  border: 1px solid #505866;
+  background: transparent;
+  line-height: 30px; }
   .menu-grid .row .col > img:first-child {
-    max-width: 60px;
-    max-hegith: 60px; }
+    max-width: 50px;
+    max-height: 50px; }
+
+progress {
+  -webkit-appearance: none;
+  border: none;
+  border-radius: 100px; }
+
+@-webkit-keyframes animate-stripes {
+  100% {
+    background-position: -100px 0px; } }
+
+@keyframes animate-stripes {
+  100% {
+    background-position: -100px 0px; } }
+
+progress::-webkit-progress-bar {
+  background: transparent;
+  border-radius: 50px;
+  padding: 2px;
+  box-shadow: 0 1px 0px 0 rgba(255, 255, 255, 0.2); }
+
+progress::-webkit-progress-value {
+  border-radius: 50px;
+  background: -webkit-linear-gradient(45deg, transparent, transparent 33%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.1) 66%, transparent 66%), -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.2)), -webkit-linear-gradient(left, #56fa89, #56fa89);
+  background-size: 25px 14px, 100% 100%, 100% 100%; }
 
 /*!
   Ionicons, v1.5.2
@@ -7036,7 +7062,7 @@ a.button {
 .round-button-circle {
   width: 100%;
   height: 0;
-  padding-bottom: 90%;
+  padding-bottom: 100%;
   border-radius: 50%;
   border: 3px solid #505866;
   overflow: hidden;
