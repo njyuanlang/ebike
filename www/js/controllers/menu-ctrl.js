@@ -30,6 +30,8 @@ controllers
   }
 })
 
-.controller('MessagesDetailCtrl', function($scope, $state) {
+.controller('MessagesDetailCtrl', function($scope, $state, $localstorage) {
+  $scope.entities = $localstorage.getArray('com.extensivepro.ebike.CDF4843B-8C4D-4947-8FFB-7AA15B334F12')
 
+  $scope.alertType = '电瓶低电压提醒'
 })

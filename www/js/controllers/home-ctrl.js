@@ -33,6 +33,20 @@ controllers
       $scope.bleState += "ERROR: "+JSON.stringify(arguments)
       $scope.$apply()
     })
+    ActiveBike.startNotifySpeed(function (result) {
+      $scope.bleState += "Speed: "+JSON.stringify(arguments)
+      $scope.$apply()
+    }, function () {
+      $scope.bleState += "ERROR: "+JSON.stringify(arguments)
+      $scope.$apply()
+    })
+    ActiveBike.startNotifyCurrent(function (result) {
+      $scope.bleState += "Current: "+JSON.stringify(arguments)
+      $scope.$apply()
+    }, function () {
+      $scope.bleState += "ERROR: "+JSON.stringify(arguments)
+      $scope.$apply()
+    })
   }
   
   function test() {
@@ -54,14 +68,18 @@ controllers
     })
   }
   $scope.batteryDieEndure = function () {
-    test()
+    startNotify()
   }
   
   $scope.init = function () {
     ActiveBike.scan()
     
     $timeout(function () {
-      ActiveBike.connect()
+      ActiveBike.connect().then(function (result) {
+        return ActiveBike.startNotifyRemind()
+      }, function () {
+        $scope.bleState += "Connect ERROR: "+JSON.stringify(arguments)
+      })
     }, 2000)
   }
 })

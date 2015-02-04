@@ -35,12 +35,28 @@ angular.module('ebike.services', [])
     },
     getObject: function(key) {
       return JSON.parse($window.localStorage[key] || '{}');
+    },
+    getArray: function (key) {
+      return JSON.parse($window.localStorage[key] || '[]');
+    },
+    pushObject: function (key, value) {
+      var arr = this.getArray(key);
+      arr.push(value)
+      $window.localStorage[key] = JSON.stringify(arr);
     }
   }
 })
 
 .factory('ActiveBike', function ($localstorage, $cordovaBLE, $q) {
-  var key = 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
+  var keys = {
+    activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB',
+    reminds: {
+      overload: 'com.extensivepro.ebike.598DC984-D8FB-4620-ADD3-D871E6A40C51',
+      temperature: 'com.extensivepro.ebike.C4014443-9461-4DE8-AE61-4B5B2226D946',
+      voltage: 'com.extensivepro.ebike.CDF4843B-8C4D-4947-8FFB-7AA15B334F12',
+      guard: 'com.extensivepro.ebike.9C7FC6F5-6A4D-405E-BE07-3B7B8C2227FF'
+    }
+  }
   var services = {
     remind: {
       uuid: "0000A000-D102-11E1-9B23-00025B00A5A5",
@@ -50,7 +66,7 @@ angular.module('ebike.services', [])
       uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
       power: "0000D00A-D102-11E1-9B23-00025B00A5A5",
       mileage: "0000D00B-1021-1E19-B230-00250B00A5A5",
-      speead: "0000D00C-D102-11E1-9B23-00025B00A5A5",
+      speed: "0000D00C-D102-11E1-9B23-00025B00A5A5",
       current: "0000D00D-D102-11E1-9B23-00025B00A5A5"
     },
     test: {
@@ -99,10 +115,10 @@ angular.module('ebike.services', [])
   
   return {
     set: function (value) {
-      $localstorage.setObject(key, value)
+      $localstorage.setObject(keys.activebike, value)
     },
     get: function () {
-      return $localstorage.getObject(key)
+      return $localstorage.getObject(keys.activebike)
     },
     scan: function (successCb, errorCb) {
       $cordovaBLE.scan([], 10, successCb, errorCb)
@@ -151,6 +167,37 @@ angular.module('ebike.services', [])
     state: function () {
       var service = services.state
       return $cordovaBLE.read(this.get().id, service.uuid, service.state)
+    },
+    startNotifyRemind: function (successCb, errorCb) {
+      var service = services.remind
+      $cordovaBLE.startNotification(this.get().id, service.uuid, service.msg, function (result) {
+        var res = new Uint8Array(result)
+        var date = new Date().toString()
+        if(res[0] & 0x1) {
+          $localstorage.pushObject(keys.reminds.overload, {created:date})
+        }
+        if(res[0] & 0x2) {
+          $localstorage.pushObject(keys.reminds.temperature, {created:date})
+        }
+        if(res[0] & 0x4) {
+          $localstorage.pushObject(keys.reminds.voltage, {created:date})
+        }
+        if(res[0] & 0x8) {
+          $localstorage.pushObject(keys.reminds.guard, {created:date})
+        }
+      }, errorCb)
+    },
+    startNotifySpeed: function (successCb, errorCb) {
+      var service = services.realtime
+      $cordovaBLE.startNotification(this.get().id, service.uuid, service.speed, function (result) {
+        successCb(byteToDecString(result))
+      }, errorCb)
+    },
+    startNotifyCurrent: function (successCb, errorCb) {
+      var service = services.realtime
+      $cordovaBLE.startNotification(this.get().id, service.uuid, service.current, function (result) {
+        successCb(byteToDecString(result))
+      }, errorCb)
     }
   }
 })
