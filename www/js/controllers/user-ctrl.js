@@ -1,6 +1,6 @@
 controllers
 
-.controller('LoginCtrl', function($scope, $state) {
+.controller('LoginCtrl', function($scope, $state, ActiveBike, $timeout) {
   $scope.loginData = {}
   
   $scope.tryLogin = function (loginData) {
@@ -10,7 +10,12 @@ controllers
   $scope.tryRegister = function (loginData) {
     // $state.go('home')
   }
-    
+  
+  $scope.init = function () {
+    $timeout(function () {
+      ActiveBike.scan()
+    }, 1000)
+  }
 })
 
 .controller('RegisterCtrl', function($scope, $state) {

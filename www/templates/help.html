@@ -1,5 +1,41 @@
 <ion-view title="帮助">
+  <ion-nav-buttons side="right">
+    <a class="button" ng-click="refresh()">刷新</a>
+  </ion-nav-buttons>
   <ion-content has-header="true" class="scroll-bg padding">
+    <div class="list card">
+      <div class="item">
+        power: {{ realtime.power }}
+      </div>
+      <div class="item">
+        mileage: {{ realtime.mileage }}
+      </div>
+      <div class="item">
+        speed: {{ realtime.speed }}
+      </div>
+      <div class="item">
+        current: {{ realtime.current }}
+      </div>
+      </div>
+    </div>
+
+    <div class="list card">
+      <div class="item">
+        test: {{ test.test }}
+      </div>
+      <div class="item">
+        repair: {{ test.repair }}
+      </div>
+    </div>
+    
+    <div class="list card">
+      <div class="item">
+        device: {{ device.sn }}
+      </div>
+      <div class="item">
+        workmode: {{ device.workmode }}
+      </div>
+    </div>
     
   </ion-content>
 </ion-view>

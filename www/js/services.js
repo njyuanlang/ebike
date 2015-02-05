@@ -82,9 +82,9 @@ angular.module('ebike.services', [])
       uuid: "00009000-D102-11E1-9B23-00025B00A5A5",
       sn: "0000900A-D102-11E1-9B23-00025B00A5A5"
     },
-    state: {
+    workmode: {
       uuid: "0000E000-D102-11E1-9B23-00025B00A5A5",
-      state: "0000E00A-D102-11E1-9B23-00025B00A5A5"
+      workmode: "0000E00A-D102-11E1-9B23-00025B00A5A5"
     }
   }
   
@@ -121,56 +121,73 @@ angular.module('ebike.services', [])
       return $localstorage.getObject(keys.activebike)
     },
     scan: function (successCb, errorCb) {
-      $cordovaBLE.scan([], 10, successCb, errorCb)
+      ble.scan([], 10, successCb, errorCb)
     },
     connect: function (bike) {
       var activeBike = bike || this.get()
       this.set(activeBike)
       return $cordovaBLE.connect(activeBike.id)
     },
-    read: function (serviceUUID, characteristicUUID) {
+    autoconnect: function () {
+      var q = $q.defer()
       var bikeId = this.get().id
-      return $cordovaBLE.read(bikeId, serviceUUID, characteristicUUID)
-    },
-    startNotification: function (service, characteristic, successCb, errorCb) {
-      $cordovaBLE.startNotification(this.get().id, service, characteristic, successCb, errorCb)
-    },
-    stopNotification: function (service, characteristic, successCb, errorCb) {
-      $cordovaBLE.stopNotification(this.get().id, service, characteristic, successCb, errorCb)
+      $cordovaBLE.isConnected(bikeId)
+      .then(function (result) {
+        return result
+      }, function (reason) {
+        return $cordovaBLE.connect(bikeId)
+      })
+      .then(function () {
+        this.startNotifyRemind()
+      }, q.reject)
+      
+      return q.promise
     },
     startNotifyPower: function (successCb, errorCb) {
       var service = services.realtime
-      $cordovaBLE.startNotification(this.get().id, service.uuid, service.power, function (result) {
+      ble.startNotification(this.get().id, service.uuid, service.power, function (result) {
         successCb(byteToDecString(result))
       }, errorCb)
     },
     stopNotifyPower: function (successCb, errorCb) {
       var service = services.realtime
-      $cordovaBLE.stopNotification(this.get().id, service.uuid, service.power, successCb, errorCb)
+      ble.stopNotification(this.get().id, service.uuid, service.power, successCb, errorCb)
     },
     startNotifyMileage: function (successCb, errorCb) {
       var service = services.realtime
-      $cordovaBLE.startNotification(this.get().id, service.uuid, service.mileage, function (result) {
+      ble.startNotification(this.get().id, service.uuid, service.mileage, function (result) {
         successCb(byteToDecString(result))
       }, errorCb)
     },
-    test: function () {
-      var q = $q.defer()
+    test: function (successCb, errorCb) {
       var service = services.test
-      $cordovaBLE.read(this.get().id, service.uuid, service.test).then(function (result) {
-        return q.resolve(byteToDecString(result))
-      }, q.reject)
-      // var order = service.order
-      // $cordovaBLE.writeCommand(this.get().id, order.uuid, order.order, stringToBytes([0x81, 0x81]))
-      return q.promise;
+      ble.startNotification(this.get().id, service.uuid, service.test, function (result) {
+        ble.stopNotification(this.get().id, service.uuid, service.test)
+        successCb(byteToDecString(result))
+      }, function (reason) {
+        ble.stopNotification(this.get().id, service.uuid, service.test)
+        errorCb(reason)
+      })
     },
-    state: function () {
-      var service = services.state
-      return $cordovaBLE.read(this.get().id, service.uuid, service.state)
+    repair: function (successCb, errorCb) {
+      var service = services.test
+      ble.startNotification(this.get().id, service.uuid, service.repair, function (result) {
+        successCb(byteToDecString(result))
+      }, errorCb)
+    },
+    workmode: function () {
+      var q = $q.defer()
+      var service = services.workmode
+      ble.read(this.get().id, service.uuid, service.workmode, function (result) {
+        q.resolve(bytesToString(result))
+      }, function (reason) {
+        q.reject(reason)
+      })
+      return q.promise
     },
     startNotifyRemind: function (successCb, errorCb) {
       var service = services.remind
-      $cordovaBLE.startNotification(this.get().id, service.uuid, service.msg, function (result) {
+      ble.startNotification(this.get().id, service.uuid, service.msg, function (result) {
         var res = new Uint8Array(result)
         var date = new Date().toString()
         if(res[0] & 0x1) {
@@ -198,6 +215,16 @@ angular.module('ebike.services', [])
       $cordovaBLE.startNotification(this.get().id, service.uuid, service.current, function (result) {
         successCb(byteToDecString(result))
       }, errorCb)
+    },
+    device: function () {
+      var q = $q.defer()
+      var service = services.device
+      ble.read(this.get().id, service.uuid, service.sn, function (result) {
+        q.resolve(bytesToString(result))
+      }, function (reason) {
+        q.reject(reason)
+      })
+      return q.promise
     }
   }
 })

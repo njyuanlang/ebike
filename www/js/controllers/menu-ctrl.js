@@ -4,6 +4,96 @@ controllers
 
 })
 
+.controller('HelpCtrl', function($scope, $state, ActiveBike) {
+  $scope.realtime = {
+    power: 0,
+    mileage: 0,
+    speed: 0,
+    current: 0
+  }
+  
+  $scope.test = {
+    test: 0,
+    repair: 0
+  }
+  
+  $scope.device = {
+    sn: '999',
+    workmode: '123'
+  }
+  
+  function startNotify() {
+    ActiveBike.startNotifyPower(function (result) {
+      $scope.realtime.power = result || 0
+      $scope.$apply()
+    }, function (reason) {
+      $scope.realtime.power = reason
+      $scope.$apply()
+    })
+    ActiveBike.startNotifyMileage(function (result) {
+      $scope.realtime.mileage = result || 0
+      $scope.$apply()
+    }, function (reason) {
+      $scope.realtime.mileage = reason
+      $scope.$apply()
+    })
+    ActiveBike.startNotifySpeed(function (result) {
+      $scope.realtime.speed = result || 0
+      $scope.$apply()
+    }, function (reason) {
+      $scope.realtime.speed = reason
+      $scope.$apply()
+    })
+    ActiveBike.startNotifyCurrent(function (result) {
+      $scope.realtime.current = result || 0
+      $scope.$apply()
+    }, function (reason) {
+      $scope.realtime.speed = reason
+      $scope.$apply()
+    })
+  }
+
+  function test() {
+    ActiveBike.test(function (result) {
+      $scope.test.test = result || 0
+      $scope.$apply()
+    }, function (reason) {
+      $scope.test.test = reason || 0
+      $scope.$apply()
+    })
+    ActiveBike.repair(function (result) {
+      $scope.test.repair = result || 0
+      $scope.$apply()
+    }, function (reason) {
+      $scope.test.repair = reason || 0
+      $scope.$apply()
+    })
+  }
+  
+  function device(argument) {
+    ActiveBike.device().then(function (result) {
+      $scope.device.sn = result || 0
+      $scope.$apply()
+    },function (reason) {
+      $scope.device.sn = reason
+      $scope.$apply()
+    })
+    ActiveBike.workmode().then(function (result) {
+      $scope.device.workmode = result || 0
+      $scope.$apply()
+    },function (reason) {
+      $scope.device.workmode = reason
+      $scope.$apply()
+    })
+  }
+  
+  $scope.refresh = function () {
+    startNotify()
+    test()
+    device()
+  }
+})
+
 .controller('MessagesCtrl', function($scope, $state) {
 
   $scope.setting = false;

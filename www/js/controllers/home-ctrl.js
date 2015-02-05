@@ -18,44 +18,28 @@ controllers
   $scope.workstate = 'downhill'
   
   function startNotify() {
-    $scope.bleState = "Bluetooth is Start Notification"
     ActiveBike.startNotifyPower(function (result) {
       $scope.powerPercent = result || 0
       $scope.$apply()
     }, function (reason) {
-      $scope.bleState += "ERROR: "+JSON.stringify(arguments)
-      $scope.$apply()
+      // $scope.bleState += "ERROR: "+JSON.stringify(arguments)
+      // $scope.$apply()
     })
     ActiveBike.startNotifyMileage(function (result) {
       $scope.mileage = result || 0
       $scope.$apply()
     }, function (reason) {
-      $scope.bleState += "ERROR: "+JSON.stringify(arguments)
-      $scope.$apply()
-    })
-    ActiveBike.startNotifySpeed(function (result) {
-      $scope.bleState += "Speed: "+JSON.stringify(arguments)
-      $scope.$apply()
-    }, function () {
-      $scope.bleState += "ERROR: "+JSON.stringify(arguments)
-      $scope.$apply()
-    })
-    ActiveBike.startNotifyCurrent(function (result) {
-      $scope.bleState += "Current: "+JSON.stringify(arguments)
-      $scope.$apply()
-    }, function () {
-      $scope.bleState += "ERROR: "+JSON.stringify(arguments)
-      $scope.$apply()
+      // $scope.bleState += "ERROR: "+JSON.stringify(arguments)
+      // $scope.$apply()
     })
   }
   
   function test() {
-    $scope.bleState = "Bluetooth is Start TEST"
-    ActiveBike.test().then(function (result) {
-      $scope.bleState += "Test success: "+JSON.stringify(arguments)
-      $scope.healthScore = result || 100
+    ActiveBike.test(function (result) {
+      $scope.healthScore = result || 0
     }, function (reason) {
-      $scope.bleState += "TEST ERROR: "+JSON.stringify(arguments)
+      $scope.healthScore = -1
+      // $scope.bleState += "TEST ERROR: "+JSON.stringify(arguments)
     })
   }
   
@@ -67,19 +51,19 @@ controllers
       
     })
   }
+  
   $scope.batteryDieEndure = function () {
     startNotify()
+    test()
   }
   
   $scope.init = function () {
-    ActiveBike.scan()
-    
-    $timeout(function () {
-      ActiveBike.connect().then(function (result) {
-        return ActiveBike.startNotifyRemind()
-      }, function () {
-        $scope.bleState += "Connect ERROR: "+JSON.stringify(arguments)
-      })
-    }, 2000)
+    ActiveBike.autoconnect()
+    .then(function () {
+      startNotify()
+      test()
+    }, function () {
+    })
   }
+  
 })
