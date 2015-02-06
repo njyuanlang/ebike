@@ -12,14 +12,12 @@ controllers
       $scope.powerPercent = result || 0
       $scope.$apply()
     }, function (reason) {
-      // $scope.bleState += "ERROR: "+JSON.stringify(arguments)
       // $scope.$apply()
     })
     ActiveBike.startNotifyMileage(function (result) {
       $scope.mileage = result || 0
       $scope.$apply()
     }, function (reason) {
-      // $scope.bleState += "ERROR: "+JSON.stringify(arguments)
       // $scope.$apply()
     })
   }
@@ -29,7 +27,6 @@ controllers
       $scope.healthScore = result || 0
     }, function (reason) {
       $scope.healthScore = -1
-      // $scope.bleState += "TEST ERROR: "+JSON.stringify(arguments)
     })
   }
   
@@ -48,16 +45,6 @@ controllers
   }
   
   $scope.init = function () {
-    ActiveBike.autoconnect()
-    .then(function () {
-      startNotify()
-      test()
-    }, function () {
-      $ionicLoading.show({
-        template:'Connect Bike FAILURE!!!',
-        duration: 3000
-      })
-    })
   }
   
 })

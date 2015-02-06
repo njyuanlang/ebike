@@ -128,6 +128,9 @@ angular.module('ebike.services', [])
       this.set(activeBike)
       return $cordovaBLE.connect(activeBike.id)
     },
+    disconnect: function () {
+      return $cordovaBLE.disconnect(this.get().id)
+    },
     autoconnect: function () {
       var q = $q.defer()
       var bikeId = this.get().id
@@ -179,7 +182,8 @@ angular.module('ebike.services', [])
       var q = $q.defer()
       var service = services.workmode
       ble.read(this.get().id, service.uuid, service.workmode, function (result) {
-        q.resolve(bytesToString(result))
+        var res = new Uint8Array(result)
+        q.resolve(res[0] & 0xb)
       }, function (reason) {
         q.reject(reason)
       })
@@ -206,13 +210,13 @@ angular.module('ebike.services', [])
     },
     startNotifySpeed: function (successCb, errorCb) {
       var service = services.realtime
-      $cordovaBLE.startNotification(this.get().id, service.uuid, service.speed, function (result) {
+      ble.startNotification(this.get().id, service.uuid, service.speed, function (result) {
         successCb(byteToDecString(result))
       }, errorCb)
     },
     startNotifyCurrent: function (successCb, errorCb) {
       var service = services.realtime
-      $cordovaBLE.startNotification(this.get().id, service.uuid, service.current, function (result) {
+      ble.startNotification(this.get().id, service.uuid, service.current, function (result) {
         successCb(byteToDecString(result))
       }, errorCb)
     },

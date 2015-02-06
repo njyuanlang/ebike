@@ -11,6 +11,11 @@ controllers
     // $state.go('home')
   }
   
+  $scope.goTrial = function () {
+    ActiveBike.autoconnect()
+    $state.go('home')
+  }
+  
   $scope.init = function () {
     $timeout(function () {
       ActiveBike.scan()
@@ -22,7 +27,7 @@ controllers
 
 })
 
-.controller('AccountCtrl', function($scope, $state) {
+.controller('AccountCtrl', function($scope, $state, ActiveBike) {
   
   $scope.entity = {
     name: 'Guan Bo',
@@ -30,6 +35,7 @@ controllers
   }
 
   $scope.logout = function () {
+    ActiveBike.disconnect()
     $state.go('login')
   }
 })

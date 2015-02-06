@@ -25,6 +25,7 @@ controllers
   function startNotify() {
     ActiveBike.startNotifyPower(function (result) {
       $scope.realtime.power = result || 0
+      $scope.realtime.power += '-'+new Date().toTimeString()
       $scope.$apply()
     }, function (reason) {
       $scope.realtime.power = reason
@@ -32,6 +33,7 @@ controllers
     })
     ActiveBike.startNotifyMileage(function (result) {
       $scope.realtime.mileage = result || 0
+      $scope.realtime.mileage += '-'+new Date().toTimeString()
       $scope.$apply()
     }, function (reason) {
       $scope.realtime.mileage = reason
@@ -39,6 +41,7 @@ controllers
     })
     ActiveBike.startNotifySpeed(function (result) {
       $scope.realtime.speed = result || 0
+      $scope.realtime.speed += '-'+new Date().toTimeString()
       $scope.$apply()
     }, function (reason) {
       $scope.realtime.speed = reason
@@ -46,6 +49,7 @@ controllers
     })
     ActiveBike.startNotifyCurrent(function (result) {
       $scope.realtime.current = result || 0
+      $scope.realtime.current += '-'+new Date().toTimeString()
       $scope.$apply()
     }, function (reason) {
       $scope.realtime.speed = reason
