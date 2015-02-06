@@ -31,9 +31,9 @@ controllers
     
     ActiveBike.test()
     .then(function (result) {
-      $scope.ble += 'Test success:'+ JSON.stringify(arguments)
+      // $scope.ble += 'Test success:'+ JSON.stringify(arguments)
     }, function (reason) {
-      $scope.ble += 'Test failure:'+ JSON.stringify(arguments)
+      // $scope.ble += 'Test failure:'+ JSON.stringify(arguments)
     })    
   }
   
@@ -42,7 +42,7 @@ controllers
   })
   
   $scope.init = function () {
-    $scope.ble = 'Start====='
+    screen.lockOrientation('portrait-primary')
     test()
   }
 })

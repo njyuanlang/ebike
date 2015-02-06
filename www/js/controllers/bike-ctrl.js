@@ -82,6 +82,7 @@ controllers
 
   function scanSuccessCb(result) {
     $scope.entities.push(result)
+    $scope.$apply()
   }
   
   function scanErrorCb(reason) {

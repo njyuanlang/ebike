@@ -1,16 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, $q, ActiveBike, $timeout) {
-  
-  window.addEventListener("orientationchange", function() {
-    if(Math.abs(window.orientation) === 90) {
-      $state.go('cruise')
-    } else {
-      $state.go('home')
-    }
-  }, false);
-  
-  // var deregistration = $rootScope.$on('$stateChangeStart', cleanUp);
+.controller('HomeCtrl', function($scope, $state, $q, ActiveBike, $timeout, $ionicLoading) {
   
   $scope.powerPercent = 0
   $scope.mileage = 0
@@ -63,6 +53,10 @@ controllers
       startNotify()
       test()
     }, function () {
+      $ionicLoading.show({
+        template:'Connect Bike FAILURE!!!',
+        duration: 3000
+      })
     })
   }
   

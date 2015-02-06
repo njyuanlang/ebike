@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.services'])
 
-.run(function($ionicPlatform, $state) {
+.run(function($ionicPlatform, $state, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -15,7 +15,30 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+ 
+    window.addEventListener("orientationchange", function() {
+      if(Math.abs(window.orientation) === 90) {
+        $state.go('cruise')
+      } else {
+        $state.go('home')
+      }
+    }, false);
+  
+    // var deregistration = $rootScope.$on('$stateChangeStart', cleanUp);
 
+    screen.lockOrientation('portrait-primary')
+
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+      if(toState.name === 'home') {
+        screen.unlockOrientation()   
+      } else if(toState.name === 'cruise') {
+        screen.unlockOrientation()   
+      } else {
+        screen.lockOrientation('portrait-primary')   
+      }
+      // console.log(arguments)
+      // event.preventDefault()
+    })
   });  
   
 })
