@@ -87,7 +87,7 @@ angular.module('ebike.services', [])
       workmode: "0000E00A-D102-11E1-9B23-00025B00A5A5"
     }
   }
-  
+    
   function stringToBytes(string) {
     var array = new Uint8Array(string.length);
     for (var i = 0, l = string.length; i < l; i++) {
@@ -97,7 +97,7 @@ angular.module('ebike.services', [])
   }
   
   function hexToBytes(hexs) {
-    var array = new Uint8Array(string.length);
+    var array = new Uint8Array(hexs.length);
     for (var i = 0, l = hexs.length; i < l; i++) {
       array[i] = hexs[i]
      }
@@ -111,6 +111,12 @@ angular.module('ebike.services', [])
   
   function byteToDecString(buffer) {
     return new Uint8Array(buffer)[0].toString(10)
+  }
+  
+  function sendOrder(hexs, bikeId) {
+    var order = services.order
+    var value = hexToBytes(hexs)
+    ble.writeWithoutResponse(bikeId, order.uuid, order.order, value)
   }
   
   return {
@@ -134,6 +140,7 @@ angular.module('ebike.services', [])
     autoconnect: function () {
       var q = $q.defer()
       var bikeId = this.get().id
+      if(!bikeId) return
       $cordovaBLE.isConnected(bikeId)
       .then(function (result) {
         return result
@@ -152,31 +159,39 @@ angular.module('ebike.services', [])
         successCb(byteToDecString(result))
       }, errorCb)
     },
-    stopNotifyPower: function (successCb, errorCb) {
-      var service = services.realtime
-      ble.stopNotification(this.get().id, service.uuid, service.power, successCb, errorCb)
-    },
     startNotifyMileage: function (successCb, errorCb) {
       var service = services.realtime
       ble.startNotification(this.get().id, service.uuid, service.mileage, function (result) {
         successCb(byteToDecString(result))
       }, errorCb)
     },
-    test: function (successCb, errorCb) {
+    health: function () {
+      var q = $q.defer()
       var service = services.test
-      ble.startNotification(this.get().id, service.uuid, service.test, function (result) {
-        ble.stopNotification(this.get().id, service.uuid, service.test)
+      ble.read(this.get().id, service.uuid, service.test, function (result) {
+        q.resolve(byteToDecString(result))
+      }, q.reject)
+      return q.promise
+    },
+    test: function (successCb, errorCb) {
+      var bikeId = this.get().id
+      var service = services.test
+      ble.startNotification(bikeId, service.uuid, service.test, function (result) {
         successCb(byteToDecString(result))
       }, function (reason) {
-        ble.stopNotification(this.get().id, service.uuid, service.test)
         errorCb(reason)
       })
+      sendOrder([0x81, 0x81], bikeId)
+      ble.read(bikeId, service.uuid, service.test)
     },
     repair: function (successCb, errorCb) {
+      var bikeId = this.get().id
       var service = services.test
-      ble.startNotification(this.get().id, service.uuid, service.repair, function (result) {
+      ble.startNotification(bikeId, service.uuid, service.repair, function (result) {
         successCb(byteToDecString(result))
       }, errorCb)
+      sendOrder([0x91, 0x91], bikeId)
+      ble.read(bikeId, service.uuid, service.repair)
     },
     workmode: function () {
       var q = $q.defer()
@@ -188,6 +203,17 @@ angular.module('ebike.services', [])
         q.reject(reason)
       })
       return q.promise
+    },
+    setWorkmode: function (mode) {
+      var hexs = [0xb0, 0xb0]
+      if(mode == 'saving') {
+        hexs[0] = 0xb1
+        hexs[1] = 0xb1
+      } else if(mode == 'climbing') {
+        hexs[0] = 0xb2
+        hexs[1] = 0xb2
+      }
+      sendOrder(hexs)
     },
     startNotifyRemind: function (successCb, errorCb) {
       var service = services.remind

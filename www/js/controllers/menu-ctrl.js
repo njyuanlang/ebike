@@ -22,80 +22,56 @@ controllers
     workmode: '123'
   }
   
+  function notify(notify, service, characteristic) {
+    ActiveBike[notify](function (result) {
+      var d = new Date()
+      $scope[service][characteristic] = result || 0
+      $scope[service][characteristic] += ' @ '+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()
+      $scope.$apply()
+    }, function (reason) {
+      $scope[service][characteristic] = reason
+      $scope.$apply()
+    })
+  }
+  
   function startNotify() {
-    ActiveBike.startNotifyPower(function (result) {
-      $scope.realtime.power = result || 0
-      $scope.realtime.power += '-'+new Date().toTimeString()
-      $scope.$apply()
-    }, function (reason) {
-      $scope.realtime.power = reason
-      $scope.$apply()
-    })
-    ActiveBike.startNotifyMileage(function (result) {
-      $scope.realtime.mileage = result || 0
-      $scope.realtime.mileage += '-'+new Date().toTimeString()
-      $scope.$apply()
-    }, function (reason) {
-      $scope.realtime.mileage = reason
-      $scope.$apply()
-    })
-    ActiveBike.startNotifySpeed(function (result) {
-      $scope.realtime.speed = result || 0
-      $scope.realtime.speed += '-'+new Date().toTimeString()
-      $scope.$apply()
-    }, function (reason) {
-      $scope.realtime.speed = reason
-      $scope.$apply()
-    })
-    ActiveBike.startNotifyCurrent(function (result) {
-      $scope.realtime.current = result || 0
-      $scope.realtime.current += '-'+new Date().toTimeString()
-      $scope.$apply()
-    }, function (reason) {
-      $scope.realtime.speed = reason
-      $scope.$apply()
-    })
+    notify('startNotifyPower', 'realtime', 'power')
+    notify('startNotifyMileage', 'realtime', 'mileage')
+    notify('startNotifySpeed' , 'realtime', 'speed')
+    notify('startNotifyCurrent', 'realtime', 'current')
   }
 
   function test() {
-    ActiveBike.test(function (result) {
-      $scope.test.test = result || 0
+    notify('test', 'test', 'test')
+    notify('repair', 'test', 'repair')
+  }
+  
+  function read(fn, service, characteristic) {
+    ActiveBike[fn]().then(function (result) {
+      $scope[service][characteristic] = result || 0
       $scope.$apply()
-    }, function (reason) {
-      $scope.test.test = reason || 0
-      $scope.$apply()
-    })
-    ActiveBike.repair(function (result) {
-      $scope.test.repair = result || 0
-      $scope.$apply()
-    }, function (reason) {
-      $scope.test.repair = reason || 0
+    },function (reason) {
+      $scope[service][characteristic] = reason
       $scope.$apply()
     })
   }
-  
   function device(argument) {
-    ActiveBike.device().then(function (result) {
-      $scope.device.sn = result || 0
-      $scope.$apply()
-    },function (reason) {
-      $scope.device.sn = reason
-      $scope.$apply()
-    })
-    ActiveBike.workmode().then(function (result) {
-      $scope.device.workmode = result || 0
-      $scope.$apply()
-    },function (reason) {
-      $scope.device.workmode = reason
-      $scope.$apply()
-    })
+    read('device', 'device', 'sn')
+    read('workmode', 'device', 'workmode')
   }
   
   $scope.refresh = function () {
+    device()
     startNotify()
     test()
+  }
+  
+  $scope.switchMode = function () {
+    ActiveBike.setWorkmode()
     device()
   }
+  
+  $scope.test = test
 })
 
 .controller('MessagesCtrl', function($scope, $state) {

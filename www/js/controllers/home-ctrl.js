@@ -22,11 +22,11 @@ controllers
     })
   }
   
-  function test() {
-    ActiveBike.test(function (result) {
+  function health() {
+    ActiveBike.health().then(function (result) {
       $scope.healthScore = result || 0
     }, function (reason) {
-      $scope.healthScore = -1
+      $scope.healthScore = reason
     })
   }
   
@@ -41,10 +41,11 @@ controllers
   
   $scope.batteryDieEndure = function () {
     startNotify()
-    test()
+    health()
   }
   
   $scope.init = function () {
+    // health()
   }
   
 })

@@ -15,7 +15,7 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
-    "net.yoik.cordova.plugins.screenorientation",
-    "com.megster.cordova.ble"
+    "https://github.com/don/cordova-plugin-ble-central.git",
+    "net.yoik.cordova.plugins.screenorientation"
   ]
 }
