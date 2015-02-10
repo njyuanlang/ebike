@@ -104,7 +104,7 @@ controllers
     .then(function (result) {
       return $ionicLoading.show({
         template: '连接到爱车'+item.name,
-        duration: 3000
+        duration: 2000
       })
     })
     .then(function () {

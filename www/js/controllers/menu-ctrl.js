@@ -26,7 +26,7 @@ controllers
     ActiveBike[notify](function (result) {
       var d = new Date()
       $scope[service][characteristic] = result || 0
-      $scope[service][characteristic] += ' @ '+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()
+      $scope[service][characteristic] += ' '+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()
       $scope.$apply()
     }, function (reason) {
       $scope[service][characteristic] = reason
@@ -43,6 +43,8 @@ controllers
 
   function test() {
     notify('test', 'test', 'test')
+  }
+  function repair(argument) {
     notify('repair', 'test', 'repair')
   }
   
@@ -64,6 +66,7 @@ controllers
     device()
     startNotify()
     test()
+    repair()
   }
   
   $scope.switchMode = function () {
@@ -72,22 +75,20 @@ controllers
   }
   
   $scope.test = test
+  $scope.repair = repair
 })
 
-.controller('MessagesCtrl', function($scope, $state) {
+.controller('MessagesCtrl', function($scope, $state, Reminder) {
 
   $scope.setting = false;
   $scope.rightButtonTitle = '设置'
   
-  $scope.entities = [
-    {"name": "电瓶低电压提醒", checked: true},
-    {"name": "超载提醒", checked: true},
-    {"name": "温度过高提醒", checked: true},
-    {"name": "防盗提醒", checked: true}
-  ]
+  $scope.config = Reminder.getConfig()
+  $scope.entities = Object.keys($scope.config)
   
   $scope.doSetting = function () {
     if($scope.setting) {
+      Reminder.setConfig($scope.config)
       $scope.rightButtonTitle = '设置'
     } else {
       $scope.rightButtonTitle = '保存'
@@ -95,13 +96,11 @@ controllers
     $scope.setting = !$scope.setting;
   }
   
-  $scope.goDetail = function () {
-    $state.go('messages-detail')
-  }
 })
 
-.controller('MessagesDetailCtrl', function($scope, $state, $localstorage) {
-  $scope.entities = $localstorage.getArray('com.extensivepro.ebike.CDF4843B-8C4D-4947-8FFB-7AA15B334F12')
-
-  $scope.alertType = '电瓶低电压提醒'
+.controller('MessagesDetailCtrl', function($scope, $state, $stateParams, Reminder) {
+  var type = $stateParams.type
+  var remind = Reminder.getConfig()[type]
+  $scope.entities = Reminder.getRemind(type).reverse()
+  $scope.title = remind.name
 })

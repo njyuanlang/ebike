@@ -47,21 +47,67 @@ angular.module('ebike.services', [])
   }
 })
 
-.factory('ActiveBike', function ($localstorage, $cordovaBLE, $q) {
+.factory('Reminder', function ($localstorage) {
   var keys = {
-    activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB',
-    reminds: {
-      overload: 'com.extensivepro.ebike.598DC984-D8FB-4620-ADD3-D871E6A40C51',
-      temperature: 'com.extensivepro.ebike.C4014443-9461-4DE8-AE61-4B5B2226D946',
-      voltage: 'com.extensivepro.ebike.CDF4843B-8C4D-4947-8FFB-7AA15B334F12',
-      guard: 'com.extensivepro.ebike.9C7FC6F5-6A4D-405E-BE07-3B7B8C2227FF'
+    overload: 'com.extensivepro.ebike.598DC984-D8FB-4620-ADD3-D871E6A40C51',
+    temperature: 'com.extensivepro.ebike.C4014443-9461-4DE8-AE61-4B5B2226D946',
+    voltage: 'com.extensivepro.ebike.CDF4843B-8C4D-4947-8FFB-7AA15B334F12',
+    guard: 'com.extensivepro.ebike.9C7FC6F5-6A4D-405E-BE07-3B7B8C2227FF',
+    config: 'com.extensivepro.ebike.9C122F58-2E16-4D93-BCBB-1B4B039D140D'
+  }
+  
+  var service = {
+    uuid: "0000A000-D102-11E1-9B23-00025B00A5A5",
+    msg: "0000A00A-D102-11E1-9B23-00025B00A5A5"
+  }
+  
+  var _config = $localstorage.getObject(keys.config)
+  _config.overload = _config.overload || {on:true, "name": "超载提醒"}
+  _config.temperature = _config.temperature || {on:true, "name": "温度过高提醒"}
+  _config.voltage = _config.voltage || {on:true, "name": "电瓶低电压提醒"}
+  _config.guard = _config.guard || {on:true, "name": "防盗提醒"}
+
+  return {
+    getConfig: function () {
+      return _config
+    },
+    setConfig: function (cfg) {
+      if(cfg) {
+        for(var key in cfg) {
+          _config[key] = cfg[key]
+        }
+        $localstorage.setObject(keys.config, _config)
+      }
+    },
+    startNotify: function (bikeId) {
+      ble.startNotification(bikeId, service.uuid, service.msg, function (result) {
+        var res = new Uint8Array(result)
+        var date = new Date().toISOString()
+        if(_config.overload.on && res[0] & 0x1) {
+          $localstorage.pushObject(keys.overload, {created:date})
+        }
+        if(_config.temperature.on && res[0] & 0x2) {
+          $localstorage.pushObject(keys.temperature, {created:date})
+        }
+        if(_config.voltage.on && res[0] & 0x4) {
+          $localstorage.pushObject(keys.voltage, {created:date})
+        }
+        if(_config.guard.on && res[0] & 0x8) {
+          $localstorage.pushObject(keys.guard, {created:date})
+        }
+      })
+    },
+    getRemind: function (key) {
+      return $localstorage.getArray(keys[key])
     }
   }
+})
+
+.factory('ActiveBike', function ($localstorage, $cordovaBLE, $q, Reminder) {
+  var keys = {
+    activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
+  }
   var services = {
-    remind: {
-      uuid: "0000A000-D102-11E1-9B23-00025B00A5A5",
-      msg: "0000A00A-D102-11E1-9B23-00025B00A5A5"
-    },
     realtime: {
       uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
       power: "0000D00A-D102-11E1-9B23-00025B00A5A5",
@@ -147,8 +193,9 @@ angular.module('ebike.services', [])
       }, function (reason) {
         return $cordovaBLE.connect(bikeId)
       })
-      .then(function () {
-        this.startNotifyRemind()
+      .then(function (result) {
+        Reminder.startNotify(bikeId)
+        q.resolve(result)
       }, q.reject)
       
       return q.promise
@@ -214,25 +261,6 @@ angular.module('ebike.services', [])
         hexs[1] = 0xb2
       }
       sendOrder(hexs)
-    },
-    startNotifyRemind: function (successCb, errorCb) {
-      var service = services.remind
-      ble.startNotification(this.get().id, service.uuid, service.msg, function (result) {
-        var res = new Uint8Array(result)
-        var date = new Date().toString()
-        if(res[0] & 0x1) {
-          $localstorage.pushObject(keys.reminds.overload, {created:date})
-        }
-        if(res[0] & 0x2) {
-          $localstorage.pushObject(keys.reminds.temperature, {created:date})
-        }
-        if(res[0] & 0x4) {
-          $localstorage.pushObject(keys.reminds.voltage, {created:date})
-        }
-        if(res[0] & 0x8) {
-          $localstorage.pushObject(keys.reminds.guard, {created:date})
-        }
-      }, errorCb)
     },
     startNotifySpeed: function (successCb, errorCb) {
       var service = services.realtime

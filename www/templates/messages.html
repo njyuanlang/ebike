@@ -6,13 +6,13 @@
   <ion-content has-header="true" class="scroll-bg padding">
     
     <div class="list">
-      <div ng-if="!setting" ng-repeat="item in entities" ng-click="goDetail(item)" class="item item-icon-right">
-        {{ item.name }} 
-        <i class="icon ion-ios7-arrow-right" ng-click="showDetail(item); $event.stopPropagation();"></i>
-      </div>
+      <a ng-if="!setting" ng-repeat="item in entities" href="#/messages/{{item}}" class="item item-icon-right">
+        {{ config[item].name }} 
+        <i class="icon ion-ios7-arrow-right"></i>
+      </a>
       
-      <ion-toggle ng-if="setting" ng-repeat="item in entities" ng-model="item.checked" ng-checked="item.checked">
-        {{item.name}}
+      <ion-toggle ng-if="setting" ng-repeat="item in entities" ng-model="config[item].on" ng-checked="config[item].on">
+        {{ config[item].name }} 
       </ion-toggle>
     </div>
     

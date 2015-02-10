@@ -16,29 +16,27 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
       StatusBar.styleDefault();
     }
  
-    window.addEventListener("orientationchange", function() {
-      if(Math.abs(window.orientation) === 90) {
-        $state.go('cruise')
-      } else {
-        $state.go('home')
-      }
-    }, false);
+    if(screen.lockOrientation) {
+      window.addEventListener("orientationchange", function() {
+        if(Math.abs(window.orientation) === 90) {
+          $state.go('cruise')
+        } else {
+          $state.go('home')
+        }
+      }, false);
   
-    // var deregistration = $rootScope.$on('$stateChangeStart', cleanUp);
+      screen.lockOrientation('portrait-primary')
 
-    screen.lockOrientation('portrait-primary')
-
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-      if(toState.name === 'home') {
-        screen.unlockOrientation()   
-      } else if(toState.name === 'cruise') {
-        screen.unlockOrientation()   
-      } else {
-        screen.lockOrientation('portrait-primary')   
-      }
-      // console.log(arguments)
-      // event.preventDefault()
-    })
+      $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        if(toState.name === 'home') {
+          screen.unlockOrientation()   
+        } else if(toState.name === 'cruise') {
+          screen.unlockOrientation()   
+        } else {
+          screen.lockOrientation('portrait-primary')   
+        }
+      })
+    }
   });  
   
 })
@@ -126,7 +124,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
       controller: 'MessagesCtrl'
     })
     .state('messages-detail', {
-      url: "/messages/detail",
+      url: "/messages/:type",
       templateUrl: "templates/messages-detail.html",
       controller: 'MessagesDetailCtrl'
     })
