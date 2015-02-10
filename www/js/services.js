@@ -178,7 +178,10 @@ angular.module('ebike.services', [])
     connect: function (bike) {
       var activeBike = bike || this.get()
       this.set(activeBike)
-      return $cordovaBLE.connect(activeBike.id)
+      return $cordovaBLE.connect(activeBike.id).then(function (result) {
+        Reminder.startNotify(activeBike.id)
+        return result
+      })
     },
     disconnect: function () {
       return $cordovaBLE.disconnect(this.get().id)
@@ -186,17 +189,20 @@ angular.module('ebike.services', [])
     autoconnect: function () {
       var q = $q.defer()
       var bikeId = this.get().id
-      if(!bikeId) return
-      $cordovaBLE.isConnected(bikeId)
-      .then(function (result) {
-        return result
-      }, function (reason) {
-        return $cordovaBLE.connect(bikeId)
-      })
-      .then(function (result) {
-        Reminder.startNotify(bikeId)
-        q.resolve(result)
-      }, q.reject)
+      if(bikeId) {
+        $cordovaBLE.isConnected(bikeId)
+        .then(function (result) {
+          return result
+        }, function (reason) {
+          return $cordovaBLE.connect(bikeId)
+        })
+        .then(function (result) {
+          Reminder.startNotify(bikeId)
+          q.resolve(result)
+        }, q.reject)        
+      } else {
+        q.reject('not found bike')
+      }
       
       return q.promise
     },

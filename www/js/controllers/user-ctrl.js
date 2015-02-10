@@ -12,8 +12,11 @@ controllers
   }
   
   $scope.goTrial = function () {
-    ActiveBike.autoconnect()
-    $state.go('home')
+    ActiveBike.autoconnect().then(function (result) {
+      $state.go('home')
+    }, function (reason) {
+      $state.go('brands')
+    })
   }
   
   $scope.init = function () {

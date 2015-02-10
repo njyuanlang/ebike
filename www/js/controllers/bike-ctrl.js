@@ -106,6 +106,8 @@ controllers
         template: '连接到爱车'+item.name,
         duration: 2000
       })
+    }, function (reason) {
+      alert(reason)
     })
     .then(function () {
       $state.go('home')
