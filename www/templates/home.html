@@ -9,7 +9,7 @@
   <ion-content class="scroll-bg">
     <div class="row row-responsive-sm">
       <div class="col col-25 round-button">
-        <div class="round-button-circle">
+        <div class="round-button-circle round-volume-{{healthScore}}">
           <a href="#/test" class="round-button">
             <h3>{{healthScore}}<small>分</small></h3>
             检测
@@ -18,15 +18,15 @@
       </div>
     </div>
     <div class="row">
-      <div class="progress-radial progress-75">
+      <div class="progress-radial progress-radial-{{powerPercent}}">
         <div class="overlay">
           <h1>{{powerPercent}}<small>%</small></h1>
           <label>剩余电量</label>
         </div>
       </div>
     </div>
-    <div class="row col">
-      <h1 class="text-center">剩余<b>{{mileage}}</b>续航公里</h1>
+    <div class="row col padding">
+      <h1 class="text-center"><small>剩余</small> {{mileage}} <small>续航公里</small></h1>
     </div>
     <div class="state">
       <div class="row">

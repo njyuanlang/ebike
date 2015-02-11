@@ -137,7 +137,7 @@ progress::-webkit-progress-value {
 @import "www/lib/ionic/scss/ionic";
 
 
-// Custom Object
+// Round Button Circle
 // -------------------------------
 .round-button-circle {
 	width: 100%;
@@ -146,8 +146,9 @@ progress::-webkit-progress-value {
   border-radius: 50%;
 	border:3px solid $light;
   overflow:hidden;
-  background: $energized; 
+//  background: $energized; 
   box-shadow: 0 0 3px gray;
+//  background-image: linear-gradient(to top, $energized 100%, transparent 0%);
 }
 .round-button a {
   display:block;
@@ -155,14 +156,27 @@ progress::-webkit-progress-value {
 	width:100%;
 	padding-top:25%;
   padding-bottom:25%;
-  line-height:1em;
+  line-height:0em;
   margin-top:-0.5em;
 	text-align:center;
 	color:$light;
   font-family:Verdana;
-  font-size:1.2em;
+  font-size:1.0em;
   font-weight:bold;
   text-decoration:none;
+}
+
+/* -------------------------------------
+ * Mixin for round volume-% class
+ * ------------------------------------- */
+
+$step2: 25; // step of % for created classes
+
+$loops2: round(100 / $step2);
+@for $i2 from 0 through $loops2 {
+  .round-volume-#{$i2*$step2} {
+    background-image: linear-gradient(to top, $energized percentage($i2*$step2/100), transparent 0%);
+  }
 }
 
 // State bar
@@ -231,19 +245,21 @@ $backColor:                           #2f3439;
  * Mixin for progress-% class
  * ------------------------------------- */
 
-$step: 5; // step of % for created classes
+$step: 1; // step of % for created classes
 
 $loops: round(100 / $step);
 $increment: 360 / $loops;
 $half: round($loops / 2);
 @for $i from 0 through $loops {
-  .progress-#{$i*$step} {
+  .progress-radial-#{$i*$step} {
     @if $i < $half {
       $nextdeg: 90deg + ( $increment * $i );
+//      background-image: -webkit-linear-gradient(90deg, $backColor 50%, transparent 50%, transparent), -webkit-linear-gradient($nextdeg, $barColor 50%, $backColor 50%, $backColor);
       background-image: linear-gradient(90deg, $backColor 50%, transparent 50%, transparent), linear-gradient($nextdeg, $barColor 50%, $backColor 50%, $backColor);
     }
     @else {
       $nextdeg: -90deg + ( $increment * ( $i - $half ) );
+//      background-image: -webkit-linear-gradient($nextdeg, $barColor 50%, transparent 50%, transparent), -webkit-linear-gradient(270deg, $barColor 50%, $backColor 50%, $backColor);
       background-image: linear-gradient($nextdeg, $barColor 50%, transparent 50%, transparent), linear-gradient(270deg, $barColor 50%, $backColor 50%, $backColor);
     }
   }

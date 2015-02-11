@@ -4,6 +4,9 @@ angular.module('ebike.services', [])
   return {
     getRandomInt: function (min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
+    },
+    byteToDecString: function (buffer) {
+      return new Uint8Array(buffer)[0].toString(10)
     }
   }
 })
@@ -99,19 +102,32 @@ angular.module('ebike.services', [])
     current: "0000D00D-D102-11E1-9B23-00025B00A5A5"
   }
   
-  function byteToDecString(buffer) {
-    return new Uint8Array(buffer)[0].toString(10)
-  }
-  
+  var fakeCbs = {
+    power: function (successCb) {
+      var p = $rootScope.powerprogress || 100
+      successCb(p)
+      $rootScope.powerprogress = --p
+    },
+    mileage: function (successCb) {
+      var p = $rootScope.mileagesprogress || 100
+      successCb(Math.floor(p/2))
+      $rootScope.mileagesprogress = --p
+    },
+    speed: function (successCb) {
+      successCb(Util.getRandomInt(0, 100))
+    },
+    current: function (successCb) {
+      successCb(Util.getRandomInt(0, 100))
+    }
+  }  
   function notify(bikeId, characteristic, successCb, errorCb) {
     if(!$rootScope.online) {
-      $interval(function () {
-        successCb(Util.getRandomInt(0, 100))
+      return $interval(function () {
+        fakeCbs[characteristic](successCb)
       }, 1000, false)
-      return
     }
     ble.startNotification(bikeId, service.uuid, service[characteristic], function (result) {
-      successCb(byteToDecString(result))
+      successCb(UtilbyteToDecString(result))
     }, errorCb)
   }
   
@@ -221,13 +237,21 @@ angular.module('ebike.services', [])
     },
     health: function () {
       var q = $q.defer()
+      function score(result) {
+        var count = 0
+        if(result & 0x1) count++;
+        if(result & 0x2) count++;
+        if(result & 0x4) count++;
+        if(result & 0x8) count++;
+        return (4-count)*25
+      }
       if($rootScope.online){
         var service = services.test
         ble.read(this.get().id, service.uuid, service.test, function (result) {
-          q.resolve(byteToDecString(result))
+          q.resolve(score(byteToDecString(result)))
         }, q.reject)
       } else {
-        q.resolve(Util.getRandomInt(0, 100))
+        q.resolve(score(Util.getRandomInt(0, 15)))
       }
       return q.promise
     },
