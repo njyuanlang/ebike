@@ -1,23 +1,9 @@
 angular.module('ebike.services', [])
 
-.factory('Friends', function() {
-  // Might use a resource here that returns a JSON array
-
-  // Some fake testing data
-  var friends = [
-    { id: 0, name: 'Scruff McGruff' },
-    { id: 1, name: 'G.I. Joe' },
-    { id: 2, name: 'Miss Frizzle' },
-    { id: 3, name: 'Ash Ketchum' }
-  ];
-
+.factory('Util', function () {
   return {
-    all: function() {
-      return friends;
-    },
-    get: function(friendId) {
-      // Simple index lookup
-      return friends[friendId];
+    getRandomInt: function (min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
     }
   }
 })
@@ -47,7 +33,7 @@ angular.module('ebike.services', [])
   }
 })
 
-.factory('Reminder', function ($localstorage) {
+.factory('Reminder', function ($localstorage, $rootScope) {
   var keys = {
     overload: 'com.extensivepro.ebike.598DC984-D8FB-4620-ADD3-D871E6A40C51',
     temperature: 'com.extensivepro.ebike.C4014443-9461-4DE8-AE61-4B5B2226D946',
@@ -104,18 +90,41 @@ angular.module('ebike.services', [])
   }
 })
 
-.factory('ActiveBike', function ($localstorage, $cordovaBLE, $q, Reminder) {
+.factory('RTMonitor', function ($localstorage, $rootScope, $interval, Util) {
+  var service = {
+    uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
+    power: "0000D00A-D102-11E1-9B23-00025B00A5A5",
+    mileage: "0000D00B-1021-1E19-B230-00250B00A5A5",
+    speed: "0000D00C-D102-11E1-9B23-00025B00A5A5",
+    current: "0000D00D-D102-11E1-9B23-00025B00A5A5"
+  }
+  
+  function byteToDecString(buffer) {
+    return new Uint8Array(buffer)[0].toString(10)
+  }
+  
+  function notify(bikeId, characteristic, successCb, errorCb) {
+    if(!$rootScope.online) {
+      $interval(function () {
+        successCb(Util.getRandomInt(0, 100))
+      }, 1000, false)
+      return
+    }
+    ble.startNotification(bikeId, service.uuid, service[characteristic], function (result) {
+      successCb(byteToDecString(result))
+    }, errorCb)
+  }
+  
+  return {
+    notify: notify
+  }
+})
+
+.factory('ActiveBike', function ($localstorage, $rootScope, $interval, $cordovaBLE, $q, Reminder, RTMonitor, Util) {
   var keys = {
     activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
   }
   var services = {
-    realtime: {
-      uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
-      power: "0000D00A-D102-11E1-9B23-00025B00A5A5",
-      mileage: "0000D00B-1021-1E19-B230-00250B00A5A5",
-      speed: "0000D00C-D102-11E1-9B23-00025B00A5A5",
-      current: "0000D00D-D102-11E1-9B23-00025B00A5A5"
-    },
     test: {
       uuid: "0000B000-D102-11E1-9B23-00025B00A5A5",
       test: "0000B00A-D102-11E1-9B23-00025B00A5A5",
@@ -207,24 +216,19 @@ angular.module('ebike.services', [])
       
       return q.promise
     },
-    startNotifyPower: function (successCb, errorCb) {
-      var service = services.realtime
-      ble.startNotification(this.get().id, service.uuid, service.power, function (result) {
-        successCb(byteToDecString(result))
-      }, errorCb)
-    },
-    startNotifyMileage: function (successCb, errorCb) {
-      var service = services.realtime
-      ble.startNotification(this.get().id, service.uuid, service.mileage, function (result) {
-        successCb(byteToDecString(result))
-      }, errorCb)
+    notify: function (characteristic, successCb, errorCb) {
+      RTMonitor.notify(this.get().id, characteristic, successCb, errorCb)
     },
     health: function () {
       var q = $q.defer()
-      var service = services.test
-      ble.read(this.get().id, service.uuid, service.test, function (result) {
-        q.resolve(byteToDecString(result))
-      }, q.reject)
+      if($rootScope.online){
+        var service = services.test
+        ble.read(this.get().id, service.uuid, service.test, function (result) {
+          q.resolve(byteToDecString(result))
+        }, q.reject)
+      } else {
+        q.resolve(Util.getRandomInt(0, 100))
+      }
       return q.promise
     },
     test: function (successCb, errorCb) {
@@ -249,37 +253,34 @@ angular.module('ebike.services', [])
     },
     workmode: function () {
       var q = $q.defer()
-      var service = services.workmode
-      ble.read(this.get().id, service.uuid, service.workmode, function (result) {
-        var res = new Uint8Array(result)
-        q.resolve(res[0] & 0xb)
-      }, function (reason) {
-        q.reject(reason)
-      })
+      if($rootScope.online) {
+        var service = services.workmode
+        ble.read(this.get().id, service.uuid, service.workmode, function (result) {
+          var res = new Uint8Array(result)
+          q.resolve(res[0] & 0xb)
+        }, function (reason) {
+          q.reject(reason)
+        })
+      } else {
+        var mode = $rootScope.fakeWorkmode || 0
+        q.resolve(mode)
+      }
       return q.promise
     },
     setWorkmode: function (mode) {
-      var hexs = [0xb0, 0xb0]
-      if(mode == 'saving') {
-        hexs[0] = 0xb1
-        hexs[1] = 0xb1
-      } else if(mode == 'climbing') {
-        hexs[0] = 0xb2
-        hexs[1] = 0xb2
+      if($rootScope.online) {
+        var hexs = [0xb0, 0xb0]
+        if(mode == 'saving') {
+          hexs[0] = 0xb1
+          hexs[1] = 0xb1
+        } else if(mode == 'climbing') {
+          hexs[0] = 0xb2
+          hexs[1] = 0xb2
+        }
+        sendOrder(hexs)
+      } else {
+        $rootScope.fakeWorkmode = mode
       }
-      sendOrder(hexs)
-    },
-    startNotifySpeed: function (successCb, errorCb) {
-      var service = services.realtime
-      ble.startNotification(this.get().id, service.uuid, service.speed, function (result) {
-        successCb(byteToDecString(result))
-      }, errorCb)
-    },
-    startNotifyCurrent: function (successCb, errorCb) {
-      var service = services.realtime
-      ble.startNotification(this.get().id, service.uuid, service.current, function (result) {
-        successCb(byteToDecString(result))
-      }, errorCb)
     },
     device: function () {
       var q = $q.defer()

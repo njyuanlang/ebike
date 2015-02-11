@@ -5,18 +5,18 @@ controllers
   $scope.powerPercent = 0
   $scope.mileage = 0
   $scope.healthScore = 100
-  $scope.workstate = 'downhill'
+  $scope.workmode = 0
   
   function startNotify() {
-    ActiveBike.startNotifyPower(function (result) {
+    ActiveBike.notify('power', function (result) {
       $scope.powerPercent = result || 0
-      $scope.$apply()
+      // $scope.$apply()
     }, function (reason) {
       // $scope.$apply()
     })
-    ActiveBike.startNotifyMileage(function (result) {
+    ActiveBike.notify('mileage', function (result) {
       $scope.mileage = result || 0
-      $scope.$apply()
+      // $scope.$apply()
     }, function (reason) {
       // $scope.$apply()
     })
@@ -26,17 +26,22 @@ controllers
     ActiveBike.health().then(function (result) {
       $scope.healthScore = result || 0
     }, function (reason) {
-      $scope.healthScore = reason
+      // $scope.healthScore = reason
     })
   }
   
   function workstate() {
-    ActiveBike.state()
+    ActiveBike.workmode()
     .then(function (result) {
-      
+      $scope.workstate = result
     }, function (reason) {
       
     })
+  }
+  
+  $scope.switchWorkmode = function (mode) {
+    $scope.workmode = mode
+    ActiveBike.setWorkmode(mode)
   }
   
   $scope.batteryDieEndure = function () {
@@ -45,7 +50,8 @@ controllers
   }
   
   $scope.init = function () {
-    // health()
+    startNotify()
+    health()
+    workstate()
   }
-  
 })

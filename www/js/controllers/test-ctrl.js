@@ -42,7 +42,6 @@ controllers
   })
   
   $scope.init = function () {
-    screen.lockOrientation('portrait-primary')
     test()
   }
 })

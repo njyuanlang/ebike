@@ -1,22 +1,23 @@
 controllers
 
-.controller('LoginCtrl', function($scope, $state, ActiveBike, $timeout) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, ActiveBike, $timeout) {
   $scope.loginData = {}
   
   $scope.tryLogin = function (loginData) {
-    // $state.go('home')
-  }
-
-  $scope.tryRegister = function (loginData) {
-    // $state.go('home')
-  }
-  
-  $scope.goTrial = function () {
+    $rootScope.online = true
     ActiveBike.autoconnect().then(function (result) {
       $state.go('home')
     }, function (reason) {
       $state.go('brands')
     })
+  }
+
+  $scope.tryRegister = function (loginData) {
+  }
+  
+  $scope.goTrial = function () {
+    $rootScope.online = false
+    $state.go('home')
   }
   
   $scope.init = function () {
