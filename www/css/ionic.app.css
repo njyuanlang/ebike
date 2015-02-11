@@ -7060,13 +7060,24 @@ a.button {
   transition-duration: 0s; }
 
 .round-button-circle {
-  width: 100%;
+  position: relative;
+  display: inline-block;
   height: 0;
   padding-bottom: 100%;
   border-radius: 50%;
   border: 3px solid #505866;
   overflow: hidden;
   box-shadow: 0 0 3px gray; }
+  .round-button-circle > img {
+    display: inline-block;
+    position: relative;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: bold;
+    color: #a1a2a3;
+    margin: 8% auto auto 7%; }
 
 .round-button a {
   display: block;
@@ -7082,6 +7093,10 @@ a.button {
   font-size: 1em;
   font-weight: bold;
   text-decoration: none; }
+
+.round-button .overlay {
+  background: url('../img/radial.png') no-repeat center center fixed;
+  background-size: cover; }
 
 /* -------------------------------------
  * Mixin for round volume-% class
@@ -7101,6 +7116,23 @@ a.button {
 .round-volume-100 {
   background-image: linear-gradient(to top, #6e8bcd 100%, transparent 0%); }
 
+.test-bar {
+  text-align: center; }
+  .test-bar .col-20, .test-bar col-25 {
+    margin: auto; }
+
+.test-bar-0 {
+  background: rgba(72, 72, 72, 0.4);
+  background-clip: content-box; }
+  .test-bar-0 .col-10 {
+    background-color: green; }
+
+.test-bar-1 {
+  background: rgba(128, 128, 128, 0.4);
+  background-clip: content-box; }
+  .test-bar-1 .col-10 {
+    background-color: white; }
+
 .state .row .col-33 {
   border: 1px solid #505866; }
   .state .row .col-33 > img:first-child {
@@ -7117,6 +7149,8 @@ a.button {
   position: relative;
   width: 280px;
   height: 280px;
+  margin: 0 auto;
+  display: table;
   border-radius: 50%;
   border: 2px solid #2f3439;
   background-color: #56fa89; }
