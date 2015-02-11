@@ -80,6 +80,7 @@ angular.module('ebike.services', [])
       }
     },
     startNotify: function (bikeId) {
+      return;
       ble.startNotification(bikeId, service.uuid, service.msg, function (result) {
         var res = new Uint8Array(result)
         var date = new Date().toISOString()
