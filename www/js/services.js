@@ -69,7 +69,7 @@ angular.module('ebike.services', [])
       }
     },
     startNotify: function (bikeId) {
-      return;
+      // return;
       ble.startNotification(bikeId, service.uuid, service.msg, function (result) {
         var res = new Uint8Array(result)
         var date = new Date().toISOString()
@@ -124,10 +124,10 @@ angular.module('ebike.services', [])
     if(!$rootScope.online) {
       return $interval(function () {
         fakeCbs[characteristic](successCb)
-      }, 1000, false)
+      }, 200, false)
     }
     ble.startNotification(bikeId, service.uuid, service[characteristic], function (result) {
-      successCb(UtilbyteToDecString(result))
+      successCb(Util.byteToDecString(result))
     }, errorCb)
   }
   
@@ -232,8 +232,12 @@ angular.module('ebike.services', [])
       
       return q.promise
     },
-    notify: function (characteristic, successCb, errorCb) {
-      RTMonitor.notify(this.get().id, characteristic, successCb, errorCb)
+    notify: function (service, characteristic, successCb, errorCb) {
+      if(service === 'realtime') {
+        RTMonitor.notify(this.get().id, characteristic, successCb, errorCb)
+      } else if (service === 'test') {
+        this[characteristic](successCb, errorCb)
+      }
     },
     health: function () {
       var q = $q.defer()

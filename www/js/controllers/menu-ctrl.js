@@ -22,8 +22,8 @@ controllers
     workmode: '123'
   }
   
-  function notify(notify, service, characteristic) {
-    ActiveBike[notify](function (result) {
+  function notify(service, characteristic) {
+    ActiveBike.notify(service, characteristic, function (result) {
       var d = new Date()
       $scope[service][characteristic] = result || 0
       $scope[service][characteristic] += ' '+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()
@@ -35,17 +35,17 @@ controllers
   }
   
   function startNotify() {
-    notify('startNotifyPower', 'realtime', 'power')
-    notify('startNotifyMileage', 'realtime', 'mileage')
-    notify('startNotifySpeed' , 'realtime', 'speed')
-    notify('startNotifyCurrent', 'realtime', 'current')
+    notify('realtime', 'power')
+    notify('realtime', 'mileage')
+    notify('realtime', 'speed')
+    notify('realtime', 'current')
   }
 
   function test() {
-    notify('test', 'test', 'test')
+    notify('test', 'test')
   }
   function repair(argument) {
-    notify('repair', 'test', 'repair')
+    notify('test', 'repair')
   }
   
   function read(fn, service, characteristic) {

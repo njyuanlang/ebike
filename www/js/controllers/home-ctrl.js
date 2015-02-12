@@ -8,13 +8,13 @@ controllers
   $scope.workmode = 0
   
   function startNotify() {
-    ActiveBike.notify('power', function (result) {
+    ActiveBike.notify('realtime', 'power', function (result) {
       $scope.powerPercent = result || 0
       // $scope.$apply()
     }, function (reason) {
       // $scope.$apply()
     })
-    ActiveBike.notify('mileage', function (result) {
+    ActiveBike.notify('realtime', 'mileage', function (result) {
       $scope.mileage = result || 0
       // $scope.$apply()
     }, function (reason) {

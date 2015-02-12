@@ -142,7 +142,7 @@ progress::-webkit-progress-value {
 .round-button-circle {
   position: relative;
   display: inline-block;
-//  width: 100%;
+  width: 100%;
   height:0;
   padding-bottom: 100%;
   border-radius: 50%;
@@ -194,6 +194,7 @@ $loops2: round(100 / $step2);
 @for $i2 from 0 through $loops2 {
   .round-volume-#{$i2*$step2} {
     background-image: linear-gradient(to top, $energized percentage($i2*$step2/100), transparent 0%);
+    background-image: -webkit-linear-gradient(bottom, $energized percentage($i2*$step2/100), transparent 0%);
   }
 }
 
@@ -298,14 +299,18 @@ $half: round($loops / 2);
 @for $i from 0 through $loops {
   .progress-radial-#{$i*$step} {
     @if $i < $half {
-      $nextdeg: 90deg + ( $increment * $i );
-//      background-image: -webkit-linear-gradient(90deg, $backColor 50%, transparent 50%, transparent), -webkit-linear-gradient($nextdeg, $barColor 50%, $backColor 50%, $backColor);
-      background-image: linear-gradient(90deg, $backColor 50%, transparent 50%, transparent), linear-gradient($nextdeg, $barColor 50%, $backColor 50%, $backColor);
+//      $nextdeg: 90deg + ( $increment * $i );
+//      background-image: linear-gradient(90deg, $backColor 50%, transparent 50%, transparent), linear-gradient($nextdeg, $barColor 50%, $backColor 50%, $backColor);
+      $nextdeg: 180deg - ( $increment * $i );
+      background-image: -webkit-linear-gradient(0deg, $backColor 50%, transparent 50%), -webkit-linear-gradient($nextdeg, $backColor 50%, $barColor 50%);
     }
     @else {
-      $nextdeg: -90deg + ( $increment * ( $i - $half ) );
-//      background-image: -webkit-linear-gradient($nextdeg, $barColor 50%, transparent 50%, transparent), -webkit-linear-gradient(270deg, $barColor 50%, $backColor 50%, $backColor);
-      background-image: linear-gradient($nextdeg, $barColor 50%, transparent 50%, transparent), linear-gradient(270deg, $barColor 50%, $backColor 50%, $backColor);
+//      $nextdeg: -90deg + ( $increment * ( $i - $half ) );
+//      background-image: linear-gradient($nextdeg, $barColor 50%, transparent 50%, transparent), linear-gradient(270deg, $barColor 50%, $backColor 50%, $backColor);
+      $nextdeg: 360deg - $increment * $i;
+      background-image: 
+      -webkit-linear-gradient($nextdeg, $barColor 50%, transparent 50%),
+      -webkit-linear-gradient(180deg, $barColor 50%, $backColor 50%);
     }
   }
 }
