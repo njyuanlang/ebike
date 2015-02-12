@@ -2,39 +2,45 @@ controllers
 
 .controller('TestCtrl', function($scope, $state, $interval, ActiveBike) {
 
-  $scope.testState = "系统正在扫描中"
+  $scope.testState = ""
   
   $scope.testScore = 75
   
-  $scope.entities = [
-    {"name": "转把", progress:0, state: "testing"},
-    {"name": "电机", progress:0, state: "testing"},
-    {"name": "刹车", progress:0, state: "testing"},
-    {"name": "控制器", progress:0, state: "testing"}
-  ]
+  $scope.entities = ActiveBike.testItems
   
   function test() {
-    $scope.entities.forEach(function (item) {
-      item.progress = 0
-    })
+    $scope.testState = "系统正在扫描中..."
+    for(var item in $scope.entities) {
+      $scope.entities[item].progress = 0
+      $scope.entities[item].state = "检测中"
+    }
     
     $scope.activeEntityIndex = 0
     $scope.testPromise = $interval(function () {
-      $scope.entities[$scope.activeEntityIndex].progress += 1
-      if($scope.entities[$scope.activeEntityIndex].progress >= 90) {
-        $scope.activeEntityIndex++
-        if($scope.activeEntityIndex === $scope.entities.length) {
-          $interval.cancel($scope.testPromise)
+      for(var item in $scope.entities) {
+        $scope.entities[item].progress++
+        if($scope.entities[item].progress >= 90) {
+          $scope.activeEntityIndex++
+          if($scope.activeEntityIndex === Object.keys($scope.entities).length) {
+            $interval.cancel($scope.testPromise)
+          }
         }
       }
-    }, 50)
+    }, 50, false)
     
-    ActiveBike.test()
-    .then(function (result) {
-      // $scope.ble += 'Test success:'+ JSON.stringify(arguments)
+    ActiveBike.notify('test', 'test', function (result) {
+      $scope.testState = "扫描完成"
+      $interval.cancel($scope.testPromise)
+      for(var item in result) {
+        $scope.entities[item].progress = 100
+        $scope.entities[item].state = $scope.entities[item].error?"完成":"故障"
+      }
     }, function (reason) {
-      // $scope.ble += 'Test failure:'+ JSON.stringify(arguments)
     })    
+  }
+  
+  $scope.repair = function () {
+    
   }
   
   $scope.$on('$destory', function () {

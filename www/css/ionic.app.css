@@ -7123,7 +7123,8 @@ a.button {
   background-image: -webkit-linear-gradient(bottom, #6e8bcd 100%, transparent 0%); }
 
 .test-bar {
-  text-align: center; }
+  text-align: center;
+  font-size: 16px; }
   .test-bar .col-20, .test-bar col-25 {
     margin: auto; }
 

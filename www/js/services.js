@@ -124,7 +124,7 @@ angular.module('ebike.services', [])
     if(!$rootScope.online) {
       return $interval(function () {
         fakeCbs[characteristic](successCb)
-      }, 200, false)
+      }, 500, false)
     }
     ble.startNotification(bikeId, service.uuid, service[characteristic], function (result) {
       successCb(Util.byteToDecString(result))
@@ -136,7 +136,55 @@ angular.module('ebike.services', [])
   }
 })
 
-.factory('ActiveBike', function ($localstorage, $rootScope, $interval, $cordovaBLE, $q, Reminder, RTMonitor, Util) {
+.factory('Tester', function ($localstorage, $rootScope, $interval, Util, $timeout) {
+  var service = {
+    uuid: "0000B000-D102-11E1-9B23-00025B00A5A5",
+    test: "0000B00A-D102-11E1-9B23-00025B00A5A5",
+    repair: "0000B00B-D102-11E1-9B23-00025B00A5A5"
+  }
+
+  var _items = {
+    brake: {error: false, "name": "刹车"},
+    motor: {error: false, "name": "电机"},
+    controller: {error: false, "name": "控制器"},
+    steering: {error: false, "name": "转把"}
+  }
+
+  function test(bikeId, successCb, errorCb) {
+    function parseResult(result) {
+      if(result !== 0xE) {
+        _items.brake.error = result&0x1
+        _items.motor.error = result&0x2
+        _items.controller.error = result&0x4
+        _items.steering.error = result&0x8
+      }
+      return _items
+    }
+    if($rootScope.online) {
+      ble.startNotification(bikeId, service.uuid, service.test, function (result) {
+        successCb(new Uint8Array(result)[0])
+      }, function (reason) {
+        errorCb(reason)
+      })
+      sendOrder([0x81, 0x81], bikeId)
+      ble.read(bikeId, service.uuid, service.test)
+    } else {
+      $timeout(function () {
+        successCb(parseResult(14))
+      }, 2000)
+      .then(function () {
+        successCb(parseResult(15))
+      })
+    }
+  }
+  
+  return {
+    items: _items,
+    test: test
+  }
+})
+
+.factory('ActiveBike', function ($localstorage, $rootScope, $interval, $cordovaBLE, $q, Reminder, RTMonitor, Util, Tester) {
   var keys = {
     activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
   }
@@ -179,10 +227,6 @@ angular.module('ebike.services', [])
   // ASCII only
   function bytesToString(buffer) {
     return String.fromCharCode.apply(null, new Uint8Array(buffer));
-  }
-  
-  function byteToDecString(buffer) {
-    return new Uint8Array(buffer)[0].toString(10)
   }
   
   function sendOrder(hexs, bikeId) {
@@ -233,10 +277,11 @@ angular.module('ebike.services', [])
       return q.promise
     },
     notify: function (service, characteristic, successCb, errorCb) {
+      var bikeId = this.get().id
       if(service === 'realtime') {
-        RTMonitor.notify(this.get().id, characteristic, successCb, errorCb)
+        RTMonitor.notify(bikeId, characteristic, successCb, errorCb)
       } else if (service === 'test') {
-        this[characteristic](successCb, errorCb)
+        Tester[characteristic](bikeId, successCb, errorCb)
       }
     },
     health: function () {
@@ -252,29 +297,20 @@ angular.module('ebike.services', [])
       if($rootScope.online){
         var service = services.test
         ble.read(this.get().id, service.uuid, service.test, function (result) {
-          q.resolve(score(byteToDecString(result)))
+          q.resolve(score(new Uint8Array(result)[0]))
         }, q.reject)
       } else {
         q.resolve(score(Util.getRandomInt(0, 15)))
       }
       return q.promise
     },
-    test: function (successCb, errorCb) {
-      var bikeId = this.get().id
-      var service = services.test
-      ble.startNotification(bikeId, service.uuid, service.test, function (result) {
-        successCb(byteToDecString(result))
-      }, function (reason) {
-        errorCb(reason)
-      })
-      sendOrder([0x81, 0x81], bikeId)
-      ble.read(bikeId, service.uuid, service.test)
-    },
+    testItems: Tester.items,
+    test: Tester.test,
     repair: function (successCb, errorCb) {
       var bikeId = this.get().id
       var service = services.test
       ble.startNotification(bikeId, service.uuid, service.repair, function (result) {
-        successCb(byteToDecString(result))
+        successCb(new Uint8Array(result)[0])
       }, errorCb)
       sendOrder([0x91, 0x91], bikeId)
       ble.read(bikeId, service.uuid, service.repair)
