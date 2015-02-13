@@ -25,12 +25,16 @@
     </div>
     
     <div class="row test-bar test-bar-{{$index%2}}" ng-repeat="entity in entities">
-      <div class="col-10"></div>
-      <div class="col-20">{{entity.name}}</div>
+      <div class="color-lable"></div>
+      <div class="col-20">
+        {{entity.name}}
+      </div>
       <div class="col-50">
         <progress max="100" value="{{entity.progress}}"></progress>
       </div>
-      <div class="col-20">{{entity.state}}</div>      
+      <div class="col-25">
+        <i ng-class="entity.error?'ion-alert assertive':'ion-checkmark positive'" ng-if="!progressing"></i>
+        {{entity.state}}</div>      
     </div>
   </ion-content>
   

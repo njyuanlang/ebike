@@ -3,13 +3,13 @@ controllers
 .controller('TestCtrl', function($scope, $state, $interval, ActiveBike) {
 
   $scope.testState = ""
-  
+  $scope.progressing = false
   $scope.testScore = 75
-  
   $scope.entities = ActiveBike.testItems
   
   function test() {
     $scope.testState = "系统正在扫描中..."
+    $scope.progressing = true
     for(var item in $scope.entities) {
       $scope.entities[item].progress = 0
       $scope.entities[item].state = "检测中"
@@ -30,10 +30,11 @@ controllers
     
     ActiveBike.notify('test', 'test', function (result) {
       $scope.testState = "扫描完成"
+      $scope.progressing = false
       $interval.cancel($scope.testPromise)
-      for(var item in result) {
+      for(var item in $scope.entities) {
         $scope.entities[item].progress = 100
-        $scope.entities[item].state = $scope.entities[item].error?"完成":"故障"
+        $scope.entities[item].state = $scope.entities[item].error?"故障":"完成"
       }
     }, function (reason) {
     })    

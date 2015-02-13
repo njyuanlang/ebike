@@ -97,6 +97,9 @@ $user-bg:                       '../img/user-bg.png';
   }
 }
 
+// Include all of Ionic
+@import "www/lib/ionic/scss/ionic";
+
 // Progress
 // -------------------------------
 
@@ -124,18 +127,15 @@ progress::-webkit-progress-bar {
 progress::-webkit-progress-value {
 	border-radius: 50px;
 	background:
-    -webkit-linear-gradient(45deg, transparent, transparent 33%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.1) 66%, transparent 66%),
-    -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.2)),
-		-webkit-linear-gradient(left, $positive, $positive);
+//    -webkit-linear-gradient(45deg, transparent, transparent 33%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.1) 66%, transparent 66%),
+//    -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.2)),
+    -webkit-linear-gradient(left, $positive, $positive);
+//    -webkit-linear-gradient(left, $assertive, $assertive);
 	
   background-size: 25px 14px, 100% 100%, 100% 100%;
-//  -webkit-animation: animate-stripes 5s linear infinite;
-//  animation: animate-stripes 5s linear infinite;
+  -webkit-animation: animate-stripes 5s linear infinite;
+  animation: animate-stripes 5s linear infinite;
 }
-
-// Include all of Ionic
-@import "www/lib/ionic/scss/ionic";
-
 
 // Round Button Circle
 // -------------------------------
@@ -204,15 +204,20 @@ $loops2: round(100 / $step2);
   text-align: center;
   font-size: 16px;
   
-  .col-20, col-25 {
+  .col-20, .col-25 {
     margin: auto;
   }
+  
+  .color-lable {
+    flex: 0 0 2%;
+  }
+  
 }
 .test-bar-0 {
   background: rgba(72, 72, 72, 0.4);
   background-clip: content-box;
 
-  .col-10 {
+  .color-lable {
     background-color: green;
   }
 }
@@ -220,7 +225,7 @@ $loops2: round(100 / $step2);
   background: rgba(128,128,128, 0.4);
   background-clip: content-box;
 
-  .col-10 {
+  .color-lable {
     background-color: white;
   }
 }
