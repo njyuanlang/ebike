@@ -24,8 +24,8 @@ controllers
   
   function notify(service, characteristic) {
     ActiveBike.notify(service, characteristic, function (result) {
+      $scope[service][characteristic] = result
       var d = new Date()
-      $scope[service][characteristic] = result || 0
       $scope[service][characteristic] += ' '+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()
       $scope.$apply()
     }, function (reason) {

@@ -2,11 +2,18 @@ angular.module('ebike.services', [])
 
 .factory('Util', function () {
   return {
-    getRandomInt: function (min, max) {
+    getRandomInt: function(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     },
-    byteToDecString: function (buffer) {
+    byteToDecString: function(buffer) {
       return new Uint8Array(buffer)[0].toString(10)
+    },
+    hexToBytes: function(hexs) {
+      var array = new Uint8Array(hexs.length);
+      for (var i = 0, l = hexs.length; i < l; i++) {
+        array[i] = hexs[i]
+       }
+       return array.buffer;
     }
   }
 })
@@ -69,7 +76,7 @@ angular.module('ebike.services', [])
       }
     },
     startNotify: function (bikeId) {
-      // return;
+      return;
       ble.startNotification(bikeId, service.uuid, service.msg, function (result) {
         var res = new Uint8Array(result)
         var date = new Date().toISOString()
@@ -97,7 +104,7 @@ angular.module('ebike.services', [])
   var service = {
     uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
     power: "0000D00A-D102-11E1-9B23-00025B00A5A5",
-    mileage: "0000D00B-1021-1E19-B230-00250B00A5A5",
+    mileage: "0000D00B-D102-11E1-9B23-00025B00A5A5",
     speed: "0000D00C-D102-11E1-9B23-00025B00A5A5",
     current: "0000D00D-D102-11E1-9B23-00025B00A5A5"
   }
@@ -143,6 +150,11 @@ angular.module('ebike.services', [])
     repair: "0000B00B-D102-11E1-9B23-00025B00A5A5"
   }
 
+  var order = {
+    uuid: "00001C00-D102-11E1-9B23-00025B00A5A5",
+    order: "00001C01-D102-11E1-9B23-00025B00A5A5"
+  }
+  
   var _items = {
     brake: {error: false, "name": "刹车"},
     motor: {error: false, "name": "电机"},
@@ -150,6 +162,11 @@ angular.module('ebike.services', [])
     steering: {error: false, "name": "转把"}
   }
 
+  function sendOrder(hexs, bikeId) {
+    var value = Util.hexToBytes(hexs)
+    ble.write(bikeId, order.uuid, order.order, value)
+  }
+  
   function test(bikeId, successCb, errorCb) {
     function parseResult(result) {
       if(result !== 0xE) {
@@ -158,16 +175,15 @@ angular.module('ebike.services', [])
         _items.controller.error = result&0x4
         _items.steering.error = result&0x8
       }
-      return _items
+      return result
     }
     if($rootScope.online) {
       ble.startNotification(bikeId, service.uuid, service.test, function (result) {
-        successCb(new Uint8Array(result)[0])
+        successCb(parseResult(new Uint8Array(result)[0]))
       }, function (reason) {
         errorCb(reason)
       })
       sendOrder([0x81, 0x81], bikeId)
-      ble.read(bikeId, service.uuid, service.test)
     } else {
       $timeout(function () {
         successCb(parseResult(14))
@@ -178,9 +194,34 @@ angular.module('ebike.services', [])
     }
   }
   
+  function repair(bikeId, successCb, errorCb) {
+    function parseRepairResult(result) {
+      if(result !== 0xE) {
+        _items.brake.error = !!!result&0x1
+        _items.motor.error = !!!result&0x2
+        _items.controller.error = !!!result&0x4
+        _items.steering.error = !!!result&0x8
+      }
+      return result
+    }
+    if($rootScope.online) {
+      ble.startNotification(bikeId, service.uuid, service.repair, function (result) {
+        successCb(parseRepairResult(new Uint8Array(result)[0]))
+      }, function (reason) {
+        errorCb(reason)
+      })
+      sendOrder([0x91, 0x91], bikeId)
+    } else {
+      $timeout(function () {
+        successCb(parseRepairResult(15))
+      }, 2000)
+    }
+  }
+  
   return {
     items: _items,
-    test: test
+    test: test,
+    repair: repair
   }
 })
 
@@ -216,14 +257,6 @@ angular.module('ebike.services', [])
      return array.buffer;
   }
   
-  function hexToBytes(hexs) {
-    var array = new Uint8Array(hexs.length);
-    for (var i = 0, l = hexs.length; i < l; i++) {
-      array[i] = hexs[i]
-     }
-     return array.buffer;
-  }
-
   // ASCII only
   function bytesToString(buffer) {
     return String.fromCharCode.apply(null, new Uint8Array(buffer));
@@ -231,8 +264,8 @@ angular.module('ebike.services', [])
   
   function sendOrder(hexs, bikeId) {
     var order = services.order
-    var value = hexToBytes(hexs)
-    ble.writeWithoutResponse(bikeId, order.uuid, order.order, value)
+    var value = Util.hexToBytes(hexs)
+    ble.write(bikeId, order.uuid, order.order, value)
   }
   
   return {
@@ -306,15 +339,7 @@ angular.module('ebike.services', [])
     },
     testItems: Tester.items,
     test: Tester.test,
-    repair: function (successCb, errorCb) {
-      var bikeId = this.get().id
-      var service = services.test
-      ble.startNotification(bikeId, service.uuid, service.repair, function (result) {
-        successCb(new Uint8Array(result)[0])
-      }, errorCb)
-      sendOrder([0x91, 0x91], bikeId)
-      ble.read(bikeId, service.uuid, service.repair)
-    },
+    repair: Tester.repair,
     workmode: function () {
       var q = $q.defer()
       if($rootScope.online) {
@@ -350,7 +375,7 @@ angular.module('ebike.services', [])
       var q = $q.defer()
       var service = services.device
       ble.read(this.get().id, service.uuid, service.sn, function (result) {
-        q.resolve(bytesToString(result))
+        q.resolve(new Uint8Array(result))
       }, function (reason) {
         q.reject(reason)
       })

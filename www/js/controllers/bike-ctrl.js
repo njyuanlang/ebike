@@ -94,7 +94,7 @@ controllers
     ActiveBike.scan(scanSuccessCb, scanErrorCb)
     $timeout(function () {
       $scope.$broadcast('scroll.refreshComplete')
-    }, 10000)
+    }, 5000)
   }
   $scope.doScan = doScan
 
@@ -107,7 +107,11 @@ controllers
         duration: 2000
       })
     }, function (reason) {
-      alert(reason)
+      $ionicLoading.show({
+        template: "连接失败："+reason,
+        duration: 2000
+      })
+      // alert(reason)
     })
     .then(function () {
       $state.go('home')
@@ -115,11 +119,11 @@ controllers
     
     $ionicLoading.show({
       template:'正在连接'+item.name+"...",
-      duration: 5000
+      duration: 3000
     }).then(function () {
       $ionicLoading.show({
         template: "无法连接到爱车",
-        duration: 3000
+        duration: 2000
       })
     })
   }
