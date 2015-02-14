@@ -186,11 +186,8 @@ angular.module('ebike.services', [])
       sendOrder([0x81, 0x81], bikeId)
     } else {
       $timeout(function () {
-        successCb(parseResult(14))
+        successCb(parseResult(12))
       }, 2000)
-      .then(function () {
-        successCb(parseResult(15))
-      })
     }
   }
   
@@ -213,7 +210,7 @@ angular.module('ebike.services', [])
       sendOrder([0x91, 0x91], bikeId)
     } else {
       $timeout(function () {
-        successCb(parseRepairResult(15))
+        successCb(parseRepairResult(8))
       }, 2000)
     }
   }
@@ -222,6 +219,98 @@ angular.module('ebike.services', [])
     items: _items,
     test: test,
     repair: repair
+  }
+})
+
+.factory('TestTask', function (ActiveBike, $interval) {
+  
+  function TestTask() {
+    this.state = 'idle'
+    this.prompt = ""
+    this.score = 0
+    this.items = [
+      {id: "brake", "name": "刹车"},
+      {id: "motor", "name": "电机"},
+      {id: "controller", "name": "控制器"},
+      {id: "steering", "name": "转把"}
+    ]
+  }
+  
+  TestTask.prototype.test = function () {
+    this.state = 'testing'
+    this.prompt = "系统扫描中..."
+    initProgress(this.items, '检测中')
+
+    progressing(this.items)
+
+    var theThis = this
+    ActiveBike.notify('test', 'test', function (result) {
+      if(result === 0xE) return
+      theThis.prompt = "扫描完成"
+      theThis.state = 'pass'
+      $interval.cancel(theThis.progressingPromise)
+      theThis.items.forEach(function (item) {
+        item.progress = 100
+        if(item.id === 'brake') item.error = result&0x1;
+        if(item.id === 'motor') item.error = (result&0x2)>>1;
+        if(item.id === 'controller') item.error = (result&0x4)>>2;
+        if(item.id === 'steering') item.error = (result&0x8)>>3;
+        item.desc = item.error?"故障":"正常"
+        if(theThis.state === 'pass' && item.error) theThis.state = 'fault'
+      })
+    })
+    
+  }
+  
+  TestTask.prototype.repair = function () {
+    this.state = 'repairing'
+    this.prompt = "系统修复中..."
+    var items = this.items.filter(function (item) {
+      return item.error
+    })
+    initProgress(items, '修复中')
+    
+    progressing(items)
+    
+    var theThis = this
+    ActiveBike.notify('test', 'repair', function (result) {
+      if(result === 0xE) return
+      theThis.prompt = "修复结束"
+      theThis.state = 'done'
+      $interval.cancel(theThis.progressingPromise)
+      items.forEach(function (item) {
+        item.progress = 100
+        if(item.id === 'brake') item.fixed = result&0x1;
+        if(item.id === 'motor') item.fixed = (result&0x2)>>1;
+        if(item.id === 'controller') item.fixed = (result&0x4)>>2;
+        if(item.id === 'steering') item.fixed = (result&0x8)>>3;
+        item.desc = item.fixed?"完成":"失败"
+      })
+    })
+  }
+  
+  return TestTask
+  
+  function initProgress(items, desc) {
+    items.forEach(function (item) {
+      item.progress = 0
+      item.desc = desc
+    })
+  }
+  
+  function progressing(items) {
+    var activeEntityIndex = 0
+    this.progressingPromise = $interval(function () {
+      items.forEach(function (item) {
+        item.progress++
+        if(item.progress >= 90) {
+          activeEntityIndex++
+          if(activeEntityIndex === items.length) {
+            $interval.cancel(this.progressingPromise)
+          }
+        }
+      })
+    }, 50, false)
   }
 })
 
