@@ -7061,6 +7061,122 @@ progress::-webkit-progress-value {
   -webkit-animation: animate-stripes 5s linear infinite;
   animation: animate-stripes 5s linear infinite; }
 
+.container {
+  position: relative;
+  width: 100%; }
+  .container .outer {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    border-radius: 50%;
+    border: 3px solid green;
+    background: transparent;
+    padding-bottom: 100%; }
+    .container .outer .inner-1 {
+      border-radius: 50%;
+      position: absolute;
+      border: 1px solid #505866;
+      width: 80%;
+      height: 80%;
+      top: 10%;
+      left: 10%; }
+    .container .outer .inner-2 {
+      border-radius: 50%;
+      position: absolute;
+      border: 1px solid #505866;
+      width: 60%;
+      height: 60%;
+      top: 20%;
+      left: 20%; }
+    .container .outer .inner-3 {
+      border-radius: 50%;
+      position: absolute;
+      border: 1px solid #505866;
+      width: 40%;
+      height: 40%;
+      top: 30%;
+      left: 30%; }
+    .container .outer .inner-4 {
+      border-radius: 50%;
+      position: absolute;
+      border: 1px solid #505866;
+      width: 20%;
+      height: 20%;
+      top: 40%;
+      left: 40%; }
+    .container .outer .diameter-0 {
+      width: 80%;
+      height: 1px;
+      top: 50%;
+      left: 10%;
+      position: absolute;
+      background: #505866;
+      -webkit-transform: rotate(0deg); }
+    .container .outer .diameter-45 {
+      width: 80%;
+      height: 1px;
+      top: 50%;
+      left: 10%;
+      position: absolute;
+      background: #505866;
+      -webkit-transform: rotate(45deg); }
+    .container .outer .diameter-90 {
+      width: 80%;
+      height: 1px;
+      top: 50%;
+      left: 10%;
+      position: absolute;
+      background: #505866;
+      -webkit-transform: rotate(90deg); }
+    .container .outer .diameter-135 {
+      width: 80%;
+      height: 1px;
+      top: 50%;
+      left: 10%;
+      position: absolute;
+      background: #505866;
+      -webkit-transform: rotate(135deg); }
+    .container .outer .diameter-180 {
+      width: 80%;
+      height: 1px;
+      top: 50%;
+      left: 10%;
+      position: absolute;
+      background: #505866;
+      -webkit-transform: rotate(180deg); }
+    .container .outer .diameter-225 {
+      width: 80%;
+      height: 1px;
+      top: 50%;
+      left: 10%;
+      position: absolute;
+      background: #505866;
+      -webkit-transform: rotate(225deg); }
+    .container .outer .diameter-270 {
+      width: 80%;
+      height: 1px;
+      top: 50%;
+      left: 10%;
+      position: absolute;
+      background: #505866;
+      -webkit-transform: rotate(270deg); }
+    .container .outer .diameter-315 {
+      width: 80%;
+      height: 1px;
+      top: 50%;
+      left: 10%;
+      position: absolute;
+      background: #505866;
+      -webkit-transform: rotate(315deg); }
+    .container .outer .diameter-360 {
+      width: 80%;
+      height: 1px;
+      top: 50%;
+      left: 10%;
+      position: absolute;
+      background: #505866;
+      -webkit-transform: rotate(360deg); }
+
 .round-button-circle {
   position: relative;
   display: inline-block;
@@ -7071,16 +7187,6 @@ progress::-webkit-progress-value {
   border: 3px solid #505866;
   overflow: hidden;
   box-shadow: 0 0 3px gray; }
-  .round-button-circle > img {
-    display: inline-block;
-    position: relative;
-    top: 0;
-    left: 0;
-    border-radius: 50%;
-    text-align: center;
-    font-weight: bold;
-    color: #a1a2a3;
-    margin: 8% auto auto 7%; }
 
 .round-button a {
   display: block;

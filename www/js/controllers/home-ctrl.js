@@ -10,7 +10,7 @@ controllers
   function startNotify() {
     ActiveBike.notify('realtime', 'power', function (result) {
       $scope.powerPercent = result || 0
-      $scope.$apply()
+      // $scope.$apply()
     }, function (reason) {
       // $scope.$apply()
     })
@@ -25,7 +25,7 @@ controllers
   function health() {
     ActiveBike.health().then(function (result) {
       $scope.healthScore = result || 0
-      $scope.$apply()
+      // $scope.$apply()
     }, function (reason) {
       // $scope.healthScore = reason
     })
