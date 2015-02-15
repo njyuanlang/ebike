@@ -184,10 +184,16 @@ $inner-percentage:          0.1;
 
 .scan-radial {
   position: absolute;
-  height: 100%;
-  width:100%;
+  height: 44%;
+  width:44%;
+  top: 2%;
+  left: 28%;
+  margin: auto;
+  border: 0;
+  border-radius: 100% 0 0 0;
   background-image: 
-  -webkit-linear-gradient(0deg, $positive 50%, transparent 50%);
+  -webkit-linear-gradient(right top, $positive, transparent 60%, transparent);
+  -webkit-transform: rotate(45deg);
 }
 
 // Round Button Circle
