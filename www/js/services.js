@@ -143,7 +143,7 @@ angular.module('ebike.services', [])
   }
 })
 
-.factory('Tester', function ($localstorage, $rootScope, $interval, Util, $timeout) {
+.factory('Tester', function ($localstorage, $rootScope, $interval, Util, $timeout, $q) {
   var service = {
     uuid: "0000B000-D102-11E1-9B23-00025B00A5A5",
     test: "0000B00A-D102-11E1-9B23-00025B00A5A5",
@@ -155,68 +155,61 @@ angular.module('ebike.services', [])
     order: "00001C01-D102-11E1-9B23-00025B00A5A5"
   }
   
-  var _items = {
-    brake: {error: false, "name": "刹车"},
-    motor: {error: false, "name": "电机"},
-    controller: {error: false, "name": "控制器"},
-    steering: {error: false, "name": "转把"}
-  }
-
   function sendOrder(hexs, bikeId) {
     var value = Util.hexToBytes(hexs)
     ble.write(bikeId, order.uuid, order.order, value)
   }
   
   function test(bikeId, successCb, errorCb) {
-    function parseResult(result) {
-      if(result !== 0xE) {
-        _items.brake.error = result&0x1
-        _items.motor.error = result&0x2
-        _items.controller.error = result&0x4
-        _items.steering.error = result&0x8
-      }
-      return result
-    }
     if($rootScope.online) {
       ble.startNotification(bikeId, service.uuid, service.test, function (result) {
-        successCb(parseResult(new Uint8Array(result)[0]))
+        successCb(new Uint8Array(result)[0])
       }, function (reason) {
         errorCb(reason)
       })
       sendOrder([0x81, 0x81], bikeId)
     } else {
       $timeout(function () {
-        successCb(parseResult(12))
+        successCb(12)
       }, 2000)
     }
   }
   
   function repair(bikeId, successCb, errorCb) {
-    function parseRepairResult(result) {
-      if(result !== 0xE) {
-        _items.brake.error = !!!result&0x1
-        _items.motor.error = !!!result&0x2
-        _items.controller.error = !!!result&0x4
-        _items.steering.error = !!!result&0x8
-      }
-      return result
-    }
     if($rootScope.online) {
       ble.startNotification(bikeId, service.uuid, service.repair, function (result) {
-        successCb(parseRepairResult(new Uint8Array(result)[0]))
+        successCb(new Uint8Array(result)[0])
       }, function (reason) {
         errorCb(reason)
       })
       sendOrder([0x91, 0x91], bikeId)
     } else {
       $timeout(function () {
-        successCb(parseRepairResult(8))
+        successCb(8)
       }, 2000)
     }
   }
   
+  function health(bikeId) {
+    var q = $q.defer()
+    function score(result) {
+      var len = 4
+      var count = 0
+      for (var i = 0; i <= len; i++) {
+        if((result>>i)&0x1) count++
+      }
+      return (len-count)*25
+    }
+    test(bikeId, function (result) {
+      q.resolve(score(result))
+    }, function (reason) {
+      q.reject(reason)
+    })
+    return q.promise
+  }
+  
   return {
-    items: _items,
+    health: health,
     test: test,
     repair: repair
   }
@@ -314,16 +307,11 @@ angular.module('ebike.services', [])
   }
 })
 
-.factory('ActiveBike', function ($localstorage, $rootScope, $interval, $cordovaBLE, $q, Reminder, RTMonitor, Util, Tester) {
+.factory('ActiveBike', function ($localstorage, $rootScope, $cordovaBLE, $q, Reminder, RTMonitor, Util, Tester) {
   var keys = {
     activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
   }
   var services = {
-    test: {
-      uuid: "0000B000-D102-11E1-9B23-00025B00A5A5",
-      test: "0000B00A-D102-11E1-9B23-00025B00A5A5",
-      repair: "0000B00B-D102-11E1-9B23-00025B00A5A5"
-    },
     order: {
       uuid: "00001C00-D102-11E1-9B23-00025B00A5A5",
       order: "00001C01-D102-11E1-9B23-00025B00A5A5"
@@ -407,28 +395,8 @@ angular.module('ebike.services', [])
       }
     },
     health: function () {
-      var q = $q.defer()
-      function score(result) {
-        var count = 0
-        if(result & 0x1) count++;
-        if(result & 0x2) count++;
-        if(result & 0x4) count++;
-        if(result & 0x8) count++;
-        return (4-count)*25
-      }
-      if($rootScope.online){
-        var service = services.test
-        ble.read(this.get().id, service.uuid, service.test, function (result) {
-          q.resolve(score(new Uint8Array(result)[0]))
-        }, q.reject)
-      } else {
-        q.resolve(score(Util.getRandomInt(0, 15)))
-      }
-      return q.promise
+      return Tester.health(this.get().id)
     },
-    testItems: Tester.items,
-    test: Tester.test,
-    repair: Tester.repair,
     workmode: function () {
       var q = $q.defer()
       if($rootScope.online) {
