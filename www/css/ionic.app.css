@@ -7177,6 +7177,12 @@ progress::-webkit-progress-value {
       background: #505866;
       -webkit-transform: rotate(360deg); }
 
+.scan-radial {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: -webkit-linear-gradient(0deg, #56fa89 50%, transparent 50%); }
+
 .round-button-circle {
   position: relative;
   display: inline-block;

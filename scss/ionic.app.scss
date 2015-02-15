@@ -182,6 +182,14 @@ $inner-percentage:          0.1;
   }
 }
 
+.scan-radial {
+  position: absolute;
+  height: 100%;
+  width:100%;
+  background-image: 
+  -webkit-linear-gradient(0deg, $positive 50%, transparent 50%);
+}
+
 // Round Button Circle
 // -------------------------------
 .round-button-circle {
