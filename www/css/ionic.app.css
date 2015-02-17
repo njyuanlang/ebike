@@ -7177,17 +7177,28 @@ progress::-webkit-progress-value {
       background: #505866;
       -webkit-transform: rotate(360deg); }
 
+@-webkit-keyframes radialscan {
+  from {
+    -webkit-transform: rotate(0deg); }
+
+  to {
+    -webkit-transform: rotate(360deg); } }
+
 .scan-radial {
   position: absolute;
   height: 44%;
   width: 44%;
-  top: 2%;
-  left: 28%;
+  top: 6%;
+  left: 6%;
   margin: auto;
   border: 0;
   border-radius: 100% 0 0 0;
-  background-image: -webkit-linear-gradient(right top, #56fa89, transparent 60%, transparent);
-  -webkit-transform: rotate(45deg); }
+  background-image: -webkit-linear-gradient(right top, #56fa89, transparent 55%);
+  -webkit-transform-origin: bottom right;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-name: radialscan;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: normal, normal; }
 
 .round-button-circle {
   position: relative;
