@@ -99,116 +99,7 @@ $user-bg:                       '../img/user-bg.png';
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
-
-// Progress
-// -------------------------------
-
-progress {
-  -webkit-appearance: none;
-  border: none;
-  border-radius: 100px;
-}
-
-@-webkit-keyframes animate-stripes {
-   100% { background-position: -100px 0px; }
-}
-
-@keyframes animate-stripes {
-   100% { background-position: -100px 0px; }
-}
-
-progress::-webkit-progress-bar {
-  background: transparent;
-	border-radius: 50px;
-	padding: 2px;
-  box-shadow: 0 1px 0px 0 rgba(255, 255, 255, 0.2);
-}
-
-progress::-webkit-progress-value {
-	border-radius: 50px;
-	background:
-//    -webkit-linear-gradient(45deg, transparent, transparent 33%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.1) 66%, transparent 66%),
-//    -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.2)),
-    -webkit-linear-gradient(left, $positive, $positive);
-//    -webkit-linear-gradient(left, $assertive, $assertive);
-	
-  background-size: 25px 14px, 100% 100%, 100% 100%;
-  -webkit-animation: animate-stripes 5s linear infinite;
-  animation: animate-stripes 5s linear infinite;
-}
-
-// Radial Net
-// -------------------------------
-
-$inner-percentage:          0.1;
-
-.container {
-  position: relative;
-  width: 100%;
-  .outer {
-    width: 100%;
-    height: 100%;
-    margin: auto;
-    border-radius: 50%;
-    border:3px solid green;
-    background: transparent;
-    padding-bottom: 100%;
-    
-    @for $i from 1 through 4 {
-      .inner-#{$i} {
-        border-radius: 50%;
-        position: absolute;
-        border:1px solid $light;
-        width: percentage(1-$inner-percentage*2*$i);
-        height: percentage(1-$inner-percentage*2*$i);
-        top: percentage($inner-percentage*$i);
-        left: percentage($inner-percentage*$i);
-        
-      }
-    }
-    
-    @for $i from 0 through 8 {
-      $rotatedeg: $i*45;
-      .diameter-#{$rotatedeg} {
-        width: percentage(1-$inner-percentage*2);
-        height:1px;
-        top:50%;
-        left: percentage($inner-percentage);
-        position: absolute;
-        background: $light;
-        -webkit-transform: rotate($rotatedeg*1deg);
-      }
-    }
-  }
-}
-
-@-webkit-keyframes radialscan {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
-  
-  to {
-    -webkit-transform: rotate(360deg);
-  }
-}
-.scan-radial {
-  position: absolute;
-  height: 44%;
-  width:44%;
-  top: 6%;
-  left: 6%;
-  margin: auto;
-  border: 0;
-  border-radius: 100% 0 0 0;
-  background-image: 
-  -webkit-linear-gradient(right top, $positive, transparent 55%);
-//  -webkit-transition: transform 3s linear;
-  -webkit-transform-origin: bottom right;
-  -webkit-animation-duration: 3s;
-  -webkit-animation-name: radialscan;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-direction: normal, normal;
-}
+@import "ebike.test";
 
 // Round Button Circle
 // -------------------------------
@@ -258,38 +149,6 @@ $loops2: round(100 / $step2);
   .round-volume-#{$i2*$step2} {
     background-image: linear-gradient(to top, $energized percentage($i2*$step2/100), transparent 0%);
     background-image: -webkit-linear-gradient(bottom, $energized percentage($i2*$step2/100), transparent 0%);
-  }
-}
-
-// Test Bar
-// -------------------------------
-.test-bar {
-  text-align: center;
-  font-size: 16px;
-  
-  .col-20, .col-25 {
-    margin: auto;
-  }
-  
-  .color-lable {
-    flex: 0 0 2%;
-  }
-  
-}
-.test-bar-0 {
-  background: rgba(72, 72, 72, 0.4);
-  background-clip: content-box;
-
-  .color-lable {
-    background-color: green;
-  }
-}
-.test-bar-1 {
-  background: rgba(128,128,128, 0.4);
-  background-clip: content-box;
-
-  .color-lable {
-    background-color: white;
   }
 }
 
@@ -368,14 +227,10 @@ $half: round($loops / 2);
 @for $i from 0 through $loops {
   .progress-radial-#{$i*$step} {
     @if $i < $half {
-//      $nextdeg: 90deg + ( $increment * $i );
-//      background-image: linear-gradient(90deg, $backColor 50%, transparent 50%, transparent), linear-gradient($nextdeg, $barColor 50%, $backColor 50%, $backColor);
       $nextdeg: 180deg - ( $increment * $i );
       background-image: -webkit-linear-gradient(0deg, $backColor 50%, transparent 50%), -webkit-linear-gradient($nextdeg, $backColor 50%, $barColor 50%);
     }
     @else {
-//      $nextdeg: -90deg + ( $increment * ( $i - $half ) );
-//      background-image: linear-gradient($nextdeg, $barColor 50%, transparent 50%, transparent), linear-gradient(270deg, $barColor 50%, $backColor 50%, $backColor);
       $nextdeg: 360deg - $increment * $i;
       background-image: 
       -webkit-linear-gradient($nextdeg, $barColor 50%, transparent 50%),
