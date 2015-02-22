@@ -4,10 +4,6 @@ controllers
 
   $scope.task = new TestTask()
   
-  $scope.$on('$destory', function () {
-    $interval.cancel($scope.testPromise)
-  })
-  
   $scope.init = function () {
     $scope.task.test()
   }

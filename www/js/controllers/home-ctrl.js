@@ -2,20 +2,19 @@ controllers
 
 .controller('HomeCtrl', function($scope, $state, $q, ActiveBike, $timeout, $ionicLoading) {
   
-  $scope.powerPercent = 0
-  $scope.mileage = 0
   $scope.healthScore = 0
   $scope.workmode = 0
-  
+  $scope.realtime = ActiveBike.realtime()
+    
   function startNotify() {
     ActiveBike.notify('realtime', 'power', function (result) {
-      $scope.powerPercent = result || 0
+      // $scope.powerPercent = result || 0
       // $scope.$apply()
     }, function (reason) {
       // $scope.$apply()
     })
     ActiveBike.notify('realtime', 'mileage', function (result) {
-      $scope.mileage = result || 0
+      // $scope.mileage = result || 0
       // $scope.$apply()
     }, function (reason) {
       // $scope.$apply()
@@ -51,7 +50,6 @@ controllers
   }
   
   $scope.init = function () {
-    startNotify()
     health()
     workstate()
   }

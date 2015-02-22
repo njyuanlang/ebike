@@ -103,44 +103,55 @@ angular.module('ebike.services', [])
 .factory('RTMonitor', function ($localstorage, $rootScope, $interval, Util) {
   var service = {
     uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
-    power: "0000D00A-D102-11E1-9B23-00025B00A5A5",
-    mileage: "0000D00B-D102-11E1-9B23-00025B00A5A5",
-    speed: "0000D00C-D102-11E1-9B23-00025B00A5A5",
-    current: "0000D00D-D102-11E1-9B23-00025B00A5A5"
+    power: "0000D00A-D102-11E1-9B23-00025B00A5A5",// power mileage
+    speed: "0000D00B-D102-11E1-9B23-00025B00A5A5" // speed current
   }
   
+  var realtime = {
+    power: 0,
+    mileage: 0,
+    speed: 0,
+    current: 0
+  }
   var fakeCbs = {
-    power: function (successCb) {
-      var p = $rootScope.powerprogress || 100
-      successCb(p)
-      $rootScope.powerprogress = --p
-    },
-    mileage: function (successCb) {
-      var p = $rootScope.mileagesprogress || 100
-      successCb(Math.floor(p/2))
-      $rootScope.mileagesprogress = --p
+    power: function () {
+      realtime.power = realtime.power || 100
+      realtime.power--
+      realtime.mileage = Math.floor(realtime.power/2)
+      console.log(realtime)
     },
     speed: function (successCb) {
-      successCb(Util.getRandomInt(0, 100))
-    },
-    current: function (successCb) {
-      successCb(Util.getRandomInt(0, 100))
+      realtime.speed = Util.getRandomInt(0, 100)
+      realtime.current = realtime.speed/5
     }
-  }  
-  function notify(bikeId, characteristic, successCb, errorCb) {
-    if(!$rootScope.online) {
-      return $interval(function () {
-        fakeCbs[characteristic](successCb)
-      }, 500, false)
-    }
-    ble.startNotification(bikeId, service.uuid, service[characteristic], function (result) {
-      successCb(Util.byteToDecString(result))
-    }, errorCb)
   }
   
-  return {
-    notify: notify
+  realtime.notify = function(bikeId, characteristic) {
+    if($rootScope.online) {
+      ble.startNotification(bikeId, service.uuid, service[characteristic], function (result) {
+        if (characteristic === 'power') {
+          var res = new Uint8Array(result) 
+          realtime.power = res[0]
+          realtime.mileage = res[1]
+        } else if(characteristic === 'speed') {
+          var res = new Uint8Array(result) 
+          realtime.speed = res[0]
+          realtime.speed = res[1]
+        }
+      })
+    } else {
+      return $interval(function () {
+        fakeCbs[characteristic]()
+      }, 500, false)
+    }
   }
+  
+  realtime.startNotifications = function (bikeId) {
+    realtime.notify(bikeId, "power")
+    realtime.notify(bikeId, "speed")
+  }
+  
+  return realtime
 })
 
 .factory('Tester', function ($localstorage, $rootScope, $interval, Util, $timeout, $q) {
@@ -360,6 +371,7 @@ angular.module('ebike.services', [])
       this.set(activeBike)
       return $cordovaBLE.connect(activeBike.id).then(function (result) {
         Reminder.startNotify(activeBike.id)
+        RTMonitor.startNotifications(activeBike.id)
         return result
       })
     },
@@ -377,6 +389,7 @@ angular.module('ebike.services', [])
           return $cordovaBLE.connect(bikeId)
         })
         .then(function (result) {
+          RTMonitor.startNotifications(activeBike.id)
           Reminder.startNotify(bikeId)
           q.resolve(result)
         }, q.reject)        
@@ -385,6 +398,10 @@ angular.module('ebike.services', [])
       }
       
       return q.promise
+    },
+    realtime: function () {
+      RTMonitor.startNotifications(this.get().id)
+      return RTMonitor
     },
     notify: function (service, characteristic, successCb, errorCb) {
       var bikeId = this.get().id
