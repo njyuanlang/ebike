@@ -181,13 +181,15 @@ $backColor:                           #2f3439;
 .progress-radial {
   float: left;
   position: relative;
-  width: 280px;
-  height: 280px;
-  margin: 0 auto;
-  display: table;
+  min-width: 160px;
+  min-height: 160px;
   border-radius: 50%;
   border: 2px solid $backColor; // remove gradient color
   background-color: $barColor; // default 100%
+}
+
+.center {
+  margin: 0 auto;
 }
 
 /* -------------------------------------
@@ -202,12 +204,17 @@ $backColor:                           #2f3439;
   margin-left: 8%;
   margin-top: 8%;
   text-align: center;
-  line-height: 60px;
+//  line-height: 60px;
   font-size: 24px;
   
   > h1 {
   	padding-top:15%;
     font-size: 88px;
+  }
+  > h2 {
+  	padding-top:8%;
+    font-size: 68px;
+    margin-bottom: 0;
   }
   > label {
     font-size: 24px;

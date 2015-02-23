@@ -1,4 +1,26 @@
 <ion-view hide-back-button="true" has-header="false" hide-nav-bar="true">
   <ion-content class="cruise-bg">
+    <div class="row">
+      <div class="col-25 padding">
+        <div class="progress-radial progress-radial-{{realtime.power}}">
+          <div class="overlay">
+            <h2>{{realtime.power}}<small>%</small></h2>
+            <label><small>剩余电量</small></label>
+          </div>
+        </div>
+      </div>
+      <div class="col-50 padding">
+        <h1 class="text-center"><small>剩余</small> {{realtime.mileage}} <small>续航公里</small></h1>
+      </div>
+      <div class="col-25 round-button">
+        <div class="round-button-circle round-volume-{{healthScore}}">
+          <a href="#/test" class="round-button">
+            <h3 ng-show="workmode == 1">省电</h3>
+            <h1 ng-show="workmode == 0">正常</h1>
+            <h3 ng-show="workmode == 2">爬坡</h3>
+          </a>
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>
