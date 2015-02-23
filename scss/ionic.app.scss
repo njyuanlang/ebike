@@ -181,8 +181,8 @@ $backColor:                           #2f3439;
 .progress-radial {
   float: left;
   position: relative;
-  min-width: 160px;
-  min-height: 160px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
   border: 2px solid $backColor; // remove gradient color
   background-color: $barColor; // default 100%
@@ -205,19 +205,23 @@ $backColor:                           #2f3439;
   margin-top: 8%;
   text-align: center;
 //  line-height: 60px;
-  font-size: 24px;
+//  font-size: 24px;
   
   > h1 {
   	padding-top:15%;
-    font-size: 88px;
+    font-size: 84px;
+    line-height: 0.8em;
+    margin-bottom: 0;
   }
   > h2 {
-  	padding-top:8%;
-    font-size: 68px;
+  	padding-top:15%;
+    font-size: 60px;
+    line-height: 0.8em;
     margin-bottom: 0;
   }
   > label {
-    font-size: 24px;
+    margin-top: -2%;
+    font-size: 1.5em;
     color: $dark;
   }
 }
@@ -246,4 +250,47 @@ $half: round($loops / 2);
   }
 }
 
+// Speed Gauge pointer
+// -------------------------------
+
+.speed-gauge {
+  position: relative;
+  width: 70%;
+  left: 15%;
+  
+  #speed-gauge-digital {
+    border-radius: 10em 10em 0 0;
+    margin: 3% 0 0 20%;
+    position: absolute;
+    width: 60%;
+    height: 10em;
+    background: black;
+    border:0 solid transparent;
+    text-align: center;
+    
+    > h1 {
+      margin-top:15%;
+      font-size: 6em;
+    }
+  }
+  
+  #speed-gauge-pointer {
+    -webkit-border-radius: 100% 0 0 100%;
+    position: absolute;
+    margin: 33% 0 0 0;
+    width: 48%;
+    height: 1.2em;
+    background: red;
+    transform-origin: bottom right;
+  }
+}
+
+$maxSpeed: 120;
+$angularSpeed: 180deg/$maxSpeed;
+@for $i from 0 through $maxSpeed {
+  .speed-gauge-#{$i} {
+    $nextdeg: $i*$angularSpeed;
+    transform: rotate($nextdeg);
+  }
+}
 

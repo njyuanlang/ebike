@@ -118,10 +118,10 @@ angular.module('ebike.services', [])
       realtime.power = realtime.power || 100
       realtime.power--
       realtime.mileage = Math.floor(realtime.power/2)
-      console.log(realtime)
     },
     speed: function (successCb) {
-      realtime.speed = Util.getRandomInt(0, 100)
+      realtime.speed = realtime.speed || 80
+      realtime.speed--
       realtime.current = realtime.speed/5
     }
   }
