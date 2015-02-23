@@ -7293,8 +7293,10 @@ progress::-webkit-progress-value {
   border: 2px solid #2f3439;
   background-color: #56fa89; }
 
-.center {
-  margin: 0 auto; }
+.progress-radial-lg {
+  margin: 0 auto;
+  width: 280px;
+  height: 280px; }
 
 /* -------------------------------------
  * Optional centered circle w/text
@@ -7309,8 +7311,8 @@ progress::-webkit-progress-value {
   margin-top: 8%;
   text-align: center; }
   .progress-radial .overlay > h1 {
-    padding-top: 15%;
-    font-size: 84px;
+    padding-top: 25%;
+    font-size: 98px;
     line-height: 0.8em;
     margin-bottom: 0; }
   .progress-radial .overlay > h2 {

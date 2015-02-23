@@ -188,8 +188,10 @@ $backColor:                           #2f3439;
   background-color: $barColor; // default 100%
 }
 
-.center {
+.progress-radial-lg {
   margin: 0 auto;
+  width: 280px;
+  height: 280px;
 }
 
 /* -------------------------------------
@@ -204,12 +206,10 @@ $backColor:                           #2f3439;
   margin-left: 8%;
   margin-top: 8%;
   text-align: center;
-//  line-height: 60px;
-//  font-size: 24px;
   
   > h1 {
-  	padding-top:15%;
-    font-size: 84px;
+  	padding-top:25%;
+    font-size: 98px;
     line-height: 0.8em;
     margin-bottom: 0;
   }
