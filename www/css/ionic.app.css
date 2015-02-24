@@ -7639,7 +7639,7 @@ progress::-webkit-progress-value {
   left: 15%; }
   .speed-gauge #speed-gauge-digital {
     border-radius: 10em 10em 0 0;
-    margin: 3% 0 0 20%;
+    margin: 5% 0 0 20%;
     position: absolute;
     width: 60%;
     height: 10em;

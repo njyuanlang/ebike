@@ -2,8 +2,8 @@ controllers
 
 .controller('HomeCtrl', function($scope, $state, $q, ActiveBike, $timeout, $ionicLoading) {
   
+  $scope.bike = ActiveBike
   $scope.healthScore = 0
-  $scope.workmode = 0
   $scope.realtime = ActiveBike.realtime()
     
   function startNotify() {
@@ -30,27 +30,11 @@ controllers
     })
   }
   
-  function workstate() {
-    ActiveBike.workmode()
-    .then(function (result) {
-      $scope.workstate = result
-    }, function (reason) {
-      
-    })
-  }
-  
-  $scope.switchWorkmode = function (mode) {
-    $scope.workmode = mode
-    ActiveBike.setWorkmode(mode)
-  }
-  
   $scope.batteryDieEndure = function () {
-    startNotify()
     health()
   }
   
   $scope.init = function () {
     health()
-    workstate()
   }
 })

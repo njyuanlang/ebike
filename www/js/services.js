@@ -320,7 +320,8 @@ angular.module('ebike.services', [])
 
 .factory('ActiveBike', function ($localstorage, $rootScope, $cordovaBLE, $q, Reminder, RTMonitor, Util, Tester) {
   var keys = {
-    activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
+    activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB',
+    workmode: 'com.extensivepro.ebike.AD801FD0-D2FF-41A9-B5CF-468C8CB1311E'
   }
   var services = {
     order: {
@@ -336,7 +337,7 @@ angular.module('ebike.services', [])
       workmode: "0000E00A-D102-11E1-9B23-00025B00A5A5"
     }
   }
-    
+  
   function stringToBytes(string) {
     var array = new Uint8Array(string.length);
     for (var i = 0, l = string.length; i < l; i++) {
@@ -356,7 +357,7 @@ angular.module('ebike.services', [])
     ble.write(bikeId, order.uuid, order.order, value)
   }
   
-  return {
+  var bike = {
     set: function (value) {
       $localstorage.setObject(keys.activebike, value)
     },
@@ -414,37 +415,6 @@ angular.module('ebike.services', [])
     health: function () {
       return Tester.health(this.get().id)
     },
-    workmode: function () {
-      var q = $q.defer()
-      if($rootScope.online) {
-        var service = services.workmode
-        ble.read(this.get().id, service.uuid, service.workmode, function (result) {
-          var res = new Uint8Array(result)
-          q.resolve(res[0] & 0xb)
-        }, function (reason) {
-          q.reject(reason)
-        })
-      } else {
-        var mode = $rootScope.fakeWorkmode || 0
-        q.resolve(mode)
-      }
-      return q.promise
-    },
-    setWorkmode: function (mode) {
-      if($rootScope.online) {
-        var hexs = [0xb0, 0xb0]
-        if(mode == 'saving') {
-          hexs[0] = 0xb1
-          hexs[1] = 0xb1
-        } else if(mode == 'climbing') {
-          hexs[0] = 0xb2
-          hexs[1] = 0xb2
-        }
-        sendOrder(hexs)
-      } else {
-        $rootScope.fakeWorkmode = mode
-      }
-    },
     device: function () {
       var q = $q.defer()
       var service = services.device
@@ -456,4 +426,22 @@ angular.module('ebike.services', [])
       return q.promise
     }
   }
+  bike.workmode = $localstorage.get(keys.workmode, 0)
+  bike.setWorkmode = function (mode) {
+    bike.workmode = mode
+    $localstorage.set(keys.workmode, mode)
+    if($rootScope.online) {
+      var hexs = [0xb0, 0xb0]
+      if(mode == 1) {
+        hexs[0] = 0xb1
+        hexs[1] = 0xb1
+      } else if(mode == 2) {
+        hexs[0] = 0xb2
+        hexs[1] = 0xb2
+      }
+      sendOrder(hexs)
+    }
+  }
+  
+  return bike
 })

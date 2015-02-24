@@ -30,13 +30,13 @@
     </div>
     <div class="state">
       <div class="row">
-        <a class="col-33 button-large" ng-class="{active: workmode === 1}" ng-click="switchWorkmode(1)">
+        <a class="col-33 button-large" ng-class="{active: bike.workmode == 1}" ng-click="bike.setWorkmode(1)">
           <img src="img/downhill.png">省电
         </a>
-        <a class="col-33 button-large" ng-class="{active: workmode === 0}" ng-click="switchWorkmode(0)">
+        <a class="col-33 button-large" ng-class="{active: bike.workmode == 0}" ng-click="bike.setWorkmode(0)">
           <img src="img/normal.png">正常
         </a>
-        <a class="col-33 button-large" ng-class="{active: workmode === 2}" ng-click="switchWorkmode(2)">
+        <a class="col-33 button-large" ng-class="{active: bike.workmode == 2}" ng-click="bike.setWorkmode(2)">
           <img src="img/uphill.png">爬坡
         </a>
       </div>

@@ -14,10 +14,10 @@
       </div>
       <div class="col-25 round-button round-button-lg">
         <div class="round-button-circle">
-          <a>
-            <h1 ng-show="workmode == 1">省电</h1>
-            <h1 ng-show="workmode == 0">正常</h1>
-            <h1 ng-show="workmode == 2">爬坡</h1>
+          <a ng-click="switchWorkmode()">
+            <h1 ng-if="bike.workmode == 1">省电</h1>
+            <h1 ng-if="bike.workmode == 0">正常</h1>
+            <h1 ng-if="bike.workmode == 2">爬坡</h1>
             模式
           </a>
         </div>
