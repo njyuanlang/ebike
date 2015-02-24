@@ -279,7 +279,7 @@ $half: round($loops / 2);
     width: 48%;
     height: 1.2em;
     background: red;
-    transform-origin: bottom right;
+    -webkit-transform-origin: bottom right;
   }
 }
 
@@ -288,7 +288,7 @@ $angularSpeed: 180deg/$maxSpeed;
 @for $i from 0 through $maxSpeed {
   .speed-gauge-#{$i} {
     $nextdeg: $i*$angularSpeed;
-    transform: rotate($nextdeg);
+    -webkit-transform: rotate($nextdeg);
   }
 }
 
