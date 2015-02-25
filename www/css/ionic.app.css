@@ -7646,10 +7646,10 @@ progress::-webkit-progress-value {
     background: black;
     border: 0 solid transparent;
     text-align: center; }
-    @media (device-height: 320px) {
+    @media (height: 320px) {
       .speed-gauge #speed-gauge-digital {
         bottom: -13em; } }
-    @media (device-height: 360px) {
+    @media (height: 360px) {
       .speed-gauge #speed-gauge-digital {
         bottom: -16em; } }
     .speed-gauge #speed-gauge-digital > h1 {
@@ -7662,10 +7662,10 @@ progress::-webkit-progress-value {
     height: 1.2em;
     background: red;
     -webkit-transform-origin: bottom right; }
-    @media (device-height: 320px) {
+    @media (height: 320px) {
       .speed-gauge #speed-gauge-pointer {
         bottom: -12em; } }
-    @media (device-height: 360px) {
+    @media (height: 360px) {
       .speed-gauge #speed-gauge-pointer {
         bottom: -14em; } }
 
