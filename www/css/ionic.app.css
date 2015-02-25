@@ -7635,28 +7635,39 @@ progress::-webkit-progress-value {
 
 .speed-gauge {
   position: relative;
-  width: 70%;
-  left: 15%; }
+  width: 80%;
+  left: 10%; }
   .speed-gauge #speed-gauge-digital {
-    border-radius: 10em 10em 0 0;
-    margin: 5% 0 0 20%;
+    border-radius: 12em 12em 0 0;
+    margin: 0% 0 0 23%;
     position: absolute;
-    width: 60%;
-    height: 10em;
+    width: 54%;
+    height: 12em;
     background: black;
     border: 0 solid transparent;
     text-align: center; }
+    @media (device-height: 320px) {
+      .speed-gauge #speed-gauge-digital {
+        bottom: -13em; } }
+    @media (device-height: 360px) {
+      .speed-gauge #speed-gauge-digital {
+        bottom: -16em; } }
     .speed-gauge #speed-gauge-digital > h1 {
       margin-top: 15%;
       font-size: 6em; }
   .speed-gauge #speed-gauge-pointer {
     -webkit-border-radius: 100% 0 0 100%;
     position: absolute;
-    margin: 33% 0 0 0;
     width: 48%;
     height: 1.2em;
     background: red;
     -webkit-transform-origin: bottom right; }
+    @media (device-height: 320px) {
+      .speed-gauge #speed-gauge-pointer {
+        bottom: -12em; } }
+    @media (device-height: 360px) {
+      .speed-gauge #speed-gauge-pointer {
+        bottom: -14em; } }
 
 .speed-gauge-0 {
   -webkit-transform: rotate(0deg); }

@@ -251,17 +251,25 @@ $half: round($loops / 2);
 // Speed Gauge pointer
 // -------------------------------
 
+$speed-gauge-height: 12em;
+
 .speed-gauge {
   position: relative;
-  width: 70%;
-  left: 15%;
+  width: 80%;
+  left: 10%;
   
   #speed-gauge-digital {
-    border-radius: 10em 10em 0 0;
-    margin: 5% 0 0 20%;
+    border-radius: $speed-gauge-height $speed-gauge-height 0 0;
+    margin: 0% 0 0 23%;
     position: absolute;
-    width: 60%;
-    height: 10em;
+    width: 54%;
+    height: $speed-gauge-height;
+    @media (device-height: 320px){
+      bottom: -13em;
+    }
+    @media (device-height: 360px){
+      bottom: -16em;
+    }
     background: black;
     border:0 solid transparent;
     text-align: center;
@@ -275,10 +283,15 @@ $half: round($loops / 2);
   #speed-gauge-pointer {
     -webkit-border-radius: 100% 0 0 100%;
     position: absolute;
-    margin: 33% 0 0 0;
     width: 48%;
     height: 1.2em;
     background: red;
+    @media (device-height: 320px){
+      bottom: -12em;
+    }
+    @media (device-height: 360px){
+      bottom: -14em;
+    }
     -webkit-transform-origin: bottom right;
   }
 }
