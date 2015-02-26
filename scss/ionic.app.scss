@@ -181,13 +181,13 @@ $backColor:                           #2f3439;
   position: relative;
   width: 140px;
   height: 140px;
+  margin: 0 auto;
   border-radius: 50%;
   border: 2px solid $backColor; // remove gradient color
   background-color: $barColor; // default 100%
 }
 
 .progress-radial-lg {
-  margin: 0 auto;
   width: 280px;
   height: 280px;
 }

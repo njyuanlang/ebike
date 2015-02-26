@@ -7291,12 +7291,12 @@ progress::-webkit-progress-value {
   position: relative;
   width: 140px;
   height: 140px;
+  margin: 0 auto;
   border-radius: 50%;
   border: 2px solid #2f3439;
   background-color: #56fa89; }
 
 .progress-radial-lg {
-  margin: 0 auto;
   width: 280px;
   height: 280px; }
 
