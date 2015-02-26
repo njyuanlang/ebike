@@ -5,7 +5,7 @@
   <ion-content has-header="true" class="scroll-bg padding">
     <div class="list card">
       <div class="item">
-        device: {{ device.sn }}
+        device: {{ device.serialNumber }}
       </div>
       <a class="item" ng-click="switchMode()">
         workmode: {{ device.workmode }}
@@ -14,25 +14,25 @@
     
     <div class="list card">
       <div class="item">
-        power: {{ realtime.power }}
+        power: {{ device.realtime.power }}  -- {{updated}}
       </div>
       <div class="item">
-        mileage: {{ realtime.mileage }}
+        mileage: {{ device.realtime.mileage }} -- {{updated}}
       </div>
       <div class="item">
-        speed: {{ realtime.speed }}
+        speed: {{ device.realtime.speed }} -- {{updated}}
       </div>
       <div class="item">
-        current: {{ realtime.current }}
+        current: {{ device.realtime.current }} -- {{updated}}
       </div>
       </div>
     </div>
 
     <div class="list card">
-      <a class="item" ng-click="test()">
+      <a class="item" ng-click="test('test')">
         test: {{ test.test }}
       </a>
-      <div class="item" ng-click="repair()">
+      <div class="item" ng-click="test('repair')">
         repair: {{ test.repair }}
       </div>
     </div>

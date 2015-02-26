@@ -1,16 +1,16 @@
-<ion-view hide-back-button="true" has-header="false" hide-nav-bar="true">
+<ion-view hide-back-button="true" has-header="false" hide-nav-bar="true" ng-init="init()">
   <ion-content class="cruise-bg">
     <div class="row padding">
       <div class="col-25">
-        <div class="progress-radial progress-radial-{{realtime.power}}">
+        <div class="progress-radial progress-radial-{{bike.realtime.power}}">
           <div class="overlay">
-            <h2>{{realtime.power}}<small>%</small></h2>
+            <h2>{{bike.realtime.power}}<small>%</small></h2>
             <label><small>剩余电量</small></label>
           </div>
         </div>
       </div>
       <div class="col-50">
-        <h1 class="text-center"><small>剩余</small> {{realtime.mileage}} <small>续航公里</small></h1>
+        <h1 class="text-center"><small>剩余</small> {{bike.realtime.mileage}} <small>续航公里</small></h1>
       </div>
       <div class="col-25 round-button round-button-lg">
         <div class="round-button-circle">
@@ -25,9 +25,9 @@
     </div>
     
     <div class="speed-gauge">
-      <div id="speed-gauge-pointer" class="speed-gauge-{{realtime.speed}}"></div>
+      <div id="speed-gauge-pointer" class="speed-gauge-{{bike.realtime.speed}}"></div>
       <div id="speed-gauge-digital">
-        <h1> {{realtime.speed}}<small>km/h</small></h1>
+        <h1> {{bike.realtime.speed}}<small>km/h</small></h1>
       </div>
 
     </div>

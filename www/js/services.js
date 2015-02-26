@@ -1,7 +1,17 @@
-angular.module('ebike.services', [])
+angular.module('ebike.services', ['ebike-services'])
 
 .factory('Util', function () {
+
+  var order = {
+    uuid: "00001C00-D102-11E1-9B23-00025B00A5A5",
+    order: "00001C01-D102-11E1-9B23-00025B00A5A5"
+  }
+  
   return {
+    sendOrder: function (hexs, bikeId) {
+      var value = Util.hexToBytes(hexs)
+      ble.write(bikeId, order.uuid, order.order, value) 
+    },
     getRandomInt: function(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     },
@@ -14,6 +24,13 @@ angular.module('ebike.services', [])
         array[i] = hexs[i]
        }
        return array.buffer;
+    },
+    save: function (name, value) {
+      var key = '$com.extensivepro.ebike$' + name
+      localStorage[key] = value || ''      
+    },
+    load: function (name, defaultValue) {
+      return localStorage['$com.extensivepro.ebike$' + name] || defaultValue
     }
   }
 })
@@ -122,23 +139,27 @@ angular.module('ebike.services', [])
     speed: function (successCb) {
       realtime.speed = realtime.speed || 80
       realtime.speed--
-      realtime.current = realtime.speed/5
+      realtime.current = Math.floor(realtime.speed/5)
+    }
+  }
+  
+  var noitficationCbs = {
+    power: function (result) {
+      var res = new Uint8Array(result) 
+      realtime.power = res[0]   
+      realtime.mileage = res[1]
+      $rootScope.$broadcast('realtime.update')
+    },
+    speed: function (result) {
+      var res = new Uint8Array(result) 
+      realtime.speed = res[0]
+      realtime.current = res[1]
     }
   }
   
   realtime.notify = function(bikeId, characteristic) {
     if($rootScope.online) {
-      ble.startNotification(bikeId, service.uuid, service[characteristic], function (result) {
-        if (characteristic === 'power') {
-          var res = new Uint8Array(result) 
-          realtime.power = res[0]
-          realtime.mileage = res[1]
-        } else if(characteristic === 'speed') {
-          var res = new Uint8Array(result) 
-          realtime.speed = res[0]
-          realtime.speed = res[1]
-        }
-      })
+      ble.startNotification(bikeId, service.uuid, service[characteristic], noitficationCbs[characteristic])
     } else {
       return $interval(function () {
         fakeCbs[characteristic]()
@@ -154,84 +175,185 @@ angular.module('ebike.services', [])
   return realtime
 })
 
-.factory('Tester', function ($localstorage, $rootScope, $interval, Util, $timeout, $q) {
+.factory('BLEDevice', function ($localstorage, $cordovaBLE, Reminder, RTMonitor, $rootScope, $q, Util, $timeout) {
+
+  var props = ['reminder', 'workmode', 'serialNumber']
+  
+  function BLEDevice(device) {
+    this.localId = device.id
+    this.name = device.name
+    var bike = $localstorage.getObject(this.localId)
+    this.reminder = bike.reminder || {
+      overload: true,
+      temperature: true,
+      voltage: true,
+      guard: true,
+    }
+    this.workmode = bike.workmode || 0
+    this.serialNumber = bike.serialNumber
+    this.realtime = RTMonitor
+  }
+  
+  BLEDevice.prototype.save = function () {
+    var bike = {}
+    for (var i = 0; i < props.length; i++) {
+      var key = props[i]
+      bike[key] = this[key]
+    }
+    $localstorage.setObject(this.localId, bike)
+  }
+  
+  BLEDevice.prototype.setWorkmode = function (mode) {
+    this.workmode = mode
+    if($rootScope.online) {
+      var hexs = [0xb0, 0xb0]
+      if(mode == 1) {
+        hexs[0] = 0xb1
+        hexs[1] = 0xb1
+      } else if(mode == 2) {
+        hexs[0] = 0xb2
+        hexs[1] = 0xb2
+      }
+      this.sendOrder(hexs)
+      this.save()
+    }
+  }
+  
+  BLEDevice.prototype.connect = function () {
+    var theSelf = this
+    return $cordovaBLE.connect(this.localId).then(function (result) {
+      theSelf.onConnect(result)
+      return result
+    })
+  }
+  
+  BLEDevice.prototype.onConnect = function (result) {
+    Reminder.startNotify(this.localId)
+    this.startMonitor()
+    if(!this.serialNumber) {
+      this.readSerialNumber()
+    }
+  }
+  
+  BLEDevice.prototype.autoconnect = function () {
+    var q = $q.defer()
+    var bikeId = this.localId
+    $cordovaBLE.isConnected(bikeId)
+    .then(function (result) {
+      return result
+    }, function (reason) {
+      return $cordovaBLE.connect(bikeId)
+    })
+    .then(function (result) {
+      RTMonitor.startNotifications(bikeId)
+      Reminder.startNotify(bikeId)
+      q.resolve(result)
+    }, q.reject)  
+    
+    return q.promise
+  }
+  
+  BLEDevice.prototype.disconnect = function () {
+    return $cordovaBLE.disconnect(this.localId)
+  }
+  
+  BLEDevice.prototype.readSerialNumber = function () {
+    var service = {
+      uuid: "00009000-D102-11E1-9B23-00025B00A5A5",
+      sn: "0000900A-D102-11E1-9B23-00025B00A5A5"
+    }
+    var theSelf = this
+    ble.read(this.localId, service.uuid, service.sn, function (result) {
+      theSelf.serialNumber = new Uint8Array(result)
+      theSelf.save()
+    })
+  }
+  
+  var order = {
+    uuid: "00001C00-D102-11E1-9B23-00025B00A5A5",
+    order: "00001C01-D102-11E1-9B23-00025B00A5A5"
+  }
+  BLEDevice.prototype.sendOrder = function (hexs) {  
+    var value = Util.hexToBytes(hexs)
+    ble.write(this.localId, order.uuid, order.order, value) 
+  }
+  
+  BLEDevice.prototype.startMonitor = function () {
+    RTMonitor.startNotifications(this.localId)
+  }
+  
   var service = {
     uuid: "0000B000-D102-11E1-9B23-00025B00A5A5",
     test: "0000B00A-D102-11E1-9B23-00025B00A5A5",
     repair: "0000B00B-D102-11E1-9B23-00025B00A5A5"
   }
-
-  var order = {
-    uuid: "00001C00-D102-11E1-9B23-00025B00A5A5",
-    order: "00001C01-D102-11E1-9B23-00025B00A5A5"
-  }
   
-  function sendOrder(hexs, bikeId) {
-    var value = Util.hexToBytes(hexs)
-    ble.write(bikeId, order.uuid, order.order, value)
-  }
-  
-  function test(bikeId, successCb, errorCb) {
+  BLEDevice.prototype.test = function (successCb, errorCb) {  
     if($rootScope.online) {
-      ble.startNotification(bikeId, service.uuid, service.test, function (result) {
+      ble.startNotification(this.localId, service.uuid, service.test, function (result) {
         successCb(new Uint8Array(result)[0])
       }, function (reason) {
         errorCb(reason)
       })
-      sendOrder([0x81, 0x81], bikeId)
+      this.sendOrder([0x81, 0x81])
     } else {
       $timeout(function () {
         successCb(12)
       }, 2000)
     }
   }
-  
-  function repair(bikeId, successCb, errorCb) {
+
+  BLEDevice.prototype.repair = function (successCb, errorCb) {
     if($rootScope.online) {
-      ble.startNotification(bikeId, service.uuid, service.repair, function (result) {
+      ble.startNotification(this.localId, service.uuid, service.repair, function (result) {
         successCb(new Uint8Array(result)[0])
       }, function (reason) {
         errorCb(reason)
       })
-      sendOrder([0x91, 0x91], bikeId)
+      this.sendOrder([0x91, 0x91])
     } else {
       $timeout(function () {
         successCb(8)
       }, 2000)
     }
   }
+
+  return BLEDevice
   
-  function health(bikeId) {
-    var q = $q.defer()
-    function score(result) {
-      var len = 4
-      var count = 0
-      for (var i = 0; i <= len; i++) {
-        if((result>>i)&0x1) count++
-      }
-      return (len-count)*25
-    }
-    test(bikeId, function (result) {
-      q.resolve(score(result))
-    }, function (reason) {
-      q.reject(reason)
-    })
-    return q.promise
-  }
-  
-  return {
-    health: health,
-    test: test,
-    repair: repair
-  }
 })
 
-.factory('TestTask', function (ActiveBike, $interval) {
+.service('ActiveBLEDevice', function ($localstorage, BLEDevice, $rootScope) {
+  var keys = {
+    activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
+  }
   
-  function TestTask() {
+  function getBLEDevice(device) {
+    return device.id ? new BLEDevice(device) : null
+  }
+  var _activeBike = getBLEDevice($localstorage.getObject(keys.activebike))
+  var _mockupBike = new BLEDevice({id: 'abc123', name: "mockup bike"})
+  var service = {
+    set: function (device) {
+      if($rootScope.online) {
+        _activeBike = getBLEDevice(device)
+        $localstorage.setObject(keys.activebike, device)
+      }
+    },
+    get: function () {
+      return $rootScope.online ? _activeBike : _mockupBike
+    }
+  }
+  
+  return service
+})
+
+.factory('TestTask', function ($q, $interval) {
+  
+  function TestTask(bike) {
+    this.bike = bike
     this.state = 'idle'
     this.prompt = ""
-    this.score = 0
+    this.score = 100
     this.items = [
       {id: "brake", "name": "刹车"},
       {id: "motor", "name": "电机"},
@@ -240,48 +362,48 @@ angular.module('ebike.services', [])
     ]
   }
   
-  TestTask.prototype.test = function () {
+  TestTask.prototype.startTest = function () {
     this.state = 'testing'
     this.prompt = "系统扫描中..."
-    initProgress(this.items, '检测中')
-
-    progressing(this.items)
+    this._onProgressing(this.items, '检测中')
 
     var theThis = this
-    ActiveBike.notify('test', 'test', function (result) {
-      if(result === 0xE) return
-      theThis.prompt = "扫描完成"
-      theThis.state = 'pass'
-      $interval.cancel(theThis.progressingPromise)
-      theThis.items.forEach(function (item) {
-        item.progress = 100
-        if(item.id === 'brake') item.error = result&0x1;
-        if(item.id === 'motor') item.error = (result&0x2)>>1;
-        if(item.id === 'controller') item.error = (result&0x4)>>2;
-        if(item.id === 'steering') item.error = (result&0x8)>>3;
-        item.desc = item.error?"故障":"正常"
-        if(theThis.state === 'pass' && item.error) theThis.state = 'fault'
-      })
-    })
-    
+    this.bike.test(function (result) {
+      theThis._onTestDone(result)
+    })   
   }
   
-  TestTask.prototype.repair = function () {
+  TestTask.prototype._onTestDone = function (result) {
+    if(result === 0xE) return
+    this._onProgressDone()
+    this.prompt = "扫描完成"
+    this.state = 'pass'
+    this.score = calulateScore(result)
+    this.items.forEach(function (item) {
+      item.progress = 100
+      if(item.id === 'brake') item.error = result&0x1;
+      if(item.id === 'motor') item.error = (result&0x2)>>1;
+      if(item.id === 'controller') item.error = (result&0x4)>>2;
+      if(item.id === 'steering') item.error = (result&0x8)>>3;
+      item.desc = item.error?"故障":"正常"
+      if(item.error) this.state = 'fault'
+    }, this)
+  }
+  
+  TestTask.prototype.startRepair = function () {
     this.state = 'repairing'
     this.prompt = "系统修复中..."
     var items = this.items.filter(function (item) {
       return item.error
     })
-    initProgress(items, '修复中')
-    
-    progressing(items)
+    this._onProgressing(items, '修复中')
     
     var theThis = this
-    ActiveBike.notify('test', 'repair', function (result) {
+    this.bike.repair(function (result) {
       if(result === 0xE) return
+      theThis._onProgressDone()
       theThis.prompt = "修复结束"
       theThis.state = 'done'
-      $interval.cancel(theThis.progressingPromise)
       items.forEach(function (item) {
         item.progress = 100
         if(item.id === 'brake') item.fixed = result&0x1;
@@ -293,16 +415,25 @@ angular.module('ebike.services', [])
     })
   }
   
-  return TestTask
+  TestTask.prototype.health = function () {
+    var q = $q.defer()
+    var theSelf = this
+    this.bike.test(function (result) {
+      theSelf.score = calulateScore(result)
+      q.resolve(theSelf.score)
+    }, function (reason) {
+      q.reject(reason)
+    })
+    return q.promise
+    
+  }
   
-  function initProgress(items, desc) {
+  TestTask.prototype._onProgressing = function (items, desc) {
     items.forEach(function (item) {
       item.progress = 0
       item.desc = desc
     })
-  }
-  
-  function progressing(items) {
+
     var activeEntityIndex = 0
     this.progressingPromise = $interval(function () {
       items.forEach(function (item) {
@@ -316,132 +447,19 @@ angular.module('ebike.services', [])
       })
     }, 50, false)
   }
-})
-
-.factory('ActiveBike', function ($localstorage, $rootScope, $cordovaBLE, $q, Reminder, RTMonitor, Util, Tester) {
-  var keys = {
-    activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB',
-    workmode: 'com.extensivepro.ebike.AD801FD0-D2FF-41A9-B5CF-468C8CB1311E'
+  
+  TestTask.prototype._onProgressDone = function () {
+    $interval.cancel(this.progressingPromise)
   }
-  var services = {
-    order: {
-      uuid: "00001C00-D102-11E1-9B23-00025B00A5A5",
-      order: "00001C01-D102-11E1-9B23-00025B00A5A5"
-    },
-    device: {
-      uuid: "00009000-D102-11E1-9B23-00025B00A5A5",
-      sn: "0000900A-D102-11E1-9B23-00025B00A5A5"
-    },
-    workmode: {
-      uuid: "0000E000-D102-11E1-9B23-00025B00A5A5",
-      workmode: "0000E00A-D102-11E1-9B23-00025B00A5A5"
+  
+  return TestTask
+  
+  function calulateScore(result) {
+    var len = 4
+    var count = 0
+    for (var i = 0; i <= len; i++) {
+      if((result>>i)&0x1) count++
     }
+    return (len-count)*25
   }
-  
-  function stringToBytes(string) {
-    var array = new Uint8Array(string.length);
-    for (var i = 0, l = string.length; i < l; i++) {
-      array[i] = string.charCodeAt(i);
-     }
-     return array.buffer;
-  }
-  
-  // ASCII only
-  function bytesToString(buffer) {
-    return String.fromCharCode.apply(null, new Uint8Array(buffer));
-  }
-  
-  function sendOrder(hexs, bikeId) {
-    var order = services.order
-    var value = Util.hexToBytes(hexs)
-    ble.write(bikeId, order.uuid, order.order, value)
-  }
-  
-  var bike = {
-    set: function (value) {
-      $localstorage.setObject(keys.activebike, value)
-    },
-    get: function () {
-      return $localstorage.getObject(keys.activebike)
-    },
-    scan: function (successCb, errorCb) {
-      ble.scan([], 10, successCb, errorCb)
-    },
-    connect: function (bike) {
-      var activeBike = bike || this.get()
-      this.set(activeBike)
-      return $cordovaBLE.connect(activeBike.id).then(function (result) {
-        Reminder.startNotify(activeBike.id)
-        RTMonitor.startNotifications(activeBike.id)
-        return result
-      })
-    },
-    disconnect: function () {
-      return $cordovaBLE.disconnect(this.get().id)
-    },
-    autoconnect: function () {
-      var q = $q.defer()
-      var bikeId = this.get().id
-      if(bikeId) {
-        $cordovaBLE.isConnected(bikeId)
-        .then(function (result) {
-          return result
-        }, function (reason) {
-          return $cordovaBLE.connect(bikeId)
-        })
-        .then(function (result) {
-          RTMonitor.startNotifications(activeBike.id)
-          Reminder.startNotify(bikeId)
-          q.resolve(result)
-        }, q.reject)        
-      } else {
-        q.reject('not found bike')
-      }
-      
-      return q.promise
-    },
-    realtime: function () {
-      RTMonitor.startNotifications(this.get().id)
-      return RTMonitor
-    },
-    notify: function (service, characteristic, successCb, errorCb) {
-      var bikeId = this.get().id
-      if(service === 'realtime') {
-        RTMonitor.notify(bikeId, characteristic, successCb, errorCb)
-      } else if (service === 'test') {
-        Tester[characteristic](bikeId, successCb, errorCb)
-      }
-    },
-    health: function () {
-      return Tester.health(this.get().id)
-    },
-    device: function () {
-      var q = $q.defer()
-      var service = services.device
-      ble.read(this.get().id, service.uuid, service.sn, function (result) {
-        q.resolve(new Uint8Array(result))
-      }, function (reason) {
-        q.reject(reason)
-      })
-      return q.promise
-    }
-  }
-  bike.workmode = $localstorage.get(keys.workmode, 0)
-  bike.setWorkmode = function (mode) {
-    bike.workmode = mode
-    $localstorage.set(keys.workmode, mode)
-    if($rootScope.online) {
-      var hexs = [0xb0, 0xb0]
-      if(mode == 1) {
-        hexs[0] = 0xb1
-        hexs[1] = 0xb1
-      } else if(mode == 2) {
-        hexs[0] = 0xb2
-        hexs[1] = 0xb2
-      }
-      sendOrder(hexs)
-    }
-  }
-  
-  return bike
 })

@@ -1,15 +1,21 @@
 controllers
 
-.controller('LoginCtrl', function($scope, $rootScope, $state, ActiveBike, $timeout) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, ActiveBLEDevice, $timeout) {
+  
   $scope.loginData = {}
   
   $scope.tryLogin = function (loginData) {
     $rootScope.online = true
-    ActiveBike.autoconnect().then(function (result) {
-      $state.go('home')
-    }, function (reason) {
+    $scope.device = ActiveBLEDevice.get()
+    if($scope.device) {
+      $scope.device.autoconnect().then(function (result) {
+        $state.go('home')
+      }, function (reason) {
+        $state.go('brands')
+      })
+    } else {
       $state.go('brands')
-    })
+    }
   }
 
   $scope.tryRegister = function (loginData) {
@@ -22,7 +28,7 @@ controllers
   
   $scope.init = function () {
     $timeout(function () {
-      ActiveBike.scan()
+      ble.scan([], 5)
     }, 1000)
   }
 })
@@ -31,7 +37,7 @@ controllers
 
 })
 
-.controller('AccountCtrl', function($scope, $state, ActiveBike) {
+.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice) {
   
   $scope.entity = {
     name: 'Guan Bo',
@@ -39,7 +45,7 @@ controllers
   }
 
   $scope.logout = function () {
-    ActiveBike.disconnect()
+    ActiveBLEDevice.get().disconnect()
     $state.go('login')
   }
 })

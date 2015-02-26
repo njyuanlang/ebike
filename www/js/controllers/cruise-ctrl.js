@@ -1,12 +1,14 @@
 controllers
 
-.controller('CruiseCtrl', function($scope, $state, ActiveBike) {
-  
-  $scope.realtime = ActiveBike.realtime()
-  $scope.bike = ActiveBike
+.controller('CruiseCtrl', function($scope, $state, ActiveBLEDevice) {
   
   $scope.switchWorkmode = function () {
-    ActiveBike.setWorkmode((++ActiveBike.workmode)%3)
+    $scope.bike.setWorkmode((++$scope.bike.workmode)%3)
+  }
+  
+  $scope.init = function () {
+    $scope.bike = ActiveBLEDevice.get()
+    $scope.bike.startMonitor()
   }
 
 })

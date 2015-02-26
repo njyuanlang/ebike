@@ -76,7 +76,7 @@ controllers
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, ActiveBike, $timeout, $ionicLoading) {
+.controller('BikesAddCtrl', function($scope, $state, BLEDevice, ActiveBLEDevice, $timeout, $ionicLoading) {
   
   $scope.entities = []
 
@@ -91,7 +91,7 @@ controllers
   
   function doScan() {
     $scope.entities = []
-    ActiveBike.scan(scanSuccessCb, scanErrorCb)
+    ble.scan([], 5, scanSuccessCb, scanErrorCb)
     $timeout(function () {
       $scope.$broadcast('scroll.refreshComplete')
     }, 5000)
@@ -99,8 +99,8 @@ controllers
   $scope.doScan = doScan
 
   $scope.selectEntity = function (item) {
-    
-    ActiveBike.connect(item)
+    var device = new BLEDevice(item)
+    device.connect()
     .then(function (result) {
       return $ionicLoading.show({
         template: '连接到爱车'+item.name,
@@ -114,6 +114,7 @@ controllers
       // alert(reason)
     })
     .then(function () {
+      ActiveBLEDevice.set(item)
       $state.go('home')
     })
     

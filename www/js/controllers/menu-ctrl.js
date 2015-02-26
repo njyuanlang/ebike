@@ -4,78 +4,39 @@ controllers
 
 })
 
-.controller('HelpCtrl', function($scope, $state, ActiveBike) {
-  $scope.realtime = {
-    power: 0,
-    mileage: 0,
-    speed: 0,
-    current: 0
-  }
+.controller('HelpCtrl', function($scope, $state, ActiveBLEDevice) {
+  
+  $scope.$on( 'realtime.update', function (event) {
+    var d = new Date()
+    $scope.updated = d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()
+  })
   
   $scope.test = {
     test: 0,
     repair: 0
   }
-  
-  $scope.device = {
-    sn: '999',
-    workmode: '123'
-  }
-  
-  function notify(service, characteristic) {
-    ActiveBike.notify(service, characteristic, function (result) {
-      $scope[service][characteristic] = result
+    
+  function test(method) {
+    $scope.device[method](function (result) {
       var d = new Date()
-      $scope[service][characteristic] += ' '+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()
+      test[method] = result+' '+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()
       $scope.$apply()
     }, function (reason) {
-      $scope[service][characteristic] = reason
+      test[method] = reason
       $scope.$apply()
     })
-  }
-  
-  function startNotify() {
-    notify('realtime', 'power')
-    notify('realtime', 'mileage')
-    notify('realtime', 'speed')
-    notify('realtime', 'current')
-  }
-
-  function test() {
-    notify('test', 'test')
-  }
-  function repair(argument) {
-    notify('test', 'repair')
-  }
-  
-  function read(fn, service, characteristic) {
-    ActiveBike[fn]().then(function (result) {
-      $scope[service][characteristic] = result || 0
-      $scope.$apply()
-    },function (reason) {
-      $scope[service][characteristic] = reason
-      $scope.$apply()
-    })
-  }
-  function device(argument) {
-    read('device', 'device', 'sn')
-    read('workmode', 'device', 'workmode')
   }
   
   $scope.refresh = function () {
-    device()
-    startNotify()
-    test()
-    repair()
+    $scope.device = ActiveBLEDevice.get()
+    $scope.device.startMonitor()
   }
   
   $scope.switchMode = function () {
-    ActiveBike.setWorkmode()
-    device()
+    $scope.device.setWorkmode((++$scope.device.workmode)%3)
   }
   
   $scope.test = test
-  $scope.repair = repair
 })
 
 .controller('MessagesCtrl', function($scope, $state, Reminder) {

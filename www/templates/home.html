@@ -9,24 +9,24 @@
   <ion-content class="scroll-bg">
     <div class="row row-responsive-sm">
       <div class="col col-25 round-button">
-        <div class="round-button-circle round-volume-{{healthScore}}">
+        <div class="round-button-circle round-volume-{{task.score}}">
           <a href="#/test" class="round-button">
-            <h3>{{healthScore}}<small>分</small></h3>
+            <h3>{{task.score}}<small>分</small></h3>
             检测
           </a>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="progress-radial progress-radial-lg progress-radial-{{realtime.power}}">
+      <div class="progress-radial progress-radial-lg progress-radial-{{bike.realtime.power}}">
         <div class="overlay">
-          <h1>{{realtime.power}}<small>%</small></h1>
+          <h1>{{bike.realtime.power}}<small>%</small></h1>
           <label>剩余电量</label>
         </div>
       </div>
     </div>
     <div class="row col padding">
-      <h1 class="text-center"><small>剩余</small> {{realtime.mileage}} <small>续航公里</small></h1>
+      <h1 class="text-center"><small>剩余</small> {{bike.realtime.mileage}} <small>续航公里</small></h1>
     </div>
     <div class="state">
       <div class="row">
