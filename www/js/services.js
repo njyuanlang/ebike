@@ -60,63 +60,6 @@ angular.module('ebike.services', ['ebike-services'])
   }
 })
 
-.factory('Reminder', function ($localstorage, $rootScope) {
-  var keys = {
-    overload: 'com.extensivepro.ebike.598DC984-D8FB-4620-ADD3-D871E6A40C51',
-    temperature: 'com.extensivepro.ebike.C4014443-9461-4DE8-AE61-4B5B2226D946',
-    voltage: 'com.extensivepro.ebike.CDF4843B-8C4D-4947-8FFB-7AA15B334F12',
-    guard: 'com.extensivepro.ebike.9C7FC6F5-6A4D-405E-BE07-3B7B8C2227FF',
-    config: 'com.extensivepro.ebike.9C122F58-2E16-4D93-BCBB-1B4B039D140D'
-  }
-  
-  var service = {
-    uuid: "0000A000-D102-11E1-9B23-00025B00A5A5",
-    msg: "0000A00A-D102-11E1-9B23-00025B00A5A5"
-  }
-  
-  var _config = $localstorage.getObject(keys.config)
-  _config.overload = _config.overload || {on:true, "name": "超载提醒"}
-  _config.temperature = _config.temperature || {on:true, "name": "温度过高提醒"}
-  _config.voltage = _config.voltage || {on:true, "name": "电瓶低电压提醒"}
-  _config.guard = _config.guard || {on:true, "name": "防盗提醒"}
-
-  return {
-    getConfig: function () {
-      return _config
-    },
-    setConfig: function (cfg) {
-      if(cfg) {
-        for(var key in cfg) {
-          _config[key] = cfg[key]
-        }
-        $localstorage.setObject(keys.config, _config)
-      }
-    },
-    startNotify: function (bikeId) {
-      return;
-      ble.startNotification(bikeId, service.uuid, service.msg, function (result) {
-        var res = new Uint8Array(result)
-        var date = new Date().toISOString()
-        if(_config.overload.on && res[0] & 0x1) {
-          $localstorage.pushObject(keys.overload, {created:date})
-        }
-        if(_config.temperature.on && res[0] & 0x2) {
-          $localstorage.pushObject(keys.temperature, {created:date})
-        }
-        if(_config.voltage.on && res[0] & 0x4) {
-          $localstorage.pushObject(keys.voltage, {created:date})
-        }
-        if(_config.guard.on && res[0] & 0x8) {
-          $localstorage.pushObject(keys.guard, {created:date})
-        }
-      })
-    },
-    getRemind: function (key) {
-      return $localstorage.getArray(keys[key])
-    }
-  }
-})
-
 .factory('RTMonitor', function ($localstorage, $rootScope, $interval, Util) {
   var service = {
     uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
@@ -175,7 +118,7 @@ angular.module('ebike.services', ['ebike-services'])
   return realtime
 })
 
-.factory('BLEDevice', function ($localstorage, $cordovaBLE, Reminder, RTMonitor, $rootScope, $q, Util, $timeout) {
+.factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $timeout) {
 
   var props = ['reminder', 'workmode', 'serialNumber']
   
@@ -223,8 +166,8 @@ angular.module('ebike.services', ['ebike-services'])
   }
   
   BLEDevice.prototype.onConnect = function (result) {
-    Reminder.startNotify(this.localId)
     this.startMonitor()
+    this.startReminder()
     if(!this.serialNumber) {
       this.readSerialNumber()
     }
@@ -275,6 +218,60 @@ angular.module('ebike.services', ['ebike-services'])
   
   BLEDevice.prototype.startMonitor = function () {
     RTMonitor.startNotifications(this.localId)
+  }
+
+  var reminder = {
+    uuid: "0000A000-D102-11E1-9B23-00025B00A5A5",
+    msg: "0000A00A-D102-11E1-9B23-00025B00A5A5"
+  }
+  BLEDevice.prototype.startReminder = function () {
+    if($rootScope.online) {
+      ble.startNotification(this.localId, reminder.uuid, reminder.msg, function (result) {
+        var res = new Uint8Array(result)
+        var date = new Date().toISOString()
+        localforage.config({name: "ebike.reminder"})
+        localforage.setItem(Date.now(), res[0])
+        // if(this.reminder.overload && res[0] & 0x1) {
+        //   $localstorage.pushObject(keys.overload, {created:date})
+        // }
+        // if(this.reminder.temperature && res[0] & 0x2) {
+        //   $localstorage.pushObject(keys.temperature, {created:date})
+        // }
+        // if(this.reminder.voltage && res[0] & 0x4) {
+        //   $localstorage.pushObject(keys.voltage, {created:date})
+        // }
+        // if(this.reminder.guard && res[0] & 0x8) {
+        //   $localstorage.pushObject(keys.guard, {created:date})
+        // }
+      })
+    } else {
+      localforage.config({name: "ebike.reminder"})
+      localforage.clear().then(function (err) {
+        for (var i = 0; i < 20; i++) {
+          localforage.setItem(Date.now()+'', 15)
+        }
+      })
+    }
+  }
+  
+  BLEDevice.prototype.fetchReminders = function (type, limit, skip) {
+    var reminders = []
+    limit = limit || 10
+    localforage.config({name: "ebike.reminder"})
+    return localforage.length()
+    .then(function (numberOfKeys) {
+      var iterations = 0
+      return localforage.iterate(function (value, key) {
+        if(reminders.length < limit) {
+          reminders.push(key)
+        } else {
+          return reminders
+        }
+        if(++iterations === numberOfKeys) {
+          return reminders
+        }
+      })
+    })    
   }
   
   var service = {

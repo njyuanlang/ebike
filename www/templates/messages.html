@@ -1,4 +1,4 @@
-<ion-view title="消息提醒">
+<ion-view title="消息提醒" ng-init="init()">
   <ion-nav-buttons side="right">
     <a class="button" ng-click="doSetting()">{{rightButtonTitle}}</a>
   </ion-nav-buttons>
@@ -7,12 +7,12 @@
     
     <div class="list">
       <a ng-if="!setting" ng-repeat="item in entities" href="#/messages/{{item}}" class="item item-icon-right">
-        {{ config[item].name }} 
+        {{ item | reminderDic}} 
         <i class="icon ion-ios7-arrow-right"></i>
       </a>
       
-      <ion-toggle ng-if="setting" ng-repeat="item in entities" ng-model="config[item].on" ng-checked="config[item].on">
-        {{ config[item].name }} 
+      <ion-toggle ng-if="setting" ng-repeat="item in entities" ng-model="bike.reminder[item]" ng-checked="bike.reminder[item]">
+        {{ item | reminderDic}} 
       </ion-toggle>
     </div>
     

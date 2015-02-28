@@ -39,17 +39,14 @@ controllers
   $scope.test = test
 })
 
-.controller('MessagesCtrl', function($scope, $state, Reminder) {
+.controller('MessagesCtrl', function($scope, $state, ActiveBLEDevice) {
 
   $scope.setting = false;
   $scope.rightButtonTitle = '设置'
-  
-  $scope.config = Reminder.getConfig()
-  $scope.entities = Object.keys($scope.config)
-  
+    
   $scope.doSetting = function () {
     if($scope.setting) {
-      Reminder.setConfig($scope.config)
+      $scope.bike.save()
       $scope.rightButtonTitle = '设置'
     } else {
       $scope.rightButtonTitle = '保存'
@@ -57,11 +54,20 @@ controllers
     $scope.setting = !$scope.setting;
   }
   
+  $scope.init = function () {
+    $scope.bike = ActiveBLEDevice.get()
+    $scope.bike.startReminder()
+    $scope.entities = Object.keys($scope.bike.reminder)
+  }
+  
 })
 
-.controller('MessagesDetailCtrl', function($scope, $state, $stateParams, Reminder) {
-  var type = $stateParams.type
-  var remind = Reminder.getConfig()[type]
-  $scope.entities = Reminder.getRemind(type).reverse()
-  $scope.title = remind.name
+.controller('MessagesDetailCtrl', function($scope, $state, $stateParams, ActiveBLEDevice) {
+  $scope.type = $stateParams.type
+  $scope.init = function () {
+    $scope.bike = ActiveBLEDevice.get()
+    $scope.bike.fetchReminders($scope.type).then(function (result) {
+      $scope.entities = result
+    })
+  }
 })

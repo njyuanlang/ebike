@@ -1,9 +1,9 @@
-<ion-view title="{{title}}">
+<ion-view title="{{type | reminderDic}}" ng-init="init()">
   <ion-content has-header="true" class="scroll-bg padding">
     
     <div class="list">
       <div ng-repeat="item in entities" class="item">
-        {{ item.created }}
+        {{ item }}
       </div>
     </div>
     
