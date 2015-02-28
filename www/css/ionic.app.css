@@ -7072,6 +7072,12 @@ progress::-webkit-progress-value {
     border: 3px solid green;
     background: transparent;
     padding-bottom: 100%; }
+    .container .outer .score {
+      position: absolute;
+      font-size: 5em;
+      color: orange;
+      top: 22%;
+      left: 33%; }
     .container .outer .inner-1 {
       border-radius: 50%;
       position: absolute;

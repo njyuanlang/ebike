@@ -370,7 +370,7 @@ angular.module('ebike.services', ['ebike-services'])
     var theThis = this
     this.bike.test(function (result) {
       theThis._onTestDone(result)
-    })   
+    })
   }
   
   TestTask.prototype._onTestDone = function (result) {
@@ -404,6 +404,7 @@ angular.module('ebike.services', ['ebike-services'])
       theThis._onProgressDone()
       theThis.prompt = "修复结束"
       theThis.state = 'done'
+      theThis.score += 100-calulateScore(result)
       items.forEach(function (item) {
         item.progress = 100
         if(item.id === 'brake') item.fixed = result&0x1;

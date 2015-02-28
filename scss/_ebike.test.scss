@@ -52,6 +52,14 @@ $inner-percentage:          0.1;
     background: transparent;
     padding-bottom: 100%;
     
+    .score {
+      position: absolute;
+      font-size: 5em;
+      color: orange;
+      top: 22%;
+      left: 33%;
+    }
+    
     @for $i from 1 through 4 {
       .inner-#{$i} {
         border-radius: 50%;
