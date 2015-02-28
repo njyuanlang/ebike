@@ -207,13 +207,8 @@ angular.module('ebike.services', ['ebike-services'])
     this.workmode = mode
     if($rootScope.online) {
       var hexs = [0xb0, 0xb0]
-      if(mode == 1) {
-        hexs[0] = 0xb1
-        hexs[1] = 0xb1
-      } else if(mode == 2) {
-        hexs[0] = 0xb2
-        hexs[1] = 0xb2
-      }
+      hexs[0] += mode
+      hexs[1] += mode
       this.sendOrder(hexs)
       this.save()
     }

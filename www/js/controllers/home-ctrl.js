@@ -5,9 +5,6 @@ controllers
   $scope.$on( 'realtime.update', function (event) {
   })
     
-  $scope.batteryDieEndure = function () {
-  }
-  
   $scope.init = function () {
     $scope.bike = ActiveBLEDevice.get()
     $scope.task = new TestTask($scope.bike)

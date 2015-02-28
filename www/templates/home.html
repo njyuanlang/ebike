@@ -3,7 +3,7 @@
     <a class="button button-icon icon ion-navicon" href="#/menu"></a>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <a class="button" ng-click="batteryDieEndure()">无电续航</a>
+    <a class="button" ng-click="bike.setWorkmode(9)" ng-if="bike.realtime.power < 20">无电续航</a>
   </ion-nav-buttons>
   
   <ion-content class="scroll-bg">
@@ -19,9 +19,13 @@
     </div>
     <div class="row">
       <div class="progress-radial progress-radial-lg progress-radial-{{bike.realtime.power}}">
-        <div class="overlay">
-          <h1>{{bike.realtime.power}}<small>%</small></h1>
-          <label>剩余电量</label>
+        <div class="overlay" ng-if="bike.workmode != 9">
+            <h1>{{bike.realtime.power}}<small>%</small></h1>
+            <label>剩余电量</label>
+        </div>
+        <div class="overlay" ng-if="bike.workmode == 9">
+          <h3 class="assertive">无电续航模式</h3>
+          此功能仅限本次使用，请尽快充电！
         </div>
       </div>
     </div>
@@ -30,7 +34,7 @@
     </div>
     <div class="state">
       <div class="row">
-        <a class="col-33 button-large" ng-class="{active: bike.workmode == 1}" ng-click="bike.setWorkmode(1)">
+        <a class="col-33 button-large" ng-class="{active: bike.workmode%8 == 1}" ng-click="bike.setWorkmode(1)">
           <img src="img/downhill.png">省电
         </a>
         <a class="col-33 button-large" ng-class="{active: bike.workmode == 0}" ng-click="bike.setWorkmode(0)">
