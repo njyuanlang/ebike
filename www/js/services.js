@@ -2,16 +2,7 @@ angular.module('ebike.services', ['ebike-services'])
 
 .factory('Util', function () {
 
-  var order = {
-    uuid: "00001C00-D102-11E1-9B23-00025B00A5A5",
-    order: "00001C01-D102-11E1-9B23-00025B00A5A5"
-  }
-  
   return {
-    sendOrder: function (hexs, bikeId) {
-      var value = Util.hexToBytes(hexs)
-      ble.write(bikeId, order.uuid, order.order, value) 
-    },
     getRandomInt: function(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     },
@@ -24,13 +15,6 @@ angular.module('ebike.services', ['ebike-services'])
         array[i] = hexs[i]
        }
        return array.buffer;
-    },
-    save: function (name, value) {
-      var key = '$com.extensivepro.ebike$' + name
-      localStorage[key] = value || ''      
-    },
-    load: function (name, defaultValue) {
-      return localStorage['$com.extensivepro.ebike$' + name] || defaultValue
     }
   }
 })
@@ -60,7 +44,7 @@ angular.module('ebike.services', ['ebike-services'])
   }
 })
 
-.factory('RTMonitor', function ($localstorage, $rootScope, $interval, Util) {
+.factory('RTMonitor', function ($localstorage, $rootScope, $interval) {
   var service = {
     uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
     power: "0000D00A-D102-11E1-9B23-00025B00A5A5",// power mileage
@@ -176,6 +160,7 @@ angular.module('ebike.services', ['ebike-services'])
   BLEDevice.prototype.autoconnect = function () {
     var q = $q.defer()
     var bikeId = this.localId
+    var kSelf = this
     $cordovaBLE.isConnected(bikeId)
     .then(function (result) {
       return result
@@ -183,8 +168,7 @@ angular.module('ebike.services', ['ebike-services'])
       return $cordovaBLE.connect(bikeId)
     })
     .then(function (result) {
-      RTMonitor.startNotifications(bikeId)
-      Reminder.startNotify(bikeId)
+      kSelf.onConnect(result)
       q.resolve(result)
     }, q.reject)  
     
@@ -225,30 +209,28 @@ angular.module('ebike.services', ['ebike-services'])
     msg: "0000A00A-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.startReminder = function () {
+    var config = this.reminder
+    function resolveReminder(result) {
+      var reminder = {
+        overload: config.overload && result & 0x1,
+        temperature: config.temperature && result & 0x2,
+        voltage: config.temperature && result & 0x4,
+        guard: config.temperature && result & 0x8
+      }
+      return reminder
+    }
     if($rootScope.online) {
       ble.startNotification(this.localId, reminder.uuid, reminder.msg, function (result) {
         var res = new Uint8Array(result)
         var date = new Date().toISOString()
         localforage.config({name: "ebike.reminder"})
-        localforage.setItem(Date.now(), res[0])
-        // if(this.reminder.overload && res[0] & 0x1) {
-        //   $localstorage.pushObject(keys.overload, {created:date})
-        // }
-        // if(this.reminder.temperature && res[0] & 0x2) {
-        //   $localstorage.pushObject(keys.temperature, {created:date})
-        // }
-        // if(this.reminder.voltage && res[0] & 0x4) {
-        //   $localstorage.pushObject(keys.voltage, {created:date})
-        // }
-        // if(this.reminder.guard && res[0] & 0x8) {
-        //   $localstorage.pushObject(keys.guard, {created:date})
-        // }
+        localforage.setItem(Date.now(), resolveReminder(res[0]))
       })
     } else {
       localforage.config({name: "ebike.reminder"})
       localforage.clear().then(function (err) {
         for (var i = 0; i < 20; i++) {
-          localforage.setItem(Date.now()+'', 15)
+          localforage.setItem(Date.now()+'', resolveReminder(7))
         }
       })
     }
@@ -258,12 +240,13 @@ angular.module('ebike.services', ['ebike-services'])
     var reminders = []
     limit = limit || 10
     localforage.config({name: "ebike.reminder"})
+    var kSelf = this
     return localforage.length()
     .then(function (numberOfKeys) {
       var iterations = 0
       return localforage.iterate(function (value, key) {
-        if(reminders.length < limit) {
-          reminders.push(key)
+        if(reminders.length < limit && value[type]) {
+          reminders.push(parseInt(key, 10))
         } else {
           return reminders
         }

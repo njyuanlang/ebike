@@ -7,15 +7,11 @@ controllers
   $scope.tryLogin = function (loginData) {
     $rootScope.online = true
     $scope.device = ActiveBLEDevice.get()
-    if($scope.device) {
-      $scope.device.autoconnect().then(function (result) {
-        $state.go('home')
-      }, function (reason) {
-        $state.go('brands')
-      })
-    } else {
+    $scope.device.autoconnect().then(function (result) {
+      $state.go('home')
+    }, function (reason) {
       $state.go('brands')
-    }
+    })
   }
 
   $scope.tryRegister = function (loginData) {

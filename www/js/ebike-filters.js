@@ -14,3 +14,10 @@ angular.module('ebike.filters',[])
     return dictionary[key];
   }
 })
+
+.filter("dateFormat", function () {
+  return function (date, format) {
+    format = format || 'YYYY-MM-DD HH:mm:ss'
+    return moment(date).format(format)
+  }
+})
