@@ -59,6 +59,7 @@ $item-divider-color:              #ddd !default;
 
 //$item-light-bg:                   transparent !default;
 
+
 // Backgrounds
 // -------------------------------
 
@@ -68,17 +69,20 @@ $user-bg:                       '../img/user-bg.png';
 
 .scroll-bg {
   background: url($default-bg) no-repeat center center fixed;
-  background-size: cover;
+  -webkit-background-size: cover!important;
+  background-size: cover!important;
 }
 
 .cruise-bg {
   background: url($cruise-bg) no-repeat center center fixed;
-  background-size: cover;
+  -webkit-background-size: cover!important;
+  background-size: cover!important;
 }
 
 .user-bg {
   background: url($user-bg) no-repeat center center;
-  background-size: cover;
+  -webkit-background-size: cover!important;
+  background-size: cover!important;
 }
 
 // Menus

@@ -16,15 +16,18 @@ $dark:                            #444 !default;
 */
 .scroll-bg {
   background: url('../img/bg.png') no-repeat center center fixed;
-  background-size: cover; }
+  -webkit-background-size: cover !important;
+  background-size: cover !important; }
 
 .cruise-bg {
   background: url('../img/cruise-bg.png') no-repeat center center fixed;
-  background-size: cover; }
+  -webkit-background-size: cover !important;
+  background-size: cover !important; }
 
 .user-bg {
   background: url('../img/user-bg.png') no-repeat center center;
-  background-size: cover; }
+  -webkit-background-size: cover !important;
+  background-size: cover !important; }
 
 .menu-grid .row .col {
   border: 1px solid #505866;
