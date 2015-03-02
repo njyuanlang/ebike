@@ -205,8 +205,8 @@ angular.module('ebike.services', ['ebike-services'])
   }
 
   var reminder = {
-    uuid: "0000A000-D102-11E1-9B23-00025B00A5A5",
-    msg: "0000A00A-D102-11E1-9B23-00025B00A5A5"
+    uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
+    msg: "0000D00C-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.startReminder = function () {
     var config = this.reminder
@@ -236,25 +236,26 @@ angular.module('ebike.services', ['ebike-services'])
     }
   }
   
-  BLEDevice.prototype.fetchReminders = function (type, limit, skip) {
+  BLEDevice.prototype.fetchReminders = function (type) {
+    var q = $q.defer()
     var reminders = []
-    limit = limit || 10
     localforage.config({name: "ebike.reminder"})
-    var kSelf = this
-    return localforage.length()
-    .then(function (numberOfKeys) {
-      var iterations = 0
-      return localforage.iterate(function (value, key) {
-        if(reminders.length < limit && value[type]) {
-          reminders.push(parseInt(key, 10))
-        } else {
-          return reminders
-        }
-        if(++iterations === numberOfKeys) {
-          return reminders
-        }
-      })
+    localforage.keys()
+    .then(function (keys) {
+      var limit = Math.min(20, keys.length)
+      var fetchKeys = keys.splice(0-limit).reverse()
+      Promise.all(fetchKeys.map(function (key) {
+        return localforage.getItem(key).then(function (value) {
+          if(value[type]) {
+            reminders.push(parseInt(key, 10))
+          }
+          return value
+        })
+      })).then(function (result) {
+        q.resolve(reminders)
+      })      
     })    
+    return q.promise
   }
   
   var service = {
