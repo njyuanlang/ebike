@@ -104,6 +104,7 @@ $user-bg:                       '../img/user-bg.png';
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 @import "ebike.test";
+@import "www/lib/sass-mediaqueries/media-queries";
 
 // Round Button Circle
 // -------------------------------
@@ -259,32 +260,33 @@ $half: round($loops / 2);
 // Speed Gauge pointer
 // -------------------------------
 
-$speed-gauge-height: 12em;
+$speed-gauge-height: 11em;
 
 .speed-gauge {
   position: relative;
   width: 80%;
+  @media (height: 320px){
+    height: 12em;
+  }
+  @media (height: 360px){
+    height: 15em;
+  }
   left: 10%;
-  
+
   #speed-gauge-digital {
     border-radius: $speed-gauge-height $speed-gauge-height 0 0;
     margin: 0% 0 0 23%;
     position: absolute;
     width: 54%;
     height: $speed-gauge-height;
-    @media (height: 320px){
-      bottom: -13em;
-    }
-    @media (height: 360px){
-      bottom: -16em;
-    }
     background: black;
     border:0 solid transparent;
     text-align: center;
+    bottom: 0;
     
     > h1 {
       margin-top:15%;
-      font-size: 6em;
+      font-size: 5em;
     }
   }
   
@@ -294,12 +296,7 @@ $speed-gauge-height: 12em;
     width: 48%;
     height: 1.2em;
     background: red;
-    @media (height: 320px){
-      bottom: -12em;
-    }
-    @media (height: 360px){
-      bottom: -14em;
-    }
+    bottom: 0em;    
     -webkit-transform-origin: bottom right;
   }
 }
@@ -312,4 +309,3 @@ $angularSpeed: 180deg/$maxSpeed;
     -webkit-transform: rotate($nextdeg);
   }
 }
-

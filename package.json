@@ -17,6 +17,7 @@
   "cordovaPlugins": [
     "https://github.com/don/cordova-plugin-ble-central.git",
     "net.yoik.cordova.plugins.screenorientation",
-    "org.apache.cordova.splashscreen"
+    "org.apache.cordova.splashscreen",
+    "org.apache.cordova.statusbar"
   ]
 }

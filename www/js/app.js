@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.services', 'ebike.filters'])
 
-.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen) {
+.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,8 +19,10 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     if(screen.lockOrientation) {
       window.addEventListener("orientationchange", function() {
         if(Math.abs(window.orientation) === 90) {
+          $cordovaStatusbar.hide()
           $state.go('cruise')
         } else {
+          $cordovaStatusbar.show()
           $state.go('home')
         }
       }, false);
