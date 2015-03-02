@@ -1,4 +1,4 @@
-angular.module('ebike.services', ['ebike-services'])
+angular.module('ebike.services', [])
 
 .factory('Util', function () {
 
