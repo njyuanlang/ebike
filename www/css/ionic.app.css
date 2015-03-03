@@ -7343,64 +7343,64 @@ progress::-webkit-progress-value {
  * Mixin for progress-% class
  * ------------------------------------- */
 .progress-radial-0 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(180deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(180deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-1 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(176.4deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(176.4deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-2 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(172.8deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(172.8deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-3 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(169.2deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(169.2deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-4 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(165.6deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(165.6deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-5 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(162deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(162deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-6 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(158.4deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(158.4deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-7 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(154.8deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(154.8deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-8 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(151.2deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(151.2deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-9 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(147.6deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(147.6deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-10 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(144deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(144deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-11 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(140.4deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(140.4deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-12 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(136.8deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(136.8deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-13 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(133.2deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(133.2deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-14 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(129.6deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(129.6deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-15 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(126deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(126deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-16 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(122.4deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(122.4deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-17 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(118.8deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(118.8deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-18 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(115.2deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(115.2deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-19 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(111.6deg, #2f3439 50%, #56fa89 50%); }
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(111.6deg, #2f3439 50%, #ef473a 50%); }
 
 .progress-radial-20 {
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(108deg, #2f3439 50%, #56fa89 50%); }

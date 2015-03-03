@@ -176,6 +176,7 @@ $loops2: round(100 / $step2);
 // Colors
 
 $barColor:                            $positive;
+$waringColor:                         $assertive;
 $backColor:                           #2f3439;
 
 /* -------------------------------------
@@ -242,11 +243,18 @@ $step: 1; // step of % for created classes
 $loops: round(100 / $step);
 $increment: 360 / $loops;
 $half: round($loops / 2);
+$percent20: round($loops/5);
+
 @for $i from 0 through $loops {
   .progress-radial-#{$i*$step} {
     @if $i < $half {
       $nextdeg: 180deg - ( $increment * $i );
-      background-image: -webkit-linear-gradient(0deg, $backColor 50%, transparent 50%), -webkit-linear-gradient($nextdeg, $backColor 50%, $barColor 50%);
+      @if $i < $percent20 {
+        background-image: -webkit-linear-gradient(0deg, $backColor 50%, transparent 50%), -webkit-linear-gradient($nextdeg, $backColor 50%, $waringColor 50%);
+      }
+      @else {
+        background-image: -webkit-linear-gradient(0deg, $backColor 50%, transparent 50%), -webkit-linear-gradient($nextdeg, $backColor 50%, $barColor 50%);
+      }
     }
     @else {
       $nextdeg: 360deg - $increment * $i;

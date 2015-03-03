@@ -40,9 +40,11 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
       })
     }
     
-    setTimeout(function() {
-      navigator.splashscreen.hide()
-    }, 100);
+    if(navigator.splashscreen) {
+      setTimeout(function() {
+        navigator.splashscreen.hide()
+      }, 100);
+    }
   });  
   
 })
