@@ -102,7 +102,7 @@ angular.module('ebike.services', [])
   return realtime
 })
 
-.factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $timeout) {
+.factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval) {
 
   var props = ['reminder', 'workmode', 'serialNumber']
   
@@ -264,33 +264,68 @@ angular.module('ebike.services', [])
     repair: "0000B00B-D102-11E1-9B23-00025B00A5A5"
   }
   
-  BLEDevice.prototype.test = function (successCb, errorCb) {  
+  function testTaskCb(result, task) {
+    if(result === 0xE) return
+    
+    var states = ['pass', 'error']
+    var items = task.items.filter(function (item, index) {
+      if(item.state === 'error') {
+        item.state = 'repairing'
+        item.progress = 0
+      }
+      item.index = index
+      return item.state === 'repairing' || item.state === 'testing'
+    })
+    if(task.state === 'repairing') {
+      states = ['broken', 'repaired']
+    }
+    var itemLen = items.length
+    var i = 0
+    var count = 0
+    this.testInterval = $interval(function () {
+      var item = items[i]
+      ++item.progress
+      if(item.progress === 100) {
+        item.state = states[(result>>item.index)&0x1]
+        if(item.state === 'pass' || item.state === 'repaired') count++
+        if(++i >= itemLen) {
+          $interval.cancel(this.testInterval)
+          if(task.state === 'testing') {
+            task.state = count === itemLen ? 'pass':'error'
+          } else {
+            task.state = count === itemLen ? 'repaired':'broken'
+          }
+          task.score += Math.round(count*100/task.items.length)
+          console.log(task)
+        }
+      }
+    }, 1)
+  }
+  
+  BLEDevice.prototype.test = function (task) {
+    task.state = 'testing'
+    task.score = 0
+
     if($rootScope.online) {
       ble.startNotification(this.localId, service.uuid, service.test, function (result) {
-        successCb(new Uint8Array(result)[0])
-      }, function (reason) {
-        errorCb(reason)
+        testTaskCb(new Uint8Array(result)[0], task)
       })
       this.sendOrder([0x81, 0x81])
     } else {
-      $timeout(function () {
-        successCb(12)
-      }, 2000)
+      testTaskCb(12, task)
     }
   }
 
-  BLEDevice.prototype.repair = function (successCb, errorCb) {
+  BLEDevice.prototype.repair = function (task) {
+    task.state = 'repairing'
+    
     if($rootScope.online) {
       ble.startNotification(this.localId, service.uuid, service.repair, function (result) {
-        successCb(new Uint8Array(result)[0])
-      }, function (reason) {
-        errorCb(reason)
+        testTaskCb(new Uint8Array(result)[0], task)
       })
       this.sendOrder([0x91, 0x91])
     } else {
-      $timeout(function () {
-        successCb(8)
-      }, 2000)
+      testTaskCb(8, task)
     }
   }
 
@@ -325,118 +360,16 @@ angular.module('ebike.services', [])
 
 .factory('TestTask', function ($q, $interval) {
   
-  function TestTask(bike) {
-    this.bike = bike
+  function TestTask() {
     this.state = 'idle'
-    this.prompt = ""
-    this.score = 100
+    this.score = 0
     this.items = [
-      {id: "brake", "name": "刹车"},
-      {id: "motor", "name": "电机"},
-      {id: "controller", "name": "控制器"},
-      {id: "steering", "name": "转把"}
+      {id: "brake", progress:0, state:'testing'},
+      {id: "motor", progress:0, state:'testing'},
+      {id: "controller", progress:0, state:'testing'},
+      {id: "steering", progress:0, state:'testing'}
     ]
   }
-  
-  TestTask.prototype.startTest = function () {
-    this.state = 'testing'
-    this.prompt = "系统扫描中..."
-    this._onProgressing(this.items, '检测中')
-
-    var theThis = this
-    this.bike.test(function (result) {
-      theThis._onTestDone(result)
-    })
-  }
-  
-  TestTask.prototype._onTestDone = function (result) {
-    if(result === 0xE) return
-    this._onProgressDone()
-    this.prompt = "扫描完成"
-    this.state = 'pass'
-    this.score = calulateScore(result)
-    this.items.forEach(function (item) {
-      item.progress = 100
-      if(item.id === 'brake') item.error = result&0x1;
-      if(item.id === 'motor') item.error = (result&0x2)>>1;
-      if(item.id === 'controller') item.error = (result&0x4)>>2;
-      if(item.id === 'steering') item.error = (result&0x8)>>3;
-      item.desc = item.error?"故障":"正常"
-      if(item.error) this.state = 'fault'
-    }, this)
-  }
-  
-  TestTask.prototype.startRepair = function () {
-    this.state = 'repairing'
-    this.prompt = "系统修复中..."
-    var items = this.items.filter(function (item) {
-      return item.error
-    })
-    this._onProgressing(items, '修复中')
     
-    var theThis = this
-    this.bike.repair(function (result) {
-      if(result === 0xE) return
-      theThis._onProgressDone()
-      theThis.prompt = "修复结束"
-      theThis.state = 'done'
-      theThis.score += 100-calulateScore(result)
-      items.forEach(function (item) {
-        item.progress = 100
-        if(item.id === 'brake') item.fixed = result&0x1;
-        if(item.id === 'motor') item.fixed = (result&0x2)>>1;
-        if(item.id === 'controller') item.fixed = (result&0x4)>>2;
-        if(item.id === 'steering') item.fixed = (result&0x8)>>3;
-        item.desc = item.fixed?"完成":"失败"
-      })
-    })
-  }
-  
-  TestTask.prototype.health = function () {
-    var q = $q.defer()
-    var theSelf = this
-    this.bike.test(function (result) {
-      theSelf.score = calulateScore(result)
-      q.resolve(theSelf.score)
-    }, function (reason) {
-      q.reject(reason)
-    })
-    return q.promise
-    
-  }
-  
-  TestTask.prototype._onProgressing = function (items, desc) {
-    items.forEach(function (item) {
-      item.progress = 0
-      item.desc = desc
-    })
-
-    var activeEntityIndex = 0
-    this.progressingPromise = $interval(function () {
-      items.forEach(function (item) {
-        item.progress++
-        if(item.progress >= 90) {
-          activeEntityIndex++
-          if(activeEntityIndex === items.length) {
-            $interval.cancel(this.progressingPromise)
-          }
-        }
-      })
-    }, 50, false)
-  }
-  
-  TestTask.prototype._onProgressDone = function () {
-    $interval.cancel(this.progressingPromise)
-  }
-  
-  return TestTask
-  
-  function calulateScore(result) {
-    var len = 4
-    var count = 0
-    for (var i = 0; i <= len; i++) {
-      if((result>>i)&0x1) count++
-    }
-    return (len-count)*25
-  }
+  return TestTask  
 })

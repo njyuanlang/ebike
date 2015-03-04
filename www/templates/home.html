@@ -3,10 +3,10 @@
     <a class="button button-icon icon ion-navicon" href="#/menu"></a>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <a class="button" ng-click="bike.setWorkmode(9)" ng-if="bike.realtime.power < 20">无电续航</a>
+    <a class="button" ng-click="bike.setWorkmode(9)" ng-if="bike.realtime.power < 0">无电续航</a>
   </ion-nav-buttons>
   
-  <ion-content class="scroll-bg">
+  <ion-content class="scroll-bg" scroll="false">
     <div class="row row-responsive-sm">
       <div class="col col-25 round-button">
         <div class="round-button-circle round-volume-{{task.score}}">

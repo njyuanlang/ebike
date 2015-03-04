@@ -1,11 +1,11 @@
 <ion-view title="检测" ng-init="init()">
   <ion-nav-buttons side="right">
-    <a class="button" ng-if="task.state == 'fault'" ng-click="task.startRepair()">一键修复</a>
+    <a class="button" ng-if="task.state == 'error'" ng-click="device.repair(task)">一键修复</a>
   </ion-nav-buttons>
   
-  <ion-content class="scroll-bg">
+  <ion-content class="scroll-bg" scroll="false">
     <div class="row col">
-      <h5 class="text-center">{{task.prompt}}</h5>
+      <h3 class="text-center">{{task | testTask: 'state'}}</h3>
     </div>
     <div class="row">
       
@@ -21,7 +21,7 @@
             <div class="diameter-90"></div>
             <div class="diameter-315"></div>
             <div class="scan-radial" ng-if="task.state == 'testing'"></div>
-            <h1 class="score" ng-if="task.state == 'done' || task.state == 'fault' || task.state == 'pass'  ">{{task.score}}<small>分</small></h1>
+            <h1 class="score" ng-if="task.state != 'testing' ">{{task.score}}<small>分</small></h1>
           </div>
         </div>
       </div>
@@ -30,14 +30,16 @@
     <div class="row test-bar test-bar-{{$index%2}}" ng-repeat="entity in task.items">
       <div class="color-lable"></div>
       <div class="col-20">
-        {{entity.name}}
+        {{entity | testItem: 'id' }}
       </div>
       <div class="col-50">
         <progress max="100" value="{{entity.progress}}"></progress>
       </div>
       <div class="col-25">
-        <i ng-class="!entity.error || (entity.error && entity.fixed)?'ion-checkmark positive':'ion-alert assertive'" ng-if="task.state != 'testing'  && task.state != 'repairing' "></i>
-        {{entity.desc}}</div>      
+        <i class="ion-checkmark positive" ng-if="entity.state == 'pass' || entity.state == 'fixed'"></i>
+        <i class="ion-alert assertive" ng-if="entity.state == 'error' || entity.state == 'broken'"></i>
+        {{entity | testItem: 'state' }}
+      </div>      
     </div>
   </ion-content>
   

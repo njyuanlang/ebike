@@ -1,10 +1,10 @@
 controllers
 
-.controller('TestCtrl', function($scope, $state, $interval, TestTask, ActiveBLEDevice) {
+.controller('TestCtrl', function($scope, $state, TestTask, ActiveBLEDevice) {
   
   $scope.init = function () {
-    $scope.task = new TestTask(ActiveBLEDevice.get())
-    $scope.task.startTest()
+    $scope.device = ActiveBLEDevice.get()
+    $scope.task = new TestTask()
+    $scope.device.test($scope.task)
   }
-  
 })
