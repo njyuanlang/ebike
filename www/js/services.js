@@ -371,5 +371,5 @@ angular.module('ebike.services', [])
     ]
   }
     
-  return TestTask  
+  return TestTask
 })

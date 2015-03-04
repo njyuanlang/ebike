@@ -7064,6 +7064,13 @@ progress::-webkit-progress-value {
   -webkit-animation: animate-stripes 5s linear infinite;
   animation: animate-stripes 5s linear infinite; }
 
+@-webkit-keyframes twinkling {
+  from {
+    opacity: 0; }
+
+  to {
+    opacity: 1; } }
+
 .container {
   position: relative;
   width: 100%; }
@@ -7089,6 +7096,13 @@ progress::-webkit-progress-value {
       height: 80%;
       top: 10%;
       left: 10%; }
+      .container .outer .inner-1 .splashdot {
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        margin: 80% 0 0 60%;
+        background-image: -webkit-radial-gradient(ellipse farthest-side, #40e2ff 50%, transparent 100%);
+        -webkit-animation: twinkling 2s infinite ease-in-out; }
     .container .outer .inner-2 {
       border-radius: 50%;
       position: absolute;
@@ -7097,6 +7111,13 @@ progress::-webkit-progress-value {
       height: 60%;
       top: 20%;
       left: 20%; }
+      .container .outer .inner-2 .splashdot {
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        margin: 10% 0 0 -10%;
+        background-image: -webkit-radial-gradient(ellipse farthest-side, #40e2ff 50%, transparent 100%);
+        -webkit-animation: twinkling 2s infinite ease-in-out; }
     .container .outer .inner-3 {
       border-radius: 50%;
       position: absolute;
@@ -7105,6 +7126,13 @@ progress::-webkit-progress-value {
       height: 40%;
       top: 30%;
       left: 30%; }
+      .container .outer .inner-3 .splashdot {
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        margin: 80% 0 0 60%;
+        background-image: -webkit-radial-gradient(ellipse farthest-side, #40e2ff 50%, transparent 100%);
+        -webkit-animation: twinkling 2s infinite ease-in-out; }
     .container .outer .inner-4 {
       border-radius: 50%;
       position: absolute;
@@ -7113,6 +7141,13 @@ progress::-webkit-progress-value {
       height: 20%;
       top: 40%;
       left: 40%; }
+      .container .outer .inner-4 .splashdot {
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        margin: 10% 0 0 -10%;
+        background-image: -webkit-radial-gradient(ellipse farthest-side, #40e2ff 50%, transparent 100%);
+        -webkit-animation: twinkling 2s infinite ease-in-out; }
     .container .outer .diameter-0 {
       width: 80%;
       height: 1px;

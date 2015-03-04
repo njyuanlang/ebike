@@ -40,6 +40,16 @@ progress::-webkit-progress-value {
 
 $inner-percentage:          0.1;
 
+@-webkit-keyframes twinkling {
+  from {
+    opacity:0;
+  }
+  
+  to {
+    opacity:1;
+  }
+}
+
 .container {
   position: relative;
   width: 100%;
@@ -69,7 +79,15 @@ $inner-percentage:          0.1;
         height: percentage(1-$inner-percentage*2*$i);
         top: percentage($inner-percentage*$i);
         left: percentage($inner-percentage*$i);
-        
+        .splashdot {
+          border-radius: 50%;
+          width: 16px;
+          height: 16px;
+          margin: percentage($i%2*0.7+$inner-percentage) 0 0 percentage($i%2*0.7-$inner-percentage);
+          background-image: 
+          -webkit-radial-gradient(ellipse farthest-side, #40e2ff 50%,transparent 100%);
+          -webkit-animation: twinkling 2s infinite ease-in-out;
+        }
       }
     }
     
