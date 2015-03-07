@@ -296,7 +296,6 @@ angular.module('ebike.services', [])
             task.state = count === itemLen ? 'repaired':'broken'
           }
           task.score += Math.round(count*100/task.items.length)
-          console.log(task)
         }
       }
     }, 1)

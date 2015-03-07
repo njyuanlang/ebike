@@ -160,11 +160,20 @@ $loops2: round(100 / $step2);
 .state .row {
 
   .col-33 {
+    display: block;
     border: 1px solid $light;
+    background: transparent;
+    font-size: 1.5rem;
 
+    @media (width: 320px){
+      width: 106px;
+    }
+    @media (width: 360px){
+      width: 120px;
+    }
     > img:first-child {
-      max-width: 24px;
-      max-hegith: 24px;
+      max-width:1.5rem;
+      max-height: 1.2rem;
     }
   }
   .active {
@@ -183,7 +192,7 @@ $backColor:                           #2f3439;
  * Bar container
  * ------------------------------------- */
 .progress-radial {
-  float: left;
+//  float: left;
   position: relative;
   width: 140px;
   height: 140px;

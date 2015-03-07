@@ -7320,10 +7320,19 @@ progress::-webkit-progress-value {
   background-image: -webkit-linear-gradient(bottom, #6e8bcd 100%, transparent 0%); }
 
 .state .row .col-33 {
-  border: 1px solid #505866; }
+  display: block;
+  border: 1px solid #505866;
+  background: transparent;
+  font-size: 1.5rem; }
+  @media (width: 320px) {
+    .state .row .col-33 {
+      width: 106px; } }
+  @media (width: 360px) {
+    .state .row .col-33 {
+      width: 120px; } }
   .state .row .col-33 > img:first-child {
-    max-width: 24px;
-    max-hegith: 24px; }
+    max-width: 1.5rem;
+    max-height: 1.2rem; }
 .state .row .active {
   background: #6e8bcd; }
 
@@ -7331,7 +7340,6 @@ progress::-webkit-progress-value {
  * Bar container
  * ------------------------------------- */
 .progress-radial {
-  float: left;
   position: relative;
   width: 140px;
   height: 140px;

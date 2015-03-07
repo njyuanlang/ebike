@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, TestTask, $ionicView) {
+.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, TestTask) {
     
   $scope.$on( 'realtime.update', function (event) {
   })
