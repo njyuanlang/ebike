@@ -33,7 +33,10 @@
         {{entity | testItem: 'id' }}
       </div>
       <div class="col-50">
-        <progress max="100" value="{{entity.progress}}"></progress>
+        <div id="progressbar">
+          <div ng-style="{'width': entity.progress/100}"></div>
+        </div>
+        <!-- <progress max="100" value="{{entity.progress}}"></progress> -->
       </div>
       <div class="col-25">
         <i class="ion-checkmark positive" ng-if="entity.state == 'pass' || entity.state == 'fixed'"></i>
