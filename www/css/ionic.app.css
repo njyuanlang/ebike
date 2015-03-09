@@ -7268,13 +7268,13 @@ progress::-webkit-progress-bar {
 
 progress::-webkit-progress-value {
   border-radius: 50px;
-  background: -webkit-linear-gradient(left, #56fa89, #56fa89);
+  background-image: -webkit-linear-gradient(left, #56fa89, #56fa89);
   background-size: 25px 14px, 100% 100%, 100% 100%;
   -webkit-animation: animate-stripes 5s linear infinite;
   animation: animate-stripes 5s linear infinite; }
 
 #progressbar {
-  border: none;
+  border: 1px solid black;
   border-radius: 100px;
   height: 1rem; }
 
@@ -7283,7 +7283,7 @@ progress::-webkit-progress-value {
   height: 0.8rem;
   border-radius: 50px;
   background-image: -webkit-linear-gradient(left, #56fa89, #56fa89);
-  -webkit-transition: width 500ms; }
+  -webkit-transition: width 200ms; }
 
 .round-button-circle {
   position: relative;
@@ -7394,8 +7394,8 @@ progress::-webkit-progress-value {
     padding-top: 30%;
     font-size: 2.5em; }
   .progress-radial .overlay > label {
-    margin-top: -2%;
-    font-size: 1.5em;
+    margin-top: -0.5rem;
+    font-size: 1.4em;
     color: #aaa; }
 
 /* -------------------------------------

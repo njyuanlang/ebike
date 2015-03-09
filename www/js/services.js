@@ -285,21 +285,19 @@ angular.module('ebike.services', [])
     var count = 0
     this.testInterval = $interval(function () {
       var item = items[i]
-      ++item.progress
-      if(item.progress === 100) {
-        item.state = states[(result>>item.index)&0x1]
-        if(item.state === 'pass' || item.state === 'repaired') count++
-        if(++i >= itemLen) {
-          $interval.cancel(this.testInterval)
-          if(task.state === 'testing') {
-            task.state = count === itemLen ? 'pass':'error'
-          } else {
-            task.state = count === itemLen ? 'repaired':'broken'
-          }
-          task.score += Math.round(count*100/task.items.length)
+      item.progress = 100
+      item.state = states[(result>>item.index)&0x1]
+      if(item.state === 'pass' || item.state === 'repaired') count++
+      if(++i >= itemLen) {
+        $interval.cancel(this.testInterval)
+        if(task.state === 'testing') {
+          task.state = count === itemLen ? 'pass':'error'
+        } else {
+          task.state = count === itemLen ? 'repaired':'broken'
         }
+        task.score += Math.round(count*100/task.items.length)
       }
-    }, 10)
+    }, 500)
   }
   
   BLEDevice.prototype.test = function (task) {

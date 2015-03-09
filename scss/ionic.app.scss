@@ -187,7 +187,6 @@ $backColor:                           #2f3439;
  * Bar container
  * ------------------------------------- */
 .progress-radial {
-//  float: left;
   position: relative;
   width: 140px;
   height: 140px;
@@ -232,8 +231,8 @@ $backColor:                           #2f3439;
     font-size: 2.5em;
   }
   > label {
-    margin-top: -2%;
-    font-size: 1.5em;
+    margin-top: -0.5rem;
+    font-size: 1.4em;
     color: $dark;
   }
 }
