@@ -192,7 +192,8 @@ $backColor:                           #2f3439;
   height: 140px;
   margin: 0 auto;
   border-radius: 50%;
-  border: 2px solid $backColor; // remove gradient color
+//  border: 2px solid $backColor; // remove gradient color
+  border: 0;
   background-color: $barColor; // default 100%
 }
 

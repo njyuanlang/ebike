@@ -7361,7 +7361,7 @@ progress::-webkit-progress-value {
   height: 140px;
   margin: 0 auto;
   border-radius: 50%;
-  border: 2px solid #2f3439;
+  border: 0;
   background-color: #56fa89; }
 
 .progress-radial-lg {
