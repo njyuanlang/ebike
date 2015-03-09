@@ -81,6 +81,7 @@ angular.module('ebike.services', [])
       var res = new Uint8Array(result) 
       realtime.speed = res[0]
       realtime.current = res[1]
+      $rootScope.$broadcast('realtime.update')
     }
   }
   
@@ -298,7 +299,7 @@ angular.module('ebike.services', [])
           task.score += Math.round(count*100/task.items.length)
         }
       }
-    }, 1)
+    }, 10)
   }
   
   BLEDevice.prototype.test = function (task) {

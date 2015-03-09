@@ -3,6 +3,7 @@ controllers
 .controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, TestTask) {
     
   $scope.$on( 'realtime.update', function (event) {
+    $scope.$apply()
   })
     
   $scope.init = function () {

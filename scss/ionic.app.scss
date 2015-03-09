@@ -164,13 +164,8 @@ $loops2: round(100 / $step2);
     border: 1px solid $light;
     background: transparent;
     font-size: 1.5rem;
+    width: 33.3%;
 
-    @media (width: 320px){
-      width: 106px;
-    }
-    @media (width: 360px){
-      width: 120px;
-    }
     > img:first-child {
       max-width:1.5rem;
       max-height: 1.2rem;
@@ -229,7 +224,7 @@ $backColor:                           #2f3439;
   > h2 {
   	padding-top:15%;
     font-size: 60px;
-    line-height: 0.8em;
+    line-height: 0.6em;
     margin-bottom: 0;
   }
   > h3 {
@@ -271,6 +266,25 @@ $percent20: round($loops/5);
       -webkit-linear-gradient($nextdeg, $barColor 50%, transparent 50%),
       -webkit-linear-gradient(180deg, $barColor 50%, $backColor 50%);
     }
+  }
+}
+
+
+// Cruise 
+// -------------------------------
+.cruise {
+  text-align: center;
+  font-size: 1.0rem;
+
+  .col-25, .col-50 {
+    display: block;
+//    margin: 0rem 0rem;
+  }
+  .col-25 {
+    width: 25%;
+  }
+  .col-50 {
+    width: 50%;
   }
 }
 

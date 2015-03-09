@@ -1,54 +1,3 @@
-// Progress
-// -------------------------------
-
-progress {
-  -webkit-appearance: none;
-  border: none;
-  border-radius: 100px;
-}
-
-@-webkit-keyframes animate-stripes {
-   100% { background-position: -100px 0px; }
-}
-
-@keyframes animate-stripes {
-   100% { background-position: -100px 0px; }
-}
-
-progress::-webkit-progress-bar {
-  background: transparent;
-	border-radius: 50px;
-	padding: 2px;
-  box-shadow: 0 1px 0px 0 rgba(255, 255, 255, 0.2);
-}
-
-progress::-webkit-progress-value {
-	border-radius: 50px;
-	background:
-//    -webkit-linear-gradient(45deg, transparent, transparent 33%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.1) 66%, transparent 66%),
-//    -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.2)),
-    -webkit-linear-gradient(left, $positive, $positive);
-//    -webkit-linear-gradient(left, $assertive, $assertive);
-	
-  background-size: 25px 14px, 100% 100%, 100% 100%;
-  -webkit-animation: animate-stripes 5s linear infinite;
-  animation: animate-stripes 5s linear infinite;
-}
-
-#progressbar {
-  -webkit-appearance: none;
-  border: none;
-  border-radius: 100px;
-  margin: 0.8rem 0;
-}
-
-#progressbar > div {
-  width: 100%;
-  height: 0.8rem;
-  border-radius: 50px;
-  background: -webkit-linear-gradient(left, $positive, $positive);
-  -webkit-transition: width 500ms;
-}
 // Radial Net
 // -------------------------------
 
@@ -151,12 +100,24 @@ $inner-percentage:          0.1;
 // -------------------------------
 .test-bar {
   text-align: center;
-  font-size: 16px;
+  font-size: 1.0rem;
   
   .col-20, .col-25 {
-    margin: auto;
+    margin: 0.5rem 0.1rem;
+    display: block;
   }
-  
+  .col-20 {
+    width: 20%;
+  }
+  .col-25 {
+    width: 25%;
+  }
+  .col-50 {
+    display: block;
+    margin: 0.8rem 0.3rem;
+    width: 50%;
+  }
+    
   .color-lable {
     width: 5px;
   }
@@ -179,3 +140,55 @@ $inner-percentage:          0.1;
   }
 }
 
+// Progress
+// -------------------------------
+
+progress {
+  -webkit-appearance: none;
+  border: none;
+  border-radius: 100px;
+}
+
+@-webkit-keyframes animate-stripes {
+   100% { background-position: -100px 0px; }
+}
+
+@keyframes animate-stripes {
+   100% { background-position: -100px 0px; }
+}
+
+progress::-webkit-progress-bar {
+  background: transparent;
+	border-radius: 50px;
+	padding: 2px;
+  box-shadow: 0 1px 0px 0 rgba(255, 255, 255, 0.2);
+}
+
+progress::-webkit-progress-value {
+	border-radius: 50px;
+	background:
+//    -webkit-linear-gradient(45deg, transparent, transparent 33%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.1) 66%, transparent 66%),
+//    -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.2)),
+    -webkit-linear-gradient(left, $positive, $positive);
+//    -webkit-linear-gradient(left, $assertive, $assertive);
+	
+  background-size: 25px 14px, 100% 100%, 100% 100%;
+  -webkit-animation: animate-stripes 5s linear infinite;
+  animation: animate-stripes 5s linear infinite;
+}
+
+#progressbar {
+//  -webkit-appearance: none;
+  border: none;
+  border-radius: 100px;
+  height: 1.0rem;
+//  margin: 0.8rem 0;
+}
+
+#progressbar > div {
+  width: 100%;
+  height: 0.8rem;
+  border-radius: 50px;
+  background-image: -webkit-linear-gradient(left, $positive, $positive);
+  -webkit-transition: width 500ms;
+}
