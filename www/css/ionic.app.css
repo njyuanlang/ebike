@@ -7362,346 +7362,478 @@ progress::-webkit-progress-value {
   margin: 0 auto;
   border-radius: 50%;
   border: 0;
-  background-color: #56fa89; }
+  background-color: #56fa89;
+  font-size: 0.1rem; }
 
 .progress-radial-lg {
   width: 280px;
-  height: 280px; }
+  height: 280px;
+  font-size: 1rem; }
 
 /* -------------------------------------
  * Optional centered circle w/text
  * ------------------------------------- */
 .progress-radial .overlay {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 84%;
   height: 84%;
   background-color: #505866;
   border-radius: 50%;
   margin-left: 8%;
   margin-top: 8%;
-  text-align: center; }
+  text-align: center;
+  line-height: 0.2rem; }
   .progress-radial .overlay > h1 {
-    padding-top: 25%;
-    font-size: 98px;
-    line-height: 0.8em;
-    margin-bottom: 0; }
-  .progress-radial .overlay > h2 {
-    padding-top: 15%;
-    font-size: 60px;
-    line-height: 0.6em;
-    margin-bottom: 0; }
+    margin: 35% 0 0 0;
+    font-size: 4rem;
+    line-height: 1rem; }
   .progress-radial .overlay > h3 {
-    padding-top: 30%;
-    font-size: 2.5em; }
+    margin: 35% 0 0 0;
+    font-size: 2.4rem; }
+  .progress-radial .overlay > h4 {
+    padding-top: 5%;
+    font-size: 1.5rem; }
   .progress-radial .overlay > label {
-    margin-top: -0.5rem;
-    font-size: 1.4em;
+    font-size: 1.2rem;
     color: #aaa; }
+
+.progress-radial-lg .overlay > h1 {
+  margin: 40% 0 0 0;
+  font-size: 8rem; }
+
+.powerless {
+  background-color: #ef473a !important;
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
+  .powerless > h4 {
+    padding-top: 15% !important; }
 
 /* -------------------------------------
  * Mixin for progress-% class
  * ------------------------------------- */
 .progress-radial-0 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(180deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(180deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-1 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(176.4deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(176.4deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-2 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(172.8deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(172.8deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-3 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(169.2deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(169.2deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-4 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(165.6deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(165.6deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-5 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(162deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(162deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-6 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(158.4deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(158.4deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-7 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(154.8deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(154.8deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-8 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(151.2deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(151.2deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-9 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(147.6deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(147.6deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-10 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(144deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(144deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-11 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(140.4deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(140.4deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-12 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(136.8deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(136.8deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-13 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(133.2deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(133.2deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-14 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(129.6deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(129.6deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-15 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(126deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(126deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-16 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(122.4deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(122.4deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-17 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(118.8deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(118.8deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-18 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(115.2deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(115.2deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-19 {
-  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(111.6deg, #2f3439 50%, #ef473a 50%); }
+  -webkit-box-shadow: 0 0 0rem;
+  background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(111.6deg, #2f3439 50%, #ef473a 50%);
+  -webkit-box-shadow: 0 0 1rem #ef473a; }
 
 .progress-radial-20 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(108deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-21 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(104.4deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-22 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(100.8deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-23 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(97.2deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-24 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(93.6deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-25 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(90deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-26 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(86.4deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-27 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(82.8deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-28 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(79.2deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-29 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(75.6deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-30 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(72deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-31 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(68.4deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-32 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(64.8deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-33 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(61.2deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-34 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(57.6deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-35 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(54deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-36 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(50.4deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-37 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(46.8deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-38 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(43.2deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-39 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(39.6deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-40 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(36deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-41 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(32.4deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-42 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(28.8deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-43 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(25.2deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-44 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(21.6deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-45 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(18deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-46 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(14.4deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-47 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(10.8deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-48 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(7.2deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-49 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #2f3439 50%, transparent 50%), -webkit-linear-gradient(3.6deg, #2f3439 50%, #56fa89 50%); }
 
 .progress-radial-50 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(180deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-51 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(176.4deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-52 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(172.8deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-53 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(169.2deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-54 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(165.6deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-55 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(162deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-56 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(158.4deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-57 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(154.8deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-58 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(151.2deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-59 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(147.6deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-60 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(144deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-61 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(140.4deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-62 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(136.8deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-63 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(133.2deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-64 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(129.6deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-65 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(126deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-66 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(122.4deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-67 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(118.8deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-68 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(115.2deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-69 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(111.6deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-70 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(108deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-71 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(104.4deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-72 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(100.8deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-73 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(97.2deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-74 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(93.6deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-75 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(90deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-76 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(86.4deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-77 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(82.8deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-78 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(79.2deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-79 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(75.6deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-80 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(72deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-81 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(68.4deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-82 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(64.8deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-83 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(61.2deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-84 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(57.6deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-85 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(54deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-86 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(50.4deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-87 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(46.8deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-88 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(43.2deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-89 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(39.6deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-90 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(36deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-91 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(32.4deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-92 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(28.8deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-93 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(25.2deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-94 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(21.6deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-95 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(18deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-96 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(14.4deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-97 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(10.8deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-98 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(7.2deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-99 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(3.6deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .progress-radial-100 {
+  -webkit-box-shadow: 0 0 0rem;
   background-image: -webkit-linear-gradient(0deg, #56fa89 50%, transparent 50%), -webkit-linear-gradient(180deg, #56fa89 50%, #2f3439 50%); }
 
 .cruise {

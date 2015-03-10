@@ -3,19 +3,27 @@
     <div class="row padding cruise">
       <div class="col-25">
         <div class="progress-radial progress-radial-{{bike.realtime.power}}">
-          <div class="overlay">
-            <h2>{{bike.realtime.power}}<small>%</small></h2>
+          <div class="overlay" ng-if="bike.workmode != 9">
+            <h1>{{bike.realtime.power}}<small>%</small></h1>
             <label><small>剩余电量</small></label>
+          </div>
+          <a class="overlay powerless" ng-if="bike.workmode !=9 && bike.realtime.power <= 0" ng-click="bike.setWorkmode(9)">
+            <h4>开启<br>无电续航</h4>
+          </a>
+          <div class="overlay" ng-if="bike.workmode == 9">
+            <h4 class="assertive"><br>无电续航</h4>
           </div>
         </div>
       </div>
       <div class="col-50">
         <h1 class="text-center"><small>剩余</small> {{bike.realtime.mileage}} <small>续航公里</small></h1>
+        <h4 class="assertive" ng-if="bike.realtime.power <= 0 && bike.workmode != 9">请尽快充电,或开启无电续航!</h4>
+        <h4 class="assertive" ng-if="bike.workmode == 9">无电续航中,请尽快充电!</h4>
       </div>
       <div class="col-25 round-button round-button-lg">
         <div class="round-button-circle">
           <a ng-click="switchWorkmode()">
-            <h1 ng-if="bike.workmode == 1">省电</h1>
+            <h1 ng-if="bike.workmode%8 == 1">省电</h1>
             <h1 ng-if="bike.workmode == 0">正常</h1>
             <h1 ng-if="bike.workmode == 2">爬坡</h1>
             模式

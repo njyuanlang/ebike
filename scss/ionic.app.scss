@@ -195,11 +195,13 @@ $backColor:                           #2f3439;
 //  border: 2px solid $backColor; // remove gradient color
   border: 0;
   background-color: $barColor; // default 100%
+  font-size: 0.1rem;
 }
 
 .progress-radial-lg {
   width: 280px;
   height: 280px;
+  font-size: 1.0rem;
 }
 
 /* -------------------------------------
@@ -207,6 +209,8 @@ $backColor:                           #2f3439;
  * ------------------------------------- */  
 .progress-radial .overlay {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 84%;
   height: 84%;
   background-color: $light;
@@ -214,27 +218,40 @@ $backColor:                           #2f3439;
   margin-left: 8%;
   margin-top: 8%;
   text-align: center;
+  line-height: 0.2rem;
   
   > h1 {
-  	padding-top:25%;
-    font-size: 98px;
-    line-height: 0.8em;
-    margin-bottom: 0;
-  }
-  > h2 {
-  	padding-top:15%;
-    font-size: 60px;
-    line-height: 0.6em;
-    margin-bottom: 0;
+  	margin: 35% 0 0 0;
+    font-size: 4rem;
+    line-height: 1rem;
   }
   > h3 {
-  	padding-top:30%;
-    font-size: 2.5em;
+  	margin: 35% 0 0 0;
+    font-size: 2.4rem;
+  }
+  > h4 {
+  	padding-top: 5%;
+    font-size: 1.5rem;
   }
   > label {
-    margin-top: -0.5rem;
-    font-size: 1.4em;
+    font-size: 1.2rem;
     color: $dark;
+  }
+}
+
+.progress-radial-lg .overlay {
+  > h1 {
+  	margin: 40% 0 0 0;
+    font-size: 8rem;
+  }
+}
+
+.powerless {
+  background-color: $assertive!important;
+  -webkit-box-shadow: 0 0 1rem $assertive;
+
+  > h4 {
+  	padding-top:15%!important;
   }
 }
   
@@ -251,10 +268,12 @@ $percent20: round($loops/5);
 
 @for $i from 0 through $loops {
   .progress-radial-#{$i*$step} {
+    -webkit-box-shadow: 0 0 0rem;
     @if $i < $half {
       $nextdeg: 180deg - ( $increment * $i );
       @if $i < $percent20 {
         background-image: -webkit-linear-gradient(0deg, $backColor 50%, transparent 50%), -webkit-linear-gradient($nextdeg, $backColor 50%, $waringColor 50%);
+        -webkit-box-shadow: 0 0 1rem $assertive;
       }
       @else {
         background-image: -webkit-linear-gradient(0deg, $backColor 50%, transparent 50%), -webkit-linear-gradient($nextdeg, $backColor 50%, $barColor 50%);
@@ -278,7 +297,6 @@ $percent20: round($loops/5);
 
   .col-25, .col-50 {
     display: block;
-//    margin: 0rem 0rem;
   }
   .col-25 {
     width: 25%;
