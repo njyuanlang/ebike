@@ -120,6 +120,16 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
       templateUrl: "templates/models.html",
       controller: 'ModelsCtrl'
     })
+    .state('voltages', {
+      url: "/voltages",
+      templateUrl: "templates/voltages.html",
+      controller: 'VoltagesCtrl'
+    })
+    .state('currents', {
+      url: "/currents",
+      templateUrl: "templates/currents.html",
+      controller: 'CurrentsCtrl'
+    })
     .state('bikes-add', {
       url: "/bikes/add",
       templateUrl: "templates/bikes-add.html",

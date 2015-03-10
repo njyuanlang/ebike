@@ -72,6 +72,22 @@ controllers
   ]
 
   $scope.selectEntity = function (item) {
+    $state.go('voltages')
+  }
+})
+
+.controller('VoltagesCtrl', function($scope, $state) {
+  $scope.entities = ["60V", "48V", "40V"]
+
+  $scope.selectEntity = function (item) {
+    $state.go('currents')
+  }
+})
+
+.controller('CurrentsCtrl', function($scope, $state) {
+  $scope.entities = ["12A", "8A", "4A"]
+
+  $scope.selectEntity = function (item) {
     $state.go('bikes-add')
   }
 })

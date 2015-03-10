@@ -1,4 +1,4 @@
-angular.module('ebike.services', [])
+angular.module('ebike.services', ['ebike-services'])
 
 .factory('Util', function () {
 
@@ -59,8 +59,8 @@ angular.module('ebike.services', [])
   }
   var fakeCbs = {
     power: function () {
-      // realtime.power = realtime.power || 100
-      // realtime.power--
+      realtime.power = realtime.power || 100
+      realtime.power--
       // realtime.power = 0
       realtime.mileage = Math.floor(realtime.power/2)
     },
