@@ -18,7 +18,8 @@ controllers
     }
   }
 
-  $scope.tryRegister = function (loginData) {
+  $scope.goRegister = function (loginData) {
+    $state.go('register')
   }
   
   $scope.goTrial = function () {
@@ -33,8 +34,29 @@ controllers
   }
 })
 
-.controller('RegisterCtrl', function($scope, $state) {
-
+.controller('RegisterCtrl', function($scope, $state, $interval) {
+  
+  $scope.entity = {}
+  $scope.validprompt = "获取验证码"
+  
+  $scope.getValidcode = function () {
+    if($scope.disableValidcode) return
+    $scope.disableValidcode = true
+    $scope.elapse = 120
+    $scope.promise = $interval(function () {
+      if(--$scope.elapse === 0) {
+        $interval.cancel($scope.promise)
+        $scope.disableValidcode = false
+        $scope.validprompt = "获取验证码"
+      } else {
+        $scope.validprompt = $scope.elapse+"秒后重试"
+      }
+    }, 1000)
+  }
+  
+  $scope.tryRegister = function () {
+    
+  }
 })
 
 .controller('AccountCtrl', function($scope, $state, ActiveBLEDevice) {

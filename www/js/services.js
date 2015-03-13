@@ -424,7 +424,7 @@ angular.module('ebike.services', ['ebike-services'])
   }
 })
 
-.factory('TestTask', function ($q, $interval) {
+.factory('TestTask', function ($q) {
   
   function TestTask() {
     this.state = 'idle'

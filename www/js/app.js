@@ -66,7 +66,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
 
     // register 
     .state('register', {
-      url: "/register",
+      url: "/register?forgot",
       templateUrl: "templates/register.html",
       controller: 'RegisterCtrl'
     })

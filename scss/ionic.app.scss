@@ -101,6 +101,34 @@ $user-bg:                       '../img/user-bg.png';
   }
 }
 
+// Valid Code
+// -------------------------------
+.validcode {
+  padding: 6px 0 5px 16px;
+  height:100%;
+  
+  > input {
+    width: 50%;
+    display: inline!important;
+    background-color: transparent;
+  }
+  > a {
+    width: 50%;
+    height:100%;
+//    margin-left: 0.2rem;
+  }
+}
+
+.validcode-bg {
+  background-image: 
+  -webkit-linear-gradient(left,$light 60%, $energized 40%);
+}
+
+.validcode-disable-bg {
+  background-image: 
+  -webkit-linear-gradient(left,$light 60%, $dark 40%);
+}
+
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 @import "ebike.test";

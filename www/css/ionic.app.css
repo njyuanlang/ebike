@@ -37,6 +37,23 @@ $dark:                            #444 !default;
     max-width: 50px;
     max-height: 50px; }
 
+.validcode {
+  padding: 6px 0 5px 16px;
+  height: 100%; }
+  .validcode > input {
+    width: 50%;
+    display: inline !important;
+    background-color: transparent; }
+  .validcode > a {
+    width: 50%;
+    height: 100%; }
+
+.validcode-bg {
+  background-image: -webkit-linear-gradient(left, #505866 60%, #6e8bcd 40%); }
+
+.validcode-disable-bg {
+  background-image: -webkit-linear-gradient(left, #505866 60%, #aaa 40%); }
+
 /*!
   Ionicons, v1.5.2
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
