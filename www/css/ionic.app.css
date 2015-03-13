@@ -7876,7 +7876,9 @@ progress::-webkit-progress-value {
     height: 1.2em;
     background: red;
     bottom: 0em;
-    -webkit-transform-origin: bottom right; }
+    -webkit-transform-origin: bottom right;
+    -webkit-transition-duration: 400ms;
+    -webkit-transition-timing-function: linear; }
 
 .speed-gauge-0 {
   -webkit-transform: rotate(0deg); }

@@ -347,6 +347,8 @@ $speed-gauge-height: 11em;
     background: red;
     bottom: 0em;    
     -webkit-transform-origin: bottom right;
+    -webkit-transition-duration: 400ms;
+    -webkit-transition-timing-function: linear;
   }
 }
 

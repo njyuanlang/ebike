@@ -57,6 +57,8 @@ angular.module('ebike.services', ['ebike-services'])
     speed: 0,
     current: 0
   }
+  var speeds = [0, 20, 50, 40, 20, 30,45,5,32]
+  var speedIndex = 0
   var fakeCbs = {
     power: function () {
       realtime.power = realtime.power || 100
@@ -65,8 +67,9 @@ angular.module('ebike.services', ['ebike-services'])
       realtime.mileage = Math.floor(realtime.power/2)
     },
     speed: function (successCb) {
-      realtime.speed = realtime.speed || 80
-      realtime.speed--
+      realtime.speed = speeds[speedIndex]
+      speedIndex++
+      speedIndex %= speeds.length
       realtime.current = Math.floor(realtime.speed/5)
     }
   }
@@ -92,7 +95,7 @@ angular.module('ebike.services', ['ebike-services'])
     } else {
       return $interval(function () {
         fakeCbs[characteristic]()
-      }, 500, false)
+      }, 400, false)
     }
   }
   
