@@ -35,7 +35,7 @@ angular.module('ebike.filters',[])
       pass: '正常',
       error: '故障',
       repairing: '修复中',
-      repaired: '已修复',
+      repaired: '修复',
       broken: '损坏'
     }
   } 
@@ -51,10 +51,10 @@ angular.module('ebike.filters',[])
     state: {
       testing: '系统扫描中...',
       pass: '扫描结束',
-      error: '扫描结束',
+      error: '故障! 请到维修点维修',
       repairing: '系统修复中...',
       repaired: '修复结束',
-      broken: '修复结束'
+      broken: '故障! 请到维修点维修'
     }
   }
   return function (task, dic) {

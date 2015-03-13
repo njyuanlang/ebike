@@ -292,12 +292,16 @@ angular.module('ebike.services', ['ebike-services'])
       if(item.state === 'pass' || item.state === 'repaired') count++
       if(++i >= itemLen) {
         $interval.cancel(this.testInterval)
+        task.score += Math.round(count*100/task.items.length)
         if(task.state === 'testing') {
           task.state = count === itemLen ? 'pass':'error'
+          // only motor error can be repaired, so pass 
+          if(task.items[1].state === 'error' && task.score === 75) {
+            task.state = 'pass'
+          }
         } else {
           task.state = count === itemLen ? 'repaired':'broken'
         }
-        task.score += Math.round(count*100/task.items.length)
       }
     }, 500)
   }
@@ -312,7 +316,7 @@ angular.module('ebike.services', ['ebike-services'])
       })
       this.sendOrder([0x81, 0x81])
     } else {
-      testTaskCb(12, task)
+      testTaskCb(10, task)
     }
   }
 
@@ -325,7 +329,7 @@ angular.module('ebike.services', ['ebike-services'])
       })
       this.sendOrder([0x91, 0x91])
     } else {
-      testTaskCb(8, task)
+      testTaskCb(2, task)
     }
   }
 
