@@ -1,98 +1,88 @@
 controllers
 
-.controller('BikesCtrl', function($scope, $state) {
+.controller('BikesCtrl', function($scope, $state, BikeService) {
   
-  $scope.entities = [
-    {
-      id: "1",
-      brand: "元朗",
-      model: "ABC123"
-    },
-    {
-      id: "2",
-      brand: "雅迪",
-      model: "DEF456"
-    }
-  ]
+  $scope.entities = BikeService.bikes
 
   $scope.activeEntityChange = function (item) {
-    console.log('activeEntityChange:', item)
     $scope.entity = item
-    $scope.entityId = $scope.entity.id
+    BikeService.setActive(item)
   }
   
   $scope.showDetail = function (item) {
-    console.log('ShowDetail:', item)
+    $state.go('bike', {bikeId:item.id})
   }
   
   $scope.activeEntityChange($scope.entities[0])
 })
 
-.controller('BrandsCtrl', function($scope, $state) {
-  $scope.entities = [
-    {
-      id: "2",
-      index: 'F',
-      brands: [
-        {
-          "name": "泛盈"
-        },
-        {
-          "name": "发达"
-        }
-      ]
-    },
-    {
-      id: "3",
-      index: 'Y',
-      brands: [
-        {
-          "name": "元朗"
-        },
-        {
-          "name": "雅迪"
-        }
-      ]
-    }
-  ]
+.controller('BikeCtrl', function($scope, $state, BikeService, $ionicHistory, $ionicLoading) {
+  $scope.entity = BikeService.getBike($state.params.bikeId)
+  
+  $scope.delete = function () {
+    BikeService.deleteBike($scope.entity.id)
+    $ionicLoading.show({
+      template:'删除车辆',
+      duration: 1000
+    })
+    $ionicHistory.goBack()
+  }
+})
+
+.controller('BrandsCtrl', function($scope, $state, BrandService) {
+  $scope.entities = BrandService.getBrands()
   
   $scope.selectEntity = function (item) {
-    $state.go('models')
+    $state.go('models', {id:$state.params.id, brandId: item.id})
   }
 })
 
-.controller('ModelsCtrl', function($scope, $state) {
-  $scope.entities = [
-    {
-      "name": "ABC123"
-    },
-    {
-      "name": "DEF456"
+.controller('ModelsCtrl', function($scope, $state, BikeService, BrandService) {
+  $scope.entities = BrandService.getModels($state.params.brandId)
+
+  $scope.selectEntity = function (item) {
+    BikeService.currentBike = {model:item, id: uuid.v4(), workmode:0}
+    $state.go('voltages', {id: $state.params.id})
+  }
+})
+
+.controller('VoltagesCtrl', function($scope, $state, BikeService, $ionicHistory) {
+  $scope.entities = [60, 48, 40]
+
+  $scope.selectEntity = function (item) {
+    if($state.params.id === 'create') {
+      BikeService.currentBike.voltage = item
+      $state.go('currents', {id: $state.params.id})
+    } else {
+      var bike = BikeService.getBike($state.params.id)
+      bike.voltage = item
+      $ionicHistory.goBack()
     }
-  ]
-
-  $scope.selectEntity = function (item) {
-    $state.go('voltages')
   }
 })
 
-.controller('VoltagesCtrl', function($scope, $state) {
-  $scope.entities = ["60V", "48V", "40V"]
+.controller('CurrentsCtrl', function($scope, $state, BikeService, $ionicHistory, $window) {
+  $scope.entities = [12, 10, 8]
 
   $scope.selectEntity = function (item) {
-    $state.go('currents')
+    if($state.params.id === 'create') {
+      var bike = BikeService.currentBike
+      bike.current = item
+      BikeService.bikes.push(bike)
+      if($window.ble) {
+        $state.go('bikes-add', {id: $state.params.id})
+      } else {
+        $state.go('bikes')
+      }
+    } else {
+      var bike = BikeService.getBike($state.params.id)
+      bike.current = item
+      $ionicHistory.goBack()
+    }
   }
 })
 
-.controller('CurrentsCtrl', function($scope, $state) {
-  $scope.entities = ["12A", "8A", "4A"]
-
-  $scope.selectEntity = function (item) {
-    $state.go('bikes-add')
-  }
-})
-
-.controller('BikesAddCtrl', function($scope, $state, BLEDevice, ActiveBLEDevice, $timeout, $ionicLoading) {
+.controller('BikesAddCtrl', function($scope, $state, BLEDevice, ActiveBLEDevice, $timeout, $ionicLoading, BikeService, $ionicHistory) {
   
   $scope.entities = []
 
@@ -115,13 +105,19 @@ controllers
   $scope.doScan = doScan
 
   $scope.selectEntity = function (item) {
-    var device = new BLEDevice(item)
+    var bike = BikeService.currentBike
+    bike.localId = item.id
+    bike.name = item.name
+    var device = new BLEDevice(bike)
     device.connect()
     .then(function (result) {
-      return $ionicLoading.show({
+      $ionicLoading.show({
         template: '连接到爱车'+item.name,
         duration: 2000
       })
+      ActiveBLEDevice.set(bike)
+      $ionicHistory.nextViewOptions({historyRoot:true})
+      $state.go('home')
     }, function (reason) {
       $ionicLoading.show({
         template: "连接失败："+reason,
@@ -129,19 +125,11 @@ controllers
       })
       // alert(reason)
     })
-    .then(function () {
-      ActiveBLEDevice.set(item)
-      $state.go('home')
-    })
+    
     
     $ionicLoading.show({
       template:'正在连接'+item.name+"...",
       duration: 3000
-    }).then(function () {
-      $ionicLoading.show({
-        template: "无法连接到爱车",
-        duration: 2000
-      })
     })
   }
   

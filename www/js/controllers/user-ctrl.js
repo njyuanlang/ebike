@@ -1,6 +1,6 @@
 controllers
 
-.controller('LoginCtrl', function($scope, $rootScope, $state, ActiveBLEDevice, $timeout) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, ActiveBLEDevice, $timeout, $window) {
   
   $scope.loginData = {}
   
@@ -11,10 +11,10 @@ controllers
       $scope.device.autoconnect().then(function (result) {
         $state.go('home')
       }, function (reason) {
-        $state.go('brands')
+        $state.go('brands', {id:'create'})
       })
     } else {
-      $state.go('brands')
+      $state.go('brands', {id:'create'})
     }
   }
 
@@ -28,7 +28,7 @@ controllers
   
   $scope.init = function () {
     $timeout(function () {
-      ble.scan([], 5)
+      if($window.ble) ble.scan([], 5)
     }, 1000)
   }
 })

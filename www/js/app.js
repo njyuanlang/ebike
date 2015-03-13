@@ -110,23 +110,28 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
       templateUrl: "templates/bikes.html",
       controller: 'BikesCtrl'
     })
+    .state('bike', {
+      url: "/bikes/:bikeId",
+      templateUrl: "templates/bike.html",
+      controller: 'BikeCtrl'
+    })
     .state('brands', {
-      url: "/brands",
+      url: "bikes/:id/brands",
       templateUrl: "templates/brands.html",
       controller: 'BrandsCtrl'
     })
     .state('models', {
-      url: "/models",
+      url: "bikes/:id/models?brandId",
       templateUrl: "templates/models.html",
       controller: 'ModelsCtrl'
     })
     .state('voltages', {
-      url: "/voltages",
+      url: "bikes/:id/voltages",
       templateUrl: "templates/voltages.html",
       controller: 'VoltagesCtrl'
     })
     .state('currents', {
-      url: "/currents",
+      url: "bikes/:id/currents",
       templateUrl: "templates/currents.html",
       controller: 'CurrentsCtrl'
     })

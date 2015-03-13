@@ -6,14 +6,8 @@
     </label>
     
     <div class="list">
-      <div ng-repeat="index in entities">
-        <div class="item item-divider" >
-          {{index.index}}
-        </div>
-        <div ng-repeat="item in index.brands" ng-click="selectEntity(item)" class="item">
-          {{ item.name }}
-        </div>
-        
+      <div ng-repeat="item in entities" ng-click="selectEntity(item)" class="item">
+        {{ item.name }}
       </div>
     </div>
 

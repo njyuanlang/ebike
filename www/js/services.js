@@ -106,34 +106,24 @@ angular.module('ebike.services', ['ebike-services'])
 
 .factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval) {
 
-  var props = ['reminder', 'workmode', 'serialNumber']
-  
-  function BLEDevice(device) {
-    this.localId = device.id
-    this.name = device.name
-    var bike = $localstorage.getObject(this.localId)
+  function BLEDevice(bike) {
+    this.bike = bike
+    this.localId = bike.localId
     this.reminder = bike.reminder || {
       overload: true,
       temperature: true,
       voltage: true,
       guard: true,
     }
-    this.workmode = bike.workmode || 0
-    this.serialNumber = bike.serialNumber
     this.realtime = RTMonitor
   }
   
   BLEDevice.prototype.save = function () {
-    var bike = {}
-    for (var i = 0; i < props.length; i++) {
-      var key = props[i]
-      bike[key] = this[key]
-    }
-    $localstorage.setObject(this.localId, bike)
+    $localstorage.setObject(this.bike.localId, this.bike)
   }
   
   BLEDevice.prototype.setWorkmode = function (mode) {
-    this.workmode = mode
+    this.bike.workmode = mode
     if($rootScope.online) {
       var hexs = [0xb0, 0xb0]
       hexs[0] += mode
@@ -154,7 +144,9 @@ angular.module('ebike.services', ['ebike-services'])
   BLEDevice.prototype.onConnect = function (result) {
     this.startMonitor()
     this.startReminder()
-    if(!this.serialNumber) {
+    this.sendSpec()
+    this.setWorkmode(this.bike.workmode%8)
+    if(!this.bike.serialNumber) {
       this.readSerialNumber()
     }
   }
@@ -188,18 +180,24 @@ angular.module('ebike.services', ['ebike-services'])
     }
     var theSelf = this
     ble.read(this.localId, service.uuid, service.sn, function (result) {
-      theSelf.serialNumber = new Uint8Array(result)
+      theSelf.bike.serialNumber = new Uint8Array(result)
       theSelf.save()
     })
   }
   
   var order = {
     uuid: "00001C00-D102-11E1-9B23-00025B00A5A5",
-    order: "00001C01-D102-11E1-9B23-00025B00A5A5"
+    order: "00001C01-D102-11E1-9B23-00025B00A5A5",
+    spec: "00001C02-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.sendOrder = function (hexs) {  
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.order, value) 
+  }
+  BLEDevice.prototype.sendSpec = function () {
+    var hexs = [this.bike.voltage, this.bike.current, 0, 0]
+    var value = Util.hexToBytes(hexs)
+    ble.write(this.localId, order.uuid, order.spec, value) 
   }
   
   BLEDevice.prototype.startMonitor = function () {
@@ -332,21 +330,18 @@ angular.module('ebike.services', ['ebike-services'])
   
 })
 
-.service('ActiveBLEDevice', function ($localstorage, BLEDevice, $rootScope) {
-  var keys = {
-    activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
-  }
-  
+.service('ActiveBLEDevice', function (BLEDevice, $rootScope, BikeService) {
+
   function getBLEDevice(device) {
     return device.id ? new BLEDevice(device) : null
   }
-  var _activeBike = getBLEDevice($localstorage.getObject(keys.activebike))
-  var _mockupBike = new BLEDevice({id: 'abc123', name: "mockup bike"})
+  var _activeBike = getBLEDevice(BikeService.getActive())
+  var _mockupBike = new BLEDevice({id: 'abc123', name: "demo bike", workmode:0})
   var service = {
-    set: function (device) {
+    set: function (bike) {
       if($rootScope.online) {
-        _activeBike = getBLEDevice(device)
-        $localstorage.setObject(keys.activebike, device)
+        _activeBike = getBLEDevice(bike)
+        BikeService.setActive(bike)
       }
     },
     get: function () {
@@ -355,6 +350,71 @@ angular.module('ebike.services', ['ebike-services'])
   }
   
   return service
+})
+
+.service('BikeService', function ($q, $localstorage) {
+  var keys = {
+    activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
+  }
+  var _activeBike = {}
+  return {
+    bikes: [],
+    getBikes: function () {
+      return this.bikes
+    },
+    getBike: function (bikeId) {
+      for (var i = 0; i < this.bikes.length; i++) {
+        if(this.bikes[i].id === bikeId) return this.bikes[i]
+      }
+    },
+    deleteBike: function (bikeId) {
+      var q = $q.defer()
+      this.bikes.some(function (bike, index, arr) {
+        if(bike.id === bikeId) {
+          arr.splice(index, 1)
+          q.resolve(bike)
+          return true
+        } else {
+          return false
+        }
+      })
+      return q.promise
+    },
+    getActive: function () {
+      if(!_activeBike.id) {
+        _activeBike = $localstorage.getObject(keys.activebike)
+        if(_activeBike.id) this.bikes.push(_activeBike)
+      }
+      return _activeBike
+    },
+    setActive: function (bike) {
+      _activeBike = bike
+      $localstorage.setObject(keys.activebike, bike)
+    },
+    currentBike: {}
+  }
+})
+
+.service('BrandService', function ($q) {
+  return {
+    brands: [
+      {id:"2", "name": "雅迪"}, 
+      {id:"1", "name": "元朗"}
+    ],
+    models:[
+      {id:"1", "name": "ABC123", brandId:"1", brandName: "元朗"},
+      {id:"2", "name": "DEF456", brandId:"2", brandName: "雅迪"}
+    ],
+    getBrands: function () {
+      return this.brands
+    },
+    getModels: function (brandId) {
+      var models = this.models.filter(function (model) {
+        return model.brandId === brandId
+      })
+      return models
+    }
+  }
 })
 
 .factory('TestTask', function ($q, $interval) {

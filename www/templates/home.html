@@ -3,7 +3,7 @@
     <a class="button button-icon icon ion-navicon" href="#/menu"></a>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <a class="button" ng-click="bike.setWorkmode(9)" ng-if="bike.realtime.power <= 0 && bike.workmode != 9">无电续航</a>
+    <a class="button" ng-click="device.setWorkmode(9)" ng-if="device.realtime.power <= 0 && device.workmode != 9">无电续航</a>
   </ion-nav-buttons>
   
   <ion-content class="scroll-bg" scroll="false">
@@ -18,29 +18,29 @@
       </div>
     </div>
     <div class="row">
-      <div class="progress-radial progress-radial-lg progress-radial-{{bike.realtime.power}}">
-        <div class="overlay" ng-if="bike.workmode != 9">
-            <h1>{{bike.realtime.power}}<small>%</small></h1>
+      <div class="progress-radial progress-radial-lg progress-radial-{{device.realtime.power}}">
+        <div class="overlay" ng-if="device.workmode != 9">
+            <h1>{{device.realtime.power}}<small>%</small></h1>
             <label>剩余电量</label>
         </div>
-        <div class="overlay" ng-if="bike.workmode == 9">
+        <div class="overlay" ng-if="device.workmode == 9">
           <h3 class="assertive">无电续航模式</h3>
            <label>此功能仅限本次使用，请尽快充电！</label>
         </div>
       </div>
     </div>
     <div class="row col padding">
-      <h1 class="text-center"><small>剩余</small> {{bike.realtime.mileage}} <small>续航公里</small></h1>
+      <h1 class="text-center"><small>剩余</small> {{device.realtime.mileage}} <small>续航公里</small></h1>
     </div>
     <div class="state">
       <div class="row">
-        <a class="col-33 button" ng-class="{active: bike.workmode%8 == 1}" ng-click="bike.setWorkmode(1)">
+        <a class="col-33 button" ng-class="{active: device.bike.workmode%8 == 1}" ng-click="device.setWorkmode(1)">
           <img src="img/downhill.png">省电
         </a>
-        <a class="col-33 button" ng-class="{active: bike.workmode == 0}" ng-click="bike.setWorkmode(0)">
+        <a class="col-33 button" ng-class="{active: device.bike.workmode == 0}" ng-click="device.setWorkmode(0)">
           <img src="img/normal.png">正常
         </a>
-        <a class="col-33 button" ng-class="{active: bike.workmode == 2}" ng-click="bike.setWorkmode(2)">
+        <a class="col-33 button" ng-class="{active: device.bike.workmode == 2}" ng-click="device.setWorkmode(2)">
           <img src="img/uphill.png">爬坡
         </a>
       </div>

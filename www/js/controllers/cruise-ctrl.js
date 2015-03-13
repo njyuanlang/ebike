@@ -7,12 +7,12 @@ controllers
   })
 
   $scope.switchWorkmode = function () {
-    $scope.bike.setWorkmode((++$scope.bike.workmode)%3)
+    $scope.device.setWorkmode((++$scope.device.bike.workmode)%3)
   }
   
   $scope.init = function () {
-    $scope.bike = ActiveBLEDevice.get()
-    $scope.bike.startMonitor()
+    $scope.device = ActiveBLEDevice.get()
+    $scope.device.startMonitor()
   }
 
 })
