@@ -110,6 +110,16 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
       templateUrl: "templates/account.html",
       controller: 'AccountCtrl'
     })
+    .state('provinces', {
+      url: "/provinces",
+      templateUrl: "templates/provinces.html",
+      controller: 'ProvincesCtrl'
+    })
+    .state('cities', {
+      url: "/cities?province",
+      templateUrl: "templates/cities.html",
+      controller: 'CitiesCtrl'
+    })
     // bikes 
     .state('bikes', {
       url: "/bikes",

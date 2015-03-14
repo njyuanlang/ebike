@@ -70,6 +70,7 @@ controllers
           duration: 1000
         })
         $localstorage.setObject('$EBIKE$LoginData', $scope.entity)
+        $state.go('provinces')
       })
     }, function (res) {
       $ionicLoading.show({
@@ -91,5 +92,16 @@ controllers
     ActiveBLEDevice.get().disconnect()
     $state.go('login')
   }
+})
+
+.controller('ProvincesCtrl', function ($scope, $state, ChinaRegion) {
+  $scope.entities = ChinaRegion.provinces
+  $scope.goCities = function (item) {
+    $state.go('cities', {province: JSON.stringify(item)})
+  }
+})
+
+.controller('CitiesCtrl', function ($scope, $state, ChinaRegion) {
+  $scope.entities = JSON.parse($state.params.province).sub
 })
 

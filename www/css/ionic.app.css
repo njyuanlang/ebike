@@ -29,6 +29,9 @@ $dark:                            #444 !default;
   -webkit-background-size: cover !important;
   background-size: cover !important; }
 
+.transparent-bg {
+  background: transparent !important; }
+
 .menu-grid .row .col {
   border: 1px solid #505866;
   background: transparent;
