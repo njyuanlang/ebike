@@ -2,17 +2,19 @@
   <ion-content class="scroll-bg padding" scroll="false">
     <h1 class="padding text-center">易帮客</h1>
     <form class="padding">
-      <div class="list list-inset">
-        <label class="item item-input padding">
-          <i class="icon ion-person placeholder-icon"></i>
-          <input type="tel" placeholder="输入手机号码" ng-model="loginData.username" required>
-        </label>
-      </div>
-      <div class="list list-inset">
-        <label class="item item-input padding">
-          <i class="icon ion-locked placeholder-icon"></i>
-          <input type="password" placeholder="输入密码" ng-model="loginData.password" required>
-        </label>
+      <div class="list">        
+        <div class="item item-icon-left">
+          <i class="icon ion-iphone"></i>
+          <span class="item-input">
+            <input type="tel" name="t" placeholder="输入手机号码" ng-model="entity.username" required>
+          </span>
+        </div>
+        <div class="item item-icon-left">
+          <i class="icon ion-locked"></i>
+          <span class="item-input">
+            <input type="password" placeholder="输入密码" ng-model="entity.password" required>
+          </span>
+        </div>
       </div>
     </form>
     <div class="row">
