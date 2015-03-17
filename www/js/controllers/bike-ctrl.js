@@ -47,7 +47,7 @@ controllers
 })
 
 .controller('VoltagesCtrl', function($scope, $state, BikeService, $ionicHistory) {
-  $scope.entities = [60, 48, 40]
+  $scope.entities = [36, 48, 60, 72]
 
   $scope.selectEntity = function (item) {
     if($state.params.id === 'create') {
@@ -62,7 +62,7 @@ controllers
 })
 
 .controller('CurrentsCtrl', function($scope, $state, BikeService, $ionicHistory, $window) {
-  $scope.entities = [12, 10, 8]
+  $scope.entities = [12, 20, 30, 36]
 
   $scope.selectEntity = function (item) {
     if($state.params.id === 'create') {
