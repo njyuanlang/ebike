@@ -28,10 +28,16 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       return $window.localStorage[key] || defaultValue;
     },
     setObject: function(key, value) {
-      $window.localStorage[key] = JSON.stringify(value);
+      if(!value || value === undefined) {
+        $window.localStorage[key] = undefined       
+      } else {
+        $window.localStorage[key] = JSON.stringify(value);
+      }
     },
     getObject: function(key) {
-      return JSON.parse($window.localStorage[key] || '{}');
+      var value = $window.localStorage[key] || '{}'
+      if(value === 'undefined') value = '{}'
+      return JSON.parse(value);
     },
     getArray: function (key) {
       return JSON.parse($window.localStorage[key] || '[]');

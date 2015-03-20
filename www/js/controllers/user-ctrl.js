@@ -1,24 +1,16 @@
 controllers
 
-.controller('LoginCtrl', function($scope, $rootScope, $state, ActiveBLEDevice, $timeout, $window) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, $timeout, $window) {
   
   $scope.entity = {}
   
   $scope.tryLogin = function (entity) {
     $rootScope.online = true
-    $scope.device = ActiveBLEDevice.get()
-    if($scope.device) {
-      $scope.device.autoconnect().then(function (result) {
-        $state.go('home')
-      }, function (reason) {
-        $state.go('brands', {id:'create'})
-      })
-    } else {
-      $state.go('brands', {id:'create'})
-    }
+    $state.go('home')
   }
 
   $scope.goRegister = function (entity) {
+    $rootScope.online = true
     $state.go('register')
   }
   
@@ -103,5 +95,6 @@ controllers
 
 .controller('CitiesCtrl', function ($scope, $state, ChinaRegion) {
   $scope.entities = JSON.parse($state.params.province).sub
+  
 })
 
