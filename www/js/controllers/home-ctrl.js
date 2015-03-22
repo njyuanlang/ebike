@@ -6,6 +6,10 @@ controllers
     $scope.$apply()
   })
   
+  $scope.endure = function () {
+    $scope.device.setWorkmode(9)
+  }
+  
   var registerBike = function () {
     $state.go('brands', {id:'create'})
     $ionicLoading.show({
@@ -19,7 +23,6 @@ controllers
     if($scope.device) {
       $scope.device.autoconnect().then(function (result) {
         $scope.task = new TestTask()
-        $scope.device.startMonitor()
         $scope.device.test($scope.task)
       }, function (reason) {
         registerBike()

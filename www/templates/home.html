@@ -3,7 +3,7 @@
     <a class="button button-icon icon ion-navicon" href="#/menu"></a>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <a class="button" ng-click="device.setWorkmode(9)" ng-if="device.realtime.power <= 0 && device.workmode != 9">无电续航</a>
+    <a class="button" ng-click="endure()" ng-class="{'disabled':device.realtime.power > 0}" ng-if="device.workmode != 9">无电续航</a>
   </ion-nav-buttons>
   
   <ion-content class="scroll-bg" scroll="false">

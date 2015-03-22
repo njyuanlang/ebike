@@ -160,11 +160,21 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     }
   }
   
+  BLEDevice.prototype.isConnected = function (bikeId) {
+    var q = $q.defer()
+    if($rootScope.online) {
+      return $cordovaBLE.isConnected(bikeId)
+    } else {
+      q.resolve({})
+    }
+    return q.promise
+  }
+  
   BLEDevice.prototype.autoconnect = function () {
     var q = $q.defer()
     var bikeId = this.localId
     var kSelf = this
-    $cordovaBLE.isConnected(bikeId)
+    this.isConnected(bikeId)
     .then(function (result) {
       return result
     }, function (reason) {
