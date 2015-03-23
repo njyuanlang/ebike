@@ -34,13 +34,13 @@
     </div>
     <div class="state">
       <div class="row">
-        <a class="col-33 button" ng-class="{active: device.bike.workmode%8 == 1}" ng-click="device.setWorkmode(1)">
+        <a class="col-33 button" ng-class="{active: device.bike.workmode%8 == 1, 'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(1)">
           <img src="img/downhill.png">省电
         </a>
-        <a class="col-33 button" ng-class="{active: device.bike.workmode == 0}" ng-click="device.setWorkmode(0)">
+        <a class="col-33 button" ng-class="{active: device.bike.workmode == 0, 'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(0)">
           <img src="img/normal.png">正常
         </a>
-        <a class="col-33 button" ng-class="{active: device.bike.workmode == 2}" ng-click="device.setWorkmode(2)">
+        <a class="col-33 button" ng-class="{active: device.bike.workmode == 2, 'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(2)">
           <img src="img/uphill.png">爬坡
         </a>
       </div>
