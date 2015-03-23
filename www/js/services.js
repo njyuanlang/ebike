@@ -189,6 +189,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
   
   BLEDevice.prototype.disconnect = function () {
+    if(!$rootScope.online) return
     return $cordovaBLE.disconnect(this.localId)
   }
   

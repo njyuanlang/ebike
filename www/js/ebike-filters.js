@@ -62,3 +62,16 @@ angular.module('ebike.filters',[])
     return dictionary[dic][key]
   }
 })
+
+.filter("registerErrorPrompt", function () {
+  var dictionary = {
+    "no authcode": "请输入验证码",
+    "not found auth code": "没有找打验证码，请重新获取",
+    "invalid auth code": "验证码不正确",
+    "outdate auth code": "验证码已经过期",
+    "username already exist": "手机已经存在，请换其他手机"
+  }
+  return function (msg) {
+    return dictionary[msg]
+  }
+})

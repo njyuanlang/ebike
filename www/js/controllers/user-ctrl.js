@@ -26,15 +26,15 @@ controllers
   }
 })
 
-.controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading, User, $localstorage) {
+.controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading, User, $localstorage, Authmessage, $filter) {
   
   $scope.entity = {username: "13357828347", password: "123456"}
   $scope.validprompt = "获取验证码"
   
-  $scope.getValidcode = function () {
+  $scope.getAuthcode = function () {
     if($scope.disableValidcode) return
     $scope.disableValidcode = true
-    $scope.elapse = 120
+    $scope.elapse = 60
     $scope.promise = $interval(function () {
       if(--$scope.elapse === 0) {
         $interval.cancel($scope.promise)
@@ -44,6 +44,8 @@ controllers
         $scope.validprompt = $scope.elapse+"秒后重试"
       }
     }, 1000)
+    
+    Authmessage.create({phone: $scope.entity.username})
   }
   
   $scope.tryRegister = function () {
@@ -65,10 +67,13 @@ controllers
         $state.go('provinces')
       })
     }, function (res) {
-      $ionicLoading.show({
-        template: '<i class="icon ion-ios7-close-outline padding"></i>手机已经存在，请换其他手机',
+      console.log(res)
+      var option = {
+        template: '<i class="icon ion-ios7-close-outline padding"></i>',
         duration: 2000
-      })
+      }
+      option.template += $filter('registerErrorPrompt')(res.data.error.message)
+      $ionicLoading.show(option)
     })
   }
 })
