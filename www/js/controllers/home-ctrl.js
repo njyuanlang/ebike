@@ -22,8 +22,7 @@ controllers
     $scope.device = ActiveBLEDevice.get()
     if($scope.device) {
       $scope.device.autoconnect().then(function (result) {
-        $scope.task = new TestTask()
-        $scope.device.test($scope.task)
+        $scope.device.task = new TestTask()
       }, function (reason) {
         registerBike()
       })

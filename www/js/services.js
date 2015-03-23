@@ -113,7 +113,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   return realtime
 })
 
-.factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval) {
+.factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout) {
 
   function BLEDevice(bike) {
     this.bike = bike
@@ -193,6 +193,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
   
   BLEDevice.prototype.readSerialNumber = function () {
+    if(!$rootScope.online) return
     var service = {
       uuid: "00009000-D102-11E1-9B23-00025B00A5A5",
       sn: "0000900A-D102-11E1-9B23-00025B00A5A5"
@@ -210,10 +211,12 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     spec: "00001C02-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.sendOrder = function (hexs) {  
+    if(!$rootScope.online) return
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.order, value) 
   }
   BLEDevice.prototype.sendSpec = function () {
+    if(!$rootScope.online) return
     var hexs = [this.bike.voltage, this.bike.current, 0, 0]
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.spec, value) 
@@ -323,6 +326,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
   
   BLEDevice.prototype.test = function (task) {
+    this.task = task
     task.state = 'testing'
     task.score = 0
 
@@ -337,6 +341,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
 
   BLEDevice.prototype.repair = function (task) {
+    var task
     task.state = 'repairing'
     
     if($rootScope.online) {
@@ -444,7 +449,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   
   function TestTask() {
     this.state = 'idle'
-    this.score = 0
+    this.score = 100
     this.items = [
       {id: "brake", progress:0, state:'testing'},
       {id: "motor", progress:0, state:'testing'},
