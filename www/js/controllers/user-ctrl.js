@@ -1,12 +1,29 @@
 controllers
 
-.controller('LoginCtrl', function($scope, $rootScope, $state, $timeout, $window) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, $timeout, $window, User, $ionicLoading, $filter) {
   
-  $scope.entity = {}
+  $scope.entity = {realm: 'client'}
   
-  $scope.tryLogin = function (entity) {
+  $scope.tryLogin = function () {
     $rootScope.online = true
-    $state.go('home')
+    
+    $ionicLoading.show({
+      template: '<i class="icon ion-loading-c ion-loading padding"></i>登录中...'
+    })
+    User.login($scope.entity, function (user) {
+      $ionicLoading.show({
+        template: '<i class="icon ion-ios7-checkmark-outline padding"></i>登录成功',
+        duration: 1000
+      })
+      $state.go('home')
+    }, function (res) {
+      var option = {
+        template: '<i class="icon ion-ios7-close-outline padding"></i>',
+        duration: 2000
+      }
+      option.template += $filter('loginErrorPrompt')(res.data.error.message)
+      $ionicLoading.show(option)      
+    })
   }
 
   $scope.goRegister = function (entity) {
@@ -67,7 +84,6 @@ controllers
         $state.go('provinces')
       })
     }, function (res) {
-      console.log(res)
       var option = {
         template: '<i class="icon ion-ios7-close-outline padding"></i>',
         duration: 2000

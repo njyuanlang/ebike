@@ -113,7 +113,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   return realtime
 })
 
-.factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout) {
+.factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window) {
 
   function BLEDevice(bike) {
     this.bike = bike
@@ -162,7 +162,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   
   BLEDevice.prototype.isConnected = function (bikeId) {
     var q = $q.defer()
-    if($rootScope.online) {
+    if($window.ble) {
       return $cordovaBLE.isConnected(bikeId)
     } else {
       q.resolve({})
@@ -189,7 +189,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
   
   BLEDevice.prototype.disconnect = function () {
-    if(!$rootScope.online) return
+    if(!$window.ble) return
     return $cordovaBLE.disconnect(this.localId)
   }
   
@@ -428,10 +428,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   return {
     brands: [
       {id:"2", "name": "雅迪"}, 
-      {id:"1", "name": "元朗"}
+      {id:"1", "name": "绿佳"}
     ],
     models:[
-      {id:"1", "name": "ABC123", brandId:"1", brandName: "元朗"},
+      {id:"1", "name": "ABC123", brandId:"1", brandName: "绿佳"},
       {id:"2", "name": "DEF456", brandId:"2", brandName: "雅迪"}
     ],
     getBrands: function () {
