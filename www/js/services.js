@@ -71,6 +71,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       realtime.power--
       // realtime.power = 0
       realtime.mileage = Math.floor(realtime.power/2)
+      // $rootScope.$broadcast('realtime.update')
     },
     speed: function (successCb) {
       realtime.speed = speeds[speedIndex]
@@ -245,7 +246,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     if($rootScope.online) {
       ble.startNotification(this.localId, reminder.uuid, reminder.msg, function (result) {
         var res = new Uint8Array(result)
-        var date = new Date().toISOString()
         localforage.config({name: "ebike.reminder"})
         localforage.setItem(Date.now(), resolveReminder(res[0]))
       })
