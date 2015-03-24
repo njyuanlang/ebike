@@ -1,41 +1,19 @@
-<ion-view title="帮助">
-  <ion-nav-buttons side="right">
-    <a class="button" ng-click="refresh()">刷新</a>
-  </ion-nav-buttons>
-  <ion-content has-header="true" class="scroll-bg padding">
-    <div class="list card">
-      <div class="item">
-        device: {{ device.serialNumber }}
-      </div>
-      <a class="item" ng-click="switchMode()">
-        workmode: {{ device.workmode }}
-      </a>
-    </div>
-    
-    <div class="list card">
-      <div class="item">
-        power: {{ device.realtime.power }}  -- {{updated}}
-      </div>
-      <div class="item">
-        mileage: {{ device.realtime.mileage }} -- {{updated}}
-      </div>
-      <div class="item">
-        speed: {{ device.realtime.speed }} -- {{updated}}
-      </div>
-      <div class="item">
-        current: {{ device.realtime.current }} -- {{updated}}
-      </div>
-      </div>
-    </div>
-
-    <div class="list card">
-      <a class="item" ng-click="test('test')">
-        test: {{ test.test }}
-      </a>
-      <div class="item" ng-click="test('repair')">
-        repair: {{ test.repair }}
-      </div>
-    </div>
-        
-  </ion-content>
+<ion-view cache-view="false" has-header="false" hide-nav-bar="true">
+  <ion-slide-box>
+    <ion-slide>
+      <div class="box"><img src="img/slide0.png"></div>
+    </ion-slide>
+    <ion-slide>
+      <div class="box"><img src="img/slide1.png"></div>
+    </ion-slide>
+    <ion-slide>
+      <div class="box"><img src="img/slide2.png"></div>
+    </ion-slide>
+    <ion-slide>
+      <div class="box"><img src="img/slide3.png"></div>
+    </ion-slide>
+    <ion-slide>
+      <a class="box" ui-sref="menu()"><img src="img/slide4.png"></a>
+    </ion-slide>
+  </ion-slide-box>
 </ion-view>

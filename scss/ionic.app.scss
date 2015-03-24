@@ -138,6 +138,14 @@ $user-bg:                       '../img/user-bg.png';
 @import "ebike.test";
 @import "www/lib/sass-mediaqueries/media-queries";
 
+// Slide box
+// -------------------------------
+
+.slider-slide img {
+  width: 100%;
+  height: 100%;
+}
+
 // Round Button Circle
 // -------------------------------
 .round-button-circle {

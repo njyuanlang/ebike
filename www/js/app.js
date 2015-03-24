@@ -175,8 +175,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     // help
     .state('help', {
       url: "/help",
-      templateUrl: "templates/help.html",
-      controller: 'HelpCtrl'
+      templateUrl: "templates/help.html"
     })
     // about
     .state('about', {

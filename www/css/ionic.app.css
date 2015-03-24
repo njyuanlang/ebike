@@ -7305,6 +7305,10 @@ progress::-webkit-progress-value {
   background-image: -webkit-linear-gradient(left, #56fa89, #56fa89);
   -webkit-transition: width 200ms; }
 
+.slider-slide img {
+  width: 100%;
+  height: 100%; }
+
 .round-button-circle {
   position: relative;
   width: 100%;
