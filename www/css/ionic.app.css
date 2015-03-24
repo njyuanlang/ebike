@@ -7337,6 +7337,9 @@ progress::-webkit-progress-value {
   font-weight: bold;
   text-decoration: none; }
 
+.round-button a.button {
+  background: transparent; }
+
 /* -------------------------------------
  * Mixin for round volume-% class
  * ------------------------------------- */

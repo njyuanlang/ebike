@@ -173,6 +173,10 @@ $user-bg:                       '../img/user-bg.png';
   text-decoration:none;
 }
 
+.round-button a.button {
+  background: transparent;
+}
+
 /* -------------------------------------
  * Mixin for round volume-% class
  * ------------------------------------- */
