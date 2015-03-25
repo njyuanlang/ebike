@@ -114,7 +114,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   return realtime
 })
 
-.factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window) {
+.factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask) {
 
   function BLEDevice(bike) {
     this.bike = bike
@@ -126,6 +126,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       guard: true,
     }
     this.realtime = RTMonitor
+    this.task = new TestTask()
   }
   
   BLEDevice.prototype.save = function () {

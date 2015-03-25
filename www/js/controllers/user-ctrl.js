@@ -1,6 +1,6 @@
 controllers
 
-.controller('LoginCtrl', function($scope, $rootScope, $state, $timeout, $window, User, $ionicLoading, $filter) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage) {
   
   $scope.entity = {realm: 'client'}
   
@@ -11,10 +11,12 @@ controllers
       template: '<i class="icon ion-loading-c ion-loading padding"></i>登录中...'
     })
     User.login($scope.entity, function (user) {
+      console.log(user)
       $ionicLoading.show({
         template: '<i class="icon ion-ios7-checkmark-outline padding"></i>登录成功',
         duration: 1000
       })
+      $localstorage.setObject('$EBIKE$LoginData', $scope.entity)
       $state.go('home')
     }, function (res) {
       var option = {
@@ -34,12 +36,6 @@ controllers
   $scope.goTrial = function () {
     $rootScope.online = false
     $state.go('home')
-  }
-  
-  $scope.init = function () {
-    $timeout(function () {
-      if($window.ble) ble.scan([], 5)
-    }, 1000)
   }
 })
 
@@ -94,7 +90,7 @@ controllers
   }
 })
 
-.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice) {
+.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage) {
   
   $scope.entity = {
     name: 'Guan Bo',
@@ -102,7 +98,11 @@ controllers
   }
 
   $scope.logout = function () {
-    ActiveBLEDevice.get().disconnect()
+    var device = ActiveBLEDevice.get()
+    if(device) device.disconnect()
+    
+    $localstorage.setObject('$EBIKE$LoginData')
+    User.logout()
     $state.go('login')
   }
 })

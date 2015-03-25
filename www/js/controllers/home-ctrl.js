@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, TestTask, $ionicLoading, BikeService) {
+.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, TestTask, $ionicLoading, BikeService, User, $localstorage) {
     
   $scope.$on( 'realtime.update', function (event) {
     if($scope.device.bike.workmode === 9 && $scope.device.realtime.power > 24) {
@@ -21,16 +21,31 @@ controllers
     })
   }
   
-  $scope.init = function () {
+  var reconnectDevice = function () {
     $scope.device = ActiveBLEDevice.get()
     if($scope.device) {
       $scope.device.autoconnect().then(function (result) {
-        $scope.device.task = new TestTask()
       }, function (reason) {
         registerBike()
       })
     } else {
       registerBike()
+    }
+  }
+  
+  $scope.$on('home.reconnect', function () {
+    reconnectDevice()
+  })
+  
+  $scope.init = function () {
+    $scope.device = ActiveBLEDevice.get()
+    var loginData = $localstorage.getObject('$EBIKE$LoginData')
+    if(!loginData.username || !loginData.password) {
+      $state.go('login')
+    } else {
+      User.login(loginData, function (user) {
+        reconnectDevice()
+      })
     }
   }
 })

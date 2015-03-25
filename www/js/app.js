@@ -31,7 +31,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         if(toState.name === 'home') {
-          screen.unlockOrientation()   
+          screen.unlockOrientation()
         } else if(toState.name === 'cruise') {
           screen.unlockOrientation()   
         } else {
@@ -45,6 +45,18 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
         navigator.splashscreen.hide()
       }, 100);
     }
+    
+    if(window.ble) {
+      ble.scan([], 5)
+    }
+    
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
+      if(toState.name === 'home') {
+        if(fromState.name === 'login') {
+          $rootScope.$broadcast('home.reconnect')
+        }
+      }
+    })
   });  
   
   $rootScope.$on('AUTH_LOGIN', function(e, accessToken) {
@@ -185,7 +197,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/home');
 
 })
 
