@@ -11,7 +11,6 @@ controllers
       template: '<i class="icon ion-loading-c ion-loading padding"></i>登录中...'
     })
     User.login($scope.entity, function (user) {
-      console.log(user)
       $ionicLoading.show({
         template: '<i class="icon ion-ios7-checkmark-outline padding"></i>登录成功',
         duration: 1000
@@ -90,13 +89,11 @@ controllers
   }
 })
 
-.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage) {
+.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory) {
   
-  $scope.entity = {
-    name: 'Guan Bo',
-    created: Date.now()
-  }
+  $scope.entity = User.getCurrent()
 
+  $ionicHistory.registerHistory($scope)
   $scope.logout = function () {
     var device = ActiveBLEDevice.get()
     if(device) device.disconnect()
@@ -104,7 +101,7 @@ controllers
     $localstorage.setObject('$EBIKE$LoginData')
     User.logout()
     $state.go('login')
-  }
+  }  
 })
 
 .controller('ProvincesCtrl', function ($scope, $state, ChinaRegion) {
@@ -114,8 +111,25 @@ controllers
   }
 })
 
-.controller('CitiesCtrl', function ($scope, $state, ChinaRegion) {
-  $scope.entities = JSON.parse($state.params.province).sub
+.controller('CitiesCtrl', function ($scope, $state, ChinaRegion, User, $ionicHistory, $window) {
+  var province = JSON.parse($state.params.province)
+  $scope.entities = province.sub
   
+  $scope.selectEntity = function (item) {
+    User.getCurrent(function (user) {
+      user.region = {
+        province: province.name,
+        city: item.name
+      }
+      User.prototype$updateAttributes({ id: user.id }, { region: user.region}, function () {
+        var viewHistory = $ionicHistory.viewHistory()
+        console.log(viewHistory)
+        // var views = viewHistory.histories.root.stack
+        // views[views.length-3].go()
+        $ionicHistory.goToHistoryRoot($ionicHistory.currentView().historyId)
+        // $window.history.go(-2)
+      })
+    })
+  }
 })
 

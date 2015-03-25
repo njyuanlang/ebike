@@ -1,11 +1,15 @@
-<ion-view title="设置">
-  
+<ion-view title="设置" hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <a class="button" nav-direction="forward" ui-sref="home()">关闭</a>
+  </ion-nav-buttons>
   <ion-content has-header="true" class="scroll-bg"  scroll="false">
     <div class="list">
       <a class="item item-avatar item-icon-right user-bg" href="#/account">
         <img src="img/user-icon.png">
-        <h2>Venkman</h2>
-        <p>Back off, man. I'm a scientist.</p>
+        <h2>{{entity.username}}</h2>
+        <small class="calm">
+          {{entity.created | date : 'yyyy-MM-dd'}} 加入
+        </small>        
         <i class="icon ion-ios7-arrow-forward"></i>
       </a>
     </div>

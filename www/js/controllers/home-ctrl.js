@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, TestTask, $ionicLoading, BikeService, User, $localstorage) {
+.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, TestTask, $ionicLoading, BikeService, User, $localstorage, $ionicHistory) {
     
   $scope.$on( 'realtime.update', function (event) {
     if($scope.device.bike.workmode === 9 && $scope.device.realtime.power > 24) {
@@ -8,6 +8,11 @@ controllers
     }
     $scope.$apply()
   })
+  
+  $scope.openMenu = function () {
+    $ionicHistory.nextViewOptions({historyRoot:true})
+    $state.go('menu')
+  }
   
   $scope.endure = function () {
     $scope.device.setWorkmode(9)
@@ -17,7 +22,7 @@ controllers
     $state.go('brands', {id:'create'})
     $ionicLoading.show({
       template: '<i class="icon ion-ios7-checkmark-outline padding"></i>请注册车辆',
-      duration: 3000
+      duration: 2000
     })
   }
   

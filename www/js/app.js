@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.services', 'ebike.filters'])
 
-.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar) {
+.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -43,22 +43,28 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     if(navigator.splashscreen) {
       setTimeout(function() {
         navigator.splashscreen.hide()
-      }, 100);
+      }, 300);
     }
+        
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+      if(toState.name === 'menu') {
+        $ionicHistory.nextViewOptions({historyRoot:true})
+      }
+    })
     
     if(window.ble) {
+      $rootScope.online = true
       ble.scan([], 5)
     }
-    
+
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
       if(toState.name === 'home') {
-        if(fromState.name === 'login') {
-          $rootScope.$broadcast('home.reconnect')
-        }
+        $rootScope.$broadcast('home.reconnect')
+        $ionicHistory.clearHistory()
       }
     })
   });  
-  
+    
   $rootScope.$on('AUTH_LOGIN', function(e, accessToken) {
   })
 

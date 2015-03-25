@@ -1,6 +1,8 @@
 controllers
 
-.controller('MenuCtrl', function($scope, $state) {
+.controller('MenuCtrl', function($scope, $state, User, $ionicHistory) {
+
+  $scope.entity = User.getCurrent()
 
 })
 
