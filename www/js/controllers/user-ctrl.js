@@ -5,8 +5,6 @@ controllers
   $scope.entity = {realm: 'client'}
   
   $scope.tryLogin = function () {
-    $rootScope.online = true
-    
     $ionicLoading.show({
       template: '<i class="icon ion-loading-c ion-loading padding"></i>登录中...'
     })
@@ -28,7 +26,6 @@ controllers
   }
 
   $scope.goRegister = function (entity) {
-    $rootScope.online = true
     $state.go('register')
   }
   
@@ -40,7 +37,7 @@ controllers
 
 .controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading, User, $localstorage, Authmessage, $filter) {
   
-  $scope.entity = {username: "13357828347", password: "123456"}
+  $scope.entity = {}
   $scope.validprompt = "获取验证码"
   
   $scope.getAuthcode = function () {
@@ -122,12 +119,7 @@ controllers
         city: item.name
       }
       User.prototype$updateAttributes({ id: user.id }, { region: user.region}, function () {
-        var viewHistory = $ionicHistory.viewHistory()
-        console.log(viewHistory)
-        // var views = viewHistory.histories.root.stack
-        // views[views.length-3].go()
         $ionicHistory.goToHistoryRoot($ionicHistory.currentView().historyId)
-        // $window.history.go(-2)
       })
     })
   }
