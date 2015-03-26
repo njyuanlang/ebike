@@ -9,11 +9,6 @@ controllers
     $scope.$apply()
   })
   
-  $scope.openMenu = function () {
-    $ionicHistory.nextViewOptions({historyRoot:true})
-    $state.go('menu')
-  }
-  
   $scope.endure = function () {
     $scope.device.setWorkmode(9)
   }
@@ -21,7 +16,7 @@ controllers
   var registerBike = function () {
     $state.go('brands', {id:'create'})
     $ionicLoading.show({
-      template: '<i class="icon ion-ios7-checkmark-outline padding"></i>请注册车辆',
+      template: '<i class="icon ion-ios7-information-outline padding"></i>请注册车辆',
       duration: 2000
     })
   }
@@ -31,7 +26,10 @@ controllers
     if($scope.device) {
       $scope.device.autoconnect().then(function (result) {
       }, function (reason) {
-        registerBike()
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-close-outline padding"></i>无法连接到车辆',
+          duration: 2000
+        })
       })
     } else {
       registerBike()

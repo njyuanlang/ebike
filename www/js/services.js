@@ -80,6 +80,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       realtime.current = Math.floor(realtime.speed/5)
     }
   }
+  var fakeIntervals = {}
   
   var noitficationCbs = {
     power: function (result) {
@@ -100,9 +101,11 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     if($rootScope.online) {
       ble.startNotification(bikeId, service.uuid, service[characteristic], noitficationCbs[characteristic])
     } else {
-      return $interval(function () {
-        fakeCbs[characteristic]()
-      }, 400, false)
+      if(!fakeIntervals[characteristic]) {
+        fakeIntervals[characteristic] = $interval(function () {
+          fakeCbs[characteristic]()
+        }, 400, false)
+      }
     }
   }
   
@@ -164,7 +167,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   
   BLEDevice.prototype.isConnected = function (bikeId) {
     var q = $q.defer()
-    if($window.ble) {
+    if($window.ble && $rootScope.online) {
       return $cordovaBLE.isConnected(bikeId)
     } else {
       q.resolve({})

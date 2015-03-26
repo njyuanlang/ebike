@@ -65,12 +65,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     })
   });  
     
-  $rootScope.$on('AUTH_LOGIN', function(e, accessToken) {
-  })
-
-  $rootScope.$on('AUTH_LOGOUT', function(e, user) {
-    $state.go('login')
-  })
 })
 
 .config(function($stateProvider, $urlRouterProvider) {

@@ -5,6 +5,8 @@ controllers
   $scope.entity = {realm: 'client'}
   
   $scope.tryLogin = function () {
+    $rootScope.online = true
+    
     $ionicLoading.show({
       template: '<i class="icon ion-loading-c ion-loading padding"></i>登录中...'
     })
