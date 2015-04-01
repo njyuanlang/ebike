@@ -29,19 +29,21 @@ controllers
   }
 })
 
-.controller('BrandsCtrl', function($scope, $state, BrandService) {
-  $scope.entities = BrandService.getBrands()
+.controller('BrandsCtrl', function($scope, $state, Brand) {
+  $scope.entities = Brand.find()
   
   $scope.selectEntity = function (item) {
     $state.go('models', {id:$state.params.id, brandId: item.id})
   }
 })
 
-.controller('ModelsCtrl', function($scope, $state, BikeService, BrandService) {
-  $scope.entities = BrandService.getModels($state.params.brandId)
+.controller('ModelsCtrl', function($scope, $state, BikeService, Brand) {
+  var brand = Brand.findById({id: $state.params.brandId}, function (result) {
+    $scope.entities = result.models
+  })
 
   $scope.selectEntity = function (item) {
-    BikeService.currentBike = {model:item, id: uuid.v4(), workmode:0}
+    BikeService.currentBike = {brand: brand, model:item, id: uuid.v4(), workmode:0}
     $state.go('voltages', {id: $state.params.id})
   }
 })

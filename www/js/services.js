@@ -428,28 +428,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
 })
 
-.service('BrandService', function ($q) {
-  return {
-    brands: [
-      {id:"2", "name": "雅迪"}, 
-      {id:"1", "name": "绿佳"}
-    ],
-    models:[
-      {id:"1", "name": "ABC123", brandId:"1", brandName: "绿佳"},
-      {id:"2", "name": "DEF456", brandId:"2", brandName: "雅迪"}
-    ],
-    getBrands: function () {
-      return this.brands
-    },
-    getModels: function (brandId) {
-      var models = this.models.filter(function (model) {
-        return model.brandId === brandId
-      })
-      return models
-    }
-  }
-})
-
 .factory('TestTask', function ($q) {
   
   function TestTask() {
