@@ -1,10 +1,5 @@
 <ion-view title="选择电池电流">
   <ion-content has-header="true" class="scroll-bg padding">
-    <label class="item item-input">
-      <i class="icon ion-search placeholder-icon"></i>
-      <input type="text" placeholder="搜索" ng-model="search.text">
-    </label>
-    
     <div class="list">
       <div ng-repeat="item in entities" ng-click="selectEntity(item)" class="item">
         {{ item }} AH

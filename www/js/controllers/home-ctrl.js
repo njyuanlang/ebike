@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, TestTask, $ionicLoading, BikeService, User, $localstorage, $ionicHistory) {
+.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, TestTask, $ionicLoading, User, $localstorage, $ionicHistory) {
     
   $scope.$on( 'realtime.update', function (event) {
     if($scope.device.bike.workmode === 9 && $scope.device.realtime.power > 24) {

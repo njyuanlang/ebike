@@ -5,9 +5,12 @@
       <div class="item">
         车辆名称： {{entity.name || '未命名'}}
       </div>
-      <div class="item item-icon-right">
+      <div class="item">
         品牌型号：
-        {{entity.model.brandName}} | {{entity.model.name}}
+        {{entity.brand.name}} | {{entity.model}}
+      </div>
+      <div class="item">
+        序列号： {{entity.serialNumber}}
       </div>
     </div>
     
