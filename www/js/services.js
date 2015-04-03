@@ -127,7 +127,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   return realtime
 })
 
-.factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask) {
+.factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask, Test) {
 
   function BLEDevice(bike) {
     this.bike = bike
@@ -338,17 +338,23 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
           if(task.items[1].state === 'error' && task.score === 75) {
             task.state = 'pass'
           }
+          Test.create(task, function (result) {
+            task.id = result.id
+          })
         } else {
           task.state = count === itemLen ? 'repaired':'broken'
+          Test.upsert(task)
         }
       }
     }, 500)
   }
   
-  BLEDevice.prototype.test = function (task) {
-    this.task = task
+  BLEDevice.prototype.test = function () {
+    this.task = new TestTask()
+    var task = this.task
     task.state = 'testing'
     task.score = 0
+    task.bike = this.bike
 
     if($rootScope.online) {
       ble.startNotification(this.localId, service.uuid, service.test, function (result) {

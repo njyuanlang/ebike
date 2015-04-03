@@ -76,8 +76,12 @@ controllers
       if($window.ble) {
         $state.go('bikes-add')
       } else {
-        $scope.entity.serialNumber = Date.now()
-        Bike.create($scope.entity)
+        $scope.entity.serialNumber = "0000"//Date.now()
+        Bike.create($scope.entity, function () {
+          
+        }, function (res) {
+          console.log(res)
+        })
         $state.go('bikes')
       }
     } else {
@@ -132,9 +136,12 @@ controllers
         ActiveBLEDevice.set(result)
         $ionicHistory.nextViewOptions({historyRoot:true})
         $state.go('home')
-      }, function (reason) {
+      }, function (res) {
+        ActiveBLEDevice.set(bike)
+        $ionicHistory.nextViewOptions({historyRoot:true})
+        $state.go('home')
         $ionicLoading.show({
-          template: "登记车辆失败："+reason,
+          template: "登记车辆失败："+res.data.error.message,
           duration: 2000
         })
       })

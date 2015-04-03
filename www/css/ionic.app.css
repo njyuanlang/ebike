@@ -7080,8 +7080,8 @@ a.button {
       position: absolute;
       font-size: 5em;
       color: orange;
-      top: 22%;
-      left: 33%; }
+      top: 23%;
+      right: 23%; }
     .container .outer .inner-1 {
       border-radius: 50%;
       position: absolute;
