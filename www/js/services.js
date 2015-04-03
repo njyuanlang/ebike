@@ -60,7 +60,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
 })
 
-.factory('RTMonitor', function ($localstorage, $rootScope, $interval) {
+.factory('RTMonitor', function ($localstorage, $rootScope, $interval, Cruise) {
   var service = {
     uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
     power: "0000D00A-D102-11E1-9B23-00025B00A5A5",// power mileage
@@ -107,7 +107,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     }
   }
   
-  realtime.notify = function(bikeId, characteristic) {
+  var uploadInterval = null
+  var notify = function(bikeId, characteristic) {
     if($rootScope.online) {
       ble.startNotification(bikeId, service.uuid, service[characteristic], noitficationCbs[characteristic])
     } else {
@@ -119,9 +120,22 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     }
   }
   
+  var uploadFn = function () {
+    Cruise.create({
+      power: realtime.power,
+      mileage: realtime.mileage,
+      speed: realtime.mileage,
+      current: realtime.current,
+      bikeId: realtime.bikeId
+    })
+  }
   realtime.startNotifications = function (bikeId) {
-    realtime.notify(bikeId, "power")
-    realtime.notify(bikeId, "speed")
+    notify(bikeId, "power")
+    notify(bikeId, "speed")
+    if(!uploadInterval) {
+      uploadInterval = $interval(uploadFn, 60000, false)
+      uploadFn()
+    }
   }
   
   return realtime
@@ -139,6 +153,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       guard: true,
     }
     this.realtime = RTMonitor
+    this.realtime.bikeId = bike.id
     this.task = new TestTask()
   }
   
@@ -394,7 +409,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     return (bike && bike.localId) ? new BLEDevice(bike) : null
   }
   var _activeBLE = getBLEDevice($localstorage.getObject(keys.activebike))
-  var _mockupBLE = new BLEDevice({localId: 'abc123', name: "demo bike", workmode:0})
+  var _mockupBLE = new BLEDevice({id: "123", localId: 'abc123', name: "demo bike", workmode:0})
   var service = {
     set: function (bike) {
       _activeBLE = getBLEDevice(bike)
