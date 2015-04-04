@@ -1,10 +1,10 @@
 <ion-view hide-back-button="true" has-header="false" hide-nav-bar="true" ng-init="init()">
   <ion-content class="cruise-bg">
     <div class="row padding cruise">
-      <div class="col-25">
-        <div class="progress-radial progress-radial-{{device.realtime.power}}">
+      <div class="col col-25">
+        <div class="power-cycle power-cycle-{{device.realtime.power}}">
           <div class="overlay" ng-if="device.bike.workmode != 9">
-            <h1>{{device.realtime.power}}<small>%</small></h1>
+            <h3>{{device.realtime.power}}<small>%</small></h3>
             <label><small>剩余电量</small></label>
           </div>
           <a class="overlay powerless" ng-if="device.bike.workmode !=9 && device.realtime.power <= 0" ng-click="device.setWorkmode(9)">
@@ -15,19 +15,22 @@
           </div>
         </div>
       </div>
-      <div class="col-50">
+      <div class="col col-50">
         <h1 class="text-center"><small>剩余</small> {{device.realtime.mileage}} <small>续航公里</small></h1>
         <h4 class="assertive" ng-if="device.realtime.power <= 0 && device.bike.workmode != 9">请尽快充电,或开启无电续航!</h4>
         <h4 class="assertive" ng-if="device.bike.workmode == 9">无电续航中,请尽快充电!</h4>
       </div>
-      <div class="col-25 round-button round-button-lg">
-        <div class="round-button-circle">
-          <a class="button" ng-click="switchWorkmode()" ng-class="{'disabled': device.bike.workmode == 9}">
-            <h1 ng-if="device.bike.workmode%8 == 1">省电</h1>
-            <h1 ng-if="device.bike.workmode == 0">正常</h1>
-            <h1 ng-if="device.bike.workmode == 2">爬坡</h1>
-            模式
-          </a>
+      <div class="col col-25">
+        <div class="round-button round-button-lg">
+          <div class="round-button-circle">
+            <a class="button" ng-click="switchWorkmode()" ng-class="{'disabled': device.bike.workmode == 9}">
+              <h1 ng-if="device.bike.workmode%8 == 1">省电</h1>
+              <h1 ng-if="device.bike.workmode == 0">正常</h1>
+              <h1 ng-if="device.bike.workmode == 2">爬坡</h1>
+              <small>模式<small>
+            </a>
+          </div>
+          
         </div>
       </div>
     </div>

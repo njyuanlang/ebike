@@ -158,12 +158,24 @@ $user-bg:                       '../img/user-bg.png';
   overflow:hidden;
   box-shadow: 0 0 3px gray;
 }
-.round-button-lg .round-button-circle {
-  border: 12px solid $energized;
-  width: 140px;
-  height: 140px;
-  padding: 0;
-  font-size: 1.5em;
+
+.col {
+  position: relative;
+  width: 100%;
+  border: 0;
+  
+  .round-button-lg .round-button-circle {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    padding-bottom: 100%;
+    border-radius: 50%;
+    border: 10px solid $energized;
+    overflow:hidden;
+    box-shadow: 0 0 3px gray;
+    font-size: 1.0em;
+  }
 }
 .round-button a {
   display:block;
@@ -171,14 +183,17 @@ $user-bg:                       '../img/user-bg.png';
 	width:100%;
 	padding-top:25%;
   padding-bottom:25%;
-  line-height:0em;
+  line-height:0.5em;
   margin-top:-0.5em;
 	text-align:center;
 	color:$light;
   font-family:Verdana;
-  font-size:1.0em;
+  font-size:1.5rem;
   font-weight:bold;
   text-decoration:none;
+  > h1 {
+    font-size: 2.2rem;
+  }
 }
 
 .round-button a.button {
@@ -230,63 +245,67 @@ $backColor:                           #2f3439;
 /* -------------------------------------
  * Bar container
  * ------------------------------------- */
-.progress-radial {
-  position: relative;
-  width: 140px;
-  height: 140px;
-  margin: 0 auto;
-  border-radius: 50%;
-//  border: 2px solid $backColor; // remove gradient color
-  border: 0;
-  background-color: $barColor; // default 100%
-  font-size: 0.1rem;
-}
 
-.progress-radial-lg {
-  width: 280px;
-  height: 280px;
-  font-size: 1.0rem;
+.col {
+  position: relative;
+  width: 100%;
+  .power-cycle {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    border-radius: 50%;
+    border: 0;
+    background-color: $barColor; // default 100%
+    font-size: 1.0rem;
+    padding-bottom: 100%;
+  }
 }
 
 /* -------------------------------------
  * Optional centered circle w/text
  * ------------------------------------- */  
-.progress-radial .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 84%;
-  height: 84%;
-  background-color: $light;
-  border-radius: 50%;
-  margin-left: 8%;
-  margin-top: 8%;
-  text-align: center;
-  line-height: 0.2rem;
-  
-  > h1 {
-  	margin: 35% 0 0 0;
-    font-size: 3.5rem;
-    line-height: 1rem;
-  }
-  > h3 {
-  	margin: 35% 0 0 0;
-    font-size: 2.4rem;
-  }
-  > h4 {
-  	padding-top: 5%;
-    font-size: 1.5rem;
-  }
-  > label {
-    font-size: 1.2rem;
-    color: $dark;
-  }
-}
 
-.progress-radial-lg .overlay {
-  > h1 {
-  	margin: 40% 0 0 0;
-    font-size: 7.5rem;
+.col {
+  .power-cycle .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80%;
+    height: 80%;
+    background-color: $light;
+    border-radius: 50%;
+    margin-left: 10%;
+    margin-top: 10%;
+    text-align: center;
+    line-height: 0.2rem;
+
+    > h1 {
+    	margin: 12% 0 0 0;
+      @media (width: 320px){
+        font-size: 6.5rem;
+      }
+      @media (width: 360px){
+        font-size: 7.0rem;
+      }
+      @media (width: 375px){
+        font-size: 7.5rem;
+      }
+      @media (width: 414px){
+        font-size: 8.5rem;
+      }
+    }
+    > h3 {
+    	margin: 12% 0 0 0;
+      font-size: 3.5rem;
+    }
+    > h4 {
+    	padding-top: 5%;
+      font-size: 1.5rem;
+    }
+    > label {
+      font-size: 1.2rem;
+      color: $dark;
+    }
   }
 }
 
@@ -311,7 +330,7 @@ $half: round($loops / 2);
 $percent20: round($loops/5);
 
 @for $i from 0 through $loops {
-  .progress-radial-#{$i*$step} {
+  .power-cycle-#{$i*$step} {
     -webkit-box-shadow: 0 0 0rem;
     @if $i < $half {
       $nextdeg: 180deg - ( $increment * $i );
@@ -353,17 +372,12 @@ $percent20: round($loops/5);
 // Speed Gauge pointer
 // -------------------------------
 
-$speed-gauge-height: 11em;
+$speed-gauge-height: 12rem;
 
 .speed-gauge {
   position: relative;
   width: 80%;
-  @media (height: 320px){
-    height: 12em;
-  }
-  @media (height: 360px){
-    height: 15em;
-  }
+  height: $speed-gauge-height;
   left: 10%;
 
   #speed-gauge-digital {
@@ -375,11 +389,11 @@ $speed-gauge-height: 11em;
     background: black;
     border:0 solid transparent;
     text-align: center;
-    bottom: 0;
+    bottom: -2rem;
     
     > h1 {
       margin-top:15%;
-      font-size: 5em;
+      font-size: 5rem;
     }
   }
   
@@ -389,7 +403,7 @@ $speed-gauge-height: 11em;
     width: 48%;
     height: 1.2em;
     background: red;
-    bottom: 0em;    
+    bottom: 0rem;    
     -webkit-transform-origin: bottom right;
     -webkit-transition-duration: 400ms;
     -webkit-transition-timing-function: linear;
