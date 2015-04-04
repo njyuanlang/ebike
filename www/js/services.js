@@ -79,7 +79,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     power: function () {
       realtime.power = realtime.power || 100
       realtime.power--
-      // realtime.power = 0
+      // realtime.power = 100
       realtime.mileage = Math.floor(realtime.power/2)
       // $rootScope.$broadcast('realtime.update')
     },

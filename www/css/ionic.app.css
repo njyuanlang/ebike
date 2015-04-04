@@ -7414,7 +7414,7 @@ progress::-webkit-progress-value {
   line-height: 0.2rem; }
   .progress-radial .overlay > h1 {
     margin: 35% 0 0 0;
-    font-size: 4rem;
+    font-size: 3.5rem;
     line-height: 1rem; }
   .progress-radial .overlay > h3 {
     margin: 35% 0 0 0;
@@ -7428,7 +7428,7 @@ progress::-webkit-progress-value {
 
 .progress-radial-lg .overlay > h1 {
   margin: 40% 0 0 0;
-  font-size: 8rem; }
+  font-size: 7.5rem; }
 
 .powerless {
   background-color: #ef473a !important;
