@@ -7309,6 +7309,9 @@ progress::-webkit-progress-value {
   width: 100%;
   height: 100%; }
 
+/* -------------------------------------
+ * Round Button Circle
+ * ------------------------------------- */
 .round-button-circle {
   position: relative;
   width: 100%;
@@ -7319,34 +7322,23 @@ progress::-webkit-progress-value {
   overflow: hidden;
   box-shadow: 0 0 3px gray; }
 
-.col {
-  position: relative;
-  width: 100%;
-  border: 0; }
-  .col .round-button-lg .round-button-circle {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    margin: auto;
-    padding-bottom: 100%;
-    border-radius: 50%;
-    border: 10px solid #6e8bcd;
-    overflow: hidden;
-    box-shadow: 0 0 3px gray;
-    font-size: 1em; }
+.round-button-lg .round-button-circle {
+  position: absolute;
+  margin: auto;
+  padding-bottom: 90%;
+  border: 12px solid #6e8bcd; }
+  .round-button-lg .round-button-circle > a {
+    font-size: 1.5rem;
+    line-height: 0.9rem; }
 
 .round-button a {
   display: block;
-  float: left;
   width: 100%;
-  padding-top: 25%;
-  padding-bottom: 25%;
-  line-height: 0.5em;
-  margin-top: -0.5em;
+  padding-top: 20%;
+  padding-bottom: 20%;
+  line-height: 0.3rem;
   text-align: center;
   color: #505866;
-  font-family: Verdana;
-  font-size: 1.5rem;
   font-weight: bold;
   text-decoration: none; }
   .round-button a > h1 {
@@ -7391,7 +7383,7 @@ progress::-webkit-progress-value {
   background: #6e8bcd; }
 
 /* -------------------------------------
- * Bar container
+ * Power Cycle
  * ------------------------------------- */
 .col {
   position: relative;
@@ -7406,9 +7398,6 @@ progress::-webkit-progress-value {
     font-size: 1rem;
     padding-bottom: 100%; }
 
-/* -------------------------------------
- * Optional centered circle w/text
- * ------------------------------------- */
 .col .power-cycle .overlay {
   position: absolute;
   top: 0;
@@ -7437,12 +7426,13 @@ progress::-webkit-progress-value {
         font-size: 8.5rem; } }
   .col .power-cycle .overlay > h3 {
     margin: 12% 0 0 0;
-    font-size: 3.5rem; }
+    font-size: 3.5rem;
+    line-height: 3.5rem; }
   .col .power-cycle .overlay > h4 {
     padding-top: 5%;
     font-size: 1.5rem; }
   .col .power-cycle .overlay > label {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: #aaa; }
 
 .powerless {
