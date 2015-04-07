@@ -73,7 +73,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     speed: 0,
     current: 0
   }
-  var speeds = [0, 20, 50, 40, 20, 30,45,5,32]
+  var speeds = [0, 20, 50, 40, 20, 30,45,75,32, 5]
   var speedIndex = 0
   var fakeCbs = {
     power: function () {

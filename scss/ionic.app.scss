@@ -363,9 +363,9 @@ $percent20: round($loops/5);
   }
 }
 
-// Speed Gauge pointer
-// -------------------------------
-
+/* -------------------------------------
+ * Speed Gauge pointer
+ * ------------------------------------- */
 $speed-gauge-height: 12rem;
 
 .speed-gauge {
@@ -404,7 +404,7 @@ $speed-gauge-height: 12rem;
   }
 }
 
-$maxSpeed: 120;
+$maxSpeed: 100;
 $angularSpeed: 180deg/$maxSpeed;
 @for $i from 0 through $maxSpeed {
   .speed-gauge-#{$i} {
