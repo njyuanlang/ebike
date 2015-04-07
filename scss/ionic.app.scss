@@ -206,15 +206,20 @@ $loops2: round(100 / $step2);
   }
 }
 
-// State bar
-// -------------------------------
+
+/* -------------------------------------
+ * State bar
+ * ------------------------------------- */
 .state .row {
 
+  position: absolute;
+  bottom: 0;
   .col-33 {
     display: block;
     border: 1px solid $light;
     background: transparent;
     font-size: 1.5rem;
+    line-height: 4rem;
     width: 33.3%;
 
     > img:first-child {

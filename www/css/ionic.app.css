@@ -7370,17 +7370,24 @@ progress::-webkit-progress-value {
   background-image: linear-gradient(to top, #6e8bcd 100%, transparent 0%);
   background-image: -webkit-linear-gradient(bottom, #6e8bcd 100%, transparent 0%); }
 
-.state .row .col-33 {
-  display: block;
-  border: 1px solid #505866;
-  background: transparent;
-  font-size: 1.5rem;
-  width: 33.3%; }
-  .state .row .col-33 > img:first-child {
-    max-width: 1.5rem;
-    max-height: 1.2rem; }
-.state .row .active {
-  background: #6e8bcd; }
+/* -------------------------------------
+ * State bar
+ * ------------------------------------- */
+.state .row {
+  position: absolute;
+  bottom: 0; }
+  .state .row .col-33 {
+    display: block;
+    border: 1px solid #505866;
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 4rem;
+    width: 33.3%; }
+    .state .row .col-33 > img:first-child {
+      max-width: 1.5rem;
+      max-height: 1.2rem; }
+  .state .row .active {
+    background: #6e8bcd; }
 
 /* -------------------------------------
  * Power Cycle
