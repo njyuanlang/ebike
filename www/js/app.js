@@ -31,8 +31,10 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         if(toState.name === 'home') {
+          window.plugins.insomnia.allowSleepAgain()
           screen.unlockOrientation()
         } else if(toState.name === 'cruise') {
+          window.plugins.insomnia.keepAwake()
           screen.unlockOrientation()   
         } else {
           screen.lockOrientation('portrait-primary')   
