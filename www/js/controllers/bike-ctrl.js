@@ -96,8 +96,10 @@ controllers
   $scope.entities = []
 
   function scanSuccessCb(result) {
-    $scope.entities.push(result)
-    $scope.$apply()
+    if(result && result.name != '') {
+      $scope.entities.push(result)
+      $scope.$apply()
+    }
   }
   
   function scanErrorCb(reason) {
