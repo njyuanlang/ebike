@@ -315,7 +315,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     return q.promise
   }
   
-  var service = {
+  var testService = {
     uuid: "0000B000-D102-11E1-9B23-00025B00A5A5",
     test: "0000B00A-D102-11E1-9B23-00025B00A5A5",
     repair: "0000B00B-D102-11E1-9B23-00025B00A5A5"
@@ -372,10 +372,20 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     task.bike = this.bike
 
     if($rootScope.online) {
-      ble.startNotification(this.localId, service.uuid, service.test, function (result) {
+      var kThis = this
+      // this.disconnect().then(function () {
+      //   return kThis.connect()
+      // })
+      // .then(function () {
+      //   ble.startNotification(kThis.localId, testService.uuid, testService.test, function (result) {
+      //     testTaskCb(new Uint8Array(result)[0], task)
+      //   })
+      //   kThis.sendOrder([0x81, 0x81])
+      // })
+      ble.startNotification(kThis.localId, testService.uuid, testService.test, function (result) {
         testTaskCb(new Uint8Array(result)[0], task)
       })
-      this.sendOrder([0x81, 0x81])
+      kThis.sendOrder([0x81, 0x81])
     } else {
       testTaskCb(10, task)
     }
@@ -386,7 +396,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     task.state = 'repairing'
     
     if($rootScope.online) {
-      ble.startNotification(this.localId, service.uuid, service.repair, function (result) {
+      ble.startNotification(this.localId, testService.uuid, testService.repair, function (result) {
         testTaskCb(new Uint8Array(result)[0], task)
       })
       this.sendOrder([0x91, 0x91])
