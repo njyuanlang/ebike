@@ -361,7 +361,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
           Test.upsert(task)
         }
       }
-    }, 500)
+    }, 1000)
   }
   
   BLEDevice.prototype.test = function () {

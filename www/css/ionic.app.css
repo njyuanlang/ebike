@@ -7304,7 +7304,7 @@ progress::-webkit-progress-value {
   height: 0.8rem;
   border-radius: 50px;
   background-image: -webkit-linear-gradient(left, #56fa89, #56fa89);
-  -webkit-transition: width 200ms; }
+  -webkit-transition: width 100ms; }
 
 .slider-slide img {
   width: 100%;
