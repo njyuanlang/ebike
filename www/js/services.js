@@ -373,15 +373,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
 
     if($rootScope.online) {
       var kThis = this
-      // this.disconnect().then(function () {
-      //   return kThis.connect()
-      // })
-      // .then(function () {
-      //   ble.startNotification(kThis.localId, testService.uuid, testService.test, function (result) {
-      //     testTaskCb(new Uint8Array(result)[0], task)
-      //   })
-      //   kThis.sendOrder([0x81, 0x81])
-      // })
       ble.startNotification(kThis.localId, testService.uuid, testService.test, function (result) {
         testTaskCb(new Uint8Array(result)[0], task)
       })
@@ -396,10 +387,11 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     task.state = 'repairing'
     
     if($rootScope.online) {
-      ble.startNotification(this.localId, testService.uuid, testService.repair, function (result) {
-        testTaskCb(new Uint8Array(result)[0], task)
-      })
+      // ble.startNotification(this.localId, testService.uuid, testService.repair, function (result) {
+      //   testTaskCb(new Uint8Array(result)[0], task)
+      // })
       this.sendOrder([0x91, 0x91])
+      testTaskCb(2, task)
     } else {
       testTaskCb(2, task)
     }
