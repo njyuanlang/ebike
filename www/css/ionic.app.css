@@ -7077,11 +7077,12 @@ a.button {
     background: transparent;
     padding-bottom: 100%; }
     .container .outer .score {
+      width: 100%;
       position: absolute;
-      font-size: 5em;
+      font-size: 6rem;
+      line-height: 1rem;
       color: orange;
-      top: 23%;
-      right: 23%; }
+      margin: 45% auto; }
     .container .outer .inner-1 {
       border-radius: 50%;
       position: absolute;
