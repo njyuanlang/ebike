@@ -111,6 +111,9 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   var notify = function(bikeId, characteristic) {
     if($rootScope.online) {
       ble.startNotification(bikeId, service.uuid, service[characteristic], noitficationCbs[characteristic])
+      if(fakeIntervals[characteristic]) {
+        $interval.cancel(fakeIntervals[characteristic])
+      }
     } else {
       if(!fakeIntervals[characteristic]) {
         fakeIntervals[characteristic] = $interval(function () {

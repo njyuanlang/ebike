@@ -1,14 +1,18 @@
 controllers
 
-.controller('BikesCtrl', function($scope, $state, Bike, ActiveBLEDevice, currentBike, User) {
+.controller('BikesCtrl', function($scope, $state, Bike, ActiveBLEDevice, currentBike, User, $window) {
   User.getCurrent(function (user) {
     $scope.entities = Bike.find({filter:{where:{ownerId: user.id}}})
   })
   $scope.entity = ActiveBLEDevice.get().bike || {}
 
   $scope.activeEntityChange = function (item) {
+    ActiveBLEDevice.get().disconnect()
     $scope.entity = item
-    ActiveBLEDevice.set(item)
+    currentBike.set(item)
+    if($window.ble) {
+      $state.go('bikes-add')
+    }
   }
   
   $scope.showDetail = function (item) {

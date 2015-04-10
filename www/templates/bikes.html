@@ -7,10 +7,10 @@
            class="item item-icon-left item-icon-right">
         <i class="icon" ng-class="item.id === entity.id?'ion-ios7-checkmark-outline':'ion-ios7-circle-outline'"></i>
         {{ item.brand.name }} | {{ item.model }}
-        <span class="item-note">
+        <!-- <span class="item-note">
           <div ng-if="!!item.localId">已绑定</div>
           <div ng-if="!item.localId">未绑定</div>
-        </span>
+        </span> -->
         <i class="icon ion-ios7-information-outline" ng-click="showDetail(item); $event.stopPropagation();"></i>
       </div>
     </div>
