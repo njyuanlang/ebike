@@ -17,7 +17,7 @@ controllers
     $state.go('brands', {id:'create'})
     $ionicLoading.show({
       template: '<i class="icon ion-ios7-information-outline padding"></i>请注册车辆',
-      duration: 2000
+      duration: 1000
     })
   }
   
@@ -35,6 +35,8 @@ controllers
       registerBike()
     }
   }
+  
+  $scope.reconnectDevice = reconnectDevice
   
   $scope.$on('home.reconnect', function () {
     reconnectDevice()

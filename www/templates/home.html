@@ -16,6 +16,12 @@
           </a>
         </div>
       </div>
+      <div class="col col-50"></div>
+      <div class="col col-25">
+        <a class="button button-clear padding" ng-click="reconnectDevice()">
+          <i class="ion-bluetooth bluetooth" ng-class="device.connected ? 'energized' : 'light'"></i>
+        </a>
+      </div>
     </div>
     <div class="row">
       <div class="col col-80 col-offset-10">

@@ -7372,6 +7372,16 @@ progress::-webkit-progress-value {
   background-image: -webkit-linear-gradient(bottom, #6e8bcd 100%, transparent 0%); }
 
 /* -------------------------------------
+ * Bluetooth connecting
+ * ------------------------------------- */
+.bluetooth {
+  position: absolute;
+  font-size: 2.5rem;
+  border-radius: 100%;
+  border: 1px solid;
+  padding: 15%; }
+
+/* -------------------------------------
  * State bar
  * ------------------------------------- */
 .state .row {

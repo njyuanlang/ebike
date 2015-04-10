@@ -175,12 +175,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   BLEDevice.prototype.connect = function () {
     var theSelf = this
     return $cordovaBLE.connect(this.localId).then(function (result) {
-      theSelf.onConnect(result)
+      theSelf.onConnected(result)
       return result
     })
   }
   
-  BLEDevice.prototype.onConnect = function (result) {
+  BLEDevice.prototype.onConnected = function (result) {
+    this.connected = true
     this.startMonitor()
     this.startReminder()
     this.sendSpec()
@@ -192,6 +193,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     if($window.ble && $rootScope.online) {
       return $cordovaBLE.isConnected(bikeId)
     } else {
+      this.connected = false
       q.resolve({})
     }
     return q.promise
@@ -205,10 +207,11 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     .then(function (result) {
       return result
     }, function (reason) {
+      kSelf.connected = false
       return $cordovaBLE.connect(bikeId)
     })
     .then(function (result) {
-      kSelf.onConnect(result)
+      kSelf.onConnected(result)
       q.resolve(result)
     }, q.reject)  
     
