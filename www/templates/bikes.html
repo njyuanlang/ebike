@@ -5,7 +5,7 @@
       <div ng-repeat="item in entities" 
            ng-click="activeEntityChange(item)"
            class="item item-icon-left item-icon-right">
-        <i class="icon" ng-class="item.id === entity.id?'ion-ios7-checkmark-outline':'ion-ios7-circle-outline'"></i>
+        <i class="icon" ng-class="item.serialNumber === entity.serialNumber?'ion-ios7-checkmark-outline':'ion-ios7-circle-outline'"></i>
         {{ item.brand.name }} | {{ item.model }}
         <!-- <span class="item-note">
           <div ng-if="!!item.localId">已绑定</div>

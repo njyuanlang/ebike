@@ -49,7 +49,7 @@ controllers
       $state.go('login')
     } else {
       User.login(loginData, function (user) {
-        reconnectDevice()
+        // reconnectDevice()
       })
     }
   }

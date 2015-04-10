@@ -146,10 +146,6 @@ controllers
         ActiveBLEDevice.set(bike)
         $ionicHistory.nextViewOptions({historyRoot:true})
         $state.go('home')
-        $ionicLoading.show({
-          template: "登记车辆失败："+res.data.error.message,
-          duration: 2000
-        })
       })
     }, function (reason) {
       $ionicLoading.show({
