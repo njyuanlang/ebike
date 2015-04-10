@@ -220,27 +220,34 @@ $loops2: round(100 / $step2);
 }
 
 /* -------------------------------------
- * State bar
+ * Work State bar
  * ------------------------------------- */
-.state .row {
-
+.workstate {
+  width: 100%;
   position: absolute;
   bottom: 0;
-  .col-33 {
-    display: block;
-    border: 1px solid $light;
-    background: transparent;
-    font-size: 1.5rem;
-    line-height: 4rem;
-    width: 33.3%;
-
-    > img:first-child {
-      max-width:1.5rem;
-      max-height: 1.2rem;
+  
+  .row {
+    position: relative;
+    > h1 {
+      line-height: 4rem;
     }
-  }
-  .active {
-    background: $energized;
+    .col-33 {
+      display: block;
+      border: 1px solid $light;
+      background: transparent;
+      font-size: 1.5rem;
+      line-height: 4rem;
+      width: 33.3%;
+
+      > img:first-child {
+        max-width:1.5rem;
+        max-height: 1.2rem;
+      }
+    }
+    .active {
+      background: $energized;
+    }
   }
 }
 
