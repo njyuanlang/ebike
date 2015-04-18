@@ -178,12 +178,23 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     })
   }
   
+  var testService = {
+    uuid: "0000B000-D102-11E1-9B23-00025B00A5A5",
+    test: "0000B00A-D102-11E1-9B23-00025B00A5A5",
+    repair: "0000B00B-D102-11E1-9B23-00025B00A5A5"
+  }
   BLEDevice.prototype.onConnected = function (result) {
     this.connected = true
-    this.startMonitor()
+    RTMonitor.startNotifications(this.localId)
     this.startReminder()
     this.sendSpec()
     this.setWorkmode(this.bike.workmode%8)
+    var kThis = this
+    if($rootScope.online) {
+      ble.startNotification(kThis.localId, testService.uuid, testService.test, function (result) {
+        kThis.testTaskCb(new Uint8Array(result)[0], kThis.task)
+      })
+    }
   }
   
   BLEDevice.prototype.isConnected = function (bikeId) {
@@ -203,7 +214,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     var kSelf = this
     this.isConnected(bikeId)
     .then(function (result) {
-      return result
+      q.resolve(result)
     }, function (reason) {
       kSelf.connected = false
       return $cordovaBLE.connect(bikeId)
@@ -258,10 +269,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     ble.write(this.localId, order.uuid, order.spec, value) 
   }
   
-  BLEDevice.prototype.startMonitor = function () {
-    RTMonitor.startNotifications(this.localId)
-  }
-
   var reminder = {
     uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
     msg: "0000D00C-D102-11E1-9B23-00025B00A5A5"
@@ -314,14 +321,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     })    
     return q.promise
   }
-  
-  var testService = {
-    uuid: "0000B000-D102-11E1-9B23-00025B00A5A5",
-    test: "0000B00A-D102-11E1-9B23-00025B00A5A5",
-    repair: "0000B00B-D102-11E1-9B23-00025B00A5A5"
-  }
-  
-  function testTaskCb(result, task) {
+    
+  BLEDevice.prototype.testTaskCb = function (result, task) {
     if(result === 0xE) return
     
     var states = ['pass', 'error']
@@ -339,13 +340,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     var itemLen = items.length
     var i = 0
     var count = 0
-    this.testInterval = $interval(function () {
+    var testInterval = $interval(function () {
       var item = items[i]
       item.progress = 100
       item.state = states[(result>>item.index)&0x1]
       if(item.state === 'pass' || item.state === 'repaired') count++
-      if(++i >= itemLen) {
-        $interval.cancel(this.testInterval)
+      if(++i == itemLen) {
+        $interval.cancel(testInterval)
         task.score += Math.round(count*100/task.items.length)
         if(task.state === 'testing') {
           task.state = count === itemLen ? 'pass':'error'
@@ -372,28 +373,20 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     task.bike = this.bike
 
     if($rootScope.online) {
-      var kThis = this
-      ble.startNotification(kThis.localId, testService.uuid, testService.test, function (result) {
-        testTaskCb(new Uint8Array(result)[0], task)
-      })
-      kThis.sendOrder([0x81, 0x81])
+      this.sendOrder([0x81, 0x81])
     } else {
-      testTaskCb(10, task)
+      this.testTaskCb(10, task)
     }
   }
 
   BLEDevice.prototype.repair = function (task) {
-    var task
     task.state = 'repairing'
     
     if($rootScope.online) {
-      // ble.startNotification(this.localId, testService.uuid, testService.repair, function (result) {
-      //   testTaskCb(new Uint8Array(result)[0], task)
-      // })
       this.sendOrder([0x91, 0x91])
-      testTaskCb(2, task)
+      this.testTaskCb(2, task)
     } else {
-      testTaskCb(2, task)
+      this.testTaskCb(2, task)
     }
   }
 

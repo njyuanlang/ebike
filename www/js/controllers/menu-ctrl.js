@@ -6,41 +6,6 @@ controllers
 
 })
 
-.controller('HelpCtrl', function($scope, $state, ActiveBLEDevice) {
-  
-  $scope.$on( 'realtime.update', function (event) {
-    var d = new Date()
-    $scope.updated = d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()
-  })
-  
-  $scope.test = {
-    test: 0,
-    repair: 0
-  }
-    
-  function test(method) {
-    $scope.device[method](function (result) {
-      var d = new Date()
-      test[method] = result+' '+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()
-      $scope.$apply()
-    }, function (reason) {
-      test[method] = reason
-      $scope.$apply()
-    })
-  }
-  
-  $scope.refresh = function () {
-    $scope.device = ActiveBLEDevice.get()
-    $scope.device.startMonitor()
-  }
-  
-  $scope.switchMode = function () {
-    $scope.device.setWorkmode((++$scope.device.workmode)%3)
-  }
-  
-  $scope.test = test
-})
-
 .controller('MessagesCtrl', function($scope, $state, ActiveBLEDevice) {
 
   $scope.setting = false;

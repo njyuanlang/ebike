@@ -15,7 +15,6 @@ controllers
   
   $scope.init = function () {
     $scope.device = ActiveBLEDevice.get()
-    $scope.device.startMonitor()
   }
 
 })
