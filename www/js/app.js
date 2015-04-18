@@ -27,8 +27,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
         }
       }, false);
   
-      screen.lockOrientation('portrait-primary')
-
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         if(toState.name === 'home') {
           window.plugins.insomnia.allowSleepAgain()
@@ -62,6 +60,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
         }
         $ionicHistory.clearHistory()
       }
+      
     })
 
     if(window.ble) {
