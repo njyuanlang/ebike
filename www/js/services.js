@@ -135,7 +135,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   realtime.startNotifications = function (bikeId) {
     notify(bikeId, "power")
     notify(bikeId, "speed")
-    if(!uploadInterval) {
+    if(!uploadInterval && bikeId) {
       uploadInterval = $interval(uploadFn, 60000, false)
       uploadFn()
     }
@@ -144,7 +144,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   return realtime
 })
 
-.factory('BLEDevice', function ($localstorage, $cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask, Test) {
+.factory('BLEDevice', function ($cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask, Test) {
 
   function BLEDevice(bike) {
     this.bike = bike
@@ -160,10 +160,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     this.task = new TestTask()
   }
   
-  BLEDevice.prototype.save = function () {
-    $localstorage.setObject(this.bike.localId, this.bike)
-  }
-  
   BLEDevice.prototype.setWorkmode = function (mode) {
     this.bike.workmode = mode
     if($rootScope.online) {
@@ -171,7 +167,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       hexs[0] += mode
       hexs[1] += mode
       this.sendOrder(hexs)
-      this.save()
     }
   }
   
@@ -236,7 +231,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       var theSelf = this
       ble.read(this.localId, service.uuid, service.sn, function (result) {
         theSelf.bike.serialNumber = Util.bytesToString(result)
-        theSelf.save()
         q.resolve(theSelf.bike.serialNumber)
       }, function (reason) {
         q.reject(reason)
@@ -287,7 +281,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       ble.startNotification(this.localId, reminder.uuid, reminder.msg, function (result) {
         var res = new Uint8Array(result)
         localforage.config({name: "ebike.reminder"})
-        localforage.setItem(Date.now(), resolveReminder(res[0]))
+        localforage.setItem(Date.now()+'', resolveReminder(res[0]))
       })
     } else {
       localforage.config({name: "ebike.reminder"})
@@ -414,17 +408,16 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
 
   function getBLEDevice(bike) {
-    return (bike && bike.localId) ? new BLEDevice(bike) : null
+    return new BLEDevice(bike || {workmode: 0})
   }
   var _activeBLE = getBLEDevice($localstorage.getObject(keys.activebike))
-  var _mockupBLE = new BLEDevice({id: "123", localId: 'abc123', name: "demo bike", workmode:0})
   var service = {
     set: function (bike) {
       _activeBLE = getBLEDevice(bike)
       $localstorage.setObject(keys.activebike, bike)
     },
     get: function () {
-      return $rootScope.online ? _activeBLE : _mockupBLE
+      return _activeBLE
     }
   }
   

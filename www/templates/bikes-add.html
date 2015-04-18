@@ -1,4 +1,7 @@
 <ion-view title="新增车辆" ng-init="init()">
+  <ion-nav-buttons side="right">
+    <a class="button" ng-click="goHome()">主页</a>
+  </ion-nav-buttons>
   <ion-content has-header="true" class="scroll-bg padding">
     <ion-refresher pulling-text="下拉刷新..." on-refresh="doScan()"></ion-refresher>
 

@@ -23,7 +23,8 @@ controllers
   
   var reconnectDevice = function () {
     $scope.device = ActiveBLEDevice.get()
-    if($scope.device) {
+    if($scope.device.bike.name) {
+      if(!$scope.device.localId) return $state.go('bikes-add')
       $scope.device.autoconnect().then(function (result) {
       }, function (reason) {
         $ionicLoading.show({
@@ -49,7 +50,7 @@ controllers
       $state.go('login')
     } else {
       User.login(loginData, function (user) {
-        // reconnectDevice()
+        $rootScope.$broadcast('home.reconnect')
       })
     }
   }

@@ -50,7 +50,7 @@ controllers
   })
 
   $scope.selectEntity = function (item) {
-    currentBike.set({brand: brand, model:item, workmode:0})
+    currentBike.set({brand: brand, model:item, workmode:0, "name": brand.name+"牌电动车"})
     $state.go('voltages', {id: $state.params.id})
   }
 })
@@ -70,24 +70,28 @@ controllers
   }
 })
 
-.controller('CurrentsCtrl', function($scope, $state, currentBike, $ionicHistory, $window, Bike) {
+.controller('CurrentsCtrl', function($scope, $state, currentBike, $ionicHistory, $window, Bike, ActiveBLEDevice) {
   $scope.entities = [12, 20, 30, 36]
   $scope.entity = currentBike.get()
 
+  $scope.goHome = function (bike) {
+    ActiveBLEDevice.set(bike)
+    $ionicHistory.nextViewOptions({historyRoot:true})
+    $state.go('home')    
+  }
   $scope.selectEntity = function (item) {
     $scope.entity.current = item
     if($state.params.id === 'create') {
-      if($window.ble) {
-        $state.go('bikes-add')
-      } else {
-        $scope.entity.serialNumber = "0000"//Date.now()
-        Bike.create($scope.entity, function () {
-          
-        }, function (res) {
-          console.log(res)
-        })
-        $state.go('bikes')
-      }
+      Bike.create($scope.entity, function (result) {
+        currentBike.set(result)
+        if($window.ble) {
+          $state.go('bikes-add')
+        } else {
+          $scope.goHome(result)
+        }
+      }, function (res) {
+        $scope.goHome($scope.entity)
+      })
     } else {
       Bike.prototype$updateAttributes({ id: $scope.entity.id }, {current: $scope.entity.current})
       $ionicHistory.goBack()
@@ -113,6 +117,7 @@ controllers
   function doScan() {
     $scope.entities = []
     ble.scan([], 5, scanSuccessCb, scanErrorCb)
+    ActiveBLEDevice.get().disconnect()
     $timeout(function () {
       $scope.$broadcast('scroll.refreshComplete')
     }, 5000)
@@ -138,14 +143,10 @@ controllers
       })
     })
     .then(function (result) {
-      Bike.create(bike, function (result) {
-        ActiveBLEDevice.set(result)
-        $ionicHistory.nextViewOptions({historyRoot:true})
-        $state.go('home')
+      Bike.upsert(bike, function (result) {
+        $scope.goHome(result)
       }, function (res) {
-        ActiveBLEDevice.set(bike)
-        $ionicHistory.nextViewOptions({historyRoot:true})
-        $state.go('home')
+        $scope.goHome(bike)
       })
     }, function (reason) {
       $ionicLoading.show({
@@ -158,6 +159,12 @@ controllers
       template:'正在连接'+item.name+"...",
       duration: 3000
     })
+  }
+  
+  $scope.goHome = function (bike) {
+    ActiveBLEDevice.set(bike || currentBike.get())
+    $ionicHistory.nextViewOptions({historyRoot:true})
+    $state.go('home')
   }
   
   $scope.init = function () {

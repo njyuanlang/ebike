@@ -56,14 +56,17 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
       if(toState.name === 'home') {
-        $rootScope.$broadcast('home.reconnect')
+        if(fromState.name === 'login' 
+        /*|| fromState.name === 'bikes-add'*/) {
+          $rootScope.$broadcast('home.reconnect')
+        }
         $ionicHistory.clearHistory()
       }
     })
 
     if(window.ble) {
       $rootScope.online = true
-      ble.scan([], 5, function () {
+      ble.scan([], 10, function () {
         $rootScope.$broadcast('home.reconnect')
       })
     }
