@@ -50,7 +50,7 @@ controllers
       $state.go('login')
     } else {
       User.login(loginData, function (user) {
-        $rootScope.$broadcast('home.reconnect')
+        $scope.$broadcast('home.reconnect')
       })
     }
   }

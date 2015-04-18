@@ -2,7 +2,7 @@ controllers
 
 .controller('BikesCtrl', function($scope, $state, Bike, ActiveBLEDevice, currentBike, User, $window) {
   User.getCurrent(function (user) {
-    $scope.entities = Bike.find({filter:{where:{ownerId: user.id}}})
+    $scope.entities = Bike.find({filter:{where:{"owner.id":user.id}}})
   })
   $scope.entity = ActiveBLEDevice.get().bike || {}
 
