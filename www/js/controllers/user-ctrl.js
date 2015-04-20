@@ -27,8 +27,8 @@ controllers
     })
   }
 
-  $scope.goRegister = function (entity) {
-    $state.go('register')
+  $scope.goRegister = function (reset) {
+    $state.go('register', {reset:reset})
   }
   
   $scope.goTrial = function () {
@@ -44,9 +44,10 @@ controllers
   }
 })
 
-.controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading, User, $localstorage, Authmessage, $filter) {
+.controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading, User, $localstorage, Authmessage, $filter, $ionicHistory) {
   
-  $scope.entity = {}
+  $scope.isReset = $state.params.reset
+  $scope.entity = {realm: "client"}
   $scope.validprompt = "获取验证码"
   
   $scope.getAuthcode = function () {
@@ -69,7 +70,6 @@ controllers
   $scope.tryRegister = function () {
     var entity = $scope.entity
     entity.email = entity.username+"@example.com"
-    entity.realm = "client"
 
     $ionicLoading.show({
       template: '<i class="icon ion-loading-c ion-loading padding"></i>正在注册新账户...'
@@ -84,6 +84,30 @@ controllers
         $localstorage.setObject('$EBIKE$LoginData', $scope.entity)
         $state.go('provinces')
       })
+    }, function (res) {
+      var option = {
+        template: '<i class="icon ion-ios7-close-outline padding"></i>',
+        duration: 2000
+      }
+      option.template += $filter('registerErrorPrompt')(res.data.error.message)
+      $ionicLoading.show(option)
+    })
+  }
+  
+  $scope.tryResetPassword = function () {
+    var entity = $scope.entity
+    entity.email = entity.username+"@example.com"
+
+    $ionicLoading.show({
+      template: '<i class="icon ion-loading-c ion-loading padding"></i>正在重置账户密码...'
+    })
+
+    User.resetPassword(entity, function (user) {
+      $ionicLoading.show({
+        template: '<i class="icon ion-ios7-checkmark-outline padding"></i>重置密码成功',
+        duration: 1000
+      })
+      $ionicHistory.goBack()
     }, function (res) {
       var option = {
         template: '<i class="icon ion-ios7-close-outline padding"></i>',

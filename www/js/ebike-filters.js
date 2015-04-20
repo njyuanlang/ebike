@@ -65,6 +65,7 @@ angular.module('ebike.filters',[])
 
 .filter("registerErrorPrompt", function () {
   var dictionary = {
+    "user not exist": "手机号码不存在，请输入正确手机",
     "no authcode": "请输入验证码",
     "not found auth code": "没有找打验证码，请重新获取",
     "invalid auth code": "验证码不正确",
