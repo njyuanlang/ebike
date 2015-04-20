@@ -95,7 +95,7 @@ controllers
   }
 })
 
-.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory) {
+.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup) {
   
   $scope.entity = User.getCurrent()
 
@@ -107,7 +107,45 @@ controllers
     $localstorage.setObject('$EBIKE$LoginData')
     User.logout()
     $state.go('login')
-  }  
+  }
+  
+  $scope.changeName = function () {
+    $ionicPopup.prompt({
+      title: '更改真实姓名',
+      template: '请输入你的真实姓名',
+      inputPlaceholder: ''
+     }).then(function(res) {
+       if(res && res !== '') {
+         $scope.entity.name = res
+         User.prototype$updateAttributes({id: $scope.entity.id}, {name: res})
+       }
+     });
+  }
+  
+  $scope.changeName = function () {
+    $ionicPopup.prompt({
+      title: '更改真实姓名',
+      template: '请输入你的真实姓名'
+     }).then(function(res) {
+       if(res && res !== '') {
+         $scope.entity.name = res
+         User.prototype$updateAttributes({id: $scope.entity.id}, {name: res})
+       }
+     });
+  }
+  
+  $scope.changePhone = function () {
+    $ionicPopup.prompt({
+      title: '更改联系电话',
+      template: '请输入你的联系电话',
+      inputType: 'tel'
+     }).then(function(res) {
+       if(res && res !== '') {
+         $scope.entity.phone = res
+         User.prototype$updateAttributes({id: $scope.entity.id}, {phone: res})
+       }
+     });
+  }
 })
 
 .controller('ProvincesCtrl', function ($scope, $state, ChinaRegion) {
