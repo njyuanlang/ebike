@@ -23,6 +23,8 @@ controllers
   
   var reconnectDevice = function () {
     $scope.device = ActiveBLEDevice.get()
+    if(!$scope.online) return 
+    
     if($scope.device.bike.name) {
       if(!$scope.device.localId) return $state.go('bikes-add')
       $scope.device.autoconnect().then(function (result) {
@@ -45,6 +47,8 @@ controllers
   
   $scope.init = function () {
     $scope.device = ActiveBLEDevice.get()
+    if(!$scope.online) $scope.device.onConnected()
+    
     var loginData = $localstorage.getObject('$EBIKE$LoginData')
     if(!loginData.username || !loginData.password) {
       $state.go('login')
