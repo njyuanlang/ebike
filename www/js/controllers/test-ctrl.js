@@ -1,6 +1,6 @@
 controllers
 
-.controller('TestCtrl', function($scope, $state, TestTask, ActiveBLEDevice) {
+.controller('TestCtrl', function($scope, $state, ActiveBLEDevice) {
   
   $scope.init = function () {
     $scope.device = ActiveBLEDevice.get()

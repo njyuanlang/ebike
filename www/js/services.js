@@ -366,11 +366,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
   
   BLEDevice.prototype.test = function () {
-    this.task = new TestTask()
+    this.task = new TestTask(this.bike)
     var task = this.task
     task.state = 'testing'
     task.score = 0
-    task.bike = this.bike
 
     if($rootScope.online) {
       this.sendOrder([0x81, 0x81])
@@ -431,7 +430,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
 
 .factory('TestTask', function ($q) {
   
-  function TestTask() {
+  function TestTask(bike) {
     this.state = 'idle'
     this.score = 100
     this.items = [
@@ -440,6 +439,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       {id: "controller", progress:0, state:'testing'},
       {id: "steering", progress:0, state:'testing'}
     ]
+    this.bike = bike
   }
     
   return TestTask
