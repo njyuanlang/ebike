@@ -45,17 +45,11 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
         navigator.splashscreen.hide()
       }, 300);
     }
-        
-    // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-    //   if(toState.name === 'menu') {
-    //     $ionicHistory.nextViewOptions({historyRoot:true})
-    //   }
-    // })
     
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
       if(toState.name === 'home') {
         if(fromState.name === 'login' 
-        /*|| fromState.name === 'bikes-add'*/) {
+        || fromState.name === 'cities') {
           $rootScope.$broadcast('home.reconnect')
         }
         $ionicHistory.clearHistory()
