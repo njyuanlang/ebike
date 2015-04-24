@@ -417,7 +417,19 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   
 })
 
-.service('ActiveBLEDevice', function (BLEDevice, $rootScope, $localstorage) {
+.service('currentBike', function () {
+  var _currentBike = null
+  return {
+    set: function (bike) {
+      _currentBike = bike
+    },
+    get: function () {
+      return _currentBike
+    }
+  }
+})
+
+.service('ActiveBLEDevice', function (BLEDevice, $rootScope, $localstorage, currentBike) {
 
   var keys = {
     activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
@@ -427,6 +439,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     return new BLEDevice(bike || {workmode: 0})
   }
   var _activeBLE = getBLEDevice($localstorage.getObject(keys.activebike))
+  currentBike.set(_activeBLE.bike)
   var service = {
     set: function (bike) {
       _activeBLE = getBLEDevice(bike)
@@ -438,18 +451,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
   
   return service
-})
-
-.service('currentBike', function () {
-  var _currentBike = null
-  return {
-    set: function (bike) {
-      _currentBike = bike
-    },
-    get: function () {
-      return _currentBike
-    }
-  }
 })
 
 .factory('TestTask', function ($q) {
