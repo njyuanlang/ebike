@@ -58,14 +58,15 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     })
 
     if(window.ble) {
-      $rootScope.online = true
       ble.scan([], 10, function () {
         $rootScope.$broadcast('home.reconnect')
       })
     }
 
   });  
-    
+  
+  $rootScope.online = true
+  
 })
 
 .config(function($stateProvider, $urlRouterProvider) {

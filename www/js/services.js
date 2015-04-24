@@ -83,7 +83,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       realtime.mileage = Math.floor(realtime.power/2)
       // $rootScope.$broadcast('realtime.update')
     },
-    speed: function (successCb) {
+    speed: function () {
       realtime.speed = speeds[speedIndex]
       speedIndex++
       speedIndex %= speeds.length
@@ -108,12 +108,12 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
   
   var uploadInterval = null
-  var notify = function(bikeId, characteristic) {
+  var notify = function(localId, characteristic) {
     if($rootScope.online) {
-      ble.startNotification(bikeId, service.uuid, service[characteristic], noitficationCbs[characteristic])
-      if(fakeIntervals[characteristic]) {
-        $interval.cancel(fakeIntervals[characteristic])
+      if(localId) {
+        ble.startNotification(localId, service.uuid, service[characteristic], noitficationCbs[characteristic])
       }
+      stopNotify(localId, characteristic)
     } else {
       if(!fakeIntervals[characteristic]) {
         fakeIntervals[characteristic] = $interval(function () {
@@ -122,8 +122,15 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       }
     }
   }
+  var stopNotify = function (localId, characteristic) {
+    if(fakeIntervals[characteristic]) {
+      $interval.cancel(fakeIntervals[characteristic])
+    }
+  }
   
   var uploadFn = function () {
+    if(!realtime.bikeId) return;
+    
     Cruise.create({
       power: realtime.power,
       mileage: realtime.mileage,
@@ -132,13 +139,24 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       bikeId: realtime.bikeId
     })
   }
-  realtime.startNotifications = function (bikeId) {
-    notify(bikeId, "power")
-    notify(bikeId, "speed")
-    if(!uploadInterval && bikeId) {
+  
+  realtime.startNotifications = function (localId) {
+    notify(localId, "power")
+    notify(localId, "speed")
+    if(!uploadInterval && realtime.bikeId) {
       uploadInterval = $interval(uploadFn, 60000, false)
       uploadFn()
     }
+  }
+  
+  realtime.stopNotifications = function (localId) {
+    stopNotify(localId, "power")
+    stopNotify(localId, "speed")
+    $interval.cancel(uploadInterval)
+    realtime.power = 0
+    realtime.mileage = 0
+    realtime.speed = 0
+    realtime.current = 0
   }
   
   return realtime
@@ -157,7 +175,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     }
     this.realtime = RTMonitor
     this.realtime.bikeId = bike.id
-    this.task = new TestTask()
+    this.task = new TestTask(bike)
   }
   
   BLEDevice.prototype.setWorkmode = function (mode) {
@@ -228,6 +246,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
   
   BLEDevice.prototype.disconnect = function () {
+    this.connected = false
+    RTMonitor.stopNotifications(this.localId)
     if(!$window.ble) return
     return $cordovaBLE.disconnect(this.localId)
   }
@@ -354,12 +374,16 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
           if(task.items[1].state === 'error' && task.score === 75) {
             task.state = 'pass'
           }
-          Test.create(task, function (result) {
-            task.id = result.id
-          })
+          if(task.bikeId) {
+            Test.create(task, function (result) {
+              task.id = result.id
+            })
+          }
         } else {
           task.state = count === itemLen ? 'repaired':'broken'
-          Test.upsert(task)
+          if(task.bikeId) {
+            Test.upsert(task)
+          }
         }
       }
     }, 1000)
@@ -417,7 +441,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
 })
 
 .service('currentBike', function () {
-  var _currentBike = {}
+  var _currentBike = null
   return {
     set: function (bike) {
       _currentBike = bike
@@ -439,7 +463,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       {id: "controller", progress:0, state:'testing'},
       {id: "steering", progress:0, state:'testing'}
     ]
-    this.bike = bike
+    this.bikeId = bike.id
   }
     
   return TestTask

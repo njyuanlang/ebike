@@ -23,7 +23,7 @@ controllers
   
   var reconnectDevice = function () {
     $scope.device = ActiveBLEDevice.get()
-    if(!$scope.online) return 
+    if(!$scope.online) $scope.device.onConnected()
     
     if($scope.device.bike.name) {
       if(!$scope.device.localId) return $state.go('bikes-add')
