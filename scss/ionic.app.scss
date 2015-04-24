@@ -398,7 +398,7 @@ $speed-gauge-height: 12rem;
   height: $speed-gauge-height;
   left: 10%;
 
-  #speed-gauge-digital {
+  .speed-gauge-digital {
     border-radius: $speed-gauge-height $speed-gauge-height 0 0;
     margin: 0% 0 0 23%;
     position: absolute;
@@ -415,13 +415,24 @@ $speed-gauge-height: 12rem;
     }
   }
   
-  #speed-gauge-pointer {
+  .speed-gauge-pointer {
     -webkit-border-radius: 100% 0 0 100%;
     position: absolute;
     width: 48%;
     height: 1.2em;
     background: red;
-    bottom: 0rem;    
+    @media (height: 320px){
+        bottom: 1.5rem;    
+    }
+    @media (height: 360px){
+      bottom: 0.2rem;    
+    }
+    @media (height: 375px){
+      bottom: -0.4rem;    
+    }
+    @media (height: 414px){
+      bottom: -1.6rem;    
+    }
     -webkit-transform-origin: bottom right;
     -webkit-transition-duration: 400ms;
     -webkit-transition-timing-function: linear;
