@@ -26,7 +26,6 @@ controllers
     if(!$scope.online) $scope.device.onConnected()
     
     if($scope.device.bike.name) {
-      if(!$scope.device.localId) return $state.go('bikes-add')
       $scope.device.autoconnect().then(function (result) {
       }, function (reason) {
         $ionicLoading.show({

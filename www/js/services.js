@@ -228,6 +228,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   
   BLEDevice.prototype.autoconnect = function () {
     var q = $q.defer()
+    if(!this.localId) return q.reject()
     var bikeId = this.localId
     var kSelf = this
     this.isConnected(bikeId)
