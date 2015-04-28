@@ -2,31 +2,33 @@
   <ion-content has-header="true" class="scroll-bg padding" scroll="false">
     <div class="list card">
 
-      <div class="item item-avatar item-icon-right user-bg" ng-click="changeName()">
+      <div class="item item-avatar-right item-icon-right">
         <img src="img/user-icon.png">
-        <h2>{{entity.name || entity.username}}</h2>
-        <small class="calm">
-          {{entity.created | date : 'yyyy-MM-dd'}} 加入
-        </small>
-        <i class="icon ion-ios7-compose-outline"></i>
+        <br>头像
       </div>
-      <a class="item item-icon-left item-icon-right" ng-click="changePhone()">
-        <i class="icon ion-iphone"></i>
+      <a class="item item-icon-right" ng-click="changeName()">
+        真实姓名
+        <span class="item-note">{{entity.name}}</span>
+        <i class="icon ion-ios7-compose-outline"></i>
+      </a>
+      <a class="item">
         联系电话
         <span class="item-note">{{entity.phone}}</span>
-        <i class="icon ion-ios7-compose-outline"></i>
       </a>
-      <a class="item item-icon-left item-icon-right" href="#/provinces">
-        <i class="icon ion-location"></i>
-        {{entity.region.province || "未知地区"}}
-        <span class="item-note">{{entity.region.city}}</span>
-        <i class="icon ion-ios7-arrow-forward"></i>
-      </a>
+      
     </div>
 
     <div class="list card">
-      <a class="item item-icon-left" ui-sref="register({reset:1})">
-        <i class="icon ion-ios7-locked-outline"></i>修改密码
+      <a class="item item-icon-right" href="#/provinces">
+        地区
+        <span class="item-note">{{entity.region.province}} {{entity.region.city}}</span>
+        <i class="icon ion-ios7-arrow-forward"></i>
+      </a>
+    </div>
+    <div class="list card">
+      <a class="item item-icon-right" ui-sref="register({reset:1})">
+        修改密码
+        <i class="icon ion-ios7-arrow-forward"></i>
       </a>
     </div>
 
