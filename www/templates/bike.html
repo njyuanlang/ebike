@@ -9,12 +9,6 @@
         品牌型号：
         {{entity.brand.name}} | {{entity.model}}
       </div>
-      <div class="item">
-        序列号： {{entity.serialNumber}}
-      </div>
-      <div class="item">
-        设备地址： {{entity.localId}}
-      </div>
     </div>
     
     <div class="list card">
@@ -27,7 +21,7 @@
         <i class="icon ion-ios7-arrow-right"></i>
       </div>
       <div class="item item-icon-right" ui-sref='currents({id:entity.id})'>
-        电流强度
+        电池容量
         <span class="item-note">{{entity.current|| 0}} AH</span>
         <i class="icon ion-ios7-arrow-right"></i>
       </div>
