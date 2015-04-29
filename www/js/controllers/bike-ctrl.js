@@ -51,7 +51,22 @@ controllers
 
   $scope.selectEntity = function (item) {
     currentBike.set({brand: brand, model:item, workmode:0, "name": brand.name+"牌电动车"})
-    $state.go('voltages', {id: $state.params.id})
+    $state.go('wheeldiameters', {id: $state.params.id})
+  }
+})
+
+.controller('WheelDiametersCtrl', function($scope, $state, currentBike, $ionicHistory, Bike) {
+  $scope.entities = [12, 14, 16, 18, 20, 22, 24, 26]
+  $scope.entity = currentBike.get()
+
+  $scope.selectEntity = function (item) {
+    $scope.entity.wheeldiameter = item
+    if($state.params.id === 'create') {
+      $state.go('voltages', {id: $state.params.id})
+    } else {
+      Bike.prototype$updateAttributes({ id: $scope.entity.id }, {wheeldiameter: $scope.entity.wheeldiameter})
+      $ionicHistory.goBack()
+    }
   }
 })
 

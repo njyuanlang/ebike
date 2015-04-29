@@ -285,7 +285,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
   BLEDevice.prototype.sendSpec = function () {
     if(!$rootScope.online) return
-    var hexs = [this.bike.voltage, this.bike.current, 0, 0]
+    var hexs = [this.bike.voltage, this.bike.current, this.bike.wheeldiameter, 0]
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.spec, value) 
   }

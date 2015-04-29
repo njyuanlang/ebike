@@ -155,6 +155,11 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
       templateUrl: "templates/models.html",
       controller: 'ModelsCtrl'
     })
+    .state('wheeldiameters', {
+      url: "bikes/:id/wheeldiameters",
+      templateUrl: "templates/wheeldiameters.html",
+      controller: 'WheelDiametersCtrl'
+    })
     .state('voltages', {
       url: "bikes/:id/voltages",
       templateUrl: "templates/voltages.html",
