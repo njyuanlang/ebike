@@ -344,7 +344,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
     
   BLEDevice.prototype.testTaskCb = function (result, task) {
-    if(result === 0xE) return
+    if(result === 0xE && (task.state === 'testing' || task.state === 'repairing')) return
     
     var states = ['pass', 'error']
     var items = task.items.filter(function (item, index) {
@@ -368,8 +368,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       if(item.state === 'pass' || item.state === 'repaired') count++
       if(++i == itemLen) {
         $interval.cancel(testInterval)
-        task.score += Math.round(count*100/task.items.length)
         if(task.state === 'testing') {
+          task.score = Math.round(count*100/task.items.length)
           task.state = count === itemLen ? 'pass':'error'
           // only motor error can be repaired, so pass 
           if(task.items[1].state === 'error' && task.score === 75) {
@@ -380,7 +380,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
               task.id = result.id
             })
           }
-        } else {
+        } else if(task.state === 'repairing') {
+          task.score += Math.round(count*100/task.items.length)
           task.state = count === itemLen ? 'repaired':'broken'
           if(task.bikeId) {
             Test.upsert(task)
@@ -398,6 +399,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
 
     if($rootScope.online) {
       this.sendOrder([0x81, 0x81])
+      var kThis = this
+      $timeout(function () {
+        if(task.state === 'testing') $rootScope.$broadcast('test.timeout')
+      }, 5000)
     } else {
       this.testTaskCb(10, task)
     }
