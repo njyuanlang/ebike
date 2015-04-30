@@ -71,7 +71,8 @@ $popup-background-color:          $light !default;
 
 $default-bg:                      '../img/bg.png';
 $cruise-bg:                       '../img/cruise-bg.png';
-$user-bg:                       '../img/user-bg.png';
+$cruise-rotate-bg:                '../img/slide0.png';
+$user-bg:                         '../img/user-bg.png';
 
 .scroll-bg {
   background: url($default-bg) no-repeat center center fixed;
@@ -81,6 +82,11 @@ $user-bg:                       '../img/user-bg.png';
 
 .cruise-bg {
   background: url($cruise-bg) no-repeat center center fixed;
+  -webkit-background-size: cover!important;
+}
+
+.cruise-rotate-bg {
+  background: url($cruise-rotate-bg) no-repeat center center fixed;
   -webkit-background-size: cover!important;
 }
 

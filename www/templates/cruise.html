@@ -1,5 +1,6 @@
-<ion-view hide-back-button="true" has-header="false" hide-nav-bar="true" ng-init="init()">
-  <ion-content class="cruise-bg" scroll="false">
+<ion-view hide-back-button="true" has-header="false" hide-nav-bar="true" cache-view="false" ng-init="init()">
+  <ion-content ng-if="promptRotate" class="cruise-rotate-bg"></ion-content>
+  <ion-content ng-if="!promptRotate" class="cruise-bg" scroll="false">
     <div class="row padding cruise">
       <div class="col col-25">
         <div class="power-cycle power-cycle-{{device.realtime.power}}">
