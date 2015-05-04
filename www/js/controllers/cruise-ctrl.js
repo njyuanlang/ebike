@@ -9,6 +9,11 @@ controllers
     $scope.$apply()
   })
   
+  $scope.$on( 'reminder.update', function (event, args) {
+    $scope.reminder = args.reminder
+    $scope.$apply()
+  })
+  
   window.addEventListener("orientationchange", function() {
     $scope.promptRotate = Math.abs(window.orientation) !== 90
     if(!$scope.promptRoate) {

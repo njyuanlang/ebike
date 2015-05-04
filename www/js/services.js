@@ -303,6 +303,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
         voltage: config.temperature && result & 0x4,
         guard: config.temperature && result & 0x8
       }
+      $rootScope.$broadcast('reminder.update', {reminder: reminder})
       return reminder
     }
     if($rootScope.online) {
@@ -312,11 +313,11 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
         localforage.setItem(Date.now()+'', resolveReminder(res[0]))
       })
     } else {
-      localforage.config({name: "ebike.reminder"})
       localforage.clear().then(function (err) {
-        for (var i = 0; i < 20; i++) {
-          localforage.setItem(Date.now()+'', resolveReminder(7))
-        }
+        // localforage.config({name: "ebike.reminder"})
+        // $interval(function () {
+        //   localforage.setItem(Date.now()+'', resolveReminder(7))
+        // }, 2000)
       })
     }
   }

@@ -21,7 +21,7 @@
             <div class="diameter-90"></div>
             <div class="diameter-315"></div>
             <div class="scan-radial" ng-class="{'hide':task.state != 'testing'} "></div>
-            <h1 class="score text-center" ng-if="task.state != 'testing' ">{{task.score}}<small>分</small></h1>
+            <h1 class="score text-center" ng-show="task.state != 'testing' ">{{task.score}}<small>分</small></h1>
           </div>
         </div>
       </div>
@@ -39,8 +39,8 @@
         <!-- <progress max="100" value="{{entity.progress}}"></progress> -->
       </div>
       <div class="col-25">
-        <i class="ion-checkmark positive" ng-if="entity.state == 'pass' || entity.state == 'repaired'"></i>
-        <i class="ion-alert assertive" ng-if="entity.state == 'error' || entity.state == 'broken'"></i>
+        <i class="ion-checkmark positive" ng-show="entity.state == 'pass' || entity.state == 'repaired'"></i>
+        <i class="ion-alert assertive" ng-show="entity.state == 'error' || entity.state == 'broken'"></i>
         {{entity | testItem: 'state' }}
       </div>      
     </div>
