@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.services', 'ebike.filters'])
 
-.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory) {
+.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory, $cordovaNetwork) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -62,7 +62,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
         $rootScope.$broadcast('home.reconnect')
       })
     }
-
+    
   });  
   
   $rootScope.online = true

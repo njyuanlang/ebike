@@ -1,10 +1,17 @@
 controllers
 
-.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork) {
   
   $scope.entity = {realm: 'client'}
   
   $scope.tryLogin = function () {
+    if(navigator.connection && $cordovaNetwork.isOffline()) {
+      return $ionicLoading.show({
+        template: '<i class="icon ion-minus-circled padding"></i>请连接到互联网',
+        duration: 1000
+      })
+    }
+
     $rootScope.online = true
     
     $ionicLoading.show({
