@@ -114,7 +114,7 @@ controllers
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, BLEDevice, ActiveBLEDevice, $timeout, $ionicLoading, currentBike, $ionicHistory, Bike) {
+.controller('BikesAddCtrl', function($scope, $state, BLEDevice, ActiveBLEDevice, $timeout, $ionicLoading, currentBike, $ionicHistory, Bike, $ionicPopup) {
   
   $scope.entities = []
 
@@ -139,15 +139,13 @@ controllers
   }
   $scope.doScan = doScan
 
-  $scope.selectEntity = function (item) {
-    var bike = currentBike.get()
-    bike.localId = item.id
-    bike.name = item.name
+  function tryConnect(bike) {
+    
     var device = new BLEDevice(bike)
     device.connect()
     .then(function (result) {
       $ionicLoading.show({
-        template: '连接到爱车'+item.name,
+        template: '连接到爱车'+bike.name,
         duration: 2000
       })
       return device.readSerialNumber()
@@ -158,22 +156,49 @@ controllers
       })
     })
     .then(function (result) {
+      return device.pair(bike.password)
+    }, function (reason) {
+      $ionicLoading.show({
+        template: "获取序列号失败："+reason,
+        duration: 2000
+      })
+    })
+    .then(function (result) {
       Bike.upsert(bike, function (result) {
         $scope.goHome(result)
       }, function (res) {
         $scope.goHome(bike)
       })
     }, function (reason) {
+      device.disconnect()
       $ionicLoading.show({
-        template: "获取序列.号失败："+reason,
+        template: "配对失败："+reason,
         duration: 2000
       })
     })
     
     $ionicLoading.show({
-      template:'正在连接'+item.name+"...",
+      template:'正在连接'+bike.name+"...",
       duration: 3000
     })
+  }
+  
+  $scope.selectEntity = function (item) {
+    var bike = currentBike.get()
+    bike.localId = item.id
+    bike.name = item.name
+
+    $ionicPopup.prompt({
+      title: '车辆配对',
+      template: '请输入车辆的配对密码，以绑定手机',
+      inputPlaceholder: ''
+     }).then(function(res) {
+       if(res && res !== '') {
+         bike.password = res
+         tryConnect(bike)
+       }
+     });
+     
   }
   
   $scope.goHome = function (bike) {

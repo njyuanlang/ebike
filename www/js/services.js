@@ -276,7 +276,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   var order = {
     uuid: "00001C00-D102-11E1-9B23-00025B00A5A5",
     order: "00001C01-D102-11E1-9B23-00025B00A5A5",
-    spec: "00001C02-D102-11E1-9B23-00025B00A5A5"
+    spec: "00001C02-D102-11E1-9B23-00025B00A5A5",
+    pair: "00001C03-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.sendOrder = function (hexs) {  
     if(!$rootScope.online) return
@@ -288,6 +289,20 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
     var hexs = [this.bike.voltage, this.bike.current, this.bike.wheeldiameter, 0]
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.spec, value) 
+  }
+  BLEDevice.prototype.pair = function (password) {
+    var q = $q.defer()
+    if(!$rootScope.online) {
+      q.resolve()
+    } else {
+      var value = Util.stringToBytes(password)
+      ble.write(this.localId, order.uuid, order.pair, value, function () {
+        q.resolve()
+      }, function () {
+        q.reject("invalidate passowrd")
+      }) 
+    }
+    return q.promise
   }
   
   var reminder = {
