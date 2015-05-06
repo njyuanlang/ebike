@@ -418,7 +418,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       var kThis = this
       $timeout(function () {
         if(task.state === 'testing') $rootScope.$broadcast('test.timeout')
-      }, 5000)
+      }, 7000)
     } else {
       this.testTaskCb(10, task)
     }

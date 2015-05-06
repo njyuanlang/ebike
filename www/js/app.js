@@ -49,7 +49,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
       if(toState.name === 'home') {
         if(fromState.name === 'login' 
-        || fromState.name === 'cities') {
+        || fromState.name === 'cities'
+        || fromState.name === 'bikes-add') {
           $rootScope.$broadcast('home.reconnect')
         }
         $ionicHistory.clearHistory()

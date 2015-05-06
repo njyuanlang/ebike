@@ -9,6 +9,9 @@ controllers
     $scope.$apply()
   })
   
+  // $scope.$on('$ionicView.enter', function (event) {
+  // })
+  
   $scope.endure = function () {
     $scope.device.setWorkmode(9)
   }
