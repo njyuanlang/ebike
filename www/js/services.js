@@ -164,6 +164,19 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
 
 .factory('BLEDevice', function ($cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask, Test) {
 
+  var connectingInterval = null
+  
+  var onDisconnected = function (device) {
+    $rootScope.$broadcast('device.disconnected')
+
+    if(connectingInterval) {
+      $interval.cancel(connectingInterval)
+      connectingInterval = null
+    }
+    device.connected = false
+    RTMonitor.stopNotifications(device.localId)
+  }
+  
   function BLEDevice(bike) {
     this.bike = bike
     this.localId = bike.localId
@@ -212,6 +225,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
       ble.startNotification(kThis.localId, testService.uuid, testService.test, function (result) {
         kThis.testTaskCb(new Uint8Array(result)[0], kThis.task)
       })
+      connectingInterval = $interval(function () {
+        kThis.isConnected(kThis.localId).then(function (result) {
+          
+        }, function (reason) {
+          onDisconnected(kThis)          
+        })
+      }, 1000)
     }
   }
   
@@ -247,8 +267,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service'])
   }
   
   BLEDevice.prototype.disconnect = function () {
-    this.connected = false
-    RTMonitor.stopNotifications(this.localId)
+    onDisconnected(this)
     if(!$window.ble) return
     return $cordovaBLE.disconnect(this.localId)
   }

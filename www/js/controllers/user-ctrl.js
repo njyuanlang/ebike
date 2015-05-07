@@ -1,6 +1,6 @@
 controllers
 
-.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory) {
   
   $scope.entity = {realm: 'client'}
   
@@ -23,7 +23,8 @@ controllers
         duration: 1000
       })
       $localstorage.setObject('$EBIKE$LoginData', $scope.entity)
-      $state.go('home')
+      $rootScope.$broadcast('go.home')
+      // $state.go('home')
     }, function (res) {
       var option = {
         template: '<i class="icon ion-ios7-close-outline padding"></i>',
@@ -40,7 +41,7 @@ controllers
   
   $scope.goTrial = function () {
     $rootScope.online = false
-    $state.go('home')
+    $rootScope.$broadcast('go.home')
   }
   
   $scope.init = function () {

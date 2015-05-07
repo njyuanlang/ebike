@@ -8,7 +8,7 @@ controllers
     }
     $scope.$apply()
   })
-  
+
   // $scope.$on('$ionicView.enter', function (event) {
   // })
   
@@ -52,7 +52,7 @@ controllers
     if(!$scope.online) $scope.device.onConnected()
     
     var loginData = $localstorage.getObject('$EBIKE$LoginData')
-    if(!loginData.username || !loginData.password) {
+    if((!loginData.username || !loginData.password) && $scope.online) {
       $state.go('login')
     } else {
       User.login(loginData, function (user) {

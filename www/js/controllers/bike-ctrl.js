@@ -85,15 +85,10 @@ controllers
   }
 })
 
-.controller('CurrentsCtrl', function($scope, $state, currentBike, $ionicHistory, $window, Bike, ActiveBLEDevice) {
+.controller('CurrentsCtrl', function($scope, $state, currentBike, $ionicHistory, $window, Bike, ActiveBLEDevice, $rootScope) {
   $scope.entities = [12, 20, 30, 36]
   $scope.entity = currentBike.get()
 
-  $scope.goHome = function (bike) {
-    ActiveBLEDevice.set(bike)
-    $ionicHistory.nextViewOptions({historyRoot:true})
-    $state.go('home')    
-  }
   $scope.selectEntity = function (item) {
     $scope.entity.current = item
     if($state.params.id === 'create') {
@@ -102,10 +97,10 @@ controllers
         if($window.ble) {
           $state.go('bikes-add')
         } else {
-          $scope.goHome(result)
+          $rootScope.$broadcast('go.home', {bike: result})
         }
       }, function (res) {
-        $scope.goHome($scope.entity)
+        $rootScope.$broadcast('go.home', {bike: $scope.entity})
       })
     } else {
       Bike.prototype$updateAttributes({ id: $scope.entity.id }, {current: $scope.entity.current})
@@ -114,7 +109,7 @@ controllers
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, BLEDevice, ActiveBLEDevice, $timeout, $ionicLoading, currentBike, $ionicHistory, Bike, $ionicPopup) {
+.controller('BikesAddCtrl', function($scope, $state, BLEDevice, ActiveBLEDevice, $timeout, $ionicLoading, currentBike, $ionicHistory, Bike, $ionicPopup, $rootScope) {
   
   $scope.entities = []
 
@@ -166,9 +161,9 @@ controllers
     })
     .then(function (result) {
       Bike.upsert(bike, function (result) {
-        $scope.goHome(result)
+        $rootScope.$broadcast('go.home', {bike: result})
       }, function (res) {
-        $scope.goHome(bike)
+        $rootScope.$broadcast('go.home', {bike: bike})
       })
     }, function (reason) {
       device.disconnect()
@@ -203,9 +198,7 @@ controllers
   }
   
   $scope.goHome = function (bike) {
-    ActiveBLEDevice.set(bike || currentBike.get())
-    $ionicHistory.nextViewOptions({historyRoot:true})
-    $state.go('home')
+    $rootScope.$broadcast('go.home', {bike: bike || currentBike.get()})
   }
   
   $scope.init = function () {
