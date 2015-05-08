@@ -1,9 +1,12 @@
 controllers
 
-.controller('MenuCtrl', function($scope, $state, User, $ionicHistory) {
+.controller('MenuCtrl', function($scope, $state, User, $cordovaFile) {
 
   $scope.entity = User.getCurrent()
-
+  $cordovaFile.readAsText(cordova.file.dataDirectory, "avatar.png").then(function (fileData) {
+    $scope.avatar = fileData
+  })
+  
 })
 
 .controller('MessagesCtrl', function($scope, $state, ActiveBLEDevice) {

@@ -3,7 +3,7 @@
     <div class="list card">
 
       <div class="item item-avatar-right item-icon-right">
-        <img src="img/user-icon.png">
+        <img src="{{avatar || 'img/user-icon.png'}}" ng-click="changeAvatar()">
         <br>头像
       </div>
       <a class="item item-icon-right" ng-click="changeName()">

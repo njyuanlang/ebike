@@ -5,7 +5,7 @@
   <ion-content has-header="true" class="scroll-bg"  scroll="false">
     <div class="list">
       <a class="item item-avatar item-icon-right user-bg" href="#/account">
-        <img src="img/user-icon.png">
+        <img src="{{avatar || 'img/user-icon.png'}}">
         <h2>{{entity.name || entity.username}}</h2>
         <small class="calm">
           {{entity.created | date : 'yyyy-MM-dd'}} 加入

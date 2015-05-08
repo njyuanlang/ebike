@@ -127,9 +127,12 @@ controllers
   }
 })
 
-.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup) {
+.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Avatar) {
   
   $scope.entity = User.getCurrent()
+  $cordovaFile.readAsText(cordova.file.dataDirectory, "avatar.png").then(function (fileData) {
+    $scope.avatar = fileData
+  })
 
   $ionicHistory.registerHistory($scope)
   $scope.logout = function () {
@@ -139,6 +142,58 @@ controllers
     $localstorage.setObject('$EBIKE$LoginData')
     User.logout()
     $state.go('login')
+  }
+  
+  var uploadAvatar = function () {
+    var url = "http://192.168.0.143:3000/api/avatars/"+$scope.entity.id+"/upload";
+    var targetPath = cordova.file.dataDirectory + "avatar.png";
+    var options = {
+      fileName: "avatar.png",
+      mimeType: "image/png"
+    }
+  
+    $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
+      console.log(JSON.stringify(result))
+    }, function (err) {
+      console.log(err.message)
+    }, function (progress) {
+      // console.log(progress)
+    })
+  }
+  
+  $scope.changeAvatar = function () {
+    var options = {
+      destinationType: Camera.DestinationType.FILE_URI,
+      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+    };
+
+    $cordovaCamera.getPicture(options).then(function(imageURI) {
+      return $jrCrop.crop({url: imageURI, width: 200, height: 200 })
+    }, function(err) {
+      console.log("getPicture ERROR: ", err.message)
+    })
+    .then(function (canvas) {
+      $scope.avatar = canvas.toDataURL()
+      return $cordovaFile.writeFile(cordova.file.dataDirectory, "avatar.png", $scope.avatar, true)
+    }, function (err) {
+      console.log('Crop Error:', err)
+    })
+    .then(function (evt) {
+      Avatar.get({id: $scope.entity.id}, function (container) {
+        return container
+      }, function (err) {
+        Avatar.save({name: $scope.entity.id}, function (container) {
+          return container
+        }, function (err) {
+          console.log("Create Container ERROR:",JSON.stringify(err))
+        })
+      })
+    }, function (err) {
+      console.log("Save Avatar file to local Error", err.message)
+    })
+    .then(function (container) {
+      setTimeout(uploadAvatar, 200)
+    })
   }
   
   $scope.changeName = function () {
