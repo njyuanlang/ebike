@@ -18,6 +18,7 @@ controllers
       template: '<i class="icon ion-loading-c ion-loading padding"></i>登录中...'
     })
     User.login($scope.entity, function (user) {
+      console.log(arguments)
       $ionicLoading.show({
         template: '<i class="icon ion-ios7-checkmark-outline padding"></i>登录成功',
         duration: 1000
@@ -127,7 +128,7 @@ controllers
   }
 })
 
-.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Avatar) {
+.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http) {
   
   $scope.entity = User.getCurrent()
   $cordovaFile.readAsText(cordova.file.dataDirectory, "avatar.png").then(function (fileData) {
@@ -145,15 +146,37 @@ controllers
   }
   
   var uploadAvatar = function () {
-    var url = "http://192.168.0.143:3000/api/avatars/"+$scope.entity.id+"/upload";
+    var url = RemoteStorage.getUploadURL('uploads', $scope.entity.id)
+    // var fd = new FormData();
+    // fd.append('file', $scope.avatar, 'avatar.png');
+    // $http.post(url, fd, {
+    //   transformRequest: angular.identity,
+    //   headers: {'Content-Type': undefined}
+    // })
+    // .success(function(){
+    //   console.log('SUCCESS')
+    // })
+    // .error(function(){
+    //   console.log('FAILED')
+    // });
+    // Upload.upload({container: $scope.entity.id}, $scope.avatar)
+    // .$promise.then(function (result) {
+    //   console.log('Transfer SUCCESS: ', JSON.stringify(result))
+    // }, function (err) {
+    //   console.log(err.message)
+    // }, function (progress) {
+    //
+    // })
+
+   
     var targetPath = cordova.file.dataDirectory + "avatar.png";
     var options = {
-      fileName: "avatar.png",
-      mimeType: "image/png"
+      mimeType: "image/png",
+      fileName: "avatar.png"
     }
-  
+
     $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
-      console.log(JSON.stringify(result))
+      console.log('Transfer SUCCESS: ', JSON.stringify(result))
     }, function (err) {
       console.log(err.message)
     }, function (progress) {
@@ -168,31 +191,38 @@ controllers
     };
 
     $cordovaCamera.getPicture(options).then(function(imageURI) {
-      return $jrCrop.crop({url: imageURI, width: 200, height: 200 })
+      return $jrCrop.crop({
+        url: imageURI, 
+        width: 200, 
+        height: 200, 
+        cancelText: "取消",
+        chooseText: "选择"
+      })
     }, function(err) {
       console.log("getPicture ERROR: ", err.message)
     })
     .then(function (canvas) {
       $scope.avatar = canvas.toDataURL()
-      return $cordovaFile.writeFile(cordova.file.dataDirectory, "avatar.png", $scope.avatar, true)
+      // return canvas
+      var base64Data = $scope.avatar
+      return $cordovaFile.writeFile(cordova.file.dataDirectory, "avatar.png", base64Data, true)
     }, function (err) {
       console.log('Crop Error:', err)
     })
     .then(function (evt) {
-      Avatar.get({id: $scope.entity.id}, function (container) {
-        return container
-      }, function (err) {
-        Avatar.save({name: $scope.entity.id}, function (container) {
-          return container
-        }, function (err) {
-          console.log("Create Container ERROR:",JSON.stringify(err))
-        })
-      })
+      return Upload.getContainer({container: $scope.entity.id}).$promise
     }, function (err) {
-      console.log("Save Avatar file to local Error", err.message)
+      console.log('Save avatar to local error:', JSON.stringify(err))
     })
     .then(function (container) {
-      setTimeout(uploadAvatar, 200)
+      return container.$promise
+    }, function (err) {
+      return Upload.createContainer({name: $scope.entity.id}).$promise
+    })
+    .then(function (container) {
+      uploadAvatar()
+    }, function (err) {
+      console.log("Create/GET Container ERROR:", JSON.stringify(err))
     })
   }
   

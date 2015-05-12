@@ -1,0 +1,2 @@
+all:
+	cordova prepare ios
