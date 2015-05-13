@@ -144,7 +144,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     notify(localId, "power")
     notify(localId, "speed")
     if(!uploadInterval && realtime.bikeId) {
-      uploadInterval = $interval(uploadFn, 60000, false)
+      uploadInterval = $interval(uploadFn, 300000, false)
       uploadFn()
     }
   }

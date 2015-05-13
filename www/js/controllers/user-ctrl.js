@@ -17,15 +17,14 @@ controllers
     $ionicLoading.show({
       template: '<i class="icon ion-loading-c ion-loading padding"></i>登录中...'
     })
-    User.login($scope.entity, function (user) {
-      console.log(arguments)
+    User.login($scope.entity, function (accessToken) {
       $ionicLoading.show({
         template: '<i class="icon ion-ios7-checkmark-outline padding"></i>登录成功',
         duration: 1000
       })
       $localstorage.setObject('$EBIKE$LoginData', $scope.entity)
+      $rootScope.$broadcast('user.DidLogin', {userId: accessToken.userId})
       $rootScope.$broadcast('go.home')
-      // $state.go('home')
     }, function (res) {
       var option = {
         template: '<i class="icon ion-ios7-close-outline padding"></i>',
@@ -128,12 +127,12 @@ controllers
   }
 })
 
-.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http) {
+.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http, $rootScope) {
   
   $scope.entity = User.getCurrent()
-  $cordovaFile.readAsText(cordova.file.dataDirectory, "avatar.png").then(function (fileData) {
-    $scope.avatar = fileData
-  })
+  // $cordovaFile.readAsText(cordova.file.dataDirectory, "avatar.png").then(function (fileData) {
+  //   $scope.avatar = fileData
+  // })
 
   $ionicHistory.registerHistory($scope)
   $scope.logout = function () {
@@ -202,8 +201,8 @@ controllers
       console.log("getPicture ERROR: ", err.message)
     })
     .then(function (canvas) {
-      $scope.avatar = canvas.toDataURL()
-      // return canvas
+      $rootScope.avatar = canvas.toDataURL()
+      $localstorage.set('$EBIKE$Avatar$'+$scope.entity.id, $rootScope.avatar)
       var base64Data = $scope.avatar
       return $cordovaFile.writeFile(cordova.file.dataDirectory, "avatar.png", base64Data, true)
     }, function (err) {

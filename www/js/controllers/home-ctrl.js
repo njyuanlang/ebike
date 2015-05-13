@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, $ionicLoading, User, $localstorage, $ionicHistory) {
+.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, $ionicLoading, User, $localstorage, $ionicHistory, $rootScope) {
     
   $scope.$on( 'realtime.update', function (event) {
     if($scope.device.bike.workmode === 9 && $scope.device.realtime.power > 24) {
@@ -51,13 +51,10 @@ controllers
     $scope.device = ActiveBLEDevice.get()
     if(!$scope.online) $scope.device.onConnected()
     
-    var loginData = $localstorage.getObject('$EBIKE$LoginData')
-    if((!loginData.username || !loginData.password) && $scope.online) {
+    if(!User.isAuthenticated()) {
       $state.go('login')
     } else {
-      User.login(loginData, function (user) {
-        // $scope.$broadcast('home.reconnect')
-      })
+      setTimeout(reconnectDevice, 1000)
     }
   }
 })

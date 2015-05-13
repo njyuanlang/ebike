@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.services', 'ebike.filters'])
 
-.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory, $cordovaNetwork, ActiveBLEDevice) {
+.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory, $cordovaNetwork, ActiveBLEDevice, User, $localstorage, RemoteStorage, $http) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -27,6 +27,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
         }
       }, false);
   
+      screen.lockOrientation('portrait-primary')
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         if(toState.name === 'home') {
           window.plugins.insomnia.allowSleepAgain()
@@ -60,7 +61,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
 
     if(window.ble) {
       ble.scan([], 10, function () {
-        $rootScope.$broadcast('home.reconnect')
+        // $rootScope.$broadcarst('home.reconnect')
       })
     }
     
@@ -75,10 +76,32 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
       $state.go('home')
     })
     
+    if(User.isAuthenticated()) {
+      $rootScope.$broadcast('user.DidLogin', {userId: User.getCurrentId()})
+    }
+    
   });  
   
   $rootScope.online = true
+  $rootScope.avatar = null
   
+  $rootScope.$on('user.DidLogin', function (event, args) {
+    var userId = args.userId
+    console.log('-----==========', userId)
+    $rootScope.avatar = $localstorage.get('$EBIKE$Avatar$'+userId)
+    if(!$rootScope.avatar) {
+      var url = RemoteStorage.getDownloadURL('uploads', userId, 'avatar.png')
+      $http.get(url)
+      .success(function (buffer) {
+        $localstorage.set('$EBIKE$Avatar$'+userId, buffer)
+        $rootScope.avatar = buffer
+      })
+      .error(function () {
+        console.log(JSON.stringify(arguments))
+      })
+    }
+  })
+    
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
