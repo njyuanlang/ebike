@@ -219,6 +219,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     RTMonitor.startNotifications(this.localId)
     this.startReminder()
     this.sendSpec()
+    this.pair(this.bike.password)
     this.setWorkmode(this.bike.workmode%8)
     var kThis = this
     if($rootScope.online) {

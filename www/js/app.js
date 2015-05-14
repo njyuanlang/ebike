@@ -87,7 +87,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
   
   $rootScope.$on('user.DidLogin', function (event, args) {
     var userId = args.userId
-    console.log('-----==========', userId)
+    // console.log('-----==========', userId)
     $rootScope.avatar = $localstorage.get('$EBIKE$Avatar$'+userId)
     if(!$rootScope.avatar) {
       var url = RemoteStorage.getDownloadURL('uploads', userId, 'avatar.png')
