@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, $ionicLoading, User, $localstorage, $ionicHistory, $rootScope) {
+.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, $ionicLoading, User, $localstorage, $ionicHistory, $rootScope, currentBike) {
     
   $scope.$on( 'realtime.update', function (event) {
     if($scope.device.bike.workmode === 9 && $scope.device.realtime.power > 24) {
@@ -11,6 +11,17 @@ controllers
 
   // $scope.$on('$ionicView.enter', function (event) {
   // })
+  
+  $scope.goTest = function () {
+    if($scope.device.connected) {
+      $state.go('test')
+    } else {
+      $ionicLoading.show({
+        template: '<i class="icon ion-ios7-information-outline padding"></i>请链接车辆',
+        duration: 2000
+      })
+    }
+  }
   
   $scope.endure = function () {
     $scope.device.setWorkmode(9)
@@ -29,13 +40,17 @@ controllers
     if(!$scope.online) $scope.device.onConnected()
     
     if($scope.device.bike.name) {
-      $scope.device.autoconnect().then(function (result) {
-      }, function (reason) {
-        $ionicLoading.show({
-          template: '<i class="icon ion-ios7-close-outline padding"></i>无法连接到车辆',
-          duration: 2000
+      if($scope.device.bike.localId) {
+        $scope.device.autoconnect().then(function (result) {
+        }, function (reason) {
+          $ionicLoading.show({
+            template: '<i class="icon ion-ios7-close-outline padding"></i>无法连接到车辆',
+            duration: 2000
+          })
         })
-      })
+      } else {
+        $state.go('bikes-add')
+      }
     } else {
       registerBike()
     }

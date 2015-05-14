@@ -49,6 +49,7 @@ angular.module('ebike.filters',[])
 .filter("testTask", function () {
   var dictionary = {
     state: {
+      idle: '准备测试',
       testing: '系统扫描中...',
       pass: '扫描结束',
       error: '故障! 请到维修点维修',

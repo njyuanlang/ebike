@@ -38,7 +38,7 @@ $dark:                            #444 !default;
 .menu-grid .row .col {
   border: 1px solid #505866;
   background: transparent;
-  line-height: 30px; }
+  line-height: 1rem; }
   .menu-grid .row .col > img:first-child {
     max-width: 50px;
     max-height: 50px; }
@@ -7394,13 +7394,13 @@ progress::-webkit-progress-value {
   .workstate .row {
     position: relative; }
     .workstate .row > h1 {
-      line-height: 4rem; }
+      line-height: 2.5rem; }
     .workstate .row .col-33 {
       display: block;
       border: 1px solid #505866;
       background: transparent;
       font-size: 1.5rem;
-      line-height: 4rem;
+      line-height: 3rem;
       width: 33.3%; }
       .workstate .row .col-33 > img:first-child {
         max-width: 1.5rem;
@@ -7451,12 +7451,26 @@ progress::-webkit-progress-value {
       .col .power-cycle .overlay > h1 {
         font-size: 8.5rem; } }
   .col .power-cycle .overlay > h3 {
-    margin: 12% 0 0 0;
-    font-size: 3.5rem;
-    line-height: 3.5rem; }
+    margin: 12% 0 0 0; }
+    @media (height: 320px) {
+      .col .power-cycle .overlay > h3 {
+        font-size: 2.8rem;
+        line-height: 2.4rem; } }
+    @media (height: 360px) {
+      .col .power-cycle .overlay > h3 {
+        font-size: 3.5rem;
+        line-height: 3.5rem; } }
+    @media (height: 375px) {
+      .col .power-cycle .overlay > h3 {
+        font-size: 4rem;
+        line-height: 4rem; } }
+    @media (height: 414px) {
+      .col .power-cycle .overlay > h3 {
+        font-size: 4.5rem;
+        line-height: 4rem; } }
   .col .power-cycle .overlay > h4 {
     padding-top: 5%;
-    font-size: 1.5rem; }
+    font-size: 1.2rem; }
   .col .power-cycle .overlay > label {
     font-size: 1.3rem;
     color: #aaa; }

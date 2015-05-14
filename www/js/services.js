@@ -249,7 +249,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
   BLEDevice.prototype.autoconnect = function () {
     var q = $q.defer()
-    if(!this.localId) return q.reject()
+    if(!this.localId) {
+      q.reject()
+      return q.promise
+    }
     var bikeId = this.localId
     var kSelf = this
     this.isConnected(bikeId)
@@ -438,7 +441,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       var kThis = this
       $timeout(function () {
         if(task.state === 'testing') $rootScope.$broadcast('test.timeout')
-      }, 7000)
+      }, 5000)
     } else {
       this.testTaskCb(10, task)
     }
@@ -485,6 +488,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   var service = {
     set: function (bike) {
       _activeBLE = getBLEDevice(bike)
+      currentBike.set(bike)
       $localstorage.setObject(keys.activebike, bike)
     },
     get: function () {

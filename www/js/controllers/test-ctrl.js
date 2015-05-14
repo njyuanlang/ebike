@@ -9,7 +9,9 @@ controllers
 
   $scope.init = function () {
     $scope.device = ActiveBLEDevice.get()
-    $scope.device.test()
-    $scope.task = $scope.device.task
+    if($scope.device && $scope.device.connected) {
+      $scope.device.test()
+      $scope.task = $scope.device.task
+    }
   }
 })

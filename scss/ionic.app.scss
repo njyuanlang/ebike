@@ -107,7 +107,7 @@ $user-bg:                         '../img/user-bg.png';
   .col {
     border: 1px solid $light;
     background: transparent;
-    line-height: 30px;
+    line-height: 1.0rem;
 
     > img:first-child {
       max-width: 50px;
@@ -241,14 +241,14 @@ $loops2: round(100 / $step2);
   .row {
     position: relative;
     > h1 {
-      line-height: 4rem;
+      line-height: 2.5rem;
     }
     .col-33 {
       display: block;
       border: 1px solid $light;
       background: transparent;
       font-size: 1.5rem;
-      line-height: 4rem;
+      line-height: 3rem;
       width: 33.3%;
 
       > img:first-child {
@@ -319,12 +319,26 @@ $backColor:                           #2f3439;
     }
     > h3 {
     	margin: 12% 0 0 0;
-      font-size: 3.5rem;
-      line-height: 3.5rem;
+      @media (height: 320px){
+        font-size: 2.8rem;
+        line-height: 2.4rem;
+      }
+      @media (height: 360px){
+        font-size: 3.5rem;
+        line-height: 3.5rem;
+      }
+      @media (height: 375px){
+        font-size: 4.0rem;
+        line-height: 4.0rem;
+      }
+      @media (height: 414px){
+        font-size: 4.5rem;
+        line-height: 4.0rem;
+      }
     }
     > h4 {
     	padding-top: 5%;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
     }
     > label {
       font-size: 1.3rem;

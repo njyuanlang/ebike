@@ -29,6 +29,7 @@ controllers
     $scope.device = ActiveBLEDevice.get()
     
     $scope.promptRotate = Math.abs(window.orientation) !== 90
+    // $scope.promptRotate = false
   }
   
 })

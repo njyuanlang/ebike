@@ -3,7 +3,7 @@
     <a class="button" ng-class="{'disabled':task.items[1].state != 'error'}" ng-click="device.repair(task)">一键修复</a>
   </ion-nav-buttons>
   
-  <ion-content class="scroll-bg" scroll="false">
+  <ion-content class="scroll-bg">
     <div class="row col">
       <h3 class="text-center">{{task | testTask: 'state'}}</h3>
     </div>
