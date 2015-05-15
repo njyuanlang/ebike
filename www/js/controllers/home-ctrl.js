@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, $ionicLoading, User, $localstorage, $ionicHistory, $rootScope, currentBike) {
+.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, $ionicLoading, User, $localstorage, $ionicHistory, $rootScope) {
     
   $scope.$on( 'realtime.update', function (event) {
     if($scope.device.bike.workmode === 9 && $scope.device.realtime.power > 24) {
@@ -37,20 +37,20 @@ controllers
   
   var reconnectDevice = function () {
     $scope.device = ActiveBLEDevice.get()
-    if(!$scope.online) $scope.device.onConnected()
+    if(!$scope.online) return $scope.device.onConnected()
     
-    if($scope.device.bike.name) {
-      if($scope.device.bike.localId) {
-        $scope.device.autoconnect().then(function (result) {
-        }, function (reason) {
+    if($scope.device.bike.id) {
+      $scope.device.autoconnect().then(function (result) {
+      }, function (reason) {
+        if(reason === 'no localId') {
+          $state.go('bikes-add')
+        } else {
           $ionicLoading.show({
             template: '<i class="icon ion-ios7-close-outline padding"></i>无法连接到车辆',
             duration: 2000
           })
-        })
-      } else {
-        $state.go('bikes-add')
-      }
+        }
+      })
     } else {
       registerBike()
     }
@@ -64,7 +64,7 @@ controllers
   
   $scope.init = function () {
     $scope.device = ActiveBLEDevice.get()
-    if(!$scope.online) $scope.device.onConnected()
+    if(!$scope.online) return $scope.device.onConnected()
     
     if(!User.isAuthenticated()) {
       $state.go('login')

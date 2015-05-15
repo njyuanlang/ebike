@@ -23,17 +23,7 @@ controllers
 })
 
 .controller('BikeCtrl', function($scope, $state, Bike, $ionicHistory, $ionicLoading, currentBike) {
-  $scope.entity = currentBike.get()
-  
-  $scope.delete = function () {
-    Bike.deleteById({id:$scope.entity.id})
-    $ionicLoading.show({
-      template:'删除车辆',
-      duration: 1000
-    })
-    currentBike.set(null)
-    $ionicHistory.goBack()
-  }
+  $scope.entity = currentBike.get()  
 })
 
 .controller('BrandsCtrl', function($scope, $state, Brand) {
@@ -93,12 +83,8 @@ controllers
     $scope.entity.current = item
     if($state.params.id === 'create') {
       Bike.create($scope.entity, function (result) {
-        currentBike.set(result)
-        if($window.ble) {
-          $state.go('bikes-add')
-        } else {
-          $rootScope.$broadcast('go.home', {bike: result})
-        }
+        ActiveBLEDevice.set(result)
+        $state.go('bikes-add')
       }, function (res) {
         $rootScope.$broadcast('go.home', {bike: $scope.entity})
       })
@@ -109,7 +95,7 @@ controllers
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, BLEDevice, ActiveBLEDevice, $timeout, $ionicLoading, currentBike, $ionicHistory, Bike, $ionicPopup, $rootScope) {
+.controller('BikesAddCtrl', function($scope, $state, BLEDevice, ActiveBLEDevice, $timeout, $ionicLoading, currentBike, $ionicHistory, Bike, $ionicPopup, $rootScope, $window) {
   
   $scope.entities = []
 
@@ -126,8 +112,8 @@ controllers
   
   function doScan() {
     $scope.entities = []
-    ble.scan([], 5, scanSuccessCb, scanErrorCb)
     ActiveBLEDevice.get().disconnect()
+    if($window.ble) ble.scan([], 5, scanSuccessCb, scanErrorCb)
     $timeout(function () {
       $scope.$broadcast('scroll.refreshComplete')
     }, 5000)
@@ -197,8 +183,8 @@ controllers
      
   }
   
-  $scope.goHome = function (bike) {
-    $rootScope.$broadcast('go.home', {bike: bike || currentBike.get()})
+  $scope.goHome = function () {
+    $ionicHistory.goToHistoryRoot($ionicHistory.currentView().historyId)
   }
   
   $scope.init = function () {

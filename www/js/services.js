@@ -249,23 +249,24 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
   BLEDevice.prototype.autoconnect = function () {
     var q = $q.defer()
-    if(!this.localId) {
-      q.reject()
+    if(this.localId) {
+      var bikeId = this.localId
+      var kSelf = this
+      this.isConnected(bikeId)
+      .then(function (result) {
+        q.resolve(result)
+      }, function (reason) {
+        kSelf.connected = false
+        return $cordovaBLE.connect(bikeId)
+      })
+      .then(function (result) {
+        kSelf.onConnected(result)
+        q.resolve(result)
+      }, q.reject)  
+    } else {
+      q.reject('no localId')
       return q.promise
     }
-    var bikeId = this.localId
-    var kSelf = this
-    this.isConnected(bikeId)
-    .then(function (result) {
-      q.resolve(result)
-    }, function (reason) {
-      kSelf.connected = false
-      return $cordovaBLE.connect(bikeId)
-    })
-    .then(function (result) {
-      kSelf.onConnected(result)
-      q.resolve(result)
-    }, q.reject)  
     
     return q.promise
   }

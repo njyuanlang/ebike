@@ -50,8 +50,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
       if(toState.name === 'home') {
         if(fromState.name === 'login' 
-        || fromState.name === 'cities'
-        || fromState.name === 'bikes-add') {
+        || fromState.name === 'cities') {
           $rootScope.$broadcast('home.reconnect')
         }
         $ionicHistory.clearHistory()
@@ -68,11 +67,11 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     $rootScope.$on('go.home', function (event, args) {
       if(args && args.bike) {
         ActiveBLEDevice.set(args.bike)
+        $ionicHistory.nextViewOptions({
+          historyRoot: true,
+          disableBack: true
+        })
       }
-      $ionicHistory.nextViewOptions({
-        historyRoot: true,
-        disableBack: true
-      })
       $state.go('home')
     })
     
@@ -87,7 +86,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
   
   $rootScope.$on('user.DidLogin', function (event, args) {
     var userId = args.userId
-    // console.log('-----==========', userId)
     $rootScope.avatar = $localstorage.get('$EBIKE$Avatar$'+userId)
     if(!$rootScope.avatar) {
       var url = RemoteStorage.getDownloadURL('uploads', userId, 'avatar.png')
@@ -100,6 +98,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
         console.log(JSON.stringify(arguments))
       })
     }
+    // $rootScope.bike = $localstorage.get('$EBIKE$Bike$'+userId)
   })
     
 })

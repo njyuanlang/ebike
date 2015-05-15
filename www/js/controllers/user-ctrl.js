@@ -22,7 +22,6 @@ controllers
         template: '<i class="icon ion-ios7-checkmark-outline padding"></i>登录成功',
         duration: 1000
       })
-      $localstorage.setObject('$EBIKE$LoginData', $scope.entity)
       $rootScope.$broadcast('user.DidLogin', {userId: accessToken.userId})
       $rootScope.$broadcast('go.home')
     }, function (res) {
@@ -41,7 +40,8 @@ controllers
   
   $scope.goTrial = function () {
     $rootScope.online = false
-    $rootScope.$broadcast('go.home')
+    $ionicHistory.goBack()
+    // $rootScope.$broadcast('go.home')
   }
   
   $scope.init = function () {
@@ -89,7 +89,6 @@ controllers
           template: '<i class="icon ion-ios7-checkmark-outline padding"></i>注册账户成功',
           duration: 1000
         })
-        $localstorage.setObject('$EBIKE$LoginData', $scope.entity)
         $state.go('provinces')
       })
     }, function (res) {
@@ -127,21 +126,31 @@ controllers
   }
 })
 
-.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http, $rootScope) {
+.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http, $rootScope, LoopBackAuth) {
   
   $scope.entity = User.getCurrent()
   // $cordovaFile.readAsText(cordova.file.dataDirectory, "avatar.png").then(function (fileData) {
   //   $scope.avatar = fileData
   // })
 
-  $ionicHistory.registerHistory($scope)
+  // $ionicHistory.registerHistory($scope)
   $scope.logout = function () {
-    var device = ActiveBLEDevice.get()
-    if(device) device.disconnect()
+    if($rootScope.online) {
+      var device = ActiveBLEDevice.get()
+      if(device) device.disconnect()
+      User.logout().$promise
+        .then(function () {
+          $rootScope.$broadcast('go.home')
+        }, function () {
+          LoopBackAuth.clearUser();
+          LoopBackAuth.clearStorage();
+          $rootScope.$broadcast('go.home')
+        })
+    } else {
+      $rootScope.online = true
+      $rootScope.$broadcast('go.home')
+    }
     
-    $localstorage.setObject('$EBIKE$LoginData')
-    User.logout()
-    $state.go('login')
   }
   
   var uploadAvatar = function () {
