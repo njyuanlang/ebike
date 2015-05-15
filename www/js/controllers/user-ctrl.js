@@ -126,7 +126,7 @@ controllers
   }
 })
 
-.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http, $rootScope, LoopBackAuth) {
+.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http, $rootScope, LoopBackAuth, $ionicActionSheet) {
   
   $scope.entity = User.getCurrent()
   // $cordovaFile.readAsText(cordova.file.dataDirectory, "avatar.png").then(function (fileData) {
@@ -192,17 +192,23 @@ controllers
     })
   }
   
-  $scope.changeAvatar = function () {
-    var options = {
-      destinationType: Camera.DestinationType.FILE_URI,
-      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-    };
+  var getPicture = function (index) {
+    var options = {sourceType: Camera.PictureSourceType.PHOTOLIBRARY}
+    if(index === 0) {
+      options = {
+        sourceType: Camera.PictureSourceType.CAMERA,
+        encodingType: Camera.EncodingType.PNG,
+        targetWidth: 400,
+        targetHeight: 400,
+        saveToPhotoAlbum: false
+      }
+    }
 
     $cordovaCamera.getPicture(options).then(function(imageURI) {
       return $jrCrop.crop({
         url: imageURI, 
-        width: 200, 
-        height: 200, 
+        width: 300, 
+        height: 300, 
         cancelText: "取消",
         chooseText: "选择"
       })
@@ -223,7 +229,7 @@ controllers
       console.log('Save avatar to local error:', JSON.stringify(err))
     })
     .then(function (container) {
-      return container.$promise
+      return container
     }, function (err) {
       return Upload.createContainer({name: $scope.entity.id}).$promise
     })
@@ -231,6 +237,19 @@ controllers
       uploadAvatar()
     }, function (err) {
       console.log("Create/GET Container ERROR:", JSON.stringify(err))
+    })
+    
+    return true;
+  }
+  
+  $scope.changeAvatar = function () {
+    $ionicActionSheet.show({
+      buttons: [
+        {text: '拍照'},
+        {text: '从手机相册选择'}
+      ],
+      cancelText: '取消',
+      buttonClicked: getPicture
     })
   }
   
