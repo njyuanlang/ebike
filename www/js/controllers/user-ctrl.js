@@ -217,7 +217,6 @@ controllers
     })
     .then(function (canvas) {
       $rootScope.avatar = canvas.toDataURL()
-      $localstorage.set('$EBIKE$Avatar$'+$scope.entity.id, $rootScope.avatar)
       var base64Data = $scope.avatar
       return $cordovaFile.writeFile(cordova.file.dataDirectory, "avatar.png", base64Data, true)
     }, function (err) {

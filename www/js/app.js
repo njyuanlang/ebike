@@ -60,7 +60,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
 
     if(window.ble) {
       ble.scan([], 10, function () {
-        // $rootScope.$broadcarst('home.reconnect')
+        
       })
     }
     
@@ -86,12 +86,10 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
   
   $rootScope.$on('user.DidLogin', function (event, args) {
     var userId = args.userId
-    $rootScope.avatar = $localstorage.get('$EBIKE$Avatar$'+userId)
     if(!$rootScope.avatar) {
       var url = RemoteStorage.getDownloadURL('uploads', userId, 'avatar.png')
       $http.get(url)
       .success(function (buffer) {
-        $localstorage.set('$EBIKE$Avatar$'+userId, buffer)
         $rootScope.avatar = buffer
       })
       .error(function () {

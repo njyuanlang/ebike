@@ -69,7 +69,7 @@ controllers
     if(!User.isAuthenticated()) {
       $state.go('login')
     } else {
-      setTimeout(reconnectDevice, 1000)
+      setTimeout(reconnectDevice, 2000)
     }
   }
 })
