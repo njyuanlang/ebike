@@ -137,7 +137,7 @@ controllers
       })
     })
     .then(function (result) {
-      return result
+      // return result
       return device.pair(bike.password)
     }, function (reason) {
       $ionicLoading.show({

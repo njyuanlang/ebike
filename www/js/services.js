@@ -321,9 +321,18 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     } else {
       var value = Util.stringToBytes(password)
       ble.write(this.localId, order.uuid, order.pair, value, function () {
-        q.resolve()
+        ble.read(this.localId, order.uuid. order.pair, function (result) {
+          var ret = Util.byteToDecString(result)
+          if(ret === 1) {
+            q.resolve()
+          } else {
+            q.reject('配对密码错误')
+          }
+        }, function () {
+          q.reject('无法验证配对密码，请重试')
+        })
       }, function () {
-        q.reject("invalidate passowrd")
+        q.reject("设备不支持密码配对功能")
       }) 
     }
     return q.promise
