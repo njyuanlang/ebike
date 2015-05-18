@@ -3,23 +3,23 @@
     
     <div class="list card">
       <div class="item">
-        车辆名称： {{entity.name || '未命名'}}
+        车辆名称： {{currentBike.name || '未命名'}}
       </div>
       <div class="item">
         品牌型号：
-        {{entity.brand.name}} | {{entity.model}}
+        {{currentBike.brand.name}} | {{currentBike.model}}
       </div>
     </div>
     
     <div class="list card">
       <div class="item item-icon-right" ui-sref='voltages({id:entity.id})'>
         电池电压
-        <span class="item-note">{{entity.voltage|| 0}} V</span>
+        <span class="item-note">{{currentBike.voltage|| 0}} V</span>
         <i class="icon ion-ios7-arrow-right"></i>
       </div>
       <div class="item item-icon-right" ui-sref='currents({id:entity.id})'>
         电池容量
-        <span class="item-note">{{entity.current|| 0}} AH</span>
+        <span class="item-note">{{currentBike.current|| 0}} AH</span>
         <i class="icon ion-ios7-arrow-right"></i>
       </div>
     </div>
@@ -27,7 +27,7 @@
     <div class="list card">
       <div class="item item-icon-right" ui-sref='wheeldiameters({id:entity.id})'>
         车轮直径
-        <span class="item-note">{{entity.wheeldiameter|| 0}} 寸</span>
+        <span class="item-note">{{currentBike.wheeldiameter|| 0}} 寸</span>
         <i class="icon ion-ios7-arrow-right"></i>
       </div>
     </div>

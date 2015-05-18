@@ -8,9 +8,6 @@ controllers
     }
     $scope.$apply()
   })
-
-  // $scope.$on('$ionicView.enter', function (event) {
-  // })
   
   $scope.goTest = function () {
     if($scope.device.connected) {

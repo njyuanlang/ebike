@@ -1,6 +1,6 @@
 controllers
 
-.controller('BikesCtrl', function($scope, $state, Bike, ActiveBLEDevice, currentBike, User, $window) {
+.controller('BikesCtrl', function($scope, $state, Bike, ActiveBLEDevice, User, $window) {
   User.getCurrent(function (user) {
     $scope.entities = Bike.find({filter:{where:{"owner.id":user.id}}})
   })
@@ -9,22 +9,23 @@ controllers
   $scope.activeEntityChange = function (item) {
     ActiveBLEDevice.get().disconnect()
     $scope.entity = item
-    currentBike.set(item)
+    $scope.currentBike = item
     if($window.ble) {
       $state.go('bikes-add')
     }
   }
   
   $scope.showDetail = function (item) {
-    currentBike.set(item)
+    $scope.currentBike = item
     $state.go('bike')
   }
   
 })
 
-.controller('BikeCtrl', function($scope, $state, Bike, $ionicHistory, currentBike) {
-  $scope.entity = currentBike.get()  
-  
+.controller('BikeCtrl', function($scope, $state, Bike, $ionicHistory) {
+  // $scope.$on('$ionicView.enter', function (event) {
+  // })
+  //
   $scope.switch = function () {
     $state.go('brands', {id: 'create'})
   }
@@ -38,68 +39,65 @@ controllers
   }
 })
 
-.controller('ModelsCtrl', function($scope, $state, currentBike, Brand) {
+.controller('ModelsCtrl', function($scope, $state, Brand, $rootScope) {
   var brand = Brand.findById({id: $state.params.brandId}, function (result) {
     $scope.entities = result.models
   })
 
   $scope.selectEntity = function (item) {
-    currentBike.set({brand: brand, model:item, workmode:0, "name": brand.name+"牌电动车"})
+    $rootScope.currentBike = {brand: brand, model:item, workmode:0, "name": brand.name+"牌电动车"}
     $state.go('wheeldiameters', {id: $state.params.id})
   }
 })
 
-.controller('WheelDiametersCtrl', function($scope, $state, currentBike, $ionicHistory, Bike) {
+.controller('WheelDiametersCtrl', function($scope, $state, $ionicHistory, Bike) {
   $scope.entities = [12, 14, 16, 18, 20, 22, 24, 26]
-  $scope.entity = currentBike.get()
 
   $scope.selectEntity = function (item) {
-    $scope.entity.wheeldiameter = item
+    $scope.currentBike.wheeldiameter = item
     if($state.params.id === 'create') {
       $state.go('voltages', {id: $state.params.id})
     } else {
-      Bike.prototype$updateAttributes({ id: $scope.entity.id }, {wheeldiameter: $scope.entity.wheeldiameter})
+      Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {wheeldiameter: $scope.currentBike.wheeldiameter})
       $ionicHistory.goBack()
     }
   }
 })
 
-.controller('VoltagesCtrl', function($scope, $state, currentBike, $ionicHistory, Bike) {
+.controller('VoltagesCtrl', function($scope, $state, $ionicHistory, Bike) {
   $scope.entities = [36, 48, 60, 72]
-  $scope.entity = currentBike.get()
 
   $scope.selectEntity = function (item) {
-    $scope.entity.voltage = item
+    $scope.currentBike.voltage = item
     if($state.params.id === 'create') {
       $state.go('currents', {id: $state.params.id})
     } else {
-      Bike.prototype$updateAttributes({ id: $scope.entity.id }, {voltage: $scope.entity.voltage})
+      Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {voltage: $scope.currentBike.voltage})
       $ionicHistory.goBack()
     }
   }
 })
 
-.controller('CurrentsCtrl', function($scope, $state, currentBike, $ionicHistory, $window, Bike, ActiveBLEDevice, $rootScope) {
+.controller('CurrentsCtrl', function($scope, $state, $ionicHistory, $window, Bike, ActiveBLEDevice, $rootScope) {
   $scope.entities = [12, 20, 30, 36]
-  $scope.entity = currentBike.get()
 
   $scope.selectEntity = function (item) {
-    $scope.entity.current = item
+    $scope.currentBike.current = item
     if($state.params.id === 'create') {
-      Bike.create($scope.entity, function (result) {
+      Bike.create($scope.currentBike, function (result) {
         ActiveBLEDevice.set(result)
         $state.go('bikes-add')
       }, function (res) {
-        $rootScope.$broadcast('go.home', {bike: $scope.entity})
+        $rootScope.$broadcast('go.home', {bike: $scope.currentBike})
       })
     } else {
-      Bike.prototype$updateAttributes({ id: $scope.entity.id }, {current: $scope.entity.current})
+      Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {current: $scope.currentBike.current})
       $ionicHistory.goBack()
     }
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, BLEDevice, ActiveBLEDevice, $timeout, $ionicLoading, currentBike, $ionicHistory, Bike, $ionicPopup, $rootScope, $window) {
+.controller('BikesAddCtrl', function($scope, $state, BLEDevice, ActiveBLEDevice, $timeout, $ionicLoading, $ionicHistory, Bike, $ionicPopup, $rootScope, $window) {
   
   $scope.entities = []
 
@@ -170,7 +168,7 @@ controllers
   }
   
   $scope.selectEntity = function (item) {
-    var bike = currentBike.get()
+    var bike = $scope.currentBike
     bike.localId = item.id
     bike.name = item.name
 

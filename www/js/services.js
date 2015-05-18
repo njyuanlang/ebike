@@ -472,14 +472,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
 })
 
-.service('currentBike', function () {
-  var _currentBike = null
+.service('currentBike', function ($rootScope) {
   return {
     set: function (bike) {
-      _currentBike = bike
+      $rootScope.currentBike = bike
     },
     get: function () {
-      return _currentBike
+      return $rootScope.currentBike
     }
   }
 })
