@@ -22,8 +22,12 @@ controllers
   
 })
 
-.controller('BikeCtrl', function($scope, $state, Bike, $ionicHistory, $ionicLoading, currentBike) {
+.controller('BikeCtrl', function($scope, $state, Bike, $ionicHistory, currentBike) {
   $scope.entity = currentBike.get()  
+  
+  $scope.switch = function () {
+    $state.go('brands', {id: 'create'})
+  }
 })
 
 .controller('BrandsCtrl', function($scope, $state, Brand) {
@@ -137,8 +141,8 @@ controllers
       })
     })
     .then(function (result) {
-      // return result
-      return device.pair(bike.password)
+      return result
+      // return device.pair(bike.password)
     }, function (reason) {
       $ionicLoading.show({
         template: "获取序列号失败："+reason,
