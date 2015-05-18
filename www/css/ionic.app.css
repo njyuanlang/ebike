@@ -24,7 +24,7 @@ $dark:                            #444 !default;
   -webkit-background-size: cover !important; }
 
 .cruise-rotate-bg {
-  background: url('../img/slide0.png') no-repeat center center fixed;
+  background: url('../img/rotation.png') no-repeat center center fixed;
   -webkit-background-size: cover !important; }
 
 .user-bg {
