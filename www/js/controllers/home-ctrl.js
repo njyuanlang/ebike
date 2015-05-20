@@ -14,7 +14,7 @@ controllers
       $state.go('test')
     } else {
       $ionicLoading.show({
-        template: '<i class="icon ion-ios7-information-outline padding"></i>请链接车辆',
+        template: '<i class="icon ion-ios7-information-outline padding"></i>请连接车辆',
         duration: 2000
       })
     }

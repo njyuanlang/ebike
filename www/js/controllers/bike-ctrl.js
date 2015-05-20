@@ -127,10 +127,6 @@ controllers
     var device = new BLEDevice(bike)
     device.connect()
     .then(function (result) {
-      $ionicLoading.show({
-        template: '连接到爱车'+bike.name,
-        duration: 2000
-      })
       return device.readSerialNumber()
     }, function (reason) {
       $ionicLoading.show({
@@ -139,8 +135,8 @@ controllers
       })
     })
     .then(function (result) {
-      return result
-      // return device.pair(bike.password)
+      // return result
+      return device.pair(bike.password)
     }, function (reason) {
       $ionicLoading.show({
         template: "获取序列号失败："+reason,
@@ -148,6 +144,10 @@ controllers
       })
     })
     .then(function (result) {
+      $ionicLoading.show({
+        template: '连接到爱车'+bike.name,
+        duration: 2000
+      })
       Bike.upsert(bike, function (result) {
         $rootScope.$broadcast('go.home', {bike: result})
       }, function (res) {
