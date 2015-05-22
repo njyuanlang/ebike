@@ -23,9 +23,6 @@ controllers
 })
 
 .controller('BikeCtrl', function($scope, $state, Bike, $ionicHistory) {
-  // $scope.$on('$ionicView.enter', function (event) {
-  // })
-  //
   $scope.switch = function () {
     $state.go('brands', {id: 'create'})
   }
@@ -97,14 +94,19 @@ controllers
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, BLEDevice, ActiveBLEDevice, $timeout, $ionicLoading, $ionicHistory, Bike, $ionicPopup, $rootScope, $window) {
+.controller('BikesAddCtrl', function($scope, $state, ActiveBLEDevice, $timeout, $ionicLoading, $ionicHistory, Bike, $ionicPopup, $rootScope, $window) {
   
   $scope.entities = []
 
   function scanSuccessCb(result) {
-    if(result && result.name != '') {
-      $scope.entities.push(result)
-      $scope.$apply()
+    if(result && result.name && result.name != '') {
+      var exist = $scope.entities.some(function (item) {
+        return item.id === result.id
+      })
+      if(!exist) {
+        $scope.entities.push(result)
+        $scope.$apply()
+      }
     }
   }
   
@@ -123,10 +125,9 @@ controllers
   $scope.doScan = doScan
 
   function tryConnect(bike) {
-    
-    var device = new BLEDevice(bike)
-    device.connect()
-    .then(function (result) {
+    ActiveBLEDevice.set(bike)
+    var device = ActiveBLEDevice.get()
+    device.connect().then(function (result) {
       return device.readSerialNumber()
     }, function (reason) {
       $ionicLoading.show({
@@ -135,8 +136,8 @@ controllers
       })
     })
     .then(function (result) {
-      // return result
-      return device.pair(bike.password)
+      return result
+      // return device.pair(bike.password)
     }, function (reason) {
       $ionicLoading.show({
         template: "获取序列号失败："+reason,
@@ -149,9 +150,9 @@ controllers
         duration: 2000
       })
       Bike.upsert(bike, function (result) {
-        $rootScope.$broadcast('go.home', {bike: result})
+        $rootScope.$broadcast('go.home')
       }, function (res) {
-        $rootScope.$broadcast('go.home', {bike: bike})
+        $rootScope.$broadcast('go.home')
       })
     }, function (reason) {
       device.disconnect()

@@ -239,7 +239,14 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   BLEDevice.prototype.isConnected = function (bikeId) {
     var q = $q.defer()
     if($window.ble && $rootScope.online) {
-      return $cordovaBLE.isConnected(bikeId)
+      var kThis = this
+      $cordovaBLE.isConnected(bikeId).then(function (result) {
+        kThis.connected = true
+        q.resolve(result)
+      }, function (reason) {
+        kThis.connected = false
+        q.reject(reason)
+      })
     } else {
       this.connected = false
       q.resolve({})
@@ -252,11 +259,9 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     if(this.localId) {
       var bikeId = this.localId
       var kSelf = this
-      this.isConnected(bikeId)
-      .then(function (result) {
+      this.isConnected(bikeId).then(function (result) {
         q.resolve(result)
       }, function (reason) {
-        kSelf.connected = false
         return $cordovaBLE.connect(bikeId)
       })
       .then(function (result) {
@@ -265,7 +270,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       }, q.reject)  
     } else {
       q.reject('no localId')
-      return q.promise
     }
     
     return q.promise

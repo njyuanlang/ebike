@@ -9,6 +9,10 @@ controllers
     $scope.$apply()
   })
   
+  $scope.$on('$ionicView.enter', function (event) {
+    $scope.device = ActiveBLEDevice.get()
+  })
+
   $scope.goTest = function () {
     if($scope.device.connected) {
       $state.go('test')
@@ -33,7 +37,6 @@ controllers
   }
   
   var reconnectDevice = function () {
-    $scope.device = ActiveBLEDevice.get()
     if(!$scope.online) return $scope.device.onConnected()
     
     if($scope.device.bike.id) {
