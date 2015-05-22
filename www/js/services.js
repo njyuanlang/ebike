@@ -202,9 +202,9 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
   
   BLEDevice.prototype.connect = function () {
-    var theSelf = this
+    var kSelf = this
     return $cordovaBLE.connect(this.localId).then(function (result) {
-      theSelf.onConnected(result)
+      kSelf.onConnected(result)
       return result
     })
   }
@@ -219,7 +219,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     RTMonitor.startNotifications(this.localId)
     this.startReminder()
     this.sendSpec()
-    this.pair(this.bike.password)
     this.setWorkmode(this.bike.workmode%8)
     var kThis = this
     if($rootScope.online) {
@@ -266,6 +265,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       })
       .then(function (result) {
         kSelf.onConnected(result)
+        kSelf.pair(this.bike.password, true)
         q.resolve(result)
       }, q.reject)  
     } else {
@@ -277,7 +277,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
   BLEDevice.prototype.disconnect = function () {
     onDisconnected(this)
-    if(!$window.ble) return
+    if(!$window.ble || !this.localId) return
     return $cordovaBLE.disconnect(this.localId)
   }
   
@@ -318,23 +318,29 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.spec, value) 
   }
-  BLEDevice.prototype.pair = function (password) {
+  BLEDevice.prototype.pair = function (password, quiet) {
     var q = $q.defer()
     if(!$rootScope.online) {
       q.resolve()
     } else {
       var value = Util.stringToBytes(password)
-      ble.write(this.localId, order.uuid, order.pair, value, function () {
-        ble.read(this.localId, order.uuid. order.pair, function (result) {
+      var kThis = this
+      var checkPassword = function () {
+        ble.read(kThis.localId, order.uuid, order.pair, function (result) {
           var ret = Util.byteToDecString(result)
-          if(ret === 1) {
+          if(ret === "1") {
             q.resolve()
           } else {
             q.reject('配对密码错误')
           }
-        }, function () {
-          q.reject('无法验证配对密码，请重试')
+        }, function (reason) {
+          q.reject('无法验证配对密码，请重试'+JSON.stringify(arguments))
+          // q.resolve()
         })
+      }
+      ble.write(this.localId, order.uuid, order.pair, value, function () {
+        if(quiet) return;
+        $timeout(checkPassword, 500)
       }, function () {
         q.reject("设备不支持密码配对功能")
       }) 
