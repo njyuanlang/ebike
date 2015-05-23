@@ -340,7 +340,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       }
       ble.write(this.localId, order.uuid, order.pair, value, function () {
         if(quiet) return;
-        $timeout(checkPassword, 500)
+        checkPassword()
       }, function () {
         q.reject("设备不支持密码配对功能")
       }) 
@@ -403,7 +403,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
     
   BLEDevice.prototype.testTaskCb = function (result, task) {
-    if(result === 0xE && (task.state === 'testing' || task.state === 'repairing')) return
+    if(result === 0xE || (task.state !== 'testing' && task.state !== 'repairing')) return;
+    if(this.testInterval) return;
     
     var states = ['pass', 'error']
     var items = task.items.filter(function (item, index) {
@@ -420,13 +421,14 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     var itemLen = items.length
     var i = 0
     var count = 0
-    var testInterval = $interval(function () {
+    var kThis = this
+    this.testInterval = $interval(function () {
       var item = items[i]
       item.progress = 100
       item.state = states[(result>>item.index)&0x1]
       if(item.state === 'pass' || item.state === 'repaired') count++
       if(++i == itemLen) {
-        $interval.cancel(testInterval)
+        $interval.cancel(kThis.testInterval)
         if(task.state === 'testing') {
           task.score = Math.round(count*100/task.items.length)
           task.state = count === itemLen ? 'pass':'error'
@@ -446,6 +448,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
             Test.upsert(task)
           }
         }
+        kThis.testInterval = null        
       }
     }, 1000)
   }
@@ -460,7 +463,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       this.sendOrder([0x81, 0x81])
       var kThis = this
       $timeout(function () {
-        if(task.state === 'testing') $rootScope.$broadcast('test.timeout')
+        if(task.state === 'testing' && !kThis.testInterval) $rootScope.$broadcast('test.timeout')
       }, 5000)
     } else {
       this.testTaskCb(10, task)

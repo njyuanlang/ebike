@@ -129,9 +129,6 @@ controllers
 .controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http, $rootScope, LoopBackAuth, $ionicActionSheet) {
   
   $scope.entity = User.getCurrent()
-  // $cordovaFile.readAsText(cordova.file.dataDirectory, "avatar.png").then(function (fileData) {
-  //   $scope.avatar = fileData
-  // })
 
   // $ionicHistory.registerHistory($scope)
   $scope.logout = function () {
