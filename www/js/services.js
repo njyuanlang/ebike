@@ -257,15 +257,15 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     var q = $q.defer()
     if(this.localId) {
       var bikeId = this.localId
-      var kSelf = this
+      var kThis = this
       this.isConnected(bikeId).then(function (result) {
         q.resolve(result)
       }, function (reason) {
         return $cordovaBLE.connect(bikeId)
       })
       .then(function (result) {
-        kSelf.onConnected(result)
-        kSelf.pair(this.bike.password, true)
+        kThis.onConnected(result)
+        kThis.pair(kThis.bike.password, true)
         q.resolve(result)
       }, q.reject)  
     } else {
