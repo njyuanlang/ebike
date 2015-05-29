@@ -10,7 +10,8 @@
         Copyright@<br>江苏南京宝旭信息技术有限公司
       </div>
       <div class="item transparent-bg">
-        支持手机：iOS 6.0以上
+        <div ng-if="!isAndroid">支持手机：iOS 6.0以上</div>
+        <div ng-if="isAndroid">支持手机：Android 4.3以上</div>
       </div>
     </div>
     <p class="">
