@@ -1,6 +1,6 @@
 controllers
 
-.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout) {
   
   $scope.entity = {realm: 'client'}
   
@@ -18,6 +18,7 @@ controllers
       template: '<i class="icon ion-loading-c ion-loading padding"></i>登录中...'
     })
     User.login($scope.entity, function (accessToken) {
+      $timeout.cancel($scope.loginPromise)
       $ionicLoading.show({
         template: '<i class="icon ion-ios7-checkmark-outline padding"></i>登录成功',
         duration: 1000
@@ -25,6 +26,7 @@ controllers
       $rootScope.$broadcast('user.DidLogin', {userId: accessToken.userId})
       $rootScope.$broadcast('go.home')
     }, function (res) {
+      $timeout.cancel($scope.loginPromise)
       var option = {
         template: '<i class="icon ion-ios7-close-outline padding"></i>',
         duration: 2000
@@ -32,6 +34,13 @@ controllers
       option.template += $filter('loginErrorPrompt')(res.data.error.message)
       $ionicLoading.show(option)      
     })
+    
+    $scope.loginPromise = $timeout(function () {
+      $ionicLoading.show({
+        template: '<i class="icon ion-ios7-close-outline padding"></i>无法连接到服务器',
+        duration: 2000
+      })
+    }, 10000)
   }
 
   $scope.goRegister = function (reset) {
