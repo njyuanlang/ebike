@@ -189,6 +189,10 @@ controllers
     $ionicHistory.goToHistoryRoot($ionicHistory.currentView().historyId)
   }
   
+  $scope.$on("$ionicView.leave", function () {
+    ActiveBLEDevice.get().autoconnect()
+  })
+  
   $scope.init = function () {
     doScan()
   }
