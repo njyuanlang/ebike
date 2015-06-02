@@ -10,4 +10,5 @@ rm ebike.apk
 
 zipalign -v 4 CordovaApp-release-unsigned.apk ebike.apk
 
-scp ebike.apk deploy@42.121.19.191:/home/wwwroot/app
+# adb install -r ebike.apk
+# scp ebike.apk deploy@42.121.19.191:/home/wwwroot/app

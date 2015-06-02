@@ -15,6 +15,11 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+    if(window.cordova) {
+      cordova.getAppVersion(function(version) {
+        $rootScope.appVersion = version;
+      });
+    }
  
     if(screen.lockOrientation) {
       window.addEventListener("orientationchange", function() {
@@ -27,14 +32,15 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
         }
       }, false);
   
-      screen.lockOrientation('portrait-primary')
+      // screen.lockOrientation('portrait-primary')
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         if(toState.name === 'home') {
           window.plugins.insomnia.allowSleepAgain()
           screen.unlockOrientation()
         } else if(toState.name === 'cruise') {
           window.plugins.insomnia.keepAwake()
-          screen.unlockOrientation()   
+          screen.unlockOrientation()
+          // screen.lockOrientation('landscape-primary')
         } else {
           screen.lockOrientation('portrait-primary')   
         }
@@ -78,7 +84,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     if(User.isAuthenticated()) {
       $rootScope.$broadcast('user.DidLogin', {userId: User.getCurrentId()})
     }
-    
+        
   });  
   
   $rootScope.online = true
@@ -100,7 +106,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
   })
   
   $rootScope.isAndroid = ionic.Platform.isAndroid()
-    
+  $rootScope.appVersion = '1.0.0'
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
