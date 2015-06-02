@@ -7313,6 +7313,11 @@ progress::-webkit-progress-value {
   width: 100%;
   height: 100%; }
 
+.button-starter {
+  position: absolute;
+  width: 100%;
+  bottom: 4rem; }
+
 /* -------------------------------------
  * Round Button Circle
  * ------------------------------------- */
