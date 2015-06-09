@@ -83,6 +83,9 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     
     if(User.isAuthenticated()) {
       $rootScope.$broadcast('user.DidLogin', {userId: User.getCurrentId()})
+      setTimeout(function () {
+        ActiveBLEDevice.get().autoconnect()
+      }, 2000)
     }
         
   });  
@@ -107,6 +110,19 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
   
   $rootScope.isAndroid = ionic.Platform.isAndroid()
   $rootScope.appVersion = '1.0.0'
+  
+  $ionicPlatform.registerBackButtonAction(function () {
+    // prevent from go back previous view
+  }, 101)
+  
+  $ionicPlatform.on('pause', function () {
+    ActiveBLEDevice.get().disconnect()
+  })
+  
+  $ionicPlatform.on('resume', function () {
+    ActiveBLEDevice.get().autoconnect()
+  })
+  
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
