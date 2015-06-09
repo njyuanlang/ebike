@@ -81,7 +81,7 @@ angular.module('ebike.filters',[])
 .filter("loginErrorPrompt", function () {
   var dictionary = {
     "username or email is required": "用户名不能为空",
-    "login failed": "登录失败"
+    "login failed": "用户名或密码错误"
   }
   
   return function (msg) {
