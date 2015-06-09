@@ -3,6 +3,10 @@ controllers
 .controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout) {
   
   $scope.entity = {realm: 'client'}
+  var lastLoginData = $localstorage.getObject('$$LastLoginData$$')
+  for(key in lastLoginData) {
+    $scope.entity[key] = lastLoginData[key]
+  }
   
   $scope.tryLogin = function () {
     if(navigator.connection && $cordovaNetwork.isOffline()) {
@@ -23,6 +27,7 @@ controllers
         template: '<i class="icon ion-ios7-checkmark-outline padding"></i>登录成功',
         duration: 1000
       })
+      $localstorage.setObject('$$LastLoginData$$', $scope.entity)
       $rootScope.$broadcast('user.DidLogin', {userId: accessToken.userId})
       $rootScope.$broadcast('go.home')
     }, function (res) {
