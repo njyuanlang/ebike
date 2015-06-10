@@ -111,10 +111,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
   $rootScope.isAndroid = ionic.Platform.isAndroid()
   $rootScope.appVersion = '1.0.0'
   
-  $ionicPlatform.registerBackButtonAction(function () {
-    // prevent from go back previous view
-  }, 101)
-  
   $ionicPlatform.on('pause', function () {
     ActiveBLEDevice.get().disconnect()
   })

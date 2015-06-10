@@ -1,6 +1,6 @@
 controllers
 
-.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout, $ionicPlatform) {
   
   $scope.entity = {realm: 'client'}
   var lastLoginData = $localstorage.getObject('$$LastLoginData$$')
@@ -64,6 +64,17 @@ controllers
       $state.go('help')
     }
   }
+
+  $scope.$on("$ionicView.enter", function () {
+    $scope.deregisterBackButtonAction = $ionicPlatform.registerBackButtonAction(function () {
+      // prevent from go back previous view
+    }, 101)
+  })
+  
+  $scope.$on("$ionicView.leave", function () {
+    $scope.deregisterBackButtonAction()
+  })
+  
 })
 
 .controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading, User, $localstorage, Authmessage, $filter, $ionicHistory) {
