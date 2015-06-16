@@ -163,7 +163,7 @@ controllers
     
     $ionicLoading.show({
       template:'正在连接'+bike.name+"...",
-      duration: 3000
+      duration: 10000
     })
   }
   
