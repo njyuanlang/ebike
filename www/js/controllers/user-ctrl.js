@@ -222,6 +222,7 @@ controllers
         encodingType: Camera.EncodingType.PNG,
         targetWidth: 400,
         targetHeight: 400,
+        correctOrientation: true,
         saveToPhotoAlbum: false
       }
     }
