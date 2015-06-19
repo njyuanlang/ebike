@@ -68,6 +68,7 @@ controllers
   $scope.$on("$ionicView.enter", function () {
     $scope.deregisterBackButtonAction = $ionicPlatform.registerBackButtonAction(function () {
       // prevent from go back previous view
+      ionic.Platform.exitApp();
     }, 101)
   })
   

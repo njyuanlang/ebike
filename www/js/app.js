@@ -90,7 +90,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
       $rootScope.$broadcast('user.DidLogin', {userId: User.getCurrentId()})
       setTimeout(function () {
         ActiveBLEDevice.get().autoconnect()
-      }, 2000)
+      }, 1000)
     }
         
   });  

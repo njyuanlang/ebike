@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, $ionicLoading, User, $localstorage, $ionicHistory, $rootScope) {
+.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, $ionicLoading, User, $localstorage, $ionicHistory, $rootScope, $ionicPlatform) {
     
   $scope.$on( 'realtime.update', function (event) {
     if($scope.device.bike.workmode === 9 && $scope.device.realtime.power > 24) {
@@ -41,6 +41,10 @@ controllers
     
     if($scope.device.bike.id) {
       $scope.device.autoconnect().then(function (result) {
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-checkmark-outline padding"></i>成功连接到车辆',
+          duration: 1000
+        })
       }, function (reason) {
         if(reason === 'no localId') {
           $state.go('bikes-add')
@@ -71,5 +75,11 @@ controllers
     } else {
 
     }
+    
+    $ionicPlatform.registerBackButtonAction(function () {
+      $scope.device.disconnect().then(function () {
+        ionic.Platform.exitApp();
+      });
+    }, 101)
   }
 })
