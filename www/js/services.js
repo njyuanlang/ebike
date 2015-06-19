@@ -153,6 +153,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     stopNotify(localId, "power")
     stopNotify(localId, "speed")
     $interval.cancel(uploadInterval)
+    uploadInterval = null
     realtime.power = 0
     realtime.mileage = 0
     realtime.speed = 0
@@ -508,10 +509,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   var _activeBLE = getBLEDevice($localstorage.getObject(keys.activebike))
   currentBike.set(_activeBLE.bike)
   var service = {
-    set: function (bike) {
-      _activeBLE = getBLEDevice(bike)
-      currentBike.set(bike)
-      $localstorage.setObject(keys.activebike, bike)
+    setBike: function (bike) {
+      this.set(getBLEDevice(bike))
+    },
+    set: function (device) {
+      _activeBLE = device
+      currentBike.set(device.bike)
+      $localstorage.setObject(keys.activebike, device.bike)
     },
     get: function () {
       return _activeBLE

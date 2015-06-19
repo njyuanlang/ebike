@@ -82,7 +82,7 @@ controllers
     $scope.currentBike.current = item
     if($state.params.id === 'create') {
       Bike.create($scope.currentBike, function (result) {
-        ActiveBLEDevice.set(result)
+        ActiveBLEDevice.setBike(result)
         $state.go('bikes-add')
       }, function (res) {
         $rootScope.$broadcast('go.home', {bike: $scope.currentBike})
@@ -94,7 +94,7 @@ controllers
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, ActiveBLEDevice, $timeout, $ionicLoading, $ionicHistory, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService) {
+.controller('BikesAddCtrl', function($scope, $state, ActiveBLEDevice, $timeout, $ionicLoading, $ionicHistory, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService, BLEDevice) {
   
   $scope.entities = []
 
@@ -134,8 +134,7 @@ controllers
   $scope.doScan = doScan
 
   function tryConnect(bike) {
-    ActiveBLEDevice.set(bike)
-    var device = ActiveBLEDevice.get()
+    var device = new BLEDevice(bike)
     device.connect().then(function (result) {
       return device.readSerialNumber()
     }, function (reason) {
@@ -153,6 +152,7 @@ controllers
       })
     })
     .then(function (result) {
+      ActiveBLEDevice.set(device)
       $ionicLoading.show({
         template: '连接到爱车'+bike.name,
         duration: 2000
@@ -177,7 +177,7 @@ controllers
   }
   
   $scope.selectEntity = function (item) {
-    var bike = $scope.currentBike
+    var bike = angular.copy($scope.currentBike)
     bike.localId = item.id
     bike.name = item.name
 
@@ -190,8 +190,7 @@ controllers
          bike.password = res
          tryConnect(bike)
        }
-     });
-     
+     });     
   }
   
   $scope.goHome = function () {

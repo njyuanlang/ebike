@@ -77,7 +77,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     
     $rootScope.$on('go.home', function (event, args) {
       if(args && args.bike) {
-        ActiveBLEDevice.set(args.bike)
+        ActiveBLEDevice.setBike(args.bike)
         $ionicHistory.nextViewOptions({
           historyRoot: true,
           disableBack: true
