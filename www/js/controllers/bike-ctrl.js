@@ -117,7 +117,16 @@ controllers
   function doScan() {
     $scope.entities = []
     ActiveBLEDevice.get().disconnect()
-    if($window.ble) ble.scan([], 5, scanSuccessCb, scanErrorCb)
+    if($window.ble) {
+      ble.isEnabled(function (result) {
+        ble.scan([], 5, scanSuccessCb, scanErrorCb)
+      }, function (error) {
+        $ionicPopup.alert({
+          title: '打开蓝牙来允许“帮大师”连接到车辆',
+          okText: '好'
+        });
+      })      
+    }
     $timeout(function () {
       $scope.$broadcast('scroll.refreshComplete')
     }, 5000)
@@ -173,8 +182,8 @@ controllers
     bike.name = item.name
 
     $ionicPopup.prompt({
-      title: '车辆配对',
-      template: '请输入车辆的配对密码，以绑定手机',
+      title: '输入车辆配对密码',
+      template: '车辆的配对密码请在说明书或者车身上查找',
       inputPlaceholder: ''
      }).then(function(res) {
        if(res && res !== '') {

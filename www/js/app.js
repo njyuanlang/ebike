@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.services', 'ebike.filters'])
 
-.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory, $cordovaNetwork, ActiveBLEDevice, User, $localstorage, RemoteStorage, $http) {
+.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory, $cordovaNetwork, ActiveBLEDevice, User, $localstorage, RemoteStorage, $http, $ionicPopup) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -65,8 +65,13 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
     })
 
     if(window.ble) {
-      ble.scan([], 10, function () {
-        
+      ble.isEnabled(function (result) {
+        ble.scan([], 10, function () {})
+      }, function (error) {
+        $ionicPopup.alert({
+          title: '打开蓝牙来允许“帮大师”连接到车辆',
+          okText: '好'
+        });
       })
     }
     
