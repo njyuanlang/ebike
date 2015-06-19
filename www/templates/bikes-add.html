@@ -1,9 +1,9 @@
-<ion-view title="绑定车辆" ng-init="init()">
+<ion-view title="绑定车辆">
   <ion-nav-buttons side="right">
     <a class="button" ng-click="goHome()">主页</a>
   </ion-nav-buttons>
-  <ion-content has-header="true" class="scroll-bg padding">
-    <ion-refresher pulling-text="下拉刷新..." on-refresh="doScan()"></ion-refresher>
+  <ion-content has-header="true" class="scroll-bg padding" delegate-handle="mainScroll">
+    <ion-refresher pulling-text="下拉搜索周边车辆" refreshing-text="正在搜索周边车辆" on-refresh="doScan()"></ion-refresher>
 
     <div class="list">
       <div ng-repeat="item in entities" ng-click="selectEntity(item)" class="item">

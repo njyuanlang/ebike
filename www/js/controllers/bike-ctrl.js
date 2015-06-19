@@ -94,7 +94,7 @@ controllers
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, ActiveBLEDevice, $timeout, $ionicLoading, $ionicHistory, Bike, $ionicPopup, $rootScope, $window) {
+.controller('BikesAddCtrl', function($scope, $state, ActiveBLEDevice, $timeout, $ionicLoading, $ionicHistory, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService) {
   
   $scope.entities = []
 
@@ -202,7 +202,8 @@ controllers
     ActiveBLEDevice.get().autoconnect()
   })
   
-  $scope.init = function () {
-    doScan()
-  }
+  $scope.$on("$ionicView.enter", function () {
+    PtrService.triggerPtr('mainScroll')
+  })
+  
 })
