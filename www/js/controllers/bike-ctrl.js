@@ -153,10 +153,6 @@ controllers
     })
     .then(function (result) {
       ActiveBLEDevice.set(device)
-      $ionicLoading.show({
-        template: '连接到爱车'+bike.name,
-        duration: 2000
-      })
       Bike.upsert(bike, function (result) {
         $rootScope.$broadcast('go.home')
       }, function (res) {

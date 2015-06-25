@@ -163,7 +163,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   return realtime
 })
 
-.factory('BLEDevice', function ($cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask, Test) {
+.factory('BLEDevice', function ($cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask, Test, $ionicLoading) {
 
   var connectingInterval = null
   
@@ -230,6 +230,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         kThis.isConnected(kThis.localId).then(function (result) {
           
         }, function (reason) {
+          // $ionicLoading.show({
+          //   template: '<i class="icon ion-ios7-checkmark-outline padding"></i>已断开车辆连接',
+          //   duration: 1000
+          // })
           onDisconnected(kThis)          
         })
       }, 1000)
@@ -260,15 +264,35 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       var bikeId = this.localId
       var kThis = this
       this.isConnected(bikeId).then(function (result) {
-        q.resolve(result)
+        return result;
+        // q.resolve(result)
       }, function (reason) {
         return $cordovaBLE.connect(bikeId)
       })
       .then(function (result) {
         kThis.onConnected(result)
-        kThis.pair(kThis.bike.password, true)
+        return kThis.pair(kThis.bike.password)
+      }, function (reason) {
+        if(reason === 'Disconnected') reason = '请重试';
+        if(/not found$/.test(reason)) {
+          ble.scan([], 5)
+          reason = '请稍后重试';
+        }
+        q.reject(reason);
+      })  
+      .then(function (result) {
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-checkmark-outline padding"></i>已成功连接到车辆',
+          duration: 1000
+        })
         q.resolve(result)
-      }, q.reject)  
+      }, function (reason) {
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-close-outline padding"></i>车辆配对失败：'+reason,
+          duration: 3000
+        })
+        q.reject(reason)
+      })
     } else {
       q.reject('no localId')
     }
@@ -319,11 +343,14 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.spec, value) 
   }
-  BLEDevice.prototype.pair = function (password, quiet) {
+  BLEDevice.prototype.pair = function (password) {
     var q = $q.defer()
     if(!$rootScope.online) {
       q.resolve()
     } else {
+      $ionicLoading.show({
+        template: '<i class="icon ion-ios7-checkmark-outline padding"></i>开始配对...'
+      })
       var value = Util.stringToBytes(password)
       var kThis = this
       var checkPassword = function () {
@@ -340,11 +367,16 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         })
       }
       ble.write(this.localId, order.uuid, order.pair, value, function () {
-        if(quiet) return;
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-checkmark-outline padding"></i>校验配对结果...'
+        })
         checkPassword()
       }, function () {
         q.reject("设备不支持密码配对功能")
-      }) 
+      })
+      var timer = $timeout(function () {
+        q.reject("配对超时,请重新绑定车辆或者重新启动蓝牙再尝试！")
+      }, 5000)
     }
     return q.promise
   }
