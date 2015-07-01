@@ -1,5 +1,16 @@
 controllers
 
+.controller('EntryCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout, $ionicPlatform) {
+
+  $scope.init = function () {
+    if($localstorage.get('$EBIKE$IsNewbie', "YES") === "YES") {
+      $localstorage.set('$EBIKE$IsNewbie', "NO")
+      $state.go('help')
+    }
+  }
+
+})
+
 .controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout, $ionicPlatform) {
   
   $scope.entity = {realm: 'client'}
@@ -58,13 +69,6 @@ controllers
     // $rootScope.$broadcast('go.home')
   }
   
-  $scope.init = function () {
-    if($localstorage.get('$EBIKE$IsNewbie', "YES") === "YES") {
-      $localstorage.set('$EBIKE$IsNewbie', "NO")
-      $state.go('help')
-    }
-  }
-
   $scope.$on("$ionicView.enter", function () {
     $scope.deregisterBackButtonAction = $ionicPlatform.registerBackButtonAction(function () {
       // prevent from go back previous view

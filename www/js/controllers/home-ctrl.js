@@ -68,7 +68,7 @@ controllers
     if(!$scope.online) return $scope.device.onConnected()
     
     if(!User.isAuthenticated()) {
-      $state.go('login')
+      $state.go('entry')
     } else {
 
     }

@@ -1,6 +1,5 @@
-<ion-view cache-view="false" hide-back-button="true" has-header="false" hide-nav-bar="true" ng-init="init()">
+<ion-view title ="登录" cache-view="false" hide-back-button="false" has-header="true" hide-nav-bar="false">
   <ion-content class="scroll-bg padding" scroll="false">
-    <h1 class="padding text-center">帮大师</h1>
     <form class="padding">
       <div class="list">        
         <div class="item item-icon-left">
@@ -18,12 +17,7 @@
       </div>
     </form>
     <div class="row">
-      <div class="col col-50">
-        <a class="button button-block button-royal" type="button" ng-click="goRegister()">免费注册</a>
-      </div>
-      <div class="col col-50">
-        <button class="button button-block button-positive" type="button" ng-click="tryLogin()">登录</button>
-      </div>
+      <button class="button button-block button-positive" type="button" ng-click="tryLogin()">登录</button>
     </div>
         
     <div class="row padding">

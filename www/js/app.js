@@ -134,6 +134,13 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
   // Each state's controller can be found in controllers.js
   $stateProvider
 
+    // entry 
+    .state('entry', {
+      url: "/entry",
+      templateUrl: "templates/entry.html",
+      controller: 'EntryCtrl'
+    })
+
     // login 
     .state('login', {
       url: "/login",
