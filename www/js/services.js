@@ -302,8 +302,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
   BLEDevice.prototype.disconnect = function () {
     onDisconnected(this)
-    if(!$window.ble || !this.localId) return
-    return $cordovaBLE.disconnect(this.localId)
+    if(!$window.ble || !this.localId) {
+      var q = $q.defer()
+      $timeout(q.resolve, 0);
+      return q.promise;
+    } else {
+      return $cordovaBLE.disconnect(this.localId)
+    }
   }
   
   BLEDevice.prototype.readSerialNumber = function () {

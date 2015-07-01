@@ -11,6 +11,17 @@ controllers
   
   $scope.$on('$ionicView.enter', function (event) {
     $scope.device = ActiveBLEDevice.get()
+    $scope.deregisterBackButtonAction = $ionicPlatform.registerBackButtonAction(function () {
+      $scope.device.disconnect().then(function () {
+        ionic.Platform.exitApp();
+      }, function () {
+        ionic.Platform.exitApp();
+      });
+    }, 101)
+  })
+
+  $scope.$on("$ionicView.leave", function () {
+    $scope.deregisterBackButtonAction()
   })
 
   $scope.goTest = function () {
@@ -72,11 +83,5 @@ controllers
     } else {
 
     }
-    
-    $ionicPlatform.registerBackButtonAction(function () {
-      $scope.device.disconnect().then(function () {
-        ionic.Platform.exitApp();
-      });
-    }, 101)
   }
 })

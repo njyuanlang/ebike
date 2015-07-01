@@ -1,6 +1,6 @@
 controllers
 
-.controller('EntryCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout, $ionicPlatform) {
+.controller('EntryCtrl', function($scope, $rootScope, $localstorage, $ionicPlatform) {
 
   $scope.init = function () {
     if($localstorage.get('$EBIKE$IsNewbie', "YES") === "YES") {
@@ -9,9 +9,20 @@ controllers
     }
   }
 
+  $scope.$on("$ionicView.enter", function () {
+    $scope.deregisterBackButtonAction = $ionicPlatform.registerBackButtonAction(function () {
+      // prevent from go back previous view
+      ionic.Platform.exitApp();
+    }, 101)
+  })
+  
+  $scope.$on("$ionicView.leave", function () {
+    $scope.deregisterBackButtonAction()
+  })
+  
 })
 
-.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout, $ionicPlatform) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout) {
   
   $scope.entity = {realm: 'client'}
   var lastLoginData = $localstorage.getObject('$$LastLoginData$$')
@@ -68,17 +79,6 @@ controllers
     $ionicHistory.goBack()
     // $rootScope.$broadcast('go.home')
   }
-  
-  $scope.$on("$ionicView.enter", function () {
-    $scope.deregisterBackButtonAction = $ionicPlatform.registerBackButtonAction(function () {
-      // prevent from go back previous view
-      ionic.Platform.exitApp();
-    }, 101)
-  })
-  
-  $scope.$on("$ionicView.leave", function () {
-    $scope.deregisterBackButtonAction()
-  })
   
 })
 
