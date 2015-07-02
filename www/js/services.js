@@ -376,7 +376,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           template: '<i class="icon ion-ios7-checkmark-outline padding"></i>校验配对结果...'
         })
         checkPassword()
-      }, function () {
+      }, function (reason) {
         q.reject("设备不支持密码配对功能")
       })
       var timer = $timeout(function () {

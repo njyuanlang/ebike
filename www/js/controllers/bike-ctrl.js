@@ -82,7 +82,6 @@ controllers
     $scope.currentBike.current = item
     if($state.params.id === 'create') {
       Bike.create($scope.currentBike, function (result) {
-        ActiveBLEDevice.setBike(result)
         $state.go('bikes-add')
       }, function (res) {
         $rootScope.$broadcast('go.home', {bike: $scope.currentBike})
@@ -96,16 +95,16 @@ controllers
 
 .controller('BikesAddCtrl', function($scope, $state, ActiveBLEDevice, $timeout, $ionicLoading, $ionicHistory, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService, BLEDevice) {
   
-  $scope.entities = []
+  var devices = []
 
   function scanSuccessCb(result) {
     if(result && result.name && result.name != '') {
-      var exist = $scope.entities.some(function (item) {
+      var exist = devices.some(function (item) {
         return item.id === result.id
       })
       if(!exist) {
-        $scope.entities.push(result)
-        $scope.$apply()
+        devices.push(result)
+        // $scope.entities.push(result)
       }
     }
   }
@@ -114,11 +113,21 @@ controllers
     $scope.$broadcast('scroll.refreshComplete')
   }
   
+  function stopScan() {
+      $scope.$broadcast('scroll.refreshComplete')
+      $scope.scanTimer = null
+      $scope.entities = devices
+  }
+
   function doScan() {
-    $scope.entities = []
     ActiveBLEDevice.get().disconnect()
     if($window.ble) {
       ble.isEnabled(function (result) {
+        devices = []
+        $scope.entities = []
+        $scope.$apply()
+        if($scope.scanTimer) $timeout.cancel($scope.scanTimer)
+        $scope.scanTimer = $timeout(stopScan, 5000)       
         ble.scan([], 5, scanSuccessCb, scanErrorCb)
       }, function (error) {
         $ionicPopup.alert({
@@ -127,9 +136,6 @@ controllers
         });
       })      
     }
-    $timeout(function () {
-      $scope.$broadcast('scroll.refreshComplete')
-    }, 5000)
   }
   $scope.doScan = doScan
 
@@ -162,7 +168,7 @@ controllers
       device.disconnect()
       $ionicLoading.show({
         template: "配对失败："+reason,
-        duration: 2000
+        duration: 3000
       })
     })
     
@@ -198,7 +204,10 @@ controllers
   })
   
   $scope.$on("$ionicView.enter", function () {
-    PtrService.triggerPtr('mainScroll')
+    $scope.entities = []
+    $timeout(function () {
+      PtrService.triggerPtr('mainScroll')
+    }, 500)
   })
   
 })
