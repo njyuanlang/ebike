@@ -274,11 +274,12 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         return kThis.pair(kThis.bike.password)
       }, function (reason) {
         if(reason === 'Disconnected') reason = '请重试';
-        if(/not found$/.test(reason)) {
+        if(/not found.$/.test(reason)) {
           ble.scan([], 5)
-          reason = '请稍后重试';
+          reason = '未找到或车辆已经被其他手机接管，请稍后重试';
         }
         q.reject(reason);
+        return $q.reject(reason);
       })  
       .then(function (result) {
         $ionicLoading.show({

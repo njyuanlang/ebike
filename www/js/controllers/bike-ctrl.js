@@ -82,6 +82,7 @@ controllers
     $scope.currentBike.current = item
     if($state.params.id === 'create') {
       Bike.create($scope.currentBike, function (result) {
+        $scope.currentBike.id = result.id;
         $state.go('bikes-add')
       }, function (res) {
         $rootScope.$broadcast('go.home', {bike: $scope.currentBike})
