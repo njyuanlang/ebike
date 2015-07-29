@@ -12,3 +12,6 @@ zipalign -v 4 CordovaApp-release-unsigned.apk ebike.apk
 
 # adb install -r ebike.apk
 # scp ebike.apk deploy@121.40.108.30:ebike-manufacturer/.
+
+# ====Debug Android====
+# adb logcat CordovaLog:D \*:S

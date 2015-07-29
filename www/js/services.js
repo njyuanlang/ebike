@@ -223,20 +223,17 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     this.setWorkmode(this.bike.workmode%8)
     var kThis = this
     if($rootScope.online) {
-      ble.startNotification(kThis.localId, testService.uuid, testService.test, function (result) {
-        kThis.testTaskCb(new Uint8Array(result)[0], kThis.task)
-      })
       connectingInterval = $interval(function () {
         kThis.isConnected(kThis.localId).then(function (result) {
           
         }, function (reason) {
-          // $ionicLoading.show({
-          //   template: '<i class="icon ion-ios7-checkmark-outline padding"></i>已断开车辆连接',
-          //   duration: 1000
-          // })
-          onDisconnected(kThis)          
+          kThis.disconnect();
+          // onDisconnected(kThis)
         })
       }, 1000)
+      ble.startNotification(kThis.localId, testService.uuid, testService.test, function (result) {
+        kThis.testTaskCb(new Uint8Array(result)[0], kThis.task)
+      })
     }
   }
   
@@ -275,7 +272,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       }, function (reason) {
         if(reason === 'Disconnected') reason = '请重试';
         if(/not found.$/.test(reason)) {
-          ble.scan([], 5)
+          ble.scan([], 5, function () {}, function () {})
           reason = '未找到或车辆已经被其他手机接管，请稍后重试';
         }
         q.reject(reason);

@@ -66,7 +66,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
 
     if(window.ble) {
       ble.isEnabled(function (result) {
-        ble.scan([], 10, function () {})
+        ble.scan([], 10, function () {}, function () {})
       }, function (error) {
         $ionicPopup.alert({
           title: '打开蓝牙来允许“帮大师”连接到车辆',

@@ -313,6 +313,16 @@ controllers
         city: item.name
       }
       User.prototype$updateAttributes({ id: user.id }, { region: user.region}, function () {
+        // if($window.ble) {
+        //   $window.ble.isEnabled(function (result) {
+        //     //bluetooth is enabled
+        //   }, function (error) {
+        //     $ionicPopup.alert({
+        //       title: '打开蓝牙来允许“帮大师”连接到车辆',
+        //       okText: '好'
+        //     });
+        //   })
+        // }
         $ionicHistory.goToHistoryRoot($ionicHistory.currentView().historyId)
       })
     })

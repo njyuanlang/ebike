@@ -16,7 +16,7 @@ controllers
   
   window.addEventListener("orientationchange", function() {
     $scope.promptRotate = Math.abs(window.orientation) !== 90
-    if(!$scope.promptRoate) {
+    if(!$scope.promptRoate && $scope.modal) {
       $scope.modal.hide()
     }
   }, false);
