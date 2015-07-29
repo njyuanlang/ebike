@@ -335,7 +335,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     spec: "00001C02-D102-11E1-9B23-00025B00A5A5",
     pair: "00001C03-D102-11E1-9B23-00025B00A5A5"
   }
-  BLEDevice.prototype.sendOrder = function (hexs) {  
+  BLEDevice.prototype.sendOrder = function (hexs) {
     if(!$rootScope.online) return
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.order, value) 

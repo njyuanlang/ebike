@@ -22,28 +22,48 @@ controllers
   
 })
 
-.controller('BikeCtrl', function($scope, $state, Bike, $ionicHistory) {
-  $scope.switch = function () {
-    $state.go('brands', {id: 'create'})
-  }
+.controller('BikeCtrl', function($scope, $state, Bike, $rootScope) {
+  console.log($state.params)
+  $scope.registering = $state.params.bikeId && $state.params.bikeId === 'create';
+  
+  $scope.register = function () {
+    Bike.create($scope.currentBike, function (result) {
+      $scope.currentBike.id = result.id;
+      $rootScope.$broadcast('go.home', {bike: $scope.currentBike})
+    }, function (reason) {
+      $ionicLoading.show({
+        template: "创建车辆失败："+reason,
+        duration: 2000
+      });
+    });
+  }  
 })
 
 .controller('BrandsCtrl', function($scope, $state, Brand) {
   $scope.entities = Brand.find()
   
   $scope.selectEntity = function (item) {
-    $state.go('models', {id:$state.params.id, brandId: item.id})
+    $state.go('models', {brandId: item.id})
   }
 })
 
-.controller('ModelsCtrl', function($scope, $state, Brand, $rootScope) {
+.controller('ModelsCtrl', function($scope, $state, Brand, $rootScope, Bike) {
   var brand = Brand.findById({id: $state.params.brandId}, function (result) {
     $scope.entities = result.models
   })
 
   $scope.selectEntity = function (item) {
-    $rootScope.currentBike = {brand: brand, model:item, workmode:0, "name": brand.name+"牌电动车"}
-    $state.go('wheeldiameters', {id: $state.params.id})
+    $rootScope.currentBike = {
+      brand: brand, 
+      model:item, 
+      workmode:0,
+      wheeldiameter: 12,
+      voltage: 48,
+      current: 20,
+      "name": brand.name+"牌电动车"
+    }
+    
+    $state.go('bike', {bikeId: 'create'})
   }
 })
 
@@ -118,9 +138,9 @@ controllers
   }
   
   function stopScan() {
-      $scope.$broadcast('scroll.refreshComplete')
-      $scope.scanTimer = null
-      $scope.entities = devices
+    $scope.$broadcast('scroll.refreshComplete')
+    $scope.scanTimer = null
+    $scope.entities = devices
   }
 
   function doScan() {

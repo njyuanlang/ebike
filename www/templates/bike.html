@@ -32,7 +32,11 @@
       </div>
     </div>
     
-    <a ng-click="switch()" class="button button-block button-large button-assertive">
+    <a ng-click="register()" class="button button-block button-large button-balanced" ng-if="registering">
+      完成注册
+    </a>
+
+    <a ui-sref="brands()" class="button button-block button-large button-assertive" ng-if="!registering">
       更换车辆
     </a>
     
