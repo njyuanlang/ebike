@@ -47,7 +47,7 @@ controllers
   }
 })
 
-.controller('WheelDiametersCtrl', function($scope, $state, $ionicHistory, Bike) {
+.controller('WheelDiametersCtrl', function($scope, $state, $ionicHistory, Bike, ActiveBLEDevice) {
   $scope.entities = [12, 14, 16, 18, 20, 22, 24, 26]
 
   $scope.selectEntity = function (item) {
@@ -55,13 +55,14 @@ controllers
     if($state.params.id === 'create') {
       $state.go('voltages', {id: $state.params.id})
     } else {
-      Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {wheeldiameter: $scope.currentBike.wheeldiameter})
+      Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {wheeldiameter: $scope.currentBike.wheeldiameter});
+      ActiveBLEDevice.get().sendSpec();
       $ionicHistory.goBack()
     }
   }
 })
 
-.controller('VoltagesCtrl', function($scope, $state, $ionicHistory, Bike) {
+.controller('VoltagesCtrl', function($scope, $state, $ionicHistory, Bike, ActiveBLEDevice) {
   $scope.entities = [36, 48, 60, 72]
 
   $scope.selectEntity = function (item) {
@@ -70,6 +71,7 @@ controllers
       $state.go('currents', {id: $state.params.id})
     } else {
       Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {voltage: $scope.currentBike.voltage})
+      ActiveBLEDevice.get().sendSpec();
       $ionicHistory.goBack()
     }
   }
@@ -89,6 +91,7 @@ controllers
       })
     } else {
       Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {current: $scope.currentBike.current})
+      ActiveBLEDevice.get().sendSpec();
       $ionicHistory.goBack()
     }
   }
