@@ -100,6 +100,21 @@ $user-bg:                         '../img/user-bg.png';
   background: transparent!important;
 }
 
+// Logo
+// -------------------------------
+
+.logo {
+  position: relative;
+  width: 40%;
+  margin:20% 30% 0 30%;
+
+  > img:first-child {
+    width: 100%;
+    margin: auto;
+    border-radius: 20%;
+  };
+}
+
 // Menus
 // -------------------------------
 .menu-grid .row {

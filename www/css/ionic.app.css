@@ -35,6 +35,15 @@ $dark:                            #444 !default;
 .transparent-bg {
   background: transparent !important; }
 
+.logo {
+  position: relative;
+  width: 40%;
+  margin: 20% 30% 0 30%; }
+  .logo > img:first-child {
+    width: 100%;
+    margin: auto;
+    border-radius: 20%; }
+
 .menu-grid .row .col {
   border: 1px solid #505866;
   background: transparent;

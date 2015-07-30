@@ -2,6 +2,20 @@ controllers
 
 .controller('EntryCtrl', function($scope, $rootScope, $localstorage, $ionicPlatform) {
 
+  $scope.goTrial = function () {
+    $rootScope.online = false
+    $rootScope.currentBike = {
+      brand: {name: '宝旭'}, 
+      model:'演示型号', 
+      workmode:0,
+      wheeldiameter: 12,
+      voltage: 48,
+      current: 20,
+      "name": "宝旭牌电动车"
+    }
+    $rootScope.$broadcast('go.home', {bike: $rootScope.currentBike})
+  }
+  
   $scope.init = function () {
     if($localstorage.get('$EBIKE$IsNewbie', "YES") === "YES") {
       $localstorage.set('$EBIKE$IsNewbie', "NO")
@@ -72,20 +86,6 @@ controllers
 
   $scope.goRegister = function (reset) {
     $state.go('register', {reset:reset})
-  }
-  
-  $scope.goTrial = function () {
-    $rootScope.online = false
-    $rootScope.currentBike = {
-      brand: {name: '宝旭'}, 
-      model:'演示型号', 
-      workmode:0,
-      wheeldiameter: 12,
-      voltage: 48,
-      current: 20,
-      "name": "宝旭牌电动车"
-    }
-    $rootScope.$broadcast('go.home', {bike: $rootScope.currentBike})
   }
   
 })
