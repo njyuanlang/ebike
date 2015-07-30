@@ -171,6 +171,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     $rootScope.$broadcast('device.disconnected')
 
     if(connectingInterval) {
+      // return;
       $interval.cancel(connectingInterval)
       connectingInterval = null
     }
@@ -228,6 +229,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           
         }, function (reason) {
           kThis.disconnect();
+          // kThis.autoconnect();
           // onDisconnected(kThis)
         })
       }, 1000)

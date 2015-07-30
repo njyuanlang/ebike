@@ -11,6 +11,8 @@ controllers
   
   $scope.$on('$ionicView.enter', function (event) {
     $scope.device = ActiveBLEDevice.get()
+    if(!$scope.online) return $scope.device.onConnected()
+
     $scope.deregisterBackButtonAction = $ionicPlatform.registerBackButtonAction(function () {
       $scope.device.disconnect().then(function () {
         ionic.Platform.exitApp();
@@ -70,14 +72,12 @@ controllers
   
   $scope.reconnectDevice = reconnectDevice
   
-  $scope.$on('home.reconnect', function () {
-    reconnectDevice()
-  })
+  $scope.$on('home.reconnect', reconnectDevice);
   
   $scope.init = function () {
     $scope.device = ActiveBLEDevice.get()
     if(!$scope.online) return $scope.device.onConnected()
-    
+
     if(!User.isAuthenticated()) {
       $state.go('entry')
     } else {

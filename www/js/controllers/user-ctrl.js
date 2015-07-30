@@ -76,8 +76,16 @@ controllers
   
   $scope.goTrial = function () {
     $rootScope.online = false
-    $ionicHistory.goBack()
-    // $rootScope.$broadcast('go.home')
+    $rootScope.currentBike = {
+      brand: {name: '宝旭'}, 
+      model:'演示型号', 
+      workmode:0,
+      wheeldiameter: 12,
+      voltage: 48,
+      current: 20,
+      "name": "宝旭牌电动车"
+    }
+    $rootScope.$broadcast('go.home', {bike: $rootScope.currentBike})
   }
   
 })
