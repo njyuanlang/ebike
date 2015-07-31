@@ -269,7 +269,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         return $cordovaBLE.connect(bikeId)
       })
       .then(function (result) {
-        kThis.onConnected(result)
         return kThis.pair(kThis.bike.password)
       }, function (reason) {
         if(reason === 'Disconnected') reason = '请重试';
@@ -281,6 +280,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         return $q.reject(reason);
       })  
       .then(function (result) {
+        kThis.onConnected(result)
         $ionicLoading.show({
           template: '<i class="icon ion-ios7-checkmark-outline padding"></i>已成功连接到车辆',
           duration: 1000
@@ -291,6 +291,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           template: '<i class="icon ion-ios7-close-outline padding"></i>车辆配对失败：'+reason,
           duration: 3000
         })
+        kThis.disconnect();
         q.reject(reason)
       })
     } else {
@@ -380,7 +381,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         q.reject("设备不支持密码配对功能")
       })
       var timer = $timeout(function () {
-        q.reject("配对超时,请重新绑定车辆或者重新启动蓝牙再尝试！")
+        q.reject("配对超时,请重新绑定车辆或者重新启动蓝牙再尝试！");
       }, 5000)
     }
     return q.promise
