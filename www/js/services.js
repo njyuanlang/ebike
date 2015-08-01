@@ -168,14 +168,12 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   var connectingInterval = null
   
   var onDisconnected = function (device) {
-    $rootScope.$broadcast('device.disconnected')
-
+    console.debug('Start Disconnecting');
     if(connectingInterval) {
-      // return;
       $interval.cancel(connectingInterval)
       connectingInterval = null
     }
-    device.connected = false
+    device.status = 'disconnected'
     RTMonitor.stopNotifications(device.localId)
   }
   
@@ -217,7 +215,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     repair: "0000B00B-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.onConnected = function (result) {
-    this.connected = true
+    this.status = 'connected'
     RTMonitor.startNotifications(this.localId)
     this.startReminder()
     this.sendSpec()
@@ -225,12 +223,11 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     var kThis = this
     if($rootScope.online) {
       connectingInterval = $interval(function () {
-        kThis.isConnected(kThis.localId).then(function (result) {
+        kThis.isConnected().then(function (result) {
           
         }, function (reason) {
+          console.debug('Check connecting broken: '+reason);
           kThis.disconnect();
-          // kThis.autoconnect();
-          // onDisconnected(kThis)
         })
       }, 1000)
       ble.startNotification(kThis.localId, testService.uuid, testService.test, function (result) {
@@ -239,61 +236,67 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
   }
   
-  BLEDevice.prototype.isConnected = function (bikeId) {
+  BLEDevice.prototype.isConnected = function () {
     var q = $q.defer()
     if($window.ble && $rootScope.online) {
-      var kThis = this
-      $cordovaBLE.isConnected(bikeId).then(function (result) {
-        kThis.connected = true
+      $cordovaBLE.isConnected(this.localId).then(function (result) {
         q.resolve(result)
       }, function (reason) {
-        kThis.connected = false
         q.reject(reason)
       })
     } else {
-      this.connected = false
       q.resolve({})
     }
     return q.promise
   }
   
   BLEDevice.prototype.autoconnect = function () {
+    console.debug('Start autoconnect...');
+    if(this.status === 'connecting') return $q.reject('connecting');
+    this.status = 'connecting';
+
     var q = $q.defer()
     if(this.localId) {
-      var bikeId = this.localId
-      var kThis = this
-      this.isConnected(bikeId).then(function (result) {
-        return result;
-        // q.resolve(result)
-      }, function (reason) {
-        return $cordovaBLE.connect(bikeId)
-      })
-      .then(function (result) {
-        return kThis.pair(kThis.bike.password)
-      }, function (reason) {
-        if(reason === 'Disconnected') reason = '请重试';
-        if(/not found.$/.test(reason)) {
-          ble.scan([], 5, function () {}, function () {})
-          reason = '未找到或车辆已经被其他手机接管，请稍后重试';
+      var kThis = this;
+      var tryCount = 0;
+      var connectSucceed = function (result) {
+        q.resolve(result);
+        kThis.status = 'connected';
+      }
+      var handleError = function (reason) {
+        console.debug('Retry '+tryCount+' times')
+        if(++tryCount < 3) {
+          if(/not found.$/.test(reason)) {
+            ble.scan([], 3, function () {}, function () {});
+            $timeout(tryConnect, 3000);
+          } else {
+            tryConnect();
+          }
+        } else {
+          console.debug('Try out')
+          q.reject(reason);
+          kThis.status = 'disconnected';
         }
-        q.reject(reason);
-        return $q.reject(reason);
-      })  
-      .then(function (result) {
-        kThis.onConnected(result)
-        $ionicLoading.show({
-          template: '<i class="icon ion-ios7-checkmark-outline padding"></i>已成功连接到车辆',
-          duration: 1000
-        })
-        q.resolve(result)
-      }, function (reason) {
-        $ionicLoading.show({
-          template: '<i class="icon ion-ios7-close-outline padding"></i>车辆配对失败：'+reason,
-          duration: 3000
-        })
-        kThis.disconnect();
-        q.reject(reason)
-      })
+      };
+      var tryConnect = function () {
+        $cordovaBLE.connect(kThis.localId)
+        .then(function (result) {
+          return kThis.pair(kThis.bike.password)
+          .then(function (result) {
+            console.debug('Success Connected.');
+            kThis.onConnected(result);
+            connectSucceed(result);
+          }, function (reason) {
+            console.debug('Pair Error: '+reason);
+            kThis.disconnect();
+            handleError(reason);
+          });
+        }, function (reason) {
+          console.debug('Connect Error: '+reason);
+          handleError(reason);
+        })  
+      };
+      this.isConnected().then(connectSucceed, tryConnect);
     } else {
       q.reject('no localId')
     }
@@ -350,39 +353,39 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     ble.write(this.localId, order.uuid, order.spec, value) 
   }
   BLEDevice.prototype.pair = function (password) {
+    console.debug('Start pair...');    
     var q = $q.defer()
     if(!$rootScope.online) {
       q.resolve()
     } else {
-      $ionicLoading.show({
-        template: '<i class="icon ion-ios7-checkmark-outline padding"></i>开始配对...'
-      })
+      var pairtimer = $timeout(function () {
+        console.debug('Pair timeout');
+        q.reject("配对超时,请重新绑定车辆或者重新启动蓝牙再尝试！");
+      }, 5000)
       var value = Util.stringToBytes(password)
       var kThis = this
       var checkPassword = function () {
+        console.debug('Check pair result...')
         ble.read(kThis.localId, order.uuid, order.pair, function (result) {
           var ret = Util.byteToDecString(result)
           if(ret === "1") {
+            $timeout.cancel(pairtimer)
             q.resolve()
           } else {
+            $timeout.cancel(pairtimer)
             q.reject('配对密码错误')
           }
         }, function (reason) {
+          $timeout.cancel(pairtimer)
           q.reject('无法验证配对密码，请重试'+JSON.stringify(arguments))
-          // q.resolve()
         })
       }
       ble.write(this.localId, order.uuid, order.pair, value, function () {
-        $ionicLoading.show({
-          template: '<i class="icon ion-ios7-checkmark-outline padding"></i>校验配对结果...'
-        })
         checkPassword()
       }, function (reason) {
+        $timeout.cancel(pairtimer)
         q.reject("设备不支持密码配对功能")
       })
-      var timer = $timeout(function () {
-        q.reject("配对超时,请重新绑定车辆或者重新启动蓝牙再尝试！");
-      }, 5000)
     }
     return q.promise
   }

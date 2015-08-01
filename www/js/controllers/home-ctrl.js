@@ -19,7 +19,7 @@ controllers
       }, function () {
         ionic.Platform.exitApp();
       });
-    }, 101)
+    }, 100);
   })
 
   $scope.$on("$ionicView.leave", function () {
@@ -27,7 +27,7 @@ controllers
   })
 
   $scope.goTest = function () {
-    if($scope.device.connected) {
+    if($scope.device.status === 'connected') {
       $state.go('test')
     } else {
       $ionicLoading.show({
@@ -54,13 +54,18 @@ controllers
     
     if($scope.device.bike.id) {
       $scope.device.autoconnect().then(function (result) {
-
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-checkmark-outline padding"></i>已成功连接到车辆',
+          duration: 1000
+        });
       }, function (reason) {
         if(reason === 'no localId') {
           $state.go('bikes-add')
+        } else if(reason === 'connecting') {
+          console.debug('prevent from contiuning autoconnect');
         } else {
           $ionicLoading.show({
-            template: '<i class="icon ion-ios7-close-outline padding"></i>无法连接到车辆，'+reason,
+            template: '<i class="icon ion-ios7-close-outline padding"></i>连接失败：'+reason,
             duration: 2000
           })
         }
