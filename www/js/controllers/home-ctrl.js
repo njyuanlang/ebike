@@ -54,10 +54,7 @@ controllers
     
     if($scope.device.bike.id) {
       $scope.device.autoconnect().then(function (result) {
-        $ionicLoading.show({
-          template: '<i class="icon ion-ios7-checkmark-outline padding"></i>已成功连接到车辆',
-          duration: 1000
-        });
+
       }, function (reason) {
         if(reason === 'no localId') {
           $state.go('bikes-add')

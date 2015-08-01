@@ -18,8 +18,15 @@
       </div>
       <div class="col col-50"></div>
       <div class="col col-25">
-        <a class="button button-clear padding" ng-click="reconnectDevice()">
-          <i class="ion-bluetooth bluetooth" ng-class="device.status === 'connected' ? 'energized' : 'light'"></i>
+        <a class="button button-clear" ng-click="reconnectDevice()">
+          <div class="bluetooth">
+            <div class="row">
+              <i class="ion-bluetooth" ng-class="device.status === 'connected' ? 'energized' : 'light'"></i>
+              <small>
+                <i class="ion-connection-bars energized {{device.status}}"></i>
+              </small>
+            </div>
+          </div>
         </a>
       </div>
     </div>
