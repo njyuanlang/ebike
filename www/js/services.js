@@ -221,6 +221,11 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     this.sendSpec()
     this.setWorkmode(this.bike.workmode%8)
     var kThis = this
+    this.safeMode().then(function (safe) {
+      kThis.bike.safe = safe;
+    }, function (reason) {
+      console.debug(reason);
+    });
     if($rootScope.online) {
       connectingInterval = $interval(function () {
         kThis.isConnected().then(function (result) {
@@ -339,7 +344,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     uuid: "00001C00-D102-11E1-9B23-00025B00A5A5",
     order: "00001C01-D102-11E1-9B23-00025B00A5A5",
     spec: "00001C02-D102-11E1-9B23-00025B00A5A5",
-    pair: "00001C03-D102-11E1-9B23-00025B00A5A5"
+    pair: "00001C03-D102-11E1-9B23-00025B00A5A5",
+    mode: "00001C04-D102-11E1-9B23-00025B00A5A5",
+    antitheft: "00001C05-D102-11E1-9B23-00025B00A5A5",
+    changepassword: "00001C06-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.sendOrder = function (hexs) {
     if(!$rootScope.online) return
@@ -353,7 +361,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     ble.write(this.localId, order.uuid, order.spec, value) 
   }
   BLEDevice.prototype.pair = function (password) {
-    console.debug('Start pair...');    
     var q = $q.defer()
     if(!$rootScope.online) {
       q.resolve()
@@ -389,6 +396,31 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
     return q.promise
   }
+  
+  BLEDevice.prototype.safeMode = function (mode) {
+    var q = $q.defer()
+    if(!$rootScope.online) {
+      q.resolve(true)
+    } else {
+      if(mode === undefined) {
+        ble.read(this.localId, order.uuid, order.mode, function (result) {
+          var ret = Util.byteToDecString(result);
+          console.debug('safeMode:'+(ret==0x11));
+          q.resolve(ret==0x11);
+        }, function (reason) {
+          q.reject('获取安全模式失败'+JSON.stringify(reason));
+        });
+      } else {
+        var value = Util.hexToBytes(mode?[0xD1, 0xD1]:[0xD2, 0xD2]);
+        ble.write(this.localId, order.uuid, order.mode, value, function () {
+          q.resolve();
+        }, function (reason) {
+          q.reject('切换安全模式失败'+JSON.stringify(reason));
+        });
+      }
+    }
+    return q.promise
+  };
   
   var reminder = {
     uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",

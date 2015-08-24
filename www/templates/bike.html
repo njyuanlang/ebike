@@ -12,6 +12,12 @@
     </div>
     
     <div class="list card">
+      <ion-toggle ng-model="currentBike.safe" ng-checked="currentBike.safe">
+       安全模式 
+      </ion-toggle>
+    </div>
+
+    <div class="list card">
       <div class="item item-icon-right" ui-sref='voltages({id:entity.id})'>
         电池电压
         <span class="item-note">{{currentBike.voltage|| 0}} V</span>

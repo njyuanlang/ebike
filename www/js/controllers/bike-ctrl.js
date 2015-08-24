@@ -22,8 +22,7 @@ controllers
   
 })
 
-.controller('BikeCtrl', function($scope, $state, Bike, $rootScope) {
-  console.log($state.params)
+.controller('BikeCtrl', function($scope, $state, Bike, $rootScope, ActiveBLEDevice, $ionicLoading) {
   $scope.registering = $state.params.bikeId && $state.params.bikeId === 'create';
   
   $scope.register = function () {
@@ -36,7 +35,21 @@ controllers
         duration: 2000
       });
     });
-  }  
+  };
+  
+  $scope.$watch('currentBike.safe', function (newValue, oldValue) {
+    if(newValue !== oldValue) {
+      ActiveBLEDevice.get().safeMode($scope.currentBike.safe)
+      .then(function (result) {
+        console.debug('Success Set SafeMode:'+$scope.currentBike.safe);
+      }, function (reason) {
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-information-outline padding"></i>'+reason,
+          duration: 2000
+        });
+      });
+    }
+  });
 })
 
 .controller('BrandsCtrl', function($scope, $state, Brand) {
