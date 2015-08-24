@@ -6,9 +6,9 @@
     <div class="list">
       <a class="item item-avatar item-icon-right user-bg" href="#/account">
         <img src="{{avatar || 'img/user-icon.png'}}">
-        <h2>{{entity.name || entity.username}}</h2>
+        <h2>{{currentUser.name || currentUser.username}}</h2>
         <small class="calm">
-          {{entity.created | date : 'yyyy-MM-dd'}} 加入
+          {{currentUser.created | date : 'yyyy-MM-dd'}} 加入
         </small>        
         <i class="icon ion-ios7-arrow-forward"></i>
       </a>

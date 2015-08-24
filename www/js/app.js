@@ -92,13 +92,13 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
         ActiveBLEDevice.get().autoconnect()
       }, 1000)
     }
-        
   });  
   
   $rootScope.online = true
   $rootScope.avatar = null
   
   $rootScope.$on('user.DidLogin', function (event, args) {
+    $rootScope.currentUser = User.getCurrent();
     var userId = args.userId
     if(!$rootScope.avatar) {
       var url = RemoteStorage.getDownloadURL('uploads', userId, 'avatar.png')
@@ -107,7 +107,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
         $rootScope.avatar = buffer
       })
       .error(function () {
-        console.log(JSON.stringify(arguments))
+        console.debug(JSON.stringify(arguments))
       })
     }
     // $rootScope.bike = $localstorage.get('$EBIKE$Bike$'+userId)

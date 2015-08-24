@@ -2,7 +2,7 @@ controllers
 
 .controller('MenuCtrl', function($scope, $state, User) {
 
-  $scope.entity = User.getCurrent()
+  // $scope.entity = User.getCurrent()
   
 })
 

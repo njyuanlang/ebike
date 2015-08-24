@@ -452,6 +452,30 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     return q.promise
   };
   
+  BLEDevice.prototype.changePassword = function (password) {
+    var q = $q.defer()
+    if(!$rootScope.online) {
+      q.resolve(true)
+    } else {
+      var array = new Uint8Array(8);
+      array[0] = 0xFE;
+      array[1] = 0xEF;
+      for (var i = 2, l = 8; i < l; i++) {
+        array[i] = password.charCodeAt(i-2);
+      }
+      var value = array.buffer;
+      var kThis = this;
+      ble.write(this.localId, order.uuid, order.changepassword, value, function () {
+        kThis.bike.password = password;
+        console.debug('Success Set Password:'+password);
+        q.resolve();
+      }, function (reason) {
+        q.reject(reason);
+      });
+    }
+    return q.promise
+  };
+  
   var reminder = {
     uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
     msg: "0000D00C-D102-11E1-9B23-00025B00A5A5"

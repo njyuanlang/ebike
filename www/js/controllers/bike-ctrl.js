@@ -209,6 +209,20 @@ controllers
       })
     })
     .then(function (result) {
+      // console.debug('currentUser Phone:'+JSON.stringify($scope.currentUser));
+      return device.changePassword($scope.currentUser.phone.substr(-6));
+    }, function (reason) {
+      device.disconnect()
+      $ionicLoading.show({
+        template: "配对失败："+reason,
+        duration: 3000
+      })
+    })
+    .then(function (result) {
+      $ionicLoading.show({
+        template: "登记车辆成功",
+        duration: 2000
+      })
       ActiveBLEDevice.set(device)
       Bike.upsert(bike, function (result) {
         $rootScope.$broadcast('go.home')
@@ -216,10 +230,9 @@ controllers
         $rootScope.$broadcast('go.home')
       })
     }, function (reason) {
-      device.disconnect()
       $ionicLoading.show({
-        template: "配对失败："+reason,
-        duration: 3000
+        template: "设置密码失败："+reason,
+        duration: 2000
       })
     })
     
