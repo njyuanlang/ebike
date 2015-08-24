@@ -39,9 +39,23 @@ controllers
   
   $scope.$watch('currentBike.safe', function (newValue, oldValue) {
     if(newValue !== oldValue) {
-      ActiveBLEDevice.get().safeMode($scope.currentBike.safe)
+      ActiveBLEDevice.get().safeMode(newValue)
       .then(function (result) {
-        console.debug('Success Set SafeMode:'+$scope.currentBike.safe);
+        console.debug('Success Set SafeMode:'+newValue);
+      }, function (reason) {
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-information-outline padding"></i>'+reason,
+          duration: 2000
+        });
+      });
+    }
+  });
+
+  $scope.$watch('currentBike.antiTheft', function (newValue, oldValue) {
+    if(newValue !== oldValue) {
+      ActiveBLEDevice.get().antiTheft(newValue)
+      .then(function (result) {
+        console.debug('Success Set AntiTheft:'+newValue);
       }, function (reason) {
         $ionicLoading.show({
           template: '<i class="icon ion-ios7-information-outline padding"></i>'+reason,

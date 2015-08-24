@@ -226,6 +226,11 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }, function (reason) {
       console.debug(reason);
     });
+    this.antiTheft().then(function (enable) {
+      kThis.bike.antiTheft = enable
+    }, function (reason) {
+      console.debug(reason);
+    });
     if($rootScope.online) {
       connectingInterval = $interval(function () {
         kThis.isConnected().then(function (result) {
@@ -416,6 +421,31 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           q.resolve();
         }, function (reason) {
           q.reject('切换安全模式失败'+JSON.stringify(reason));
+        });
+      }
+    }
+    return q.promise
+  };
+  
+  BLEDevice.prototype.antiTheft = function (enable) {
+    var q = $q.defer()
+    if(!$rootScope.online) {
+      q.resolve(true)
+    } else {
+      if(enable === undefined) {
+        ble.read(this.localId, order.uuid, order.antitheft, function (result) {
+          var ret = Util.byteToDecString(result);
+          console.debug('AntiTheft:'+(ret==0x11));
+          q.resolve(ret==0x11);
+        }, function (reason) {
+          q.reject('获取防盗模式失败'+JSON.stringify(reason));
+        });
+      } else {
+        var value = Util.hexToBytes(enable?[0xE1, 0xE1]:[0xE2, 0xE2]);
+        ble.write(this.localId, order.uuid, order.antitheft, value, function () {
+          q.resolve();
+        }, function (reason) {
+          q.reject('切换防盗模式失败'+JSON.stringify(reason));
         });
       }
     }
