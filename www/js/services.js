@@ -168,8 +168,9 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   var connectingInterval = null
   
   var onDisconnected = function (device) {
-    console.debug('Start Disconnecting');
+    console.debug('Start Disconnecting:');
     if(connectingInterval) {
+      console.debug('Cancel Interval');
       $interval.cancel(connectingInterval)
       connectingInterval = null
     }
@@ -262,52 +263,59 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
   BLEDevice.prototype.autoconnect = function () {
     console.debug('Start autoconnect...');
-    if(this.status === 'connecting') return $q.reject('connecting');
-    if(this.status === 'connected') return $q.resolve();
-    this.status = 'connecting';
-
     var q = $q.defer()
     if(this.localId) {
-      var kThis = this;
-      var tryCount = 0;
-      var connectSucceed = function (result) {
-        q.resolve(result);
-        kThis.status = 'connected';
-      }
-      var handleError = function (reason) {
-        console.debug('Retry '+tryCount+' times')
-        if(++tryCount < 3) {
-          if(/not found.$/.test(reason)) {
-            ble.scan([], 3, function () {}, function () {});
-            $timeout(tryConnect, 3000);
-          } else {
-            tryConnect();
-          }
-        } else {
-          console.debug('Try out')
-          q.reject(reason);
-          kThis.status = 'disconnected';
+      if(this.status === 'connecting') {
+        $timeout(function () {
+          q.reject('connecting');
+        }, 100);
+      } else if(this.status === 'connected') {
+        $timeout(function () {
+          q.resolve({});
+        }, 100);
+      } else {
+        this.status = 'connecting';
+        var kThis = this;
+        var tryCount = 0;
+        var connectSucceed = function (result) {
+          q.resolve(result);
+          kThis.status = 'connected';
         }
-      };
-      var tryConnect = function () {
-        $cordovaBLE.connect(kThis.localId)
-        .then(function (result) {
-          return kThis.pair(kThis.bike.password)
+        var handleError = function (reason) {
+          console.debug('Retry '+tryCount+' times')
+          if(++tryCount < 3) {
+            if(/not found.$/.test(reason)) {
+              ble.scan([], 3, function () {}, function () {});
+              $timeout(tryConnect, 3000);
+            } else {
+              tryConnect();
+            }
+          } else {
+            console.debug('Try out')
+            q.reject(reason);
+            kThis.status = 'disconnected';
+          }
+        };
+        var tryConnect = function () {
+          $cordovaBLE.connect(kThis.localId)
           .then(function (result) {
-            console.debug('Success Connected.');
-            kThis.onConnected(result);
-            connectSucceed(result);
+            return kThis.pair(kThis.bike.password)
+            .then(function (result) {
+              console.debug('Success Connected.');
+              kThis.onConnected(result);
+              connectSucceed(result);
+            }, function (reason) {
+              console.debug('Pair Error: '+reason);
+              kThis.disconnect();
+              handleError(reason);
+            });
           }, function (reason) {
-            console.debug('Pair Error: '+reason);
-            kThis.disconnect();
+            console.debug('Connect Error: '+reason);
             handleError(reason);
-          });
-        }, function (reason) {
-          console.debug('Connect Error: '+reason);
-          handleError(reason);
-        })  
-      };
-      this.isConnected().then(connectSucceed, tryConnect);
+          })  
+        };
+        this.isConnected().then(connectSucceed, tryConnect);
+      }
     } else {
       q.reject('no localId')
     }
