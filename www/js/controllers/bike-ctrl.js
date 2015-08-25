@@ -223,7 +223,7 @@ controllers
         template: "登记车辆成功",
         duration: 2000
       })
-      ActiveBLEDevice.set(device)
+      ActiveBLEDevice.set(device);
       Bike.upsert(bike, function (result) {
         $rootScope.$broadcast('go.home')
       }, function (res) {

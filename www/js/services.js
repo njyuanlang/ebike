@@ -263,6 +263,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   BLEDevice.prototype.autoconnect = function () {
     console.debug('Start autoconnect...');
     if(this.status === 'connecting') return $q.reject('connecting');
+    if(this.status === 'connected') return $q.resolve();
     this.status = 'connecting';
 
     var q = $q.defer()

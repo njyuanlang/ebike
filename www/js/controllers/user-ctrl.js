@@ -63,6 +63,7 @@ controllers
         template: '<i class="icon ion-ios7-checkmark-outline padding"></i>登录成功',
         duration: 1000
       })
+      console.debug(JSON.stringify($scope.entity));
       $localstorage.setObject('$$LastLoginData$$', $scope.entity)
       $rootScope.$broadcast('user.DidLogin', {userId: accessToken.userId})
       $rootScope.$broadcast('go.home')
@@ -127,7 +128,7 @@ controllers
           template: '<i class="icon ion-ios7-checkmark-outline padding"></i>注册账户成功',
           duration: 1000
         })
-        $localstorage.setObject('$$LastLoginData$$', $scope.entity)
+        $localstorage.setObject('$$LastLoginData$$', {username: entity.username, password: entity.password})
         $rootScope.$broadcast('user.DidLogin', {userId: accessToken.userId})
         $state.go('provinces')
       })
@@ -170,13 +171,13 @@ controllers
   
   $scope.entity = User.getCurrent()
 
-  // $ionicHistory.registerHistory($scope)
   $scope.logout = function () {
     if($rootScope.online) {
       var device = ActiveBLEDevice.get()
       if(device) device.disconnect()
       User.logout().$promise
         .then(function () {
+          console.debug('Success Logout');
           $rootScope.$broadcast('go.home')
         }, function () {
           LoopBackAuth.clearUser();

@@ -11,6 +11,7 @@ controllers
   
   $scope.$on('$ionicView.enter', function (event) {
     $scope.device = ActiveBLEDevice.get()
+    $scope.$apply()
     if(!$scope.online) return $scope.device.onConnected()
 
     $scope.deregisterBackButtonAction = $ionicPlatform.registerBackButtonAction(function () {

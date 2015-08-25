@@ -110,7 +110,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
         console.debug(JSON.stringify(arguments))
       })
     }
-    // $rootScope.bike = $localstorage.get('$EBIKE$Bike$'+userId)
   })
   
   $rootScope.isAndroid = ionic.Platform.isAndroid()
