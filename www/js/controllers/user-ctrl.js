@@ -90,7 +90,7 @@ controllers
   
 })
 
-.controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading, User, $localstorage, Authmessage, $filter, $ionicHistory) {
+.controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading, User, $localstorage, Authmessage, $filter, $ionicHistory, $rootScope) {
   
   $scope.isReset = $state.params.reset
   $scope.entity = {realm: "client"}
@@ -127,6 +127,8 @@ controllers
           template: '<i class="icon ion-ios7-checkmark-outline padding"></i>注册账户成功',
           duration: 1000
         })
+        $localstorage.setObject('$$LastLoginData$$', $scope.entity)
+        $rootScope.$broadcast('user.DidLogin', {userId: accessToken.userId})
         $state.go('provinces')
       })
     }, function (res) {
