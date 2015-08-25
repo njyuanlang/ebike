@@ -36,7 +36,7 @@ controllers
   
 })
 
-.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout, ActiveBLEDevice) {
   
   $scope.entity = {realm: 'client'}
   var lastLoginData = $localstorage.getObject('$$LastLoginData$$')
@@ -66,7 +66,7 @@ controllers
       console.debug(JSON.stringify($scope.entity));
       $localstorage.setObject('$$LastLoginData$$', $scope.entity)
       $rootScope.$broadcast('user.DidLogin', {userId: accessToken.userId})
-      $rootScope.$broadcast('go.home')
+      $rootScope.$broadcast('go.home', {bike: ActiveBLEDevice.getBike()})
     }, function (res) {
       $timeout.cancel($scope.loginPromise)
       var option = {

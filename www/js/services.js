@@ -125,6 +125,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   var stopNotify = function (localId, characteristic) {
     if(fakeIntervals[characteristic]) {
       $interval.cancel(fakeIntervals[characteristic])
+      fakeIntervals[characteristic] = null;
     }
   }
   
@@ -190,6 +191,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     this.realtime = RTMonitor
     this.realtime.bikeId = bike.id
     this.task = new TestTask(bike)
+    this.bike.status = 'disconnected'
   }
   
   BLEDevice.prototype.setWorkmode = function (mode) {
@@ -622,18 +624,18 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
 })
 
-.service('currentBike', function ($rootScope) {
-  return {
-    set: function (bike) {
-      $rootScope.currentBike = bike
-    },
-    get: function () {
-      return $rootScope.currentBike
-    }
-  }
-})
+// .service('currentBike', function ($rootScope) {
+//   return {
+//     set: function (bike) {
+//       $rootScope.currentBike = bike
+//     },
+//     get: function () {
+//       return $rootScope.currentBike
+//     }
+//   }
+// })
 
-.service('ActiveBLEDevice', function (BLEDevice, $rootScope, $localstorage, currentBike) {
+.service('ActiveBLEDevice', function (BLEDevice, $rootScope, $localstorage) {
 
   var keys = {
     activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
@@ -643,15 +645,19 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     return new BLEDevice(bike || {workmode: 0})
   }
   var _activeBLE = getBLEDevice($localstorage.getObject(keys.activebike))
-  currentBike.set(_activeBLE.bike)
+  $rootScope.currentBike = _activeBLE.bike;
   var service = {
     setBike: function (bike) {
       this.set(getBLEDevice(bike))
     },
+    getBike: function () {
+      return $localstorage.getObject(keys.activebike);
+    },
     set: function (device) {
       _activeBLE = device
-      currentBike.set(device.bike)
-      $localstorage.setObject(keys.activebike, device.bike)
+      $rootScope.currentBike = device.bike;
+      console.debug(JSON.stringify(device.bike));
+      if(device.bike.id) $localstorage.setObject(keys.activebike, device.bike)
     },
     get: function () {
       return _activeBLE

@@ -11,7 +11,7 @@ controllers
   
   $scope.$on('$ionicView.enter', function (event) {
     $scope.device = ActiveBLEDevice.get()
-    $scope.$apply()
+    console.debug(JSON.stringify($scope.device));
     if(!$scope.online) return $scope.device.onConnected()
 
     $scope.deregisterBackButtonAction = $ionicPlatform.registerBackButtonAction(function () {
@@ -51,6 +51,8 @@ controllers
   }
   
   var reconnectDevice = function () {
+    $scope.device = ActiveBLEDevice.get()
+    console.debug(JSON.stringify($scope.device));
     if(!$scope.online) return $scope.device.onConnected()
     
     if($scope.device.bike.id) {
