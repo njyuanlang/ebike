@@ -194,33 +194,16 @@ controllers
     var device = new BLEDevice(bike)
     device.connect().then(function (result) {
       return device.readSerialNumber()
-    }, function (reason) {
-      $ionicLoading.show({
-        template: "连接失败："+reason,
-        duration: 2000
-      })
     })
     .then(function (result) {
       return device.pair(bike.password)
-    }, function (reason) {
-      $ionicLoading.show({
-        template: "获取序列号失败："+reason,
-        duration: 2000
-      })
     })
     .then(function (result) {
-      // console.debug('currentUser Phone:'+JSON.stringify($scope.currentUser));
       return device.changePassword($scope.currentUser.phone.substr(-6));
-    }, function (reason) {
-      device.disconnect()
-      $ionicLoading.show({
-        template: "配对失败："+reason,
-        duration: 3000
-      })
     })
     .then(function (result) {
       $ionicLoading.show({
-        template: "登记车辆成功",
+        template: '<i class="icon ion-ios7-checkmark-outline padding"></i>绑定车辆成功',
         duration: 2000
       })
       ActiveBLEDevice.set(device);
@@ -229,16 +212,18 @@ controllers
       }, function (res) {
         $rootScope.$broadcast('go.home')
       })
-    }, function (reason) {
+    })
+    .catch(function (error) {
+      device.disconnect();
       $ionicLoading.show({
-        template: "设置密码失败："+reason,
-        duration: 2000
+        template: '<i class="icon ion-ios7-close-outline padding"></i>绑定失败：'+error,
+        duration: 5000
       })
     })
     
     $ionicLoading.show({
-      template:'正在连接'+bike.name+"...",
-      duration: 10000
+      template:'<i class="icon ion-loading-c ion-loading padding"></i>请稍后，正在连接'+bike.name+"...",
+      duration: 30000
     })
   }
   
@@ -249,7 +234,7 @@ controllers
 
     $ionicPopup.prompt({
       title: '输入车辆配对密码',
-      template: '车辆的配对密码请在说明书或者车身上查找',
+      template: '配对密码手机号码后6位，初始密码123456',
       inputPlaceholder: ''
      }).then(function(res) {
        if(res && res !== '') {

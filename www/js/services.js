@@ -166,18 +166,18 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
 .factory('BLEDevice', function ($cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask, Test, $ionicLoading) {
 
-  var connectingInterval = null
-  
-  var onDisconnected = function (device) {
-    console.debug('Start Disconnecting:');
-    if(connectingInterval) {
-      console.debug('Cancel Interval');
-      $interval.cancel(connectingInterval)
-      connectingInterval = null
-    }
-    device.status = 'disconnected'
-    RTMonitor.stopNotifications(device.localId)
-  }
+  // var connectingInterval = null
+  //
+  // var onDisconnected = function (device) {
+  //   console.debug('Start Disconnecting:');
+  //   if(connectingInterval) {
+  //     console.debug('Cancel Interval');
+  //     $interval.cancel(connectingInterval)
+  //     connectingInterval = null
+  //   }
+  //   device.status = 'disconnected'
+  //   RTMonitor.stopNotifications(device.localId)
+  // }
   
   function BLEDevice(bike) {
     this.bike = bike
@@ -205,10 +205,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
   
   BLEDevice.prototype.connect = function () {
-    var kSelf = this
     return $cordovaBLE.connect(this.localId).then(function (result) {
-      kSelf.onConnected(result)
-      return result
+      return result;
+    }, function (reason) {
+      return $q.reject('无法连接车辆:'+reason);
     })
   }
   
@@ -235,7 +235,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       console.debug(reason);
     });
     if($rootScope.online) {
-      connectingInterval = $interval(function () {
+      this.connectingInterval = $interval(function () {
         kThis.isConnected().then(function (result) {
           
         }, function (reason) {
@@ -248,6 +248,17 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       })
     }
   }
+  
+  BLEDevice.prototype.onDisconnected = function () {
+    console.debug('Start onDisconnected');
+    this.status = 'disconnected'
+    if(this.connectingInterval) {
+      console.debug('Cancel Interval');
+      $interval.cancel(this.connectingInterval)
+      this.connectingInterval = null
+    }
+    RTMonitor.stopNotifications(this.localId)    
+  };
   
   BLEDevice.prototype.isConnected = function () {
     var q = $q.defer()
@@ -295,7 +306,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           } else {
             console.debug('Try out')
             q.reject(reason);
-            kThis.status = 'disconnected';
           }
         };
         var tryConnect = function () {
@@ -304,7 +314,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
             return kThis.pair(kThis.bike.password)
             .then(function (result) {
               console.debug('Success Connected.');
-              kThis.onConnected(result);
               connectSucceed(result);
             }, function (reason) {
               console.debug('Pair Error: '+reason);
@@ -326,11 +335,9 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
   
   BLEDevice.prototype.disconnect = function () {
-    onDisconnected(this)
+    this.onDisconnected();
     if(!$window.ble || !this.localId) {
-      var q = $q.defer()
-      $timeout(q.resolve, 0);
-      return q.promise;
+      return $q.resolve();
     } else {
       return $cordovaBLE.disconnect(this.localId)
     }
@@ -348,7 +355,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         theSelf.bike.serialNumber = Util.bytesToString(result)
         q.resolve(theSelf.bike.serialNumber)
       }, function (reason) {
-        q.reject(reason)
+        q.reject('读取序列号失败'+reason)
       })
     } else {
       q.resolve("000000000000")
@@ -393,6 +400,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           var ret = Util.byteToDecString(result)
           if(ret === "1") {
             $timeout.cancel(pairtimer)
+            kThis.onConnected(result)
             q.resolve()
           } else {
             $timeout.cancel(pairtimer)
@@ -481,7 +489,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         console.debug('Success Set Password:'+password);
         q.resolve();
       }, function (reason) {
-        q.reject(reason);
+        q.reject('设置密码失败');
       });
     }
     return q.promise
@@ -656,7 +664,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     set: function (device) {
       _activeBLE = device
       $rootScope.currentBike = device.bike;
-      console.debug(JSON.stringify(device.bike));
+      // console.debug(JSON.stringify(device.bike));
       if(device.bike.id) $localstorage.setObject(keys.activebike, device.bike)
     },
     get: function () {
