@@ -179,6 +179,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     this.realtime.bikeId = bike.id
     this.task = new TestTask(bike)
     this.bike.status = 'disconnected'
+    this.bike.workmode = 0;
   }
   
   BLEDevice.prototype.setWorkmode = function (mode) {
@@ -189,7 +190,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       hexs[1] += mode
       this.sendOrder(hexs)
     }
-    cachedBike.set(this.bike);
+    // cachedBike.set(this.bike);
   }
   
   BLEDevice.prototype.connect = function () {
@@ -210,7 +211,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     RTMonitor.startNotifications(this.localId)
     this.startReminder()
     this.sendSpec()
-    this.setWorkmode(this.bike.workmode%8)
+    this.setWorkmode(0)
     var kThis = this
     this.safeMode().then(function (safe) {
       kThis.bike.safe = safe;
