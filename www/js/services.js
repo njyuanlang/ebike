@@ -60,7 +60,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
 })
 
-.factory('RTMonitor', function ($localstorage, $rootScope, $interval, Cruise) {
+.factory('RTMonitor', function ($rootScope, $interval, Cruise) {
   var service = {
     uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
     power: "0000D00A-D102-11E1-9B23-00025B00A5A5",// power mileage
@@ -164,20 +164,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   return realtime
 })
 
-.factory('BLEDevice', function ($cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask, Test, $ionicLoading) {
-
-  // var connectingInterval = null
-  //
-  // var onDisconnected = function (device) {
-  //   console.debug('Start Disconnecting:');
-  //   if(connectingInterval) {
-  //     console.debug('Cancel Interval');
-  //     $interval.cancel(connectingInterval)
-  //     connectingInterval = null
-  //   }
-  //   device.status = 'disconnected'
-  //   RTMonitor.stopNotifications(device.localId)
-  // }
+.factory('BLEDevice', function ($cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask, Test, $ionicLoading, cachedBike) {
   
   function BLEDevice(bike) {
     this.bike = bike
@@ -202,6 +189,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       hexs[1] += mode
       this.sendOrder(hexs)
     }
+    cachedBike.set(this.bike);
   }
   
   BLEDevice.prototype.connect = function () {
@@ -632,47 +620,43 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
 })
 
-// .service('currentBike', function ($rootScope) {
-//   return {
-//     set: function (bike) {
-//       $rootScope.currentBike = bike
-//     },
-//     get: function () {
-//       return $rootScope.currentBike
-//     }
-//   }
-// })
-
-.service('ActiveBLEDevice', function (BLEDevice, $rootScope, $localstorage) {
+.service('cachedBike', function ($rootScope, $localstorage) {
 
   var keys = {
     activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
   }
 
-  function getBLEDevice(bike) {
-    return new BLEDevice(bike || {workmode: 0})
+  return {
+    set: function (bike) {
+      if(bike.id) $localstorage.setObject(keys.activebike, bike);
+    },
+    get: function () {
+      return $localstorage.getObject(keys.activebike)
+    }
   }
-  var _activeBLE = getBLEDevice($localstorage.getObject(keys.activebike))
-  $rootScope.currentBike = _activeBLE.bike;
-  var service = {
+})
+
+.service('ActiveBLEDevice', function (BLEDevice, $rootScope, cachedBike) {
+
+  var _activeBLE = null;
+  return {
     setBike: function (bike) {
-      this.set(getBLEDevice(bike))
+      this.set(new BLEDevice(bike || {workmode: 0}))
     },
     getBike: function () {
-      return $localstorage.getObject(keys.activebike);
+      return cachedBike.get();
     },
     set: function (device) {
       _activeBLE = device
       $rootScope.currentBike = device.bike;
-      // console.debug(JSON.stringify(device.bike));
-      if(device.bike.id) $localstorage.setObject(keys.activebike, device.bike)
+      cachedBike.set(device.bike);
     },
     get: function () {
+      if(!_activeBLE) this.setBike(cachedBike.get());
       return _activeBLE
     }
   }
-  
-  return service
+
 })
 
 .factory('TestTask', function ($q) {

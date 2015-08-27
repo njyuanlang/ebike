@@ -113,7 +113,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ebike.controllers', 'ebike.servi
   })
   
   $rootScope.isAndroid = ionic.Platform.isAndroid()
-  $rootScope.appVersion = '1.0.0'
+  $rootScope.appVersion = '1.3.0'
   
   $ionicPlatform.on('pause', function () {
     ActiveBLEDevice.get().disconnect()
