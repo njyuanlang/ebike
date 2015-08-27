@@ -199,7 +199,7 @@ controllers
       return device.pair(bike.password)
     })
     .then(function (result) {
-      return device.changePassword($scope.currentUser.phone.substr(-6));
+      return device.changePassword($scope.currentUser.username.substr(-6));
     })
     .then(function (result) {
       $ionicLoading.show({
