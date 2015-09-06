@@ -191,6 +191,7 @@ controllers
   $scope.doScan = doScan
 
   function tryConnect(bike) {
+    console.debug('===='+JSON.stringify(bike));
     var device = new BLEDevice(bike)
     device.connect().then(function (result) {
       return device.readSerialNumber()
@@ -199,13 +200,15 @@ controllers
       return device.pair(bike.password)
     })
     .then(function (result) {
-      return device.changePassword($scope.currentUser.username.substr(-6));
+      return device.changePassword(bike.newpassword);
     })
     .then(function (result) {
       $ionicLoading.show({
         template: '<i class="icon ion-ios7-checkmark-outline padding"></i>绑定车辆成功',
         duration: 2000
       })
+      delete bike.newpassword;
+      delete bike.newpassword2;
       ActiveBLEDevice.set(device);
       Bike.upsert(bike, function (result) {
         $rootScope.$broadcast('go.home')
@@ -228,20 +231,33 @@ controllers
   }
   
   $scope.selectEntity = function (item) {
-    var bike = angular.copy($scope.currentBike)
-    bike.localId = item.id
-    bike.name = item.name
+    $scope.bike = angular.copy($scope.currentBike)
+    $scope.bike.localId = item.id
+    $scope.bike.name = item.name
 
-    $ionicPopup.prompt({
+    $ionicPopup.show({
       title: '输入车辆配对密码',
-      template: '配对密码手机号码后6位，初始密码123456',
-      inputPlaceholder: ''
-     }).then(function(res) {
-       if(res && res !== '') {
-         bike.password = res
-         tryConnect(bike)
-       }
-     });     
+      templateUrl: 'pair-Popup.html',
+      scope: $scope,
+      buttons: [
+        {text: '取消'},
+        {
+          text: '<b>确定</b>',
+          type: 'button-positive',
+          onTap: function (e) {
+            if (!$scope.bike.password || $scope.bike.password.length !== 6) {
+              e.preventDefault();
+            } else if(!$scope.bike.newpassword || $scope.bike.newpassword.length !== 6) {
+              e.preventDefault();
+            } else if($scope.bike.newpassword != $scope.bike.newpassword2) {
+              e.preventDefault();
+            } else {
+              return $scope.bike;
+            }
+          }
+        }
+      ]
+    }).then(tryConnect);     
   }
   
   $scope.goHome = function () {

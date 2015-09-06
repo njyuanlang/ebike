@@ -462,8 +462,11 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
   BLEDevice.prototype.changePassword = function (password) {
     var q = $q.defer()
-    if(!$rootScope.online) {
-      q.resolve(true)
+    if(password.length !== 6) {
+      q.reject('密码长度不正确');
+    } else if(!$rootScope.online) {
+      this.bike.password = password;
+      q.resolve(true);
     } else {
       var array = new Uint8Array(8);
       array[0] = 0xFE;
@@ -481,7 +484,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         q.reject('设置密码失败');
       });
     }
-    return q.promise
+    return q.promise;
   };
   
   var reminder = {

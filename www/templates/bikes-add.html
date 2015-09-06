@@ -15,3 +15,20 @@
 
   </ion-content>
 </ion-view>
+
+<script id="pair-Popup.html" type="text/ng-template">
+  <div class="list">
+    <div class="item item-input">
+      <input type="tel" ng-model="bike.password" placeholder="请输入现在的密码" ng-class="{'energized': bike.password.length !== 6}">
+    </div>
+    <div class="item item-divider" ng-show="bike.password.length !== 6">密码必须是6位数字</div>
+    <div class="item item-input">
+      <input type="tel" ng-model="bike.newpassword" placeholder="请输入新密码" required>
+    </div>
+    <div class="item item-divider" ng-show="bike.newpassword.length !== 6">新密码必须是6位数字</div>
+    <div class="item item-input">
+      <input type="tel" ng-model="bike.newpassword2" placeholder="请再输入一边新密码" required>    
+    </div>
+    <div class="item item-divider" ng-show="bike.newpassword !== bike.newpassword2 ">两遍密码不一致</div>
+  </div>
+</script>
