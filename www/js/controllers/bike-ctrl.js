@@ -172,21 +172,23 @@ controllers
 
   function doScan() {
     ActiveBLEDevice.get().disconnect()
-    if($window.ble) {
-      ble.isEnabled(function (result) {
-        devices = []
-        $scope.entities = []
-        $scope.$apply()
-        if($scope.scanTimer) $timeout.cancel($scope.scanTimer)
-        $scope.scanTimer = $timeout(stopScan, 5000)       
-        ble.scan([], 5, scanSuccessCb, scanErrorCb)
-      }, function (error) {
-        $ionicPopup.alert({
-          title: '打开蓝牙来允许“帮大师”连接到车辆',
-          okText: '好'
-        });
-      })      
-    }
+    .then(function () {
+      if($window.ble) {
+        ble.isEnabled(function (result) {
+          devices = []
+          $scope.entities = []
+          $scope.$apply()
+          if($scope.scanTimer) $timeout.cancel($scope.scanTimer)
+          $scope.scanTimer = $timeout(stopScan, 5000)
+          ble.scan([], 5, scanSuccessCb, scanErrorCb)
+        }, function (error) {
+          $ionicPopup.alert({
+            title: '打开蓝牙来允许“帮大师”连接到车辆',
+            okText: '好'
+          });
+        })      
+      }
+    });
   }
   $scope.doScan = doScan
 

@@ -326,9 +326,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   BLEDevice.prototype.disconnect = function () {
     this.onDisconnected();
     if(!$window.ble || !this.localId) {
-      return $q.resolve();
+      var q = $q.defer();
+      $timeout(function () {
+        q.resolve()
+      },0);
+      return q.promise;
     } else {
-      return $cordovaBLE.disconnect(this.localId)
+      return $cordovaBLE.disconnect(this.localId);
     }
   }
   
