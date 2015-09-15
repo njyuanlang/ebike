@@ -172,8 +172,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     this.reminder = bike.reminder || {
       overload: true,
       temperature: true,
-      voltage: true,
-      guard: true,
+      voltage: true
+      // guard: true
     }
     this.realtime = RTMonitor
     this.realtime.bikeId = bike.id
