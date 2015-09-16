@@ -87,7 +87,7 @@ controllers
       brand: brand, 
       model:item, 
       workmode:0,
-      wheeldiameter: 12,
+      wheeldiameter: 16,
       voltage: 48,
       current: 20,
       "name": brand.name+"牌电动车"
