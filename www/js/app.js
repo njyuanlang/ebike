@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.controllers', 'ebike.services', 'ebike.filters'])
+angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.controllers', 'ebike.services', 'ebike.filters', 'ebike.directives'])
 
 .run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory, $cordovaNetwork, ActiveBLEDevice, User, $localstorage, RemoteStorage, $http, $ionicPopup) {
   $ionicPlatform.ready(function() {
@@ -78,12 +78,12 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
     $rootScope.$on('go.home', function (event, args) {
       if(args && args.bike) {
         ActiveBLEDevice.setBike(args.bike)
-        $ionicHistory.nextViewOptions({
-          historyRoot: true,
-          disableBack: true
-        })
+        // $ionicHistory.nextViewOptions({
+        //   historyRoot: true,
+        //   disableBack: true
+        // })
       }
-      $state.go('home')
+      $state.go('tab.home')
     })
     
     if(User.isAuthenticated()) {
@@ -94,6 +94,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
     }
   });  
   
+  $rootScope.hideTabs = false;
   $rootScope.online = true
   $rootScope.avatar = null
   
@@ -153,40 +154,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       templateUrl: "templates/register.html",
       controller: 'RegisterCtrl'
     })
-
-    // home 
-    .state('home', {
-      url: "/home",
-      templateUrl: "templates/home.html",
-      controller: 'HomeCtrl'
-    })
-
-    // test 
-    .state('test', {
-      url: "/test",
-      templateUrl: "templates/test.html",
-      controller: 'TestCtrl'
-    })
-
-    // dashboard 
-    .state('cruise', {
-      url: "/cruise",
-      templateUrl: "templates/cruise.html",
-      controller: 'CruiseCtrl'
-    })
-
-    // menu 
-    .state('menu', {
-      url: "/menu",
-      templateUrl: "templates/menu.html",
-      controller: 'MenuCtrl'
-    })
-    // account 
-    .state('account', {
-      url: "/account",
-      templateUrl: "templates/account.html",
-      controller: 'AccountCtrl'
-    })
     .state('provinces', {
       url: "/provinces",
       templateUrl: "templates/provinces.html",
@@ -197,16 +164,99 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       templateUrl: "templates/cities.html",
       controller: 'CitiesCtrl'
     })
-    // bikes 
-    .state('bikes', {
-      url: "/bikes",
-      templateUrl: "templates/bikes.html",
-      controller: 'BikesCtrl'
+
+    .state('tab', {
+      url: '/tab',
+      abstract: true,
+      templateUrl: 'templates/tabs.html'
     })
-    .state('bike', {
+    
+    // home 
+    .state('tab.home', {
+      url: "/home",
+      views: {
+        'tab-home': {
+          templateUrl: "templates/tab-home.html",
+          controller: 'HomeCtrl'
+        }
+      }
+    })
+
+    // test 
+    .state('tab.test', {
+      url: "/test",
+      views: {
+        'tab-home': {
+          templateUrl: "templates/test.html",
+          controller: 'TestCtrl'
+        }
+      }
+    })
+
+    // cruise 
+    .state('cruise', {
+      url: "/cruise",
+      templateUrl: "templates/cruise.html",
+      controller: 'CruiseCtrl'
+    })
+    
+    // discover
+    .state('tab.discover', {
+      url: "/discover",
+      views: {
+        'tab-discover': {
+          templateUrl: "templates/tab-discover.html"
+          // controller: 'DiscoverCtrl'
+        }
+      }
+    })
+
+    // chats
+    .state('tab.chats', {
+      url: "/chats",
+      views: {
+        'tab-chats': {
+          templateUrl: "templates/tab-chats.html"
+          // controller: 'ChatsCtrl'
+        }
+      }
+    })
+
+    // menu 
+    .state('tab.menu', {
+      url: "/menu",
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/tab-menu.html",
+          controller: 'MenuCtrl'
+        }
+      }
+    })
+    
+    // account 
+    .state('tab.account', {
+      url: "/account",
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/account.html",
+          controller: 'AccountCtrl'
+        }
+      }
+    })
+    // bikes 
+    // .state('bikes', {
+    //   url: "/bikes",
+    //   templateUrl: "templates/bikes.html",
+    //   controller: 'BikesCtrl'
+    // })
+    .state('tab.bike', {
       url: "/bikes/:bikeId",
-      templateUrl: "templates/bike.html",
-      controller: 'BikeCtrl'
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/bike.html",
+          controller: 'BikeCtrl'
+        }
+      }
     })
     .state('brands', {
       url: "bikes/:id/brands",
@@ -218,20 +268,32 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       templateUrl: "templates/models.html",
       controller: 'ModelsCtrl'
     })
-    .state('wheeldiameters', {
+    .state('tab.wheeldiameters', {
       url: "bikes/:id/wheeldiameters",
-      templateUrl: "templates/wheeldiameters.html",
-      controller: 'WheelDiametersCtrl'
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/wheeldiameters.html",
+          controller: 'WheelDiametersCtrl'
+        }
+      }
     })
-    .state('voltages', {
+    .state('tab.voltages', {
       url: "bikes/:id/voltages",
-      templateUrl: "templates/voltages.html",
-      controller: 'VoltagesCtrl'
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/voltages.html",
+          controller: 'VoltagesCtrl'
+        }
+      }
     })
-    .state('currents', {
+    .state('tab.currents', {
       url: "bikes/:id/currents",
-      templateUrl: "templates/currents.html",
-      controller: 'CurrentsCtrl'
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/currents.html",
+          controller: 'CurrentsCtrl'
+        }
+      }
     })
     .state('bikes-add', {
       url: "/bikes/add",
@@ -239,20 +301,32 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       controller: 'BikesAddCtrl'
     })
     // messages
-    .state('messages', {
+    .state('tab.messages', {
       url: "/messages",
-      templateUrl: "templates/messages.html",
-      controller: 'MessagesCtrl'
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/messages.html",
+          controller: 'MessagesCtrl'
+        }
+      }
     })
-    .state('messages-detail', {
+    .state('tab.messages-detail', {
       url: "/messages/:type",
-      templateUrl: "templates/messages-detail.html",
-      controller: 'MessagesDetailCtrl'
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/messages-detail.html",
+          controller: 'MessagesDetailCtrl'
+        }
+      }
     })
     // services
-    .state('services', {
+    .state('tab.services', {
       url: "/services",
-      templateUrl: "templates/services.html"
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/services.html"
+        }
+      }
     })
     // help
     .state('help', {
@@ -260,14 +334,18 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       templateUrl: "templates/help.html"
     })
     // about
-    .state('about', {
+    .state('tab.about', {
       url: "/about",
-      templateUrl: "templates/about.html"
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/about.html"
+        }
+      }
     })
     
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise('/tab/home');
 
 })
 

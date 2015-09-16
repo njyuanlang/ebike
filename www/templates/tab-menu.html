@@ -1,10 +1,7 @@
-<ion-view title="设置" hide-back-button="true" cache-view="false">
-  <ion-nav-buttons side="left">
-    <a class="button" nav-direction="forward" ui-sref="home()">关闭</a>
-  </ion-nav-buttons>
+<ion-view title="我" hide-back-button="true" cache-view="false" show-tabs>
   <ion-content has-header="true" class="scroll-bg"  scroll="false">
     <div class="list">
-      <a class="item item-avatar item-icon-right user-bg" href="#/account">
+      <a class="item item-avatar item-icon-right user-bg" href="#/tab/account">
         <img src="{{avatar || 'img/user-icon.png'}}">
         <h2>{{currentUser.name || currentUser.username}}</h2>
         <small class="calm">
@@ -15,7 +12,7 @@
     </div>
     <div class="menu-grid text-center">
       <div class="row">
-        <a class="col button" ui-sref="bike()">
+        <a class="col button" ui-sref="tab.bike()">
           <img src="img/ebike-icon.png">
           <p>我的车辆</p>
         </a>
@@ -23,13 +20,13 @@
           <img src="img/bluetooth-icon.png">
           <p>绑定车辆</p>
         </a>
-        <a class="col button" href="#/messages">
+        <a class="col button" ui-sref="tab.messages()">
           <img src="img/message-icon.png">
           <p>消息提醒</p>
         </a>
       </div>
       <div class="row">
-        <a class="col button" href="#/services">
+        <a class="col button" href="#/tab/services">
           <img src="img/list-icon.png">
           <p>服务条款</p>
         </a>
@@ -37,7 +34,7 @@
           <img src="img/help-icon.png">
           <p>使用帮助</p>
         </a>
-        <a class="col button" href="#/about">
+        <a class="col button" href="#/tab/about">
           <img src="img/about-icon.png">
           <p>关于我们</p>
         </a>

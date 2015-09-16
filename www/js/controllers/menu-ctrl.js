@@ -6,7 +6,7 @@ controllers
   
 })
 
-.controller('MessagesCtrl', function($scope, $state, ActiveBLEDevice) {
+.controller('MessagesCtrl', function($scope, $state, ActiveBLEDevice, $rootScope) {
 
   $scope.setting = false;
   $scope.rightButtonTitle = '设置'

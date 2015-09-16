@@ -1,10 +1,8 @@
 <ion-view title="选择省份">
-  <ion-content has-header="true" class="scroll-bg padding">
+  <ion-nav-bar></ion-nav-bar>
+  <ion-content class="scroll-bg padding">
     
     <div class="list">
-      <!-- <div class="item item-divider">
-        A
-      </div> -->
       <a ng-repeat="item in entities" class="item transparent-bg" 
          ng-click="goCities(item)">
         {{ item.name }}

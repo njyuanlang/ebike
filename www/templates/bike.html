@@ -1,5 +1,6 @@
 <ion-view title="我的车辆" cache-view="false">
-  <ion-content has-header="true" class="scroll-bg padding">
+
+  <ion-content class="scroll-bg padding">
     
     <div class="list card">
       <div class="item">
@@ -24,12 +25,12 @@
     </div>
 
     <div class="list card">
-      <div class="item item-icon-right" ui-sref='voltages({id:entity.id})'>
+      <div class="item item-icon-right" ui-sref='tab.voltages({id:currentBike.id})'>
         电池电压
         <span class="item-note">{{currentBike.voltage|| 0}} V</span>
         <i class="icon ion-ios7-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" ui-sref='currents({id:entity.id})'>
+      <div class="item item-icon-right" ui-sref='tab.currents({id:currentBike.id})'>
         电池容量
         <span class="item-note">{{currentBike.current|| 0}} AH</span>
         <i class="icon ion-ios7-arrow-right"></i>
@@ -37,7 +38,7 @@
     </div>
 
     <div class="list card">
-      <div class="item item-icon-right" ui-sref='wheeldiameters({id:entity.id})'>
+      <div class="item item-icon-right" ui-sref='tab.wheeldiameters({id:currentBike.id})'>
         车轮直径
         <span class="item-note">{{currentBike.wheeldiameter|| 0}} 寸</span>
         <i class="icon ion-ios7-arrow-right"></i>

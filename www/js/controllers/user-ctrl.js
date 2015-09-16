@@ -91,11 +91,15 @@ controllers
   
 })
 
-.controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading, User, $localstorage, Authmessage, $filter, $ionicHistory, $rootScope) {
+.controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading, User, $localstorage, Authmessage, $filter, $ionicHistory, $rootScope, $ionicNavBarDelegate) {
   
-  $scope.isReset = $state.params.reset
   $scope.entity = {realm: "client"}
   $scope.validprompt = "获取验证码"
+  $scope.$on("$ionicView.enter", function (event) {
+    $ionicNavBarDelegate.showBar(true);
+    $ionicNavBarDelegate.title($state.params.reset?'重置密码':'注册');
+    // $ionicNavBarDelegate.showBackButton(true);
+  });
   
   $scope.getAuthcode = function () {
     if($scope.disableValidcode) return
@@ -178,17 +182,16 @@ controllers
       User.logout().$promise
         .then(function () {
           console.debug('Success Logout');
-          // $rootScope.$broadcast('go.home');
-        }, function () {
-          console.debug('Logout Failure from Remote');
-          // $rootScope.$broadcast('go.home')
-        })
+        }, function (reason) {
+          console.debug('Logout Failure for '+reason);
+        });
         LoopBackAuth.clearUser();
         LoopBackAuth.clearStorage();
     } else {
+      console.debug('logout Trial');
       $rootScope.online = true;
     }
-    $rootScope.$broadcast('go.home');    
+    $state.go('entry');
   }
   
   var uploadAvatar = function () {
@@ -306,14 +309,19 @@ controllers
   
 })
 
-.controller('ProvincesCtrl', function ($scope, $state, ChinaRegion) {
+.controller('ProvincesCtrl', function ($scope, $state, ChinaRegion, $ionicNavBarDelegate) {
   $scope.entities = ChinaRegion.provinces
   $scope.goCities = function (item) {
     $state.go('cities', {province: JSON.stringify(item)})
   }
+  $scope.$on("$ionicView.enter", function (event) {
+    $ionicNavBarDelegate.title('选择省份');
+    $ionicNavBarDelegate.showBar(true);
+    $ionicNavBarDelegate.showBackButton(true);
+  });
 })
 
-.controller('CitiesCtrl', function ($scope, $state, ChinaRegion, User, $ionicHistory, $window) {
+.controller('CitiesCtrl', function ($scope, $state, ChinaRegion, User, $rootScope, $window) {
   var province = JSON.parse($state.params.province)
   $scope.entities = province.sub
   
@@ -334,9 +342,10 @@ controllers
         //     });
         //   })
         // }
-        $ionicHistory.goToHistoryRoot($ionicHistory.currentView().historyId)
       })
-    })
-  }
+    });
+    // $rootScope.$broadcast('go.home');
+    $state.go('tab.account');
+  }  
 })
 

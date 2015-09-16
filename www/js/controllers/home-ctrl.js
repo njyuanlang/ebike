@@ -29,7 +29,7 @@ controllers
 
   $scope.goTest = function () {
     if($scope.device.status === 'connected') {
-      $state.go('test')
+      $state.go('tab.test')
     } else {
       $ionicLoading.show({
         template: '<i class="icon ion-ios7-information-outline padding"></i>请连接车辆',

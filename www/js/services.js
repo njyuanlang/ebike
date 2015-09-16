@@ -366,12 +366,12 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     changepassword: "00001C06-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.sendOrder = function (hexs) {
-    if(!$rootScope.online) return
+    if(!$rootScope.online || !$window.ble) return;
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.order, value) 
   }
   BLEDevice.prototype.sendSpec = function () {
-    if(!$rootScope.online) return
+    if(!$rootScope.online || !$window.ble) return;
     var hexs = [this.bike.voltage, this.bike.current, 0, this.bike.wheeldiameter]
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.spec, value) 

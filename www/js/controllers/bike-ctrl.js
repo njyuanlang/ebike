@@ -22,9 +22,15 @@ controllers
   
 })
 
-.controller('BikeCtrl', function($scope, $state, Bike, $rootScope, ActiveBLEDevice, $ionicLoading) {
+.controller('BikeCtrl', function($scope, $state, Bike, $rootScope, ActiveBLEDevice, $ionicLoading, $ionicNavBarDelegate) {
   $scope.registering = $state.params.bikeId && $state.params.bikeId === 'create';
   
+  // $scope.$on("$ionicView.enter", function (event) {
+  //   $ionicNavBarDelegate.title($scope.registering?'我的车辆':'我的车辆');
+  //   $ionicNavBarDelegate.showBar(true);
+  //   $ionicNavBarDelegate.showBackButton(true);
+  // });
+
   $scope.register = function () {
     Bike.create($scope.currentBike, function (result) {
       $scope.currentBike.id = result.id;
@@ -147,7 +153,7 @@ controllers
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, ActiveBLEDevice, $timeout, $ionicLoading, $ionicHistory, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService, BLEDevice) {
+.controller('BikesAddCtrl', function($scope, $state, ActiveBLEDevice, $timeout, $ionicLoading, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService, BLEDevice) {
   
   var devices = []
 
@@ -268,7 +274,7 @@ controllers
   }
   
   $scope.goHome = function () {
-    $ionicHistory.goToHistoryRoot($ionicHistory.currentView().historyId)
+    $rootScope.$broadcast('go.home');
   }
   
   $scope.$on("$ionicView.leave", function () {
@@ -278,8 +284,8 @@ controllers
   $scope.$on("$ionicView.enter", function () {
     $scope.entities = []
     $timeout(function () {
-      PtrService.triggerPtr('mainScroll')
-    }, 500)
+      if($scope.online) PtrService.triggerPtr('mainScroll');
+    }, 500);
   })
   
 })
