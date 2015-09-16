@@ -425,14 +425,16 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           console.debug('safeMode:'+(ret==0x11));
           q.resolve(ret==0x11);
         }, function (reason) {
-          q.reject('获取安全模式失败'+JSON.stringify(reason));
+          console.debug('SafeMode Get:'+JSON.stringify(reason))
+          q.reject('获取安全模式失败');
         });
       } else {
         var value = Util.hexToBytes(mode?[0xD1, 0xD1]:[0xD2, 0xD2]);
         ble.write(this.localId, order.uuid, order.mode, value, function () {
           q.resolve();
         }, function (reason) {
-          q.reject('切换安全模式失败'+JSON.stringify(reason));
+          console.debug('SafeMode Switch:'+JSON.stringify(reason))
+          q.reject('切换安全模式失败');
         });
       }
     }
@@ -450,14 +452,16 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           console.debug('AntiTheft:'+(ret==0x11));
           q.resolve(ret==0x11);
         }, function (reason) {
-          q.reject('获取防盗模式失败'+JSON.stringify(reason));
+          console.debug('AntiTheft Get:'+JSON.stringify(reason));
+          q.reject('获取防盗模式失败');
         });
       } else {
         var value = Util.hexToBytes(enable?[0xE1, 0xE1]:[0xE2, 0xE2]);
         ble.write(this.localId, order.uuid, order.antitheft, value, function () {
           q.resolve();
         }, function (reason) {
-          q.reject('切换防盗模式失败'+JSON.stringify(reason));
+          console.debug('AntiTheft Get:'+JSON.stringify(reason));
+          q.reject('切换防盗模式失败');
         });
       }
     }

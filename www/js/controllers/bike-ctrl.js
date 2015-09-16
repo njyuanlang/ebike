@@ -43,6 +43,9 @@ controllers
       .then(function (result) {
         console.debug('Success Set SafeMode:'+newValue);
       }, function (reason) {
+        if(newValue) {
+          $scope.currentBike.safe = false;
+        }
         $ionicLoading.show({
           template: '<i class="icon ion-ios7-information-outline padding"></i>'+reason,
           duration: 2000
