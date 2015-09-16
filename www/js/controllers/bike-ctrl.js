@@ -174,6 +174,8 @@ controllers
   }
 
   function doScan() {
+    if(!$scope.online) return stopScan();
+    
     ActiveBLEDevice.get().disconnect()
     .then(function () {
       if($window.ble) {

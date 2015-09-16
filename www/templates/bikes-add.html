@@ -6,6 +6,9 @@
     <ion-refresher pulling-text="下拉搜索周边车辆" refreshing-text="正在搜索周边车辆" on-refresh="doScan()"></ion-refresher>
 
     <div class="list">
+      <div class="item text-center" ng-if="!online">
+        体验账号不能绑定车辆
+      </div>
       <div ng-repeat="item in entities" ng-click="selectEntity(item)" class="item">
         {{ item.name }}
         <h4> {{item.id}} </h4>
