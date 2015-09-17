@@ -173,22 +173,22 @@ controllers
 
   $scope.logout = function () {
     if($rootScope.online) {
-      var device = ActiveBLEDevice.get()
-      if(device) device.disconnect()
+      var device = ActiveBLEDevice.get();
+      if(device) device.disconnect();
       User.logout().$promise
         .then(function () {
           console.debug('Success Logout');
-          $rootScope.$broadcast('go.home')
+          // $rootScope.$broadcast('go.home');
         }, function () {
-          LoopBackAuth.clearUser();
-          LoopBackAuth.clearStorage();
-          $rootScope.$broadcast('go.home')
+          console.debug('Logout Failure from Remote');
+          // $rootScope.$broadcast('go.home')
         })
+        LoopBackAuth.clearUser();
+        LoopBackAuth.clearStorage();
     } else {
-      $rootScope.online = true
-      $rootScope.$broadcast('go.home')
+      $rootScope.online = true;
     }
-    
+    $rootScope.$broadcast('go.home');    
   }
   
   var uploadAvatar = function () {
