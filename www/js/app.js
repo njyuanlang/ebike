@@ -28,7 +28,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
           $state.go('cruise')
         } else {
           $cordovaStatusbar.show()
-          $state.go('home')
+          $state.go('tab.home')
         }
       }, false);
   
