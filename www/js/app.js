@@ -205,11 +205,20 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       url: "/discover",
       views: {
         'tab-discover': {
-          templateUrl: "templates/tab-discover.html"
-          // controller: 'DiscoverCtrl'
+          templateUrl: "templates/tab-discover.html",
+          controller: 'DiscoverCtrl'
         }
       }
     })
+    // .state('tab.merchant-add', {
+    //   url: '/merchants/add',
+    //   views: {
+    //     'tab-discover': {
+    //       templateUrl: "templates/merchant-add.html",
+    //       controller: 'MerchantAddCtrl'
+    //     }
+    //   }
+    // })
 
     // chats
     .state('tab.chats', {

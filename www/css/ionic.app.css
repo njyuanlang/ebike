@@ -8280,3 +8280,10 @@ progress::-webkit-progress-value {
 
 .speed-gauge-100 {
   -webkit-transform: rotate(180deg); }
+
+.scroll {
+  height: 100%; }
+
+#container {
+  width: 100%;
+  height: 100%; }
