@@ -7,11 +7,11 @@ controllers
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
     var map = new AMap.Map('container',{
-      zoom: 15,
+      zoom: 18,
       center: [position.coords.longitude, position.coords.latitude]
     });
     
-    AMap.plugin(['AMap.ToolBar','AMap.Scale', 'AMap.Geolocation'],function(){
+    AMap.plugin(['AMap.ToolBar','AMap.Scale', 'AMap.Geolocation', 'AMap.CloudDataLayer'],function(){
       var geolocation = new AMap.Geolocation({
         enableHighAccuracy: true,//是否使用高精度定位，默认:true
         timeout: 10000,          //超过10秒后停止定位，默认：无穷大
@@ -26,10 +26,29 @@ controllers
         zoomToAccuracy:true      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
       });
       map.addControl(geolocation);
+      
+      var cloudDataLayer = new AMap.CloudDataLayer('55ffc0afe4b0ead8fa4df390', {
+        clickable: true
+      });
+      cloudDataLayer.setMap(map);
+      
+      AMap.event.addListener(cloudDataLayer, 'click', function (result) {
+        var clouddata = result.data;
+        var content = "<h3><font face='微软雅黑'color='#36F'>"+clouddata._name+"</font></h3><hr/>"+
+          "<font color='#36F'>地址："+clouddata._address+"<br/>"+
+          "创建时间："+clouddata._createtime+"</font>";
+        var infoWindow = new AMap.InfoWindow({
+          content: content,
+          size: new AMap.Size(300, 0),
+          autoMove: true,
+          offset: new AMap.Pixel(0, -25)
+        });
+        infoWindow.open(map, clouddata._location);
+      });
     })
 
   }, function(error){
-    console.log("Could not get location");
+    console.log("Could not get location: "+JSON.stringify(error));
   });
   
 })
