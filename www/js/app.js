@@ -358,4 +358,9 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
 
 })
 
+.config(function ($ionicConfigProvider) {
+  $ionicConfigProvider.tabs.position('bottom');
+  $ionicConfigProvider.navBar.alignTitle('center');
+})
+
 var controllers = angular.module('ebike.controllers', [])
