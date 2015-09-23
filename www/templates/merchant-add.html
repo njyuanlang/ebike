@@ -1,0 +1,68 @@
+<ion-view title="我要入住">
+  <ion-content has-header="true" class="padding">
+    
+    <div class="card">
+      <label class="item item-input">
+        <span class="input-label">商户名称</span>
+        <input type="text" placeholder="例如：XXX电动车维修部" ng-model="entity._name">
+      </label>
+      
+      <label class="item">
+        <span class="input-label">门头图片</span>
+        <a class="button button-block text-center" ng-click="chooseImage()">
+          <i class="icon ion-upload ion-2x" ng-if="!entity.avatar">上传照片</i>
+          <!-- <div ng-if="!!entity.avatar" >
+            <img src="{{entity.avatar}}" >
+          </div> -->
+        </a>
+      </label>
+    </div>
+    
+    <div class="card">
+      <div class="item item-divider">联系方式</div>
+      <a class="item item-icon-right" href="#/provinces">
+        地区
+        <span class="item-note">{{entity.region.province}} {{entity.region.city}}</span>
+        <i class="icon ion-ios7-arrow-forward"></i>
+      </a>
+      <label class="item item-input">
+        <span class="input-label">地址</span>
+        <input type="text" placeholder="例如：迎翠路7号" ng-model="entity._address">
+      </label>
+      <div class="item" ui-sref="tab.merchant-mark()">
+        <div id="container2"></div>
+      </div>
+      <label class="item item-input">
+        <span class="input-label">电话</span>
+        <input type="tel" placeholder="02587654321" ng-model="entity.telephone">
+      </label>
+    </div>
+    
+    <div class="card">
+      <div class="item item-divider">支持</div>
+      <ion-toggle ng-model="entity.anybrand" toggle-class="toggle-balance">维修任意品牌</ion-toggle>
+      <ion-toggle ng-model="entity.charge" toggle-class="toggle-balance">可充电</ion-toggle>
+      <ion-toggle ng-model="entity.onsite" toggle-class="toggle-balance">5公里上门服务</ion-toggle>
+    </div>
+    
+    <ul class="list">
+      <div class="item item-divider">车型</div>
+
+      <li class="item item-checkbox">
+        <label class="checkbox">
+          <input type="checkbox" ng-model="entity.wheel2">
+        </label>
+        两轮车
+      </li>
+      <li class="item item-checkbox">
+        <label class="checkbox">
+          <input type="checkbox" ng-model="entity.wheel3">
+        </label>
+        三轮车
+      </li>
+    </ul>
+    
+    <a class="button button-block button-positive" ng-click="create()">提交</a>
+    <br><br>
+  </ion-content>
+</ion-view>

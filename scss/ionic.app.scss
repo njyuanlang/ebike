@@ -501,7 +501,20 @@ $angularSpeed: 180deg/$maxSpeed;
 
 // Maps
 .scroll {
-    height: 100%;
+  height: 100%;
 }
 
 #container {width:100%; height: 100%; }
+#container2 {width:100%; height: 150px;}
+#container3 {width:100%; height: 100%; }
+
+// Font Size
+.ion-large {
+  font-size: 1.5rem;
+  vertical-align: middle;
+}
+
+.ion-2x {
+  font-size: 2.0rem;
+  vertical-align: middle;
+}

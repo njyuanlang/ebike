@@ -200,25 +200,34 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       controller: 'CruiseCtrl'
     })
     
-    // discover
-    .state('tab.discover', {
-      url: "/discover",
+    // merchants
+    .state('tab.merchants', {
+      url: "/merchants",
       views: {
-        'tab-discover': {
-          templateUrl: "templates/tab-discover.html",
-          controller: 'DiscoverCtrl'
+        'tab-merchants': {
+          templateUrl: "templates/tab-merchants.html",
+          controller: 'MerchantsCtrl'
         }
       }
     })
-    // .state('tab.merchant-add', {
-    //   url: '/merchants/add',
-    //   views: {
-    //     'tab-discover': {
-    //       templateUrl: "templates/merchant-add.html",
-    //       controller: 'MerchantAddCtrl'
-    //     }
-    //   }
-    // })
+    .state('tab.merchant-add', {
+      url: '/merchants/add?position',
+      views: {
+        'tab-merchants': {
+          templateUrl: "templates/merchant-add.html",
+          controller: 'MerchantAddCtrl'
+        }
+      }
+    })
+    .state('tab.merchant-mark', {
+      url: '/merchants/mark',
+      views: {
+        'tab-merchants': {
+          templateUrl: "templates/merchant-mark.html",
+          controller: 'MerchantMarkCtrl'
+        }
+      }
+    })
 
     // chats
     .state('tab.chats', {
