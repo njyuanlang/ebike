@@ -80,8 +80,8 @@ controllers
     $scope.entity.avatar = "img/logo.png";
   };
   
-  $scope.create = function () {
-    console.log('======on create merchant======');
+  $scope.submitForm = function (isValid) {
+    console.log('-----'+isValid);
   }
   
 })
