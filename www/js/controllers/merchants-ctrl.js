@@ -4,7 +4,7 @@ controllers
 
   var map = new AMap.Map('container',{
     zoom: 15,
-    center: [118.58883, 31.837322]
+    center: [118.786331,31.936223]
     // center: [position.coords.longitude, position.coords.latitude]
   });
 
@@ -59,21 +59,52 @@ controllers
   }
 })
 
-.controller('MerchantAddCtrl', function($scope, $state) {
+.controller('MerchantAddCtrl', function($scope, $state, Poi, $ionicLoading) {
 
   $scope.entity = {
-    _location: [118.58883, 31.837322]
+    _location: [118.58883, 31.837322],
+    anybrand: true,
+    charge: true,
+    onsite: false,
+    wheel2: true,
+    wheel3: true
   };
 
   var map = new AMap.Map('container2',{zoom: 15, dragEnable: false, zoomEnable: false});
   var marker = new AMap.Marker({position: $scope.entity._location, map: map});
+  var geocoder = null;
+  
+  AMap.service(["AMap.Geocoder"], function() {
+    geocoder = new AMap.Geocoder({
+      radius: 1000,
+      extensions: "all"
+    });
+  });
   
   $scope.$on("$ionicView.enter", function () {
     $scope.entity._location = $scope.markerPosition || $state.params.position || $scope.entity._location;
-    console.log($scope.entity._location);
+    console.log($scope.entity._location, $scope.markerPositon, $state.params.position);
     map.setCenter($scope.entity._location);
     marker.setPosition($scope.entity._location);
-  });  
+    if(geocoder) {
+      geocoder.getAddress($scope.entity._location, function(status, result){
+        if(status=='error') {
+          console.log('amap service error');
+        }
+        if(status=='no_data') {
+          console.log("no data, try other key words");
+        }
+        else {
+          var ac = result.regeocode.addressComponent;
+          $scope.entity.province = ac.province;
+          $scope.entity.city = ac.city;
+          $scope.entity.district = ac.district;
+          $scope.entity._address = ac.street+ac.streetNumber;
+          console.log(result);
+        }
+      });
+    }
+  });
 
   $scope.chooseImage = function () {
     console.log('==========='+$scope.entity);
@@ -81,12 +112,28 @@ controllers
   };
   
   $scope.submitForm = function (isValid) {
-    console.log('-----'+isValid);
+    $ionicLoading.show({
+      template: "正在上传商户信息...",
+      duration: 10000
+    });
+    $scope.entity._location = $scope.entity._location.toString();
+    Poi.create($scope.entity, function (value) {
+      $ionicLoading.show({
+        template: "上传商户信息成功",
+        duration: 1000
+      })
+      $scope.$ionicGoBack();
+    }, function (res) {
+      $ionicLoading.show({
+        template: "上传商户信息失败",
+        duration: 2000
+      });
+    });
   }
   
 })
 
-.controller('MerchantMarkCtrl', function($scope, $state, $cordovaGeolocation, $rootScope) {
+.controller('MerchantMarkCtrl', function($scope, $state, $cordovaGeolocation, $rootScope, $ionicLoading) {
 
   var marker = null;
   var _onclick = function (e) {
@@ -143,6 +190,12 @@ controllers
   });
   
   $scope.confirm = function () {
+    if(!marker) {
+      return $ionicLoading.show({
+        template: "请在地图上标记位置！",
+        duration: 2000
+      });
+    }
     $rootScope.markerPosition = marker.getPosition();
     marker = null;
     $scope.$ionicGoBack();

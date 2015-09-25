@@ -5,7 +5,7 @@
       <div class="card">
         <label class="item item-input item-stacked-label item-light">
           <span class="input-label">
-            商户名称
+            商户名称：必填
           </span>
           <input type="text" placeholder="例如：XXX电动车维修部" ng-model="entity._name" name="name" required>
           <span class="assertive input-label" ng-show="merchantForm.name.$invalid && !merchantForm.name.$pristine">
@@ -27,13 +27,12 @@
       
       <div class="card">
         <div class="item item-divider">联系方式</div>
-        <a class="item item-icon-right" href="#/provinces">
-          地区
-          <span class="item-note">{{entity.region.province}} {{entity.region.city}}</span>
-          <i class="icon ion-ios7-arrow-forward"></i>
-        </a>
+        <div class="item item-stacked-label item-light">
+          <!-- <span class="input-label">地区</span> -->
+          <span class="input-label">地区  {{entity.province}} {{entity.city}} {{entity.district}}</span>
+        </div>
         <label class="item item-input item-stacked-label item-light">
-          <span class="input-label">地址</span>
+          <span class="input-label">地址：必填</span>
           <input type="text" placeholder="例如：迎翠路7号" ng-model="entity._address" name="address" required>
           <span class="assertive input-label" ng-show="merchantForm.address.$invalid && !merchantForm.address.$pristine">
             地址不能为空
@@ -43,8 +42,8 @@
           <div id="container2"></div>
         </div>
         <label class="item item-input item-stacked-label item-light">
-          <span class="input-label">电话</span>
-          <input type="tel" placeholder="02587654321" ng-model="entity.telephone" name="telephone" required>
+          <span class="input-label">电话：必填</span>
+          <input type="tel" placeholder="请输入手机号码或者区号＋固定电话" ng-model="entity.telephone" name="telephone" required>
           <span class="assertive input-label" ng-show="merchantForm.telephone.$invalid && !merchantForm.telephone.$pristine">
             电话不能为空
           </span>
@@ -75,7 +74,7 @@
         </li>
       </ul>
       
-      <a type="submit" class="button button-block button-positive" ng-disabled="merchantForm.$invalid">提交</a>
+      <button type="submit" class="button button-block button-positive" ng-disabled="merchantForm.$invalid">提交</button>
     </form>
     <br><br>
   </ion-content>

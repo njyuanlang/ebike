@@ -108,7 +108,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         $rootScope.avatar = buffer
       })
       .error(function () {
-        console.debug(JSON.stringify(arguments))
+        // console.debug(JSON.stringify(arguments));
       })
     }
   })
