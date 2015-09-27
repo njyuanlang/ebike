@@ -30,15 +30,25 @@ controllers
     cloudDataLayer.setMap(map);
 
     AMap.event.addListener(cloudDataLayer, 'click', function (result) {
-      console.debug(JSON.stringify(result.data));
+      console.log(result.data);
       var clouddata = result.data;
+      var ability = JSON.parse(clouddata.ability && "{"+clouddata.ability+"}" || "{}")
+      console.log(ability);
       var content = "<h3><font face='微软雅黑'color='#36F'>"+clouddata._name+"</font></h3><hr/>"+
         "<font color='#000'>地址："+clouddata._address+"<br/>"+
-        "电话："+clouddata.telephone+"<br/>"+
-        "创建时间："+clouddata._createtime+"</font>";
+        "电话："+clouddata.telephone+"<br/>";
+      if(ability.anybrand) content += '<i class="icon ion-checkmark-circled ion-large padding-right"></i>维修任意品牌';
+      if(ability.charge) content += '<i class="icon ion-checkmark-circled ion-large padding-right"></i>充电';
+      if(ability.onsite) content += '<i class="icon ion-checkmark-circled ion-large padding-right"></i>5公里内上门';
+      if(ability.wheel2) content += '<i class="icon ion-checkmark-circled ion-large padding-right"></i>修两轮车';
+      if(ability.wheel3) content += '<i class="icon ion-checkmark-circled ion-large padding-right"></i>修三轮车';
+      
+      content += "</font>";
       var infoWindow = new AMap.InfoWindow({
         content: content,
-        size: new AMap.Size(300, 0),
+        closeWhenClickMap: true,
+        // isCustom: true,
+        size: new AMap.Size(280, 0),
         autoMove: true,
         offset: new AMap.Pixel(0, -25)
       });
@@ -63,12 +73,14 @@ controllers
 
   $scope.entity = {
     _location: [118.58883, 31.837322],
+  };
+  $scope.ability = {
     anybrand: true,
     charge: true,
     onsite: false,
     wheel2: true,
     wheel3: true
-  };
+  }
 
   var map = new AMap.Map('container2',{zoom: 15, dragEnable: false, zoomEnable: false});
   var marker = new AMap.Marker({position: $scope.entity._location, map: map});
@@ -83,7 +95,7 @@ controllers
   
   $scope.$on("$ionicView.enter", function () {
     $scope.entity._location = $scope.markerPosition || $state.params.position || $scope.entity._location;
-    console.log($scope.entity._location, $scope.markerPositon, $state.params.position);
+    console.debug($scope.entity._location, $scope.markerPositon, $state.params.position);
     map.setCenter($scope.entity._location);
     marker.setPosition($scope.entity._location);
     if(geocoder) {
@@ -117,6 +129,8 @@ controllers
       duration: 10000
     });
     $scope.entity._location = $scope.entity._location.toString();
+    var abilityJSON = JSON.stringify($scope.ability);
+    $scope.entity.ability = abilityJSON.substr(1, abilityJSON.length-2);
     Poi.create($scope.entity, function (value) {
       $ionicLoading.show({
         template: "上传商户信息成功",
