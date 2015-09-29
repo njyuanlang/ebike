@@ -1,11 +1,11 @@
-<ion-view view-title="消息">
+<ion-view view-title="消息" show-tabs>
 
   <ion-content class="scroll-bg">
     <ion-refresher pulling-text="下拉刷新" refreshing-text="正在获取消息" on-refresh="sync()">
     </ion-refresher>
 
-    <ion-list>
-      <a class="item item-avatar" ng-repeat="chat in chats">
+    <ion-list class="chat">
+      <a class="item item-avatar" ng-repeat="chat in chats" ng-click="showDetail(chat)">
         <img src="{{chat.avatar || 'img/user-icon.png'}}" >
         <span class="item-note">{{chat.messages[0].CreateTime | moment_unix : 'from_now'}}</span>
         <h2 class="padding-bottom">{{chat.user.name || '未知账号'}} </h2>

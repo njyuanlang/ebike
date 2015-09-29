@@ -241,6 +241,15 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         }
       }
     })
+    .state('tab.chat', {
+      url: "/chats/detail",
+      views: {
+        'tab-chats': {
+          templateUrl: "templates/chat.html",
+          controller: 'ChatCtrl'
+        }
+      }
+    })
 
     // menu 
     .state('tab.menu', {

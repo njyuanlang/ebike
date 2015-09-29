@@ -1,0 +1,33 @@
+<ion-view view-title="{{currentChat.user.name}}">
+  <ion-content has-bouncing="true" class="scroll-bg has-header has-footer" delegate-handle="userMessageScroll">
+    <div ng-repeat="message in currentChat.messages" class="message-wrapper" on-hold="onMessageHold($event, $index, message)">
+      <div ng-if="currentUser.id !== message.FromUserName">
+        <img class="profile-pic left" src="{{currentChat.avatar || 'img/user-icon.png'}}">
+          <div class="chat-bubble left">
+            <div class="message" ng-bind-html="message.Content | nl2br" autolinker>
+            </div>
+          </div>
+      </div>
+      <div ng-if="currentUser.id === message.FromUserName">
+        <img class="profile-pic right" src="{{avatar || 'img/user-icon.png'}}">
+        <div class="chat-bubble right">
+          <div class="message" ng-bind-html="message.Content | nl2br" autolinker>
+          </div>
+        </div>
+      </div>
+      <div class="cf"></div>
+    </div>
+  </ion-content>
+      
+  <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate>
+    <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
+      <label class="item-input-wrapper">
+        <textarea ng-model="input.message" value="" required minlength="1" maxlength="1500" msd-elastic></textarea>
+      </label>
+      <div class="footer-btn-wrap">
+        <button class="button button-icon icon ion-android-send footer-btn" type="submit" ng-disabled="!input.message || input.message === ''">
+        </button>
+      </div>
+    </ion-footer-bar>
+  </form>
+</ion-view>

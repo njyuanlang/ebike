@@ -162,6 +162,7 @@ $user-bg:                         '../img/user-bg.png';
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 @import "ebike.test";
+@import "chat.bubble";
 @import "www/lib/sass-mediaqueries/media-queries";
 
 // Slide box
@@ -519,17 +520,20 @@ $angularSpeed: 180deg/$maxSpeed;
   vertical-align: middle;
 }
 
-// Item
-.item {
-  h2 {
-    font-size: 1.2rem;
+// Item for chat
+.chat {
+  .item {
+    h2 {
+      font-size: 1.2rem;
+    }
+    p {
+      color: #aaa;
+      font-size: 1.0rem;
+    }
   }
-  p {
-    color: #aaa;
+
+  .item-note {
     font-size: 1.0rem;
   }
 }
 
-.item-note {
-  font-size: 1.0rem;
-}
