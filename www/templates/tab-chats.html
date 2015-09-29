@@ -1,6 +1,9 @@
 <ion-view view-title="消息">
 
-  <ion-content class="">
+  <ion-content class="scroll-bg">
+    <ion-refresher pulling-text="下拉刷新" refreshing-text="正在获取消息" on-refresh="sync()">
+    </ion-refresher>
+
     <ion-list>
       <a class="item item-avatar" ng-repeat="chat in chats">
         <img src="{{chat.avatar || 'img/user-icon.png'}}" >
