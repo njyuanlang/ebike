@@ -88,3 +88,20 @@ angular.module('ebike.filters',[])
     return dictionary[msg] || "未知错误"
   }
 })
+
+.filter("moment", function () {
+  return function (input, format) {
+    return moment(input).format(format || 'YYYY-MM-DD HH:mm:ss');
+  }
+})
+
+.filter("moment_unix", function () {
+  return function (input, format) {
+    var m = moment.unix(input);
+    if('from_now' === format) {
+      return m.fromNow();
+    } else {
+      return m.format(format || 'YYYY-MM-DD HH:mm:ss');
+    }
+  }
+})

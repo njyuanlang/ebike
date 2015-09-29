@@ -124,6 +124,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
     ActiveBLEDevice.get().autoconnect()
   })
   
+  moment.locale('zh-CN');
+  
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -234,8 +236,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       url: "/chats",
       views: {
         'tab-chats': {
-          templateUrl: "templates/tab-chats.html"
-          // controller: 'ChatsCtrl'
+          templateUrl: "templates/tab-chats.html",
+          controller: 'ChatsCtrl'
         }
       }
     })

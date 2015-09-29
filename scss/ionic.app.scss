@@ -51,8 +51,8 @@ $button-stable-active-border:     #a2a2a2 !default;
 // Items
 // -------------------------------
 
-$item-avatar-width:               80px !default;
-$item-avatar-height:              80px !default;
+$item-avatar-width:               60px !default;
+$item-avatar-height:              60px !default;
 
 $item-divider-bg:                 #656565 !default;
 $item-divider-color:              #ddd !default;
@@ -517,4 +517,19 @@ $angularSpeed: 180deg/$maxSpeed;
 .ion-2x {
   font-size: 2.0rem;
   vertical-align: middle;
+}
+
+// Item
+.item {
+  h2 {
+    font-size: 1.2rem;
+  }
+  p {
+    color: #aaa;
+    font-size: 1.0rem;
+  }
+}
+
+.item-note {
+  font-size: 1.0rem;
 }

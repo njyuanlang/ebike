@@ -2,9 +2,12 @@
 
   <ion-content class="">
     <ion-list>
-      <div class="item">
-        message
-      </div>
+      <a class="item item-avatar" ng-repeat="chat in chats">
+        <img src="{{chat.avatar || 'img/user-icon.png'}}" >
+        <span class="item-note">{{chat.messages[0].CreateTime | moment_unix : 'from_now'}}</span>
+        <h2 class="padding-bottom">{{chat.user.name || '未知账号'}} </h2>
+        <p class="calm">{{chat.messages[0].Content}}</p>
+      </a>
     </ion-list>
   </ion-content>
 </ion-view>

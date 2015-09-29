@@ -4716,26 +4716,26 @@ a.item-content {
     line-height: 32px; }
 
 .item-avatar, .item-avatar .item-content, .item-avatar-left, .item-avatar-left .item-content {
-  padding-left: 112px;
-  min-height: 112px; }
+  padding-left: 92px;
+  min-height: 92px; }
   .item-avatar > img:first-child, .item-avatar .item-image, .item-avatar .item-content > img:first-child, .item-avatar .item-content .item-image, .item-avatar-left > img:first-child, .item-avatar-left .item-image, .item-avatar-left .item-content > img:first-child, .item-avatar-left .item-content .item-image {
     position: absolute;
     top: 16px;
     left: 16px;
-    max-width: 80px;
-    max-height: 80px;
+    max-width: 60px;
+    max-height: 60px;
     width: 100%;
     border-radius: 50%; }
 
 .item-avatar-right, .item-avatar-right .item-content {
-  padding-right: 112px;
-  min-height: 112px; }
+  padding-right: 92px;
+  min-height: 92px; }
   .item-avatar-right > img:first-child, .item-avatar-right .item-image, .item-avatar-right .item-content > img:first-child, .item-avatar-right .item-content .item-image {
     position: absolute;
     top: 16px;
     right: 16px;
-    max-width: 80px;
-    max-height: 80px;
+    max-width: 60px;
+    max-height: 60px;
     width: 100%;
     border-radius: 50%; }
 
@@ -8303,3 +8303,12 @@ progress::-webkit-progress-value {
 .ion-2x {
   font-size: 2rem;
   vertical-align: middle; }
+
+.item h2 {
+  font-size: 1.2rem; }
+.item p {
+  color: #aaa;
+  font-size: 1rem; }
+
+.item-note {
+  font-size: 1rem; }

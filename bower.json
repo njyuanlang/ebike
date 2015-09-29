@@ -6,10 +6,11 @@
     "ngCordova": "~0.1.15-alpha",
     "localforage": "~1.2.2",
     "node-uuid": "~1.4.2",
-    "moment": "~2.9.0",
+    "moment": "~2.10.0",
     "sass-mediaqueries": "~1.4.0"
   },
   "dependencies": {
-    "jr-crop": "https://github.com/JrSchild/jr-crop.git#~1.0.0"
+    "jr-crop": "https://github.com/JrSchild/jr-crop.git#~1.0.0",
+    "moment": "~2.10.6"
   }
 }
