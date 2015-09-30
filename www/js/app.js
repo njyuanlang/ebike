@@ -11,6 +11,9 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      if(ionic.Platform.isIOS()) {
+        cordova.plugins.Keyboard.disableScroll(true);
+      }
     }
     if(window.StatusBar) {
       StatusBar.styleDefault();

@@ -87,6 +87,7 @@ controllers
     Message.find({filter:{where:{CreateTime:{gt: latestTime}}}}, function (results) {
       $scope.messages = results.concat($scope.messages);
       if(results.length) {
+        $scope.currentChat.message = results[0];
         latestTime = results[0].CreateTime;
         var et = results[results.length-1].CreateTime;
         if(earliestTime > et) {
@@ -137,17 +138,16 @@ controllers
       $scope.input.message = '';
 
       $scope.messages.push(message);
+      $scope.currentChat.message = message;
+      latestTime = message.CreateTime;
+      if(earliestTime > latestTime) {
+        earliestTime = latestTime;
+      }
 
       $timeout(function() {
         keepKeyboardOpen();
         viewScroll.scrollBottom(true);
       }, 0);
-
-      // $timeout(function() {
-      //   $scope.messages.push(MockService.getMockMessage());
-      //   keepKeyboardOpen();
-      //   viewScroll.scrollBottom(true);
-      // }, 2000);
     });
   };
   
