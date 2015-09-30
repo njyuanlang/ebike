@@ -1,15 +1,19 @@
 <ion-view view-title="{{currentChat.user.name}}">
   <ion-content has-bouncing="true" class="scroll-bg has-header has-footer" delegate-handle="userMessageScroll">
-    <div ng-repeat="message in currentChat.messages" class="message-wrapper" on-hold="onMessageHold($event, $index, message)">
+
+    <ion-refresher pulling-text="下拉更早消息" refreshing-text="正在获取更早消息" on-refresh="fetchEarlier()">
+    </ion-refresher>
+
+    <div ng-repeat="message in messages | orderBy:'+CreateTime'" class="message-wrapper" on-hold="onMessageHold($event, $index, message)">
       <div ng-if="currentUser.id !== message.FromUserName">
-        <img class="profile-pic left" src="{{currentChat.avatar || 'img/user-icon.png'}}">
+        <img class="profile-pic left" ng-src="{{currentChat.avatar}}">
           <div class="chat-bubble left">
             <div class="message" ng-bind-html="message.Content | nl2br" autolinker>
             </div>
           </div>
       </div>
       <div ng-if="currentUser.id === message.FromUserName">
-        <img class="profile-pic right" src="{{avatar || 'img/user-icon.png'}}">
+        <img class="profile-pic right" ng-src="{{avatar}}">
         <div class="chat-bubble right">
           <div class="message" ng-bind-html="message.Content | nl2br" autolinker>
           </div>

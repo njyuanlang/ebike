@@ -6,7 +6,7 @@
 
     <ion-list class="chat">
       <a class="item item-avatar" ng-repeat="chat in chats" ng-click="showDetail(chat)">
-        <img src="{{chat.avatar || 'img/user-icon.png'}}" >
+        <img ng-src="{{chat.avatar}}" >
         <span class="item-note">{{chat.messages[0].CreateTime | moment_unix : 'from_now'}}</span>
         <h2 class="padding-bottom">{{chat.user.name || '未知账号'}} </h2>
         <p class="calm">{{chat.messages[0].Content}}</p>

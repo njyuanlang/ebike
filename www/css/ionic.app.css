@@ -5298,7 +5298,7 @@ input, button, select, textarea {
   border-radius: 4px;
   padding-right: 8px;
   padding-left: 8px;
-  background: #eee; }
+  background: #fff; }
 
 .item-input-inset .item-input-wrapper input {
   padding-left: 4px;
@@ -7433,9 +7433,6 @@ img.profile-pic.right {
   vertical-align: middle;
   position: relative;
   top: -3px; }
-
-input, textarea, .item-input, .item-input-wrapper {
-  background-color: #f4f4f4 !important; }
 
 .bold {
   font-weight: bold; }
