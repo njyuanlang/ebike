@@ -33,6 +33,11 @@ controllers
     $rootScope.currentChat = chat;
     $state.go('tab.chat');
   }
+  
+  $scope.remove = function (chat) {
+    var index = $scope.chats.indexOf(chat);
+    $scope.chats.splice(index);
+  }
 })
 
 .controller('ChatCtrl', function ($scope, $rootScope, $state, Message, $ionicActionSheet, $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {

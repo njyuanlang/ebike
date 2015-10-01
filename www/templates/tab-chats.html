@@ -5,12 +5,16 @@
     </ion-refresher>
 
     <ion-list class="chat">
-      <a class="item item-avatar" ng-repeat="chat in chats" ng-click="showDetail(chat)">
+      <ion-item class="item item-avatar" ng-repeat="chat in chats" ng-click="showDetail(chat)">
+        <ion-delete-button class="ion-minus-circled"></ion-delete-button>
         <img ng-src="{{chat.avatar}}" >
         <span class="item-note">{{chat.message.CreateTime | moment_unix : 'from_now'}}</span>
         <h2 class="padding-bottom">{{chat.user.name || '未知账号'}} </h2>
         <p class="calm">{{chat.message.Content}}</p>
-      </a>
+        
+        <ion-option-button class="button-assertive" ng-click="remove(chat)">删除</ion-option-button>
+      </ion-item>
     </ion-list>
+    
   </ion-content>
 </ion-view>

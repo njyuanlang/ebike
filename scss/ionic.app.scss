@@ -522,7 +522,12 @@ $angularSpeed: 180deg/$maxSpeed;
 
 // Item for chat
 .chat {
-  .item {
+
+  .item {    
+    .item-content {
+      background-color: transparent !important;
+    }
+    
     h2 {
       font-size: 1.2rem;
     }
@@ -535,5 +540,6 @@ $angularSpeed: 180deg/$maxSpeed;
   .item-note {
     font-size: 1.0rem;
   }
+  
 }
 

@@ -8465,6 +8465,8 @@ a.autolinker {
   font-size: 2rem;
   vertical-align: middle; }
 
+.chat .item .item-content {
+  background-color: transparent !important; }
 .chat .item h2 {
   font-size: 1.2rem; }
 .chat .item p {
