@@ -1,8 +1,18 @@
-<ion-view title="选择省份">
+<ion-view title="选择地区">
   <ion-nav-bar></ion-nav-bar>
   <ion-content class="scroll-bg padding">
     
     <div class="list">
+      <div class="item item-divider">
+        当前城市
+      </div>
+      <a class="item transparent-bg item-icon-right" ng-click="selectCurrentCity()">
+        {{ currentCity }}
+        <i class="icon ion-loading-c" ng-show="locating"></i>
+      </a>
+      <div class="item item-divider">
+        手动选择
+      </div>
       <a ng-repeat="item in entities" class="item transparent-bg" 
          ng-click="goCities(item)">
         {{ item.name }}

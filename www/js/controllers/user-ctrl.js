@@ -309,16 +309,57 @@ controllers
   
 })
 
-.controller('ProvincesCtrl', function ($scope, $state, ChinaRegion, $ionicNavBarDelegate) {
+.controller('ProvincesCtrl', function ($scope, $state, ChinaRegion, $ionicNavBarDelegate, User, $ionicLoading) {
   $scope.entities = ChinaRegion.provinces
   $scope.goCities = function (item) {
     $state.go('cities', {province: JSON.stringify(item)})
-  }
+  };
   $scope.$on("$ionicView.enter", function (event) {
-    $ionicNavBarDelegate.title('选择省份');
+    $scope.getLocalCity();
+    $ionicNavBarDelegate.title('选择地区');
     $ionicNavBarDelegate.showBar(true);
     $ionicNavBarDelegate.showBackButton(true);
   });
+  
+  $scope.getLocalCity = function () {
+    $scope.locating = true;
+    $scope.currentCity = "正在定位..."
+    AMap.service(["AMap.CitySearch"], function() {
+      var citysearch = new AMap.CitySearch();
+      citysearch.getLocalCity(function(status, result) {
+        if (status === 'complete' && result.info === 'OK') {
+          if (result && result.city && result.bounds) {
+            $scope.currentCity = result.city;
+          }
+        } else {
+          $scope.currentCity = result.info;
+        }
+        $scope.locating = false;
+        $scope.$apply();
+      });
+    });
+  };
+  
+  $scope.selectCurrentCity = function () {
+    AMap.service(["AMap.Geocoder"], function () {
+      var geocoder = new AMap.Geocoder({city: $scope.currentCity});
+      geocoder.getLocation($scope.currentCity, function (status, result) {
+        if(status === 'complete' && result.info === 'OK') {
+          User.prototype$updateAttributes({id: $scope.currentUser.id}, {region: {
+            province: result.geocodes[0].addressComponent.province,
+            city: $scope.currentCity
+          }});
+          $state.go('tab.account');
+        } else {
+          $ionicLoading.show({
+            template: '<i class="icon ion-minus-circled padding"></i>选择城市失败：'+result.info,
+            duration: 2000
+          });
+        }
+        console.log(arguments);
+      });
+    })
+  };
 })
 
 .controller('CitiesCtrl', function ($scope, $state, ChinaRegion, User, $rootScope, $window) {
@@ -332,20 +373,10 @@ controllers
         city: item.name
       }
       User.prototype$updateAttributes({ id: user.id }, { region: user.region}, function () {
-        // if($window.ble) {
-        //   $window.ble.isEnabled(function (result) {
-        //     //bluetooth is enabled
-        //   }, function (error) {
-        //     $ionicPopup.alert({
-        //       title: '打开蓝牙来允许“帮大师”连接到车辆',
-        //       okText: '好'
-        //     });
-        //   })
-        // }
       })
     });
-    // $rootScope.$broadcast('go.home');
     $state.go('tab.account');
-  }  
+  }
+  
 })
 
