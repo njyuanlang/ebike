@@ -17,7 +17,7 @@ controllers
   
   $scope.showDetail = function (item) {
     $scope.currentBike = item
-    $state.go('bike')
+    $state.go('tab.bike')
   }
   
 })
@@ -99,7 +99,7 @@ controllers
       "name": brand.name+"牌电动车"
     }
     
-    $state.go('bike', {bikeId: 'create'})
+    $state.go('tab.bike', {bikeId: 'create'})
   }
 })
 
@@ -193,10 +193,7 @@ controllers
           $scope.scanTimer = $timeout(stopScan, 5000)
           ble.scan([], 5, scanSuccessCb, scanErrorCb)
         }, function (error) {
-          $ionicPopup.alert({
-            title: '打开蓝牙来允许“帮大师”连接到车辆',
-            okText: '好'
-          });
+          $rootScope.$broadcast('bluetooth.disabled');
         })      
       }
     });

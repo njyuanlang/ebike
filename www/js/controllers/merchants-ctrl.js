@@ -30,10 +30,10 @@ controllers
     cloudDataLayer.setMap(map);
 
     AMap.event.addListener(cloudDataLayer, 'click', function (result) {
-      console.log(result.data);
+      console.debug(result.data);
       var clouddata = result.data;
       var ability = JSON.parse(clouddata.ability && "{"+clouddata.ability+"}" || "{}")
-      console.log(ability);
+      console.debug(ability);
       var content = "<h3><font face='微软雅黑'color='#36F'>"+clouddata._name+"</font></h3><hr/>"+
         "<font color='#000'>地址："+clouddata._address+"<br/>"+
         "电话："+clouddata.telephone+"<br/>";
@@ -61,7 +61,7 @@ controllers
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
     map.setCenter([position.coords.longitude, position.coords.latitude]);
   }, function(error){
-    console.log("Could not get location: "+JSON.stringify(error));
+    console.debug("Could not get location: "+JSON.stringify(error));
   });
   
   $scope.add = function () {
@@ -101,10 +101,10 @@ controllers
     if(geocoder) {
       geocoder.getAddress($scope.entity._location, function(status, result){
         if(status=='error') {
-          console.log('amap service error');
+          console.debug('amap service error');
         }
         if(status=='no_data') {
-          console.log("no data, try other key words");
+          console.debug("no data, try other key words");
         }
         else {
           var ac = result.regeocode.addressComponent;
@@ -112,14 +112,14 @@ controllers
           $scope.entity.city = ac.city;
           $scope.entity.district = ac.district;
           $scope.entity._address = ac.street+ac.streetNumber;
-          console.log(result);
+          console.debug(result);
         }
       });
     }
   });
 
   $scope.chooseImage = function () {
-    console.log('==========='+$scope.entity);
+    console.debug('==========='+$scope.entity);
     $scope.entity.avatar = "img/logo.png";
   };
   

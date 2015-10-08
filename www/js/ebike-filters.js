@@ -85,7 +85,7 @@ angular.module('ebike.filters',[])
   }
   
   return function (msg) {
-    return dictionary[msg] || "未知错误"
+    return dictionary[msg] || "登录失败"
   }
 })
 

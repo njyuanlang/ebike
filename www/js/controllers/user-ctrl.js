@@ -57,13 +57,14 @@ controllers
     $ionicLoading.show({
       template: '<i class="icon ion-loading-c ion-loading padding"></i>登录中...'
     })
+    
+    console.debug(JSON.stringify($scope.entity));
     User.login($scope.entity, function (accessToken) {
       $timeout.cancel($scope.loginPromise)
       $ionicLoading.show({
         template: '<i class="icon ion-ios7-checkmark-outline padding"></i>登录成功',
         duration: 1000
       })
-      console.debug(JSON.stringify($scope.entity));
       $localstorage.setObject('$$LastLoginData$$', $scope.entity)
       $rootScope.$broadcast('user.DidLogin', {userId: accessToken.userId})
       $rootScope.$broadcast('go.home', {bike: ActiveBLEDevice.getBike()})
@@ -73,7 +74,8 @@ controllers
         template: '<i class="icon ion-ios7-close-outline padding"></i>',
         duration: 2000
       }
-      option.template += $filter('loginErrorPrompt')(res.data.error.message)
+      console.trace(JSON.stringify(arguments));
+      option.template += $filter('loginErrorPrompt')(res.data && res.data.error.message)
       $ionicLoading.show(option)      
     })
     
@@ -183,7 +185,7 @@ controllers
         .then(function () {
           console.debug('Success Logout');
         }, function (reason) {
-          console.debug('Logout Failure for '+reason);
+          console.debug('Logout Failure for '+reason.data.error.message);
         });
         LoopBackAuth.clearUser();
         LoopBackAuth.clearStorage();
@@ -203,16 +205,16 @@ controllers
     //   headers: {'Content-Type': undefined}
     // })
     // .success(function(){
-    //   console.log('SUCCESS')
+    //   console.debug('SUCCESS')
     // })
     // .error(function(){
-    //   console.log('FAILED')
+    //   console.debug('FAILED')
     // });
     // Upload.upload({container: $scope.entity.id}, $scope.avatar)
     // .$promise.then(function (result) {
-    //   console.log('Transfer SUCCESS: ', JSON.stringify(result))
+    //   console.debug('Transfer SUCCESS: ', JSON.stringify(result))
     // }, function (err) {
-    //   console.log(err.message)
+    //   console.debug(err.message)
     // }, function (progress) {
     //
     // })
@@ -225,11 +227,11 @@ controllers
     }
 
     $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
-      console.log('Transfer SUCCESS: ', JSON.stringify(result))
+      console.debug('Transfer SUCCESS: ', JSON.stringify(result))
     }, function (err) {
-      console.log(err.message)
+      console.debug(err.message)
     }, function (progress) {
-      // console.log(progress)
+      // console.debug(progress)
     })
   }
   
@@ -255,19 +257,19 @@ controllers
         chooseText: "选择"
       })
     }, function(err) {
-      console.log("getPicture ERROR: ", err.message)
+      console.debug("getPicture ERROR: ", err.message)
     })
     .then(function (canvas) {
       $rootScope.avatar = canvas.toDataURL()
       var base64Data = $scope.avatar
       return $cordovaFile.writeFile(cordova.file.dataDirectory, "avatar.png", base64Data, true)
     }, function (err) {
-      console.log('Crop Error:', err)
+      console.debug('Crop Error:', err)
     })
     .then(function (evt) {
       return Upload.getContainer({container: $scope.entity.id}).$promise
     }, function (err) {
-      console.log('Save avatar to local error:', JSON.stringify(err))
+      console.debug('Save avatar to local error:', JSON.stringify(err))
     })
     .then(function (container) {
       return container
@@ -277,7 +279,7 @@ controllers
     .then(function (container) {
       uploadAvatar()
     }, function (err) {
-      console.log("Create/GET Container ERROR:", JSON.stringify(err))
+      console.debug("Create/GET Container ERROR:", JSON.stringify(err))
     })
     
     return true;
@@ -356,7 +358,7 @@ controllers
             duration: 2000
           });
         }
-        console.log(arguments);
+        console.debug(arguments);
       });
     })
   };

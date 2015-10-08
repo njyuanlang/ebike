@@ -71,12 +71,24 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       ble.isEnabled(function (result) {
         ble.scan([], 10, function () {}, function () {})
       }, function (error) {
-        $ionicPopup.alert({
-          title: '打开蓝牙来允许“帮大师”连接到车辆',
-          okText: '好'
-        });
+        $rootScope.$broadcast('bluetooth.disabled');
       })
     }
+    
+    $rootScope.$on('bluetooth.disabled', function (event, args) {
+      if(!ionic.Platform.isIOS()) {
+        $ionicPopup.confirm({
+          title: '打开蓝牙',
+          subTitle: '允许“帮大师”连接到车辆',
+          cancelText: '取消',
+          okText: '设置'
+        }).then(function (res) {
+          if(res) {
+            ble.showBluetoothSettings();
+          }
+        });
+      }
+    });
     
     $rootScope.$on('go.home', function (event, args) {
       if(args && args.bike) {
