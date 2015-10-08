@@ -722,7 +722,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         scrollView.__refreshStart();
       }
 
-    });
+    }, 1000);
 
   }
 }])

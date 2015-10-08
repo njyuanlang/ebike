@@ -155,16 +155,15 @@ controllers
 
 .controller('BikesAddCtrl', function($scope, $state, ActiveBLEDevice, $timeout, $ionicLoading, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService, BLEDevice) {
   
-  var devices = []
+  var devices = [];
 
   function scanSuccessCb(result) {
     if(result && result.name && result.name != '') {
       var exist = devices.some(function (item) {
-        return item.id === result.id
-      })
+        return item.id === result.id;
+      });
       if(!exist) {
-        devices.push(result)
-        // $scope.entities.push(result)
+        devices.push(result);
       }
     }
   }
@@ -173,14 +172,19 @@ controllers
     $scope.$broadcast('scroll.refreshComplete')
   }
   
-  function stopScan() {
-    $scope.$broadcast('scroll.refreshComplete')
-    $scope.scanTimer = null
-    $scope.entities = devices
+  function stopScan(isForce) {
+    console.log('stopScan================');
+    if(isForce || devices.length > 0) {
+      $scope.scanTimer = null;
+      $scope.entities = devices;
+      $scope.$broadcast('scroll.refreshComplete');
+    } else {
+      doScan();
+    }
   }
 
   function doScan() {
-    if(!$scope.online) return stopScan();
+    if(!$scope.online) return;
     
     ActiveBLEDevice.get().disconnect()
     .then(function () {
@@ -275,14 +279,13 @@ controllers
   }
   
   $scope.$on("$ionicView.leave", function () {
+    stopScan(true);
     ActiveBLEDevice.get().autoconnect()
   })
   
   $scope.$on("$ionicView.enter", function () {
-    $scope.entities = []
-    $timeout(function () {
-      if($scope.online) PtrService.triggerPtr('mainScroll');
-    }, 500);
+    $scope.entities = [];
+    if($scope.online) PtrService.triggerPtr('mainScroll');
   })
-  
+    
 })
