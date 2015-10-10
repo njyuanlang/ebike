@@ -1,17 +1,22 @@
 # !/bin/sh
 
-cd $(dirname $0)/platforms/android/ant-build/
-
 cordova build --release android
 
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore yuanlang-release.keystore CordovaApp-release-unsigned.apk yuanlang
+cd $(dirname $0)/platforms/android/build/outputs/apk
+
+UNSIGNED_APK=android-release-unsigned.apk
+OUTPUT_APK=ebike.apk
+KEYSTORE=yuanlang-release.keystore
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $KEYSTORE $UNSIGNED_APK yuanlang
 
 rm ebike.apk
 
-zipalign -v 4 CordovaApp-release-unsigned.apk ebike.apk
+zipalign -v 4 $UNSIGNED_APK $OUTPUT_APK
 
 # adb install -r ebike.apk
-# scp ebike.apk deploy@121.40.108.30:ebike-manufacturer/.
+scp ebike.apk deploy@121.40.108.30:ebike-manufacturer/.
 
 # ====Debug Android====
 # adb logcat CordovaLog:D \*:S
+# adb logcat | grep chromise
