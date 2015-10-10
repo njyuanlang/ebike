@@ -1,11 +1,10 @@
 controllers
 
-.controller('MerchantsCtrl', function($scope, $state, $cordovaGeolocation) {
+.controller('MerchantsCtrl', function($scope, $state, $cordovaGeolocation, $ionicTemplateLoader, $ionicBody) {
 
   var map = new AMap.Map('container',{
     zoom: 15,
     center: [118.786331,31.936223]
-    // center: [position.coords.longitude, position.coords.latitude]
   });
 
   AMap.plugin(['AMap.Geolocation', 'AMap.CloudDataLayer'],function(){
@@ -31,34 +30,34 @@ controllers
 
     AMap.event.addListener(cloudDataLayer, 'click', function (result) {
       console.debug(result.data);
+      $scope.clouddata = result.data;
+      $scope.$apply();
       var clouddata = result.data;
       var ability = JSON.parse(clouddata.ability && "{"+clouddata.ability+"}" || "{}")
-      console.debug(ability);
-      var content = "<h3><font face='微软雅黑'color='#36F'>"+clouddata._name+"</font></h3><hr/>"+
-        "<font color='#000'>地址："+clouddata._address+"<br/>"+
-        "电话："+clouddata.telephone+"<br/>";
-      if(ability.anybrand) content += '<i class="icon ion-checkmark-circled ion-large padding-right"></i>维修任意品牌';
-      if(ability.charge) content += '<i class="icon ion-checkmark-circled ion-large padding-right"></i>充电';
-      if(ability.onsite) content += '<i class="icon ion-checkmark-circled ion-large padding-right"></i>5公里内上门';
-      if(ability.wheel2) content += '<i class="icon ion-checkmark-circled ion-large padding-right"></i>修两轮车';
-      if(ability.wheel3) content += '<i class="icon ion-checkmark-circled ion-large padding-right"></i>修三轮车';
-      
-      content += "</font>";
-      var infoWindow = new AMap.InfoWindow({
-        content: content,
-        closeWhenClickMap: true,
-        // isCustom: true,
-        size: new AMap.Size(280, 0),
-        autoMove: true,
-        offset: new AMap.Pixel(0, -25)
+      $scope.ability = ability;
+      $ionicTemplateLoader.compile({
+        templateUrl: 'merchant-popover.html',
+        scope: $scope,
+        appendTo: $ionicBody.get()
+      }).then(function (result) {
+        var infoWindow = new AMap.InfoWindow({
+          // content: document.getElementById('info'),
+          content: result.element[0],
+          closeWhenClickMap: true,
+          // isCustom: true,
+          size: new AMap.Size(240, 0),
+          autoMove: true,
+          offset: new AMap.Pixel(0, -25)
+        });
+        infoWindow.open(map, clouddata._location);
       });
-      infoWindow.open(map, clouddata._location);
     });
   })
 
   var options = {timeout: 10000, enableHighAccuracy: true};
  
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+    $scope.myPosition = new AMap.LngLat(position.coords.longitude, position.coords.latitude);
     map.setCenter([position.coords.longitude, position.coords.latitude]);
   }, function(error){
     console.debug("Could not get location: "+JSON.stringify(error));
@@ -66,7 +65,17 @@ controllers
   
   $scope.add = function () {
     $state.go('^.merchant-add', {position: map.getCenter()});
-  }
+  };
+  
+  $scope.navigate = function () {
+    $scope.MWalk.search($scope.myPosition, $scope.clouddata._location);
+  };
+  
+  AMap.service(["AMap.Driving"], function() {
+    $scope.MWalk = new AMap.Driving({
+      map: map
+    });
+  });
 })
 
 .controller('MerchantAddCtrl', function($scope, $state, Poi, $ionicLoading) {

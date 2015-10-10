@@ -543,3 +543,21 @@ $angularSpeed: 180deg/$maxSpeed;
   
 }
 
+// merchant map
+#result1 {
+  position: absolute;
+  background-color: white;
+  max-height: 100%;
+  overflow-y: auto;
+  top: 10px;
+  right: 10px;
+  width: 280px;
+}
+
+#info {
+  font-size: 1rem;
+  color: black;
+  h3, p {
+    color: #36F;
+  }
+}
