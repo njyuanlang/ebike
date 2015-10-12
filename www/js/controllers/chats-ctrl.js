@@ -89,7 +89,14 @@ controllers
   });
 
   function getMessages() {
-    Message.find({filter:{where:{CreateTime:{gt: latestTime}}}}, function (results) {
+    Message.find({filter:{
+      where:{
+        CreateTime:{gt: latestTime},
+        and: [{
+          or:[{ToUserName: $scope.currentChat.user.id},{FromUserName: $scope.currentChat.user.id}]
+        }]
+      }
+    }}, function (results) {
       $scope.messages = results.concat($scope.messages);
       if(results.length) {
         $scope.currentChat.message = results[0];

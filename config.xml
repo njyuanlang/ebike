@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.extensivepro.ebike" version="2.0.0" ios-CFBundleVersion="309" android-versionCode="309" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.extensivepro.ebike" version="2.0.0" ios-CFBundleVersion="311" android-versionCode="311" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>帮大师</name>
   <description>
     电动车手机管理应用
