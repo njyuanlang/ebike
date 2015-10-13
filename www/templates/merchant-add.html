@@ -27,21 +27,21 @@
       
       <div class="card">
         <div class="item item-divider">联系方式</div>
+        <div class="item" ui-sref="tab.merchant-mark()">
+          <div id="container2"></div>
+          <a class="button button-block button-royal icon-left ion-location">点击选择地址</a>
+        </div>
         <div class="item item-stacked-label item-light">
           <!-- <span class="input-label">地区</span> -->
           <span class="input-label">地区  {{entity.province}} {{entity.city}} {{entity.district}}</span>
         </div>
         <label class="item item-input item-stacked-label item-light">
-          <span class="input-label">地址：必填</span>
+          <span class="input-label">详细地址：必填</span>
           <input type="text" placeholder="例如：迎翠路7号" ng-model="entity._address" name="address" required>
           <span class="assertive input-label" ng-show="merchantForm.address.$invalid && !merchantForm.address.$pristine">
             地址不能为空
           </span>
         </label>
-        <div class="item" ui-sref="tab.merchant-mark()">
-          <div id="container2"></div>
-          <a class="button button-block button-positive icon-left ion-location">点击选择地址</a>
-        </div>
         <label class="item item-input item-stacked-label item-light">
           <span class="input-label">联系人：必填</span>
           <input type="text" placeholder="例如：李明" ng-model="entity.linkman" name="linkman" required>

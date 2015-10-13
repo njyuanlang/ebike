@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, $ionicLoading, User, $localstorage, $ionicHistory, $rootScope, $ionicPlatform) {
+.controller('HomeCtrl', function($scope, $state, ActiveBLEDevice, $ionicLoading, User, $localstorage) {
     
   $scope.$on( 'realtime.update', function (event) {
     if($scope.device.bike.workmode === 9 && $scope.device.realtime.power > 24) {
@@ -13,18 +13,6 @@ controllers
     $scope.device = ActiveBLEDevice.get()
     // console.debug(JSON.stringify($scope.device));
     if(!$scope.online) return $scope.device.onConnected()
-
-    $scope.deregisterBackButtonAction = $ionicPlatform.registerBackButtonAction(function () {
-      $scope.device.disconnect().then(function () {
-        ionic.Platform.exitApp();
-      }, function () {
-        ionic.Platform.exitApp();
-      });
-    }, 100);
-  })
-
-  $scope.$on("$ionicView.leave", function () {
-    if($scope.deregisterBackButtonAction) $scope.deregisterBackButtonAction();
   })
 
   $scope.goTest = function () {

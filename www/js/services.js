@@ -659,13 +659,16 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       return cachedBike.get();
     },
     set: function (device) {
-      _activeBLE = device
+      // _activeBLE = device
+      $rootScope.activeBLEDevice = device;
       $rootScope.currentBike = device.bike;
       cachedBike.set(device.bike);
     },
     get: function () {
-      if(!_activeBLE) this.setBike(cachedBike.get());
-      return _activeBLE
+      if(!$rootScope.activeBLEDevice) this.setBike(cachedBike.get());
+      return $rootScope.activeBLEDevice;
+      // if(!_activeBLE) this.setBike(cachedBike.get());
+      // return _activeBLE
     }
   }
 
