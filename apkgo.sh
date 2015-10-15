@@ -6,7 +6,7 @@ cd $(dirname $0)/platforms/android/build/outputs/apk
 
 UNSIGNED_APK=android-release-unsigned.apk
 OUTPUT_APK=ebike.apk
-KEYSTORE=yuanlang-release.keystore
+KEYSTORE=~/.android/yuanlang-release.keystore
 
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $KEYSTORE $UNSIGNED_APK yuanlang
 

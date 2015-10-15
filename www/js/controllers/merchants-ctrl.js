@@ -1,27 +1,35 @@
 controllers
 
-.controller('MerchantsCtrl', function($scope, $state, $cordovaGeolocation, $ionicTemplateLoader, $ionicBody) {
+.controller('MerchantsCtrl', function($scope, $state, $ionicTemplateLoader, $ionicBody, $rootScope) {
 
   var map = new AMap.Map('container',{
-    zoom: 15,
-    center: [118.786331,31.936223]
+    zoom: 15
   });
 
   AMap.plugin(['AMap.Geolocation', 'AMap.CloudDataLayer'],function(){
-    var geolocation = new AMap.Geolocation({
-      enableHighAccuracy: true,//是否使用高精度定位，默认:true
-      timeout: 10000,          //超过10秒后停止定位，默认：无穷大
-      maximumAge: 0,           //定位结果缓存0毫秒，默认：0
-      convert: true,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-      showButton: true,        //显示定位按钮，默认：true
-      buttonPosition: 'LB',    //定位按钮停靠位置，默认：'LB'，左下角
-      buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-      showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
-      showCircle: true,        //定位成功后用圆圈表示定位精度范围，默认：true
-      panToLocation: true,     //定位成功后将定位到的位置作为地图中心点，默认：true
-      zoomToAccuracy:true      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-    });
-    map.addControl(geolocation);
+
+    if($scope.isAndroid) {
+      // AMap.event.addListener(geolocation, 'click', function (result) {
+      //   console.log('=====geolocation===click====');
+      //   androidLocate();
+      // });
+    } else {
+      var geolocation = new AMap.Geolocation({
+        enableHighAccuracy: false,//是否使用高精度定位，默认:true
+        timeout: 5000,          //超过10秒后停止定位，默认：无穷大
+        maximumAge: 3000,           //定位结果缓存0毫秒，默认：0
+        zoomToAccuracy:true      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+      });
+      map.addControl(geolocation);
+      AMap.event.addListener(geolocation, 'complete', function (result) {
+        $rootScope.myPosition = result.position;
+        map.setZoomAndCenter(15, $rootScope.myPosition);
+      });
+      AMap.event.addListener(geolocation, 'error', function (error) {
+        console.debug("Location error: "+JSON.stringify(error));
+      });
+      geolocation.getCurrentPosition();
+    }
 
     var cloudDataLayer = new AMap.CloudDataLayer('55ffc0afe4b0ead8fa4df390', {
       clickable: true
@@ -29,7 +37,6 @@ controllers
     cloudDataLayer.setMap(map);
 
     AMap.event.addListener(cloudDataLayer, 'click', function (result) {
-      console.debug(result.data);
       $scope.clouddata = result.data;
       $scope.$apply();
       var clouddata = result.data;
@@ -54,17 +61,21 @@ controllers
     });
   })
 
-  var options = {timeout: 10000, enableHighAccuracy: true};
- 
-  $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-    $scope.myPosition = new AMap.LngLat(position.coords.longitude, position.coords.latitude);
-    map.setCenter([position.coords.longitude, position.coords.latitude]);
-  }, function(error){
-    console.debug("Could not get location: "+JSON.stringify(error));
-  });
-  
+  function androidLocate() {
+    navigator.amaplocation.getCurrentPosition(function (result) {
+      $rootScope.myPosition = new AMap.LngLat(result.lng, result.lat);
+      map.setZoomAndCenter(15, $rootScope.myPosition);
+      console.log("amaplocation==="+JSON.stringify(result));
+    }, function (err) {
+      console.debug("Location error: "+JSON.stringify(arguments));
+    });
+  }
+  if($scope.isAndroid) {
+    androidLocate();
+  }
+
   $scope.add = function () {
-    $state.go('^.merchant-add', {position: map.getCenter()});
+    $state.go('^.merchant-add');
   };
   
   $scope.navigate = function () {
@@ -81,7 +92,7 @@ controllers
 .controller('MerchantAddCtrl', function($scope, $state, Poi, $ionicLoading) {
 
   $scope.entity = {
-    _location: [118.58883, 31.837322],
+    _location: $scope.myPosition,
   };
   $scope.ability = {
     anybrand: true,
@@ -103,8 +114,7 @@ controllers
   });
   
   $scope.$on("$ionicView.enter", function () {
-    $scope.entity._location = $scope.markerPosition || $state.params.position || $scope.entity._location;
-    console.debug($scope.entity._location, $scope.markerPositon, $state.params.position);
+    $scope.entity._location = $scope.markerPosition || $scope.entity._location;
     map.setCenter($scope.entity._location);
     marker.setPosition($scope.entity._location);
     if(geocoder) {
@@ -156,7 +166,7 @@ controllers
   
 })
 
-.controller('MerchantMarkCtrl', function($scope, $state, $cordovaGeolocation, $rootScope, $ionicLoading) {
+.controller('MerchantMarkCtrl', function($scope, $state, $rootScope, $ionicLoading) {
 
   var marker = null;
   var _onclick = function (e) {
@@ -172,7 +182,7 @@ controllers
 
   var map = new AMap.Map('container3',{
     zoom: 15,
-    center: [118.58883, 31.837322]
+    center: $scope.myPosition
   });
   map.on('click', _onclick);
 
@@ -204,14 +214,6 @@ controllers
     });
   })
 
-  var options = {timeout: 10000, enableHighAccuracy: true};
- 
-  $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-    map.setCenter([position.coords.longitude, position.coords.latitude]);
-  }, function(error){
-    console.debug("Could not get location: "+JSON.stringify(error));
-  });
-  
   $scope.confirm = function () {
     if(!marker) {
       return $ionicLoading.show({
