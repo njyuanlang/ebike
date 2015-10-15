@@ -48,7 +48,7 @@ controllers
 
       }, function (reason) {
         if(reason === 'no localId') {
-          $state.go('bikes-add')
+          $state.go('tab.home-bind')
         } else if(reason === 'connecting') {
           console.debug('prevent from contiuning autoconnect');
         } else {

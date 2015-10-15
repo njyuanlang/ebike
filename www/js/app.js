@@ -209,7 +209,15 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         }
       }
     })
-
+    .state('tab.home-bind', {
+      url: "/bikes/add",
+      views: {
+        'tab-home': {
+          templateUrl: "templates/bikes-add.html",
+          controller: 'BikesAddCtrl'
+        }
+      }
+    })
     // cruise 
     .state('cruise', {
       url: "/cruise",
@@ -312,6 +320,11 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       templateUrl: "templates/models.html",
       controller: 'ModelsCtrl'
     })
+    .state('bike-register', {
+      url: "/bikes/:bikeId",
+      templateUrl: "templates/bike.html",
+      controller: 'BikeCtrl'
+    })
     .state('tab.wheeldiameters', {
       url: "bikes/:id/wheeldiameters",
       views: {
@@ -339,10 +352,14 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         }
       }
     })
-    .state('bikes-add', {
+    .state('tab.bikes-add', {
       url: "/bikes/add",
-      templateUrl: "templates/bikes-add.html",
-      controller: 'BikesAddCtrl'
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/bikes-add.html",
+          controller: 'BikesAddCtrl'
+        }
+      }
     })
     // messages
     .state('tab.messages', {
@@ -373,9 +390,13 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       }
     })
     // help
-    .state('help', {
+    .state('tab.help', {
       url: "/help",
-      templateUrl: "templates/help.html"
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/help.html"
+        }
+      }
     })
     // about
     .state('tab.about', {
@@ -385,6 +406,11 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
           templateUrl: "templates/about.html"
         }
       }
+    })
+    // intro
+    .state('intro', {
+      url: "/intro",
+      templateUrl: "templates/help.html"
     })
     
 

@@ -22,14 +22,9 @@ controllers
   
 })
 
-.controller('BikeCtrl', function($scope, $state, Bike, $rootScope, ActiveBLEDevice, $ionicLoading, $ionicNavBarDelegate) {
-  $scope.registering = $state.params.bikeId && $state.params.bikeId === 'create';
+.controller('BikeCtrl', function($scope, $state, Bike, $rootScope, ActiveBLEDevice, $ionicLoading) {
   
-  // $scope.$on("$ionicView.enter", function (event) {
-  //   $ionicNavBarDelegate.title($scope.registering?'我的车辆':'我的车辆');
-  //   $ionicNavBarDelegate.showBar(true);
-  //   $ionicNavBarDelegate.showBackButton(true);
-  // });
+  $scope.registering = $state.params.bikeId && $state.params.bikeId === 'create';
 
   $scope.register = function () {
     Bike.create($scope.currentBike, function (result) {
@@ -99,7 +94,7 @@ controllers
       "name": brand.name+"牌电动车"
     }
     
-    $state.go('tab.bike', {bikeId: 'create'})
+    $state.go('bike-register', {bikeId: 'create'})
   }
 })
 
