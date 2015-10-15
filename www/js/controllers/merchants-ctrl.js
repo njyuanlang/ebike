@@ -63,13 +63,14 @@ controllers
 
   function androidLocate() {
     navigator.amaplocation.getCurrentPosition(function (result) {
+      console.log("amaplocation==="+JSON.stringify(result));
       $rootScope.myPosition = new AMap.LngLat(result.lng, result.lat);
       map.setZoomAndCenter(15, $rootScope.myPosition);
-      console.log("amaplocation==="+JSON.stringify(result));
     }, function (err) {
       console.debug("Location error: "+JSON.stringify(arguments));
     });
   }
+  
   if($scope.isAndroid) {
     androidLocate();
   }

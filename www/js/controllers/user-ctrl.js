@@ -1,6 +1,6 @@
 controllers
 
-.controller('EntryCtrl', function($scope, $rootScope, $localstorage, $ionicPlatform) {
+.controller('EntryCtrl', function($scope, $rootScope, $localstorage, $ionicPlatform, $state) {
 
   $scope.goTrial = function () {
     $rootScope.online = false
