@@ -8,22 +8,17 @@ controllers
 
   AMap.plugin(['AMap.Geolocation', 'AMap.CloudDataLayer'],function(){
 
-    if($scope.isAndroid) {
-      // AMap.event.addListener(geolocation, 'click', function (result) {
-      //   console.log('=====geolocation===click====');
-      //   androidLocate();
-      // });
-    } else {
+    if(!$scope.isAndroid) {
       var geolocation = new AMap.Geolocation({
         enableHighAccuracy: false,//是否使用高精度定位，默认:true
         timeout: 5000,          //超过10秒后停止定位，默认：无穷大
         maximumAge: 3000,           //定位结果缓存0毫秒，默认：0
+        showMarker: false,
         zoomToAccuracy:true      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
       });
       map.addControl(geolocation);
       AMap.event.addListener(geolocation, 'complete', function (result) {
-        $rootScope.myPosition = result.position;
-        map.setZoomAndCenter(15, $rootScope.myPosition);
+        setMyPosition(result.position);
       });
       AMap.event.addListener(geolocation, 'error', function (error) {
         console.debug("Location error: "+JSON.stringify(error));
@@ -61,11 +56,21 @@ controllers
     });
   })
 
+  function setMyPosition(position) {
+    $rootScope.myPosition = position;
+    map.setZoomAndCenter(15, $rootScope.myPosition);
+    if(!$rootScope.myPositionMarker) {
+      $rootScope.myPositionMarker = new AMap.Marker();
+    }
+    $rootScope.myPositionMarker.setPosition($rootScope.myPosition);
+    $rootScope.myPositionMarker.setMap(map);
+    // $rootScope.myPositionMarker.setContent('我');
+  }
+  
   function androidLocate() {
     navigator.amaplocation.getCurrentPosition(function (result) {
       console.log("amaplocation==="+JSON.stringify(result));
-      $rootScope.myPosition = new AMap.LngLat(result.lng, result.lat);
-      map.setZoomAndCenter(15, $rootScope.myPosition);
+      setMyPosition(new AMap.LngLat(result.lng, result.lat));
     }, function (err) {
       console.debug("Location error: "+JSON.stringify(arguments));
     });
@@ -187,13 +192,7 @@ controllers
   });
   map.on('click', _onclick);
 
-  AMap.plugin(['AMap.Geolocation', 'AMap.CloudDataLayer'],function(){
-    var geolocation = new AMap.Geolocation({
-      timeout: 10000,          //超过10秒后停止定位，默认：无穷大
-      zoomToAccuracy:true      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-    });
-    map.addControl(geolocation);
-
+  AMap.plugin(['AMap.CloudDataLayer'],function(){
     var cloudDataLayer = new AMap.CloudDataLayer('55ffc0afe4b0ead8fa4df390', {
       clickable: true
     });
