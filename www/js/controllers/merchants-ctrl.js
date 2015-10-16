@@ -2,6 +2,7 @@ controllers
 
 .controller('MerchantsCtrl', function($scope, $state, $ionicTemplateLoader, $ionicBody, $rootScope) {
 
+  var infoWindow = null;
   var map = new AMap.Map('container',{
     zoom: 15
   });
@@ -42,7 +43,7 @@ controllers
         scope: $scope,
         appendTo: $ionicBody.get()
       }).then(function (result) {
-        var infoWindow = new AMap.InfoWindow({
+        infoWindow = new AMap.InfoWindow({
           // content: document.getElementById('info'),
           content: result.element[0],
           closeWhenClickMap: true,
@@ -64,7 +65,6 @@ controllers
     }
     $rootScope.myPositionMarker.setPosition($rootScope.myPosition);
     $rootScope.myPositionMarker.setMap(map);
-    // $rootScope.myPositionMarker.setContent('我');
   }
   
   function androidLocate() {
@@ -85,11 +85,13 @@ controllers
   };
   
   $scope.navigate = function () {
+    if(infoWindow) infoWindow.close();
     $scope.MWalk.search($scope.myPosition, $scope.clouddata._location);
   };
   
   AMap.service(["AMap.Driving"], function() {
     $scope.MWalk = new AMap.Driving({
+      panel: result1,
       map: map
     });
   });
