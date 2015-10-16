@@ -424,4 +424,20 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
   $ionicConfigProvider.navBar.alignTitle('center');
 })
 
+.config(function ($httpProvider) {
+  $httpProvider.interceptors.push(function($q, $location, LoopBackAuth) {
+    return {
+      responseError: function(rejection) {
+        if (rejection.status == 401) {
+          LoopBackAuth.clearUser();
+          LoopBackAuth.clearStorage();
+          $location.path('/entry')
+        }
+        return $q.reject(rejection);
+      }
+    };
+  });
+})
+
+
 var controllers = angular.module('ebike.controllers', [])

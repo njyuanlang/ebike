@@ -1,6 +1,6 @@
 controllers
 
-.controller('ChatsCtrl', function ($scope, $state, Message, RemoteStorage, $timeout, $rootScope) {
+.controller('ChatsCtrl', function ($scope, $state, Message, RemoteStorage, $timeout, $rootScope, PtrService) {
   
   var syncTimer = null;
   var syncDone = function () {
@@ -27,8 +27,6 @@ controllers
     syncTimer = $timeout(syncDone, 5000);
   }
   
-  $scope.sync();
-
   $scope.showDetail = function (chat) {
     $rootScope.currentChat = chat;
     $state.go('tab.chat');
@@ -38,6 +36,10 @@ controllers
     var index = $scope.chats.indexOf(chat);
     $scope.chats.splice(index, 1);
   }
+  
+  $scope.$on("$ionicView.enter", function () {
+    PtrService.triggerPtr('messageScroll');
+  });
 })
 
 .controller('ChatCtrl', function ($scope, $rootScope, $state, Message, $ionicActionSheet, $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
