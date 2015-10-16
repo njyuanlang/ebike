@@ -23,6 +23,7 @@
     </feature>
     <access origin="http://webapi.amap.com/" />
     <access origin="http://121.40.108.30:3000/api/" />
+    <access origin="tel:*" launch-external="yes" />
     <platform name="ios">
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
         <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
