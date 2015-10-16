@@ -20,3 +20,4 @@ adb install -r ebike.apk
 # ====Debug Android====
 # adb logcat CordovaLog:D \*:S
 # adb logcat | grep chromise
+# adb logcat | grep 'Web Console'

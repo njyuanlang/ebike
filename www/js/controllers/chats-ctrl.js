@@ -36,7 +36,7 @@ controllers
   
   $scope.remove = function (chat) {
     var index = $scope.chats.indexOf(chat);
-    $scope.chats.splice(index);
+    $scope.chats.splice(index, 1);
   }
 })
 
