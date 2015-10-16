@@ -137,6 +137,7 @@ controllers
           $scope.entity.city = ac.city;
           $scope.entity.district = ac.district;
           $scope.entity._address = ac.street+ac.streetNumber;
+          $scope.$apply();
           console.debug(result);
         }
       });
