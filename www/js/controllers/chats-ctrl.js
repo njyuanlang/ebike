@@ -15,9 +15,9 @@ controllers
       $scope.chats = results;
       results.forEach(function (item) {
         item.avatar = 'img/user-icon.png';
-        RemoteStorage.getAvatar(item._id).success(function (buffer) {
-          item.avatar = buffer;
-        });
+        // RemoteStorage.getAvatar(item._id).success(function (buffer) {
+        //   item.avatar = buffer;
+        // });
       });
       syncDone();
     }, function (reason) {
