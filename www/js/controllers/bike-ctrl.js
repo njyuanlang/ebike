@@ -71,7 +71,7 @@ controllers
 })
 
 .controller('BrandsCtrl', function($scope, $state, Brand) {
-  $scope.entities = Brand.find()
+  $scope.entities = Brand.find({filter:{limit:100}});
   
   $scope.selectEntity = function (item) {
     $state.go('models', {brandId: item.id})
