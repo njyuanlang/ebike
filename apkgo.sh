@@ -14,8 +14,8 @@ rm ebike.apk
 
 zipalign -v 4 $UNSIGNED_APK $OUTPUT_APK
 
-adb install -r ebike.apk
-# scp ebike.apk deploy@121.40.108.30:ebike-manufacturer/.
+# adb install -r ebike.apk
+scp ebike.apk deploy@121.40.108.30:ebike-manufacturer/.
 
 # ====Debug Android====
 # adb logcat CordovaLog:D \*:S

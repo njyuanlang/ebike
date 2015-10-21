@@ -20,18 +20,27 @@
 </ion-view>
 
 <script id="pair-Popup.html" type="text/ng-template">
-  <div class="list">
-    <div class="item item-input">
-      <input type="password" ng-model="bike.password" placeholder="请输入现在的密码" ng-class="{'energized': bike.password.length !== 6}">
+  <form name="pairForm" novalidate>
+    <div class="list">
+      <div class="item item-input item-stacked-label">
+        <input name="password" type="tel" ng-model="bike.password" placeholder="请输入现在的密码" ng-minlength="6" ng-maxlength="6" required autofocus>
+        <span class="assertive input-label" ng-show="pairForm.password.$invalid && !pairForm.password.$pristine">
+          密码必须是6位数字
+        </span>
+      </div>
+      <div class="item item-input item-stacked-label">
+        <input name="newpassword" type="tel" ng-model="bike.newpassword" placeholder="请输入新密码" ng-minlength="6" ng-maxlength="6" required>
+        <span class="assertive input-label" ng-show="pairForm.newpassword.$invalid && !pairForm.newpassword.$pristine">
+          新密码必须是6位数字
+        </span>
+      </div>
+      <div class="item item-input item-stacked-label">
+        <input type="tel" ng-model="bike.newpassword2" placeholder="请再输入一次新密码" required>    
+        <span class="assertive input-label" ng-show="bike.newpassword !== bike.newpassword2 && !pairForm.newpassword2.$pristine">
+          两遍密码不一致
+        </span>
+      </div>
     </div>
-    <div class="item item-divider" ng-show="bike.password.length !== 6">密码必须是6位数字</div>
-    <div class="item item-input">
-      <input type="password" ng-model="bike.newpassword" placeholder="请输入新密码" required>
-    </div>
-    <div class="item item-divider" ng-show="bike.newpassword.length !== 6">新密码必须是6位数字</div>
-    <div class="item item-input">
-      <input type="password" ng-model="bike.newpassword2" placeholder="请再输入一次新密码" required>    
-    </div>
-    <div class="item item-divider" ng-show="bike.newpassword !== bike.newpassword2 ">两遍密码不一致</div>
-  </div>
+  </form>
 </script>
+

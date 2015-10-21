@@ -266,9 +266,10 @@ controllers
           }
         }
       ]
-    }).then(tryConnect);     
+    })
+    .then(tryConnect);     
   }
-  
+    
   $scope.goHome = function () {
     $rootScope.$broadcast('go.home');
   }
