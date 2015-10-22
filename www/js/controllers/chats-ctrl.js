@@ -121,7 +121,14 @@ controllers
     $scope.$broadcast('scroll.refreshComplete');
   }
   $scope.fetchEarlier = function () {
-    Message.find({filter:{where:{CreateTime:{lt: earliestTime}}}}, function (results) {
+    Message.find({filter:{
+      where:{
+        CreateTime:{lt: earliestTime},
+        and: [{
+          or:[{ToUserName: $scope.currentChat.user.id},{FromUserName: $scope.currentChat.user.id}]
+        }]
+      }
+    }}, function (results) {
       $scope.messages = $scope.messages.concat(results);
       if(results.length) earliestTime = results[results.length-1].CreateTime;
       fetchEarlierDone();
