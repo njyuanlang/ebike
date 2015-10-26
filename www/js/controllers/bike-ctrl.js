@@ -71,10 +71,36 @@ controllers
 })
 
 .controller('BrandsCtrl', function($scope, $state, Brand) {
-  $scope.entities = Brand.find({filter:{limit:100}});
+  $scope.entities = [];
+  var pages = 0;
+  var isMoreData = true;
+  var loading = false;
   
   $scope.selectEntity = function (item) {
     $state.go('models', {brandId: item.id})
+  }
+  
+  $scope.loadMoreData = function () {
+    if(loading) return;
+    loading = true;
+    Brand.find({filter:{
+      skip: pages*10,
+      limit:10
+    }}, function (results) {
+      loading = false;
+      pages++;
+      isMoreData = results.length === 10;
+      $scope.entities = $scope.entities.concat(results);
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    });
+  }
+  
+  $scope.$on('$ionicView.enter', function() {
+    $scope.loadMoreData();
+  });
+  
+  $scope.moreDataCanBeLoaded = function () {
+    return isMoreData;
   }
 })
 
