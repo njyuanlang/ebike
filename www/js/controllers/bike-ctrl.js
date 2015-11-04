@@ -31,8 +31,9 @@ controllers
       $scope.currentBike.id = result.id;
       $rootScope.$broadcast('go.home', {bike: $scope.currentBike})
     }, function (reason) {
+      console.log(JSON.stringify(reason));
       $ionicLoading.show({
-        template: "创建车辆失败："+reason,
+        template: "创建车辆失败："+reason.data.error.message,
         duration: 2000
       });
     });
