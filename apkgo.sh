@@ -19,5 +19,5 @@ scp ebike.apk deploy@121.40.108.30:ebike-manufacturer/.
 
 # ====Debug Android====
 # adb logcat CordovaLog:D \*:S
-# adb logcat | grep chromise
+# adb logcat | grep chromium
 # adb logcat | grep 'Web Console'

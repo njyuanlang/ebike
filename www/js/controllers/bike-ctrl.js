@@ -41,13 +41,17 @@ controllers
   
   $scope.$watch('currentBike.safe', function (newValue, oldValue) {
     if(newValue !== oldValue) {
+      if($scope.correctSafeMode) {
+        $scope.correctSafeMode = false;
+        return;
+      }
+      
       ActiveBLEDevice.get().safeMode(newValue)
       .then(function (result) {
         console.debug('Success Set SafeMode:'+newValue);
       }, function (reason) {
-        if(newValue) {
-          $scope.currentBike.safe = false;
-        }
+        $scope.correctSafeMode = true;
+        $scope.currentBike.safe = oldValue;
         $ionicLoading.show({
           template: '<i class="icon ion-ios7-information-outline padding"></i>'+reason,
           duration: 2000
@@ -239,6 +243,7 @@ controllers
       return device.changePassword(bike.newpassword);
     })
     .then(function (result) {
+      $scope.$ionicGoBack();
       $ionicLoading.show({
         template: '<i class="icon ion-ios7-checkmark-outline padding"></i>绑定车辆成功',
         duration: 2000
