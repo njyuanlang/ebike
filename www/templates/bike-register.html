@@ -1,0 +1,52 @@
+<ion-view title="我的车辆" cache-view="false">
+
+  <ion-content class="scroll-bg padding">
+    
+    <div class="list card">
+      <div class="item">
+        车辆名称： {{registerBike.name || '未命名'}}
+      </div>
+      <div class="item">
+        品牌型号：
+        {{registerBike.brand.name}} | {{registerBike.model}}
+      </div>
+    </div>
+    
+    <div class="list card">
+      <ion-toggle ng-model="registerBike.safe" ng-checked="registerBike.safe">
+       安全模式 
+      </ion-toggle>
+      <!-- <ion-toggle ng-model="registerBike.antiTheft" ng-checked="registerBike.antiTheft">
+       防盗模式
+      </ion-toggle> -->
+      <div class="item">
+        防盗模式
+      </div>
+    </div>
+
+    <div class="list card">
+      <div class="item item-icon-right" ui-sref='register-voltage()'>
+        电池电压
+        <span class="item-note">{{registerBike.voltage|| 0}} V</span>
+        <i class="icon ion-ios7-arrow-right"></i>
+      </div>
+      <div class="item item-icon-right" ui-sref='register-current()'>
+        电池容量
+        <span class="item-note">{{registerBike.current|| 0}} AH</span>
+        <i class="icon ion-ios7-arrow-right"></i>
+      </div>
+    </div>
+
+    <div class="list card">
+      <div class="item item-icon-right" ui-sref='register-wheeldiameter()'>
+        车轮直径
+        <span class="item-note">{{registerBike.wheeldiameter|| 0}} 寸</span>
+        <i class="icon ion-ios7-arrow-right"></i>
+      </div>
+    </div>
+    
+    <a ng-click="register()" class="button button-block button-large button-balanced" ng-if="registering">
+      完成注册
+    </a>
+  </ion-content>
+</ion-view>

@@ -24,12 +24,12 @@ controllers
 
 .controller('BikeCtrl', function($scope, $state, Bike, $rootScope, ActiveBLEDevice, $ionicLoading) {
   
-  $scope.registering = $state.params.bikeId && $state.params.bikeId === 'create';
+  $rootScope.registering = $state.params.bikeId && $state.params.bikeId === 'create';
 
   $scope.register = function () {
-    Bike.create($scope.currentBike, function (result) {
-      $scope.currentBike.id = result.id;
-      $rootScope.$broadcast('go.home', {bike: $scope.currentBike})
+    Bike.create($scope.registerBike, function (result) {
+      $rootScope.registering = false;
+      $rootScope.$broadcast('go.home', {bike: result})
     }, function (reason) {
       console.log(JSON.stringify(reason));
       $ionicLoading.show({
@@ -115,7 +115,7 @@ controllers
   })
 
   $scope.selectEntity = function (item) {
-    $rootScope.currentBike = {
+    $rootScope.registerBike = {
       brand: brand, 
       model:item, 
       workmode:0,
@@ -129,33 +129,33 @@ controllers
   }
 })
 
-.controller('WheelDiametersCtrl', function($scope, $state, $ionicHistory, Bike, ActiveBLEDevice) {
+.controller('WheelDiametersCtrl', function($scope, $state, Bike, ActiveBLEDevice) {
   $scope.entities = [10, 12, 14, 16, 18, 20, 22, 24, 26]
 
   $scope.selectEntity = function (item) {
-    $scope.currentBike.wheeldiameter = item
-    if($state.params.id === 'create') {
-      $state.go('voltages', {id: $state.params.id})
+    if($scope.registering) {
+      $scope.registerBike.wheeldiameter = item;
     } else {
+      $scope.currentBike.wheeldiameter = item
       Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {wheeldiameter: $scope.currentBike.wheeldiameter});
       ActiveBLEDevice.get().sendSpec();
-      $ionicHistory.goBack()
     }
+    $scope.$ionicGoBack();
   }
 })
 
-.controller('VoltagesCtrl', function($scope, $state, $ionicHistory, Bike, ActiveBLEDevice) {
+.controller('VoltagesCtrl', function($scope, $state, Bike, ActiveBLEDevice) {
   $scope.entities = [36, 48, 60, 72]
 
   $scope.selectEntity = function (item) {
-    $scope.currentBike.voltage = item
-    if($state.params.id === 'create') {
-      $state.go('currents', {id: $state.params.id})
+    if($scope.registering) {
+      $scope.registerBike.voltage = item;
     } else {
+      $scope.currentBike.voltage = item
       Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {voltage: $scope.currentBike.voltage})
       ActiveBLEDevice.get().sendSpec();
-      $ionicHistory.goBack()
     }
+    $scope.$ionicGoBack();
   }
 })
 
@@ -163,19 +163,14 @@ controllers
   $scope.entities = [12, 20, 30, 36]
 
   $scope.selectEntity = function (item) {
-    $scope.currentBike.current = item
-    if($state.params.id === 'create') {
-      Bike.create($scope.currentBike, function (result) {
-        $scope.currentBike.id = result.id;
-        $state.go('bikes-add')
-      }, function (res) {
-        $rootScope.$broadcast('go.home', {bike: $scope.currentBike})
-      })
+    if($scope.registering) {
+      $scope.registerBike.current = item;
     } else {
+      $scope.currentBike.current = item
       Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {current: $scope.currentBike.current})
       ActiveBLEDevice.get().sendSpec();
-      $ionicHistory.goBack()
     }
+    $scope.$ionicGoBack();
   }
 })
 

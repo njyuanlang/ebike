@@ -322,8 +322,23 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
     })
     .state('bike-register', {
       url: "/bikes/:bikeId",
-      templateUrl: "templates/bike.html",
+      templateUrl: "templates/bike-register.html",
       controller: 'BikeCtrl'
+    })
+    .state('register-wheeldiameter', {
+      url: "register/wheeldiameters",
+      templateUrl: "templates/wheeldiameters.html",
+      controller: 'WheelDiametersCtrl'
+    })
+    .state('register-voltage', {
+      url: "register/voltage",
+      templateUrl: "templates/voltages.html",
+      controller: 'VoltagesCtrl'
+    })
+    .state('register-current', {
+      url: "register/current",
+      templateUrl: "templates/currents.html",
+      controller: 'CurrentsCtrl'
     })
     .state('tab.wheeldiameters', {
       url: "bikes/:id/wheeldiameters",
