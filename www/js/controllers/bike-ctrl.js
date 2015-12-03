@@ -130,7 +130,7 @@ controllers
 })
 
 .controller('WheelDiametersCtrl', function($scope, $state, $ionicHistory, Bike, ActiveBLEDevice) {
-  $scope.entities = [12, 14, 16, 18, 20, 22, 24, 26]
+  $scope.entities = [10, 12, 14, 16, 18, 20, 22, 24, 26]
 
   $scope.selectEntity = function (item) {
     $scope.currentBike.wheeldiameter = item

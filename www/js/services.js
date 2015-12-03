@@ -215,6 +215,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     var kThis = this
     this.safeMode().then(function (safe) {
       kThis.bike.safe = safe;
+      console.log("onConnect Safe Mode:"+safe);
     }, function (reason) {
       console.debug(reason);
     });
@@ -650,7 +651,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
 .service('ActiveBLEDevice', function (BLEDevice, $rootScope, cachedBike) {
 
-  var _activeBLE = null;
   return {
     setBike: function (bike) {
       this.set(new BLEDevice(bike || {workmode: 0}))
@@ -659,7 +659,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       return cachedBike.get();
     },
     set: function (device) {
-      // _activeBLE = device
       $rootScope.activeBLEDevice = device;
       $rootScope.currentBike = device.bike;
       cachedBike.set(device.bike);
@@ -667,8 +666,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     get: function () {
       if(!$rootScope.activeBLEDevice) this.setBike(cachedBike.get());
       return $rootScope.activeBLEDevice;
-      // if(!_activeBLE) this.setBike(cachedBike.get());
-      // return _activeBLE
     }
   }
 
