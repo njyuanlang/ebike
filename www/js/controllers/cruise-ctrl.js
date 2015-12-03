@@ -14,6 +14,11 @@ controllers
     $scope.$apply()
   })
   
+  $scope.$on('$ionicView.enter', function (event) {
+    $scope.device = ActiveBLEDevice.get()
+    if(!$scope.online) return $scope.device.onConnected()
+  })
+
   window.addEventListener("orientationchange", function() {
     $scope.promptRotate = Math.abs(window.orientation) !== 90
     if(!$scope.promptRoate && $scope.modal) {
@@ -27,6 +32,7 @@ controllers
   
   $scope.init = function () {
     $scope.device = ActiveBLEDevice.get()
+    if(!$scope.online) return $scope.device.onConnected()
     
     $scope.promptRotate = Math.abs(window.orientation) !== 90
     // $scope.promptRotate = false

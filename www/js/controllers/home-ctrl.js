@@ -11,7 +11,6 @@ controllers
   
   $scope.$on('$ionicView.enter', function (event) {
     $scope.device = ActiveBLEDevice.get()
-    // console.debug(JSON.stringify($scope.device));
     if(!$scope.online) return $scope.device.onConnected()
   })
 
