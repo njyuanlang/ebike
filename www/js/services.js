@@ -164,9 +164,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   return realtime
 })
 
-.factory('BLEDevice', function ($cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask, Test, $ionicLoading, cachedBike) {
+.factory('BLEDevice', function ($cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask, Test, $ionicLoading) {
   
   function BLEDevice(bike) {
+    bike = bike || {}
     this.bike = bike
     this.localId = bike.localId
     this.reminder = bike.reminder || {
@@ -190,7 +191,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       hexs[1] += mode
       this.sendOrder(hexs)
     }
-    // cachedBike.set(this.bike);
   }
   
   BLEDevice.prototype.connect = function () {
@@ -373,6 +373,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
   BLEDevice.prototype.sendSpec = function () {
     if(!$rootScope.online || !$window.ble) return;
+    if(this.bike.wheeldiameter < 10) this.bike.wheeldiameter = 10;
     var hexs = [this.bike.voltage, this.bike.current, 0, this.bike.wheeldiameter]
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.spec, value) 
@@ -633,42 +634,35 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
 })
 
-.service('cachedBike', function ($rootScope, $localstorage) {
+.service('MyPreferences', function ($rootScope, User, $cordovaPreferences, $localstorage) {
 
-  var keys = {
-    activebike: 'com.extensivepro.ebike.A4ADEFE-3245-4553-B80E-3A9336EB56AB'
+  function successLoadMyEBike(bike) {
+    $rootScope.currentBike = bike;
   }
 
   return {
-    set: function (bike) {
-      if(bike.id) $localstorage.setObject(keys.activebike, bike);
+    load: function (dictionary) {
+      dictionary = dictionary || User.getCurrentId();
+      $cordovaPreferences.fetch('myEBike', dictionary)
+      .success(successLoadMyEBike)
+      .error(function (error) {
+        console.log('Load Preferences Failure:'+error);
+        successLoadMyEBike($localstorage.getObject('#EBIKE#myEBike'));
+      })      
     },
-    get: function () {
-      return $localstorage.getObject(keys.activebike)
+    save: function (options, dictionary) {
+      options = options || {bike: $rootScope.currentBike};
+      dictionary = dictionary || User.getCurrentId();
+      $cordovaPreferences.store('myEBike', options.bike, dictionary)
+      .success(function (bike) {
+        console.log('Save Preferences Success!');
+      })
+      .error(function (error) {
+        console.log('Save Preferences Failure:'+error);
+        $localstorage.setObject('#EBIKE#myEBike', options.bike);
+      })
     }
   }
-})
-
-.service('ActiveBLEDevice', function (BLEDevice, $rootScope, cachedBike) {
-
-  return {
-    setBike: function (bike) {
-      this.set(new BLEDevice(bike || {workmode: 0}))
-    },
-    getBike: function () {
-      return cachedBike.get();
-    },
-    set: function (device) {
-      $rootScope.activeBLEDevice = device;
-      $rootScope.currentBike = device.bike;
-      cachedBike.set(device.bike);
-    },
-    get: function () {
-      if(!$rootScope.activeBLEDevice) this.setBike(cachedBike.get());
-      return $rootScope.activeBLEDevice;
-    }
-  }
-
 })
 
 .factory('TestTask', function ($q) {

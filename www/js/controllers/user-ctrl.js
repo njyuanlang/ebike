@@ -13,7 +13,7 @@ controllers
       current: 20,
       "name": "宝旭牌电动车"
     }
-    $rootScope.$broadcast('go.home', {bike: $rootScope.currentBike})
+    $state.go('tab.home');
   }
   
   $scope.init = function () {
@@ -36,7 +36,7 @@ controllers
   
 })
 
-.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout, ActiveBLEDevice) {
+.controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout) {
   
   $scope.entity = {realm: 'client'}
   var lastLoginData = $localstorage.getObject('$$LastLoginData$$')
@@ -66,8 +66,8 @@ controllers
         duration: 1000
       })
       $localstorage.setObject('$$LastLoginData$$', $scope.entity)
-      $rootScope.$broadcast('user.DidLogin', {userId: accessToken.userId})
-      $rootScope.$broadcast('go.home', {bike: ActiveBLEDevice.getBike()})
+      $rootScope.$broadcast('user.DidLogin');
+      $state.go('tab.home');
     }, function (res) {
       $timeout.cancel($scope.loginPromise)
       var option = {
@@ -135,7 +135,7 @@ controllers
           duration: 1000
         })
         $localstorage.setObject('$$LastLoginData$$', {username: entity.username, password: entity.password})
-        $rootScope.$broadcast('user.DidLogin', {userId: accessToken.userId})
+        $rootScope.$broadcast('user.DidLogin');
         $state.go('provinces')
       })
     }, function (res) {
@@ -173,14 +173,13 @@ controllers
   }
 })
 
-.controller('AccountCtrl', function($scope, $state, ActiveBLEDevice, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http, $rootScope, LoopBackAuth, $ionicActionSheet) {
+.controller('AccountCtrl', function($scope, $state, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http, $rootScope, LoopBackAuth, $ionicActionSheet) {
   
   $scope.entity = User.getCurrent()
 
   $scope.logout = function () {
     if($rootScope.online) {
-      var device = ActiveBLEDevice.get();
-      if(device) device.disconnect();
+      if($scope.device) $scope.device.disconnect();
       User.logout().$promise
         .then(function () {
           console.debug('Success Logout');

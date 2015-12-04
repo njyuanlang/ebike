@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.controllers', 'ebike.services', 'ebike.filters', 'ebike.directives'])
 
-.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory, $cordovaNetwork, ActiveBLEDevice, User, $localstorage, RemoteStorage, $http, $ionicPopup) {
+.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory, $cordovaNetwork, User, RemoteStorage, $http, $ionicPopup, MyPreferences, BLEDevice) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -18,9 +18,13 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+    
     if(window.cordova) {
-      cordova.getAppVersion(function(version) {
+      cordova.getAppVersion.getVersionNumber(function(version) {
         $rootScope.appVersion = version;
+      });
+      cordova.getAppVersion.getVersionCode(function (build) {
+        $rootScope.appBuild = build;
       });
     }
  
@@ -63,8 +67,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
           $rootScope.$broadcast('home.reconnect')
         }
         $ionicHistory.clearHistory()
-      }
-      
+      }      
     })
 
     if(window.ble) {
@@ -90,22 +93,10 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       }
     });
     
-    $rootScope.$on('go.home', function (event, args) {
-      if(args && args.bike) {
-        ActiveBLEDevice.setBike(args.bike)
-        // $ionicHistory.nextViewOptions({
-        //   historyRoot: true,
-        //   disableBack: true
-        // })
-      }
-      $state.go('tab.home')
-    })
-    
     if(User.isAuthenticated()) {
-      $rootScope.$broadcast('user.DidLogin', {userId: User.getCurrentId()})
-      setTimeout(function () {
-        ActiveBLEDevice.get().autoconnect()
-      }, 1000)
+      $rootScope.$broadcast('user.DidLogin');
+    } else {
+      $state.go('entry')
     }
   });  
   
@@ -114,29 +105,40 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
   $rootScope.avatar = null
   
   $rootScope.$on('user.DidLogin', function (event, args) {
+    var userId = User.getCurrentId();
     $rootScope.currentUser = User.getCurrent();
-    var userId = args.userId
+    MyPreferences.load(userId);
     if(!$rootScope.avatar) {
       $rootScope.avatar = 'img/user-icon.png';
       RemoteStorage.getAvatar(userId)
-      .success(function (buffer) {
-        $rootScope.avatar = buffer
-      })
-      .error(function () {
-        // console.debug(JSON.stringify(arguments));
-      })
+        .success(function (buffer) {
+          $rootScope.avatar = buffer
+        })
+        .error(function () {
+          console.debug(JSON.stringify(arguments));
+        })
+    }
+  })
+  
+  $rootScope.$watch('currentBike', function (newValue, oldValue) {
+    if(newValue !== oldValue) {
+      $rootScope.device = new BLEDevice(newValue);
+      $rootScope.device.autoconnect();
     }
   })
   
   $rootScope.isAndroid = ionic.Platform.isAndroid()
-  $rootScope.appVersion = '2.0.0'
   
   $ionicPlatform.on('pause', function () {
-    ActiveBLEDevice.get().disconnect()
+    if($rootScope.device) {
+      $rootScope.device.disconnect();
+    }
   })
   
   $ionicPlatform.on('resume', function () {
-    ActiveBLEDevice.get().autoconnect()
+    if($rootScope.device) {
+      $rootScope.device.autoconnect();
+    }
   })
   
   moment.locale('zh-CN');
@@ -295,12 +297,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         }
       }
     })
-    // bikes 
-    // .state('bikes', {
-    //   url: "/bikes",
-    //   templateUrl: "templates/bikes.html",
-    //   controller: 'BikesCtrl'
-    // })
     .state('tab.bike', {
       url: "/bikes/:bikeId",
       views: {

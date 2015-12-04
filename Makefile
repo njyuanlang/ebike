@@ -1,4 +1,4 @@
-all: android
+all: ios
 	
 android:
 	ionic run android

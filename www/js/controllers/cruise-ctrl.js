@@ -1,6 +1,6 @@
 controllers
 
-.controller('CruiseCtrl', function($scope, $state, ActiveBLEDevice, $ionicModal) {
+.controller('CruiseCtrl', function($scope, $state, $ionicModal) {
       
   $scope.$on( 'realtime.update', function (event) {
     if($scope.device.bike.workmode === 9 && $scope.device.realtime.power > 24) {
@@ -15,7 +15,6 @@ controllers
   })
   
   $scope.$on('$ionicView.enter', function (event) {
-    $scope.device = ActiveBLEDevice.get()
     if(!$scope.online) return $scope.device.onConnected()
   })
 
@@ -31,7 +30,6 @@ controllers
   }
   
   $scope.init = function () {
-    $scope.device = ActiveBLEDevice.get()
     if(!$scope.online) return $scope.device.onConnected()
     
     $scope.promptRotate = Math.abs(window.orientation) !== 90

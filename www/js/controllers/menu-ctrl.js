@@ -6,7 +6,7 @@ controllers
   
 })
 
-.controller('MessagesCtrl', function($scope, $state, ActiveBLEDevice, $rootScope) {
+.controller('MessagesCtrl', function($scope, $state, $rootScope) {
 
   $scope.setting = false;
   $scope.rightButtonTitle = '设置'
@@ -22,18 +22,16 @@ controllers
   }
   
   $scope.init = function () {
-    $scope.bike = ActiveBLEDevice.get()
-    $scope.bike.startReminder()
-    $scope.entities = Object.keys($scope.bike.reminder)
+    $scope.device.startReminder()
+    $scope.entities = Object.keys($scope.device.reminder)
   }
   
 })
 
-.controller('MessagesDetailCtrl', function($scope, $state, $stateParams, ActiveBLEDevice) {
+.controller('MessagesDetailCtrl', function($scope, $state, $stateParams) {
   $scope.type = $stateParams.type
   $scope.init = function () {
-    $scope.bike = ActiveBLEDevice.get()
-    $scope.bike.fetchReminders($scope.type).then(function (result) {
+    $scope.device.fetchReminders($scope.type).then(function (result) {
       $scope.entities = result
     })
   }

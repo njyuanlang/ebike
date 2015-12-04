@@ -1,6 +1,6 @@
 controllers
 
-.controller('TestCtrl', function($scope, $state, ActiveBLEDevice) {
+.controller('TestCtrl', function($scope, $state) {
   
   $scope.$on( 'test.timeout', function () {
     $scope.device.test()
@@ -8,7 +8,6 @@ controllers
   })
 
   $scope.init = function () {
-    $scope.device = ActiveBLEDevice.get()
     if($scope.device && $scope.device.status === 'connected') {
       $scope.device.test()
       $scope.task = $scope.device.task

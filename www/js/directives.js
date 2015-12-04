@@ -24,8 +24,8 @@ angular.module('ebike.directives',[])
         $rootScope.hideTabs = false;
         if(!$rootScope.deregisterBackButtonAction) {
           $rootScope.deregisterBackButtonAction = $ionicPlatform.registerBackButtonAction(function () {
-            if($rootScope.activeBLEDevice) {
-              $rootScope.activeBLEDevice.disconnect().then(function () {
+            if($rootScope.device) {
+              $rootScope.device.disconnect().then(function () {
                 ionic.Platform.exitApp();
               }, function () {
                 ionic.Platform.exitApp();

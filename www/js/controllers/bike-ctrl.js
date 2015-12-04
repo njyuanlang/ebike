@@ -1,35 +1,15 @@
 controllers
 
-.controller('BikesCtrl', function($scope, $state, Bike, ActiveBLEDevice, User, $window) {
-  User.getCurrent(function (user) {
-    $scope.entities = Bike.find({filter:{where:{"owner.id":user.id}}})
-  })
-  $scope.entity = ActiveBLEDevice.get().bike || {}
-
-  $scope.activeEntityChange = function (item) {
-    ActiveBLEDevice.get().disconnect()
-    $scope.entity = item
-    $scope.currentBike = item
-    if($window.ble) {
-      $state.go('bikes-add')
-    }
-  }
-  
-  $scope.showDetail = function (item) {
-    $scope.currentBike = item
-    $state.go('tab.bike')
-  }
-  
-})
-
-.controller('BikeCtrl', function($scope, $state, Bike, $rootScope, ActiveBLEDevice, $ionicLoading) {
+.controller('BikeCtrl', function($scope, $state, Bike, $rootScope, $ionicLoading, MyPreferences) {
   
   $rootScope.registering = $state.params.bikeId && $state.params.bikeId === 'create';
 
   $scope.register = function () {
     Bike.create($scope.registerBike, function (result) {
       $rootScope.registering = false;
-      $rootScope.$broadcast('go.home', {bike: result})
+      $rootScope.currentBike = result;
+      MyPreferences.save();
+      $state.go('tab.home');   
     }, function (reason) {
       console.log(JSON.stringify(reason));
       $ionicLoading.show({
@@ -46,7 +26,7 @@ controllers
         return;
       }
       
-      ActiveBLEDevice.get().safeMode(newValue)
+      $scope.device.safeMode(newValue)
       .then(function (result) {
         console.debug('Success Set SafeMode:'+newValue);
       }, function (reason) {
@@ -62,7 +42,7 @@ controllers
 
   $scope.$watch('currentBike.antiTheft', function (newValue, oldValue) {
     if(newValue !== oldValue) {
-      ActiveBLEDevice.get().antiTheft(newValue)
+      $scope.device.antiTheft(newValue)
       .then(function (result) {
         console.debug('Success Set AntiTheft:'+newValue);
       }, function (reason) {
@@ -129,7 +109,7 @@ controllers
   }
 })
 
-.controller('WheelDiametersCtrl', function($scope, $state, Bike, ActiveBLEDevice) {
+.controller('WheelDiametersCtrl', function($scope, $state, Bike, MyPreferences) {
   $scope.entities = [10, 12, 14, 16, 18, 20, 22, 24, 26]
 
   $scope.selectEntity = function (item) {
@@ -138,13 +118,14 @@ controllers
     } else {
       $scope.currentBike.wheeldiameter = item
       Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {wheeldiameter: $scope.currentBike.wheeldiameter});
-      ActiveBLEDevice.get().sendSpec();
+      $scope.device.sendSpec();
+      MyPreferences.save();
     }
     $scope.$ionicGoBack();
   }
 })
 
-.controller('VoltagesCtrl', function($scope, $state, Bike, ActiveBLEDevice) {
+.controller('VoltagesCtrl', function($scope, $state, Bike, MyPreferences) {
   $scope.entities = [36, 48, 60, 72]
 
   $scope.selectEntity = function (item) {
@@ -153,13 +134,14 @@ controllers
     } else {
       $scope.currentBike.voltage = item
       Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {voltage: $scope.currentBike.voltage})
-      ActiveBLEDevice.get().sendSpec();
+      $scope.device.sendSpec();
+      MyPreferences.save();
     }
     $scope.$ionicGoBack();
   }
 })
 
-.controller('CurrentsCtrl', function($scope, $state, $ionicHistory, $window, Bike, ActiveBLEDevice, $rootScope) {
+.controller('CurrentsCtrl', function($scope, $state, Bike, MyPreferences) {
   $scope.entities = [12, 20, 30, 36]
 
   $scope.selectEntity = function (item) {
@@ -168,13 +150,14 @@ controllers
     } else {
       $scope.currentBike.current = item
       Bike.prototype$updateAttributes({ id: $scope.currentBike.id }, {current: $scope.currentBike.current})
-      ActiveBLEDevice.get().sendSpec();
+      $scope.device.sendSpec();
+      MyPreferences.save();
     }
     $scope.$ionicGoBack();
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, ActiveBLEDevice, $timeout, $ionicLoading, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService, BLEDevice) {
+.controller('BikesAddCtrl', function($scope, $state, $timeout, $ionicLoading, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService, BLEDevice) {
   
   var devices = [];
 
@@ -194,7 +177,6 @@ controllers
   }
   
   function stopScan(isForce) {
-    console.log('stopScan================');
     if(isForce || devices.length > 0) {
       $scope.scanTimer = null;
       $scope.entities = devices;
@@ -207,7 +189,7 @@ controllers
   function doScan() {
     if(!$scope.online) return;
     
-    ActiveBLEDevice.get().disconnect()
+    $scope.device.disconnect()
     .then(function () {
       if($window.ble) {
         ble.isEnabled(function (result) {
@@ -219,7 +201,10 @@ controllers
           ble.scan([], 5, scanSuccessCb, scanErrorCb)
         }, function (error) {
           $rootScope.$broadcast('bluetooth.disabled');
+          $timeout(scanErrorCb, 2000);
         })      
+      } else {
+        $timeout(scanErrorCb, 2000);
       }
     });
   }
@@ -245,11 +230,11 @@ controllers
       })
       delete bike.newpassword;
       delete bike.newpassword2;
-      ActiveBLEDevice.set(device);
+      $rootScope.device = device;
       Bike.upsert(bike, function (result) {
-        $rootScope.$broadcast('go.home')
+        $state.go('tab.home');
       }, function (res) {
-        $rootScope.$broadcast('go.home')
+        $state.go('tab.home');
       })
     })
     .catch(function (error) {
@@ -267,7 +252,7 @@ controllers
   }
   
   $scope.selectEntity = function (item) {
-    $scope.bike = angular.copy($scope.currentBike)
+    $scope.bike = $scope.currentBike
     $scope.bike.localId = item.id
     $scope.bike.name = item.name
 
@@ -298,12 +283,12 @@ controllers
   }
     
   $scope.goHome = function () {
-    $rootScope.$broadcast('go.home');
+    $state.go('tab.home');
   }
   
-  $scope.$on("$ionicView.leave", function () {
+  $scope.$on("$ionicView.beforeLeave", function () {
     stopScan(true);
-    ActiveBLEDevice.get().autoconnect()
+    $scope.device.autoconnect()
   })
   
   $scope.$on("$ionicView.enter", function () {
