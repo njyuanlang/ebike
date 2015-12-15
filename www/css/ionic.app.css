@@ -26,6 +26,9 @@ $dark:                            #444 !default;
   background: url('../img/user-bg.png') no-repeat center center;
   -webkit-background-size: cover !important;
   background-size: cover !important; }
+  .user-bg h2, .user-bg small {
+    color: #fff;
+    margin-top: 0.5rem !important; }
 
 .transparent-bg {
   background: transparent !important; }
@@ -7080,9 +7083,10 @@ a.button {
     height: 100%;
     margin: auto;
     border-radius: 50%;
-    border: 3px solid green;
+    border: 3px solid #0ddba9;
     background: transparent;
-    padding-bottom: 100%; }
+    padding-bottom: 100%;
+    -webkit-box-shadow: 0 0 2.5rem #0ddba9; }
     .container .outer .score {
       width: 100%;
       position: absolute;
@@ -7093,7 +7097,7 @@ a.button {
     .container .outer .inner-1 {
       border-radius: 50%;
       position: absolute;
-      border: 1px solid #fff;
+      border: 1px solid #bbb;
       width: 80%;
       height: 80%;
       top: 10%;
@@ -7108,7 +7112,7 @@ a.button {
     .container .outer .inner-2 {
       border-radius: 50%;
       position: absolute;
-      border: 1px solid #fff;
+      border: 1px solid #bbb;
       width: 60%;
       height: 60%;
       top: 20%;
@@ -7123,7 +7127,7 @@ a.button {
     .container .outer .inner-3 {
       border-radius: 50%;
       position: absolute;
-      border: 1px solid #fff;
+      border: 1px solid #bbb;
       width: 40%;
       height: 40%;
       top: 30%;
@@ -7138,7 +7142,7 @@ a.button {
     .container .outer .inner-4 {
       border-radius: 50%;
       position: absolute;
-      border: 1px solid #fff;
+      border: 1px solid #bbb;
       width: 20%;
       height: 20%;
       top: 40%;
@@ -7156,7 +7160,7 @@ a.button {
       top: 50%;
       left: 10%;
       position: absolute;
-      background: #fff;
+      background: #bbb;
       -webkit-transform: rotate(0deg); }
     .container .outer .diameter-45 {
       width: 80%;
@@ -7164,7 +7168,7 @@ a.button {
       top: 50%;
       left: 10%;
       position: absolute;
-      background: #fff;
+      background: #bbb;
       -webkit-transform: rotate(45deg); }
     .container .outer .diameter-90 {
       width: 80%;
@@ -7172,7 +7176,7 @@ a.button {
       top: 50%;
       left: 10%;
       position: absolute;
-      background: #fff;
+      background: #bbb;
       -webkit-transform: rotate(90deg); }
     .container .outer .diameter-135 {
       width: 80%;
@@ -7180,7 +7184,7 @@ a.button {
       top: 50%;
       left: 10%;
       position: absolute;
-      background: #fff;
+      background: #bbb;
       -webkit-transform: rotate(135deg); }
     .container .outer .diameter-180 {
       width: 80%;
@@ -7188,7 +7192,7 @@ a.button {
       top: 50%;
       left: 10%;
       position: absolute;
-      background: #fff;
+      background: #bbb;
       -webkit-transform: rotate(180deg); }
     .container .outer .diameter-225 {
       width: 80%;
@@ -7196,7 +7200,7 @@ a.button {
       top: 50%;
       left: 10%;
       position: absolute;
-      background: #fff;
+      background: #bbb;
       -webkit-transform: rotate(225deg); }
     .container .outer .diameter-270 {
       width: 80%;
@@ -7204,7 +7208,7 @@ a.button {
       top: 50%;
       left: 10%;
       position: absolute;
-      background: #fff;
+      background: #bbb;
       -webkit-transform: rotate(270deg); }
     .container .outer .diameter-315 {
       width: 80%;
@@ -7212,7 +7216,7 @@ a.button {
       top: 50%;
       left: 10%;
       position: absolute;
-      background: #fff;
+      background: #bbb;
       -webkit-transform: rotate(315deg); }
     .container .outer .diameter-360 {
       width: 80%;
@@ -7220,7 +7224,7 @@ a.button {
       top: 50%;
       left: 10%;
       position: absolute;
-      background: #fff;
+      background: #bbb;
       -webkit-transform: rotate(360deg); }
 
 @-webkit-keyframes radialscan {
@@ -7248,10 +7252,10 @@ a.button {
 
 .test-bar {
   text-align: center;
-  font-size: 1rem; }
+  font-size: 1rem;
+  padding: 0px; }
   .test-bar .col-20, .test-bar .col-25 {
-    margin: 0.5rem 0.1rem;
-    display: block; }
+    margin: 0.5rem 0rem; }
   .test-bar .col-20 {
     width: 20%; }
   .test-bar .col-25 {
@@ -7261,19 +7265,20 @@ a.button {
     margin: 0.8rem 0.3rem;
     width: 50%; }
   .test-bar .color-lable {
-    width: 5px; }
+    display: block;
+    width: 5px !important; }
 
 .test-bar-0 {
-  background: rgba(72, 72, 72, 0.4);
+  background: rgba(216, 216, 216, 0.4);
   background-clip: content-box; }
   .test-bar-0 .color-lable {
-    background-color: green; }
+    background-color: #0ddba9; }
 
 .test-bar-1 {
-  background: rgba(128, 128, 128, 0.4);
+  background: rgba(186, 186, 186, 0.4);
   background-clip: content-box; }
   .test-bar-1 .color-lable {
-    background-color: white; }
+    background-color: black; }
 
 progress {
   -webkit-appearance: none;
@@ -7308,9 +7313,15 @@ progress::-webkit-progress-value {
 
 #progressbar > div {
   width: 100%;
-  height: 0.8rem;
+  height: 0.85rem;
   border-radius: 50px;
   background-image: -webkit-linear-gradient(left, #0ddba9, #0ddba9);
+  -webkit-transition: width 100ms; }
+#progressbar.error > div {
+  width: 100%;
+  height: 0.85rem;
+  border-radius: 50px;
+  background-image: -webkit-linear-gradient(left, #ef473a, #ef473a);
   -webkit-transition: width 100ms; }
 
 /* allows the bar-footer to be elastic /*
@@ -8488,5 +8499,12 @@ a.autolinker {
 .bar .button.button-clear {
   font-size: 14px; }
 
-.item-separeted {
+.item {
   margin: 5px; }
+  .item.user-bg {
+    margin: 0px; }
+
+.item-note {
+  float: right;
+  color: #0ddba9;
+  font-size: 16px; }

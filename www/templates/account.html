@@ -1,9 +1,9 @@
 <ion-view cache-view="false" title="个人信息">
   <ion-content has-header="true" class=" padding">
-    <div class="list card">
+    <div class="list">
 
       <div class="item item-avatar-right item-icon-right">
-        <img src="{{avatar || 'img/user-icon.png'}}" ng-click="changeAvatar()">
+        <img ng-src="{{avatar || 'img/user-icon.png'}}" ng-click="changeAvatar()">
         <br>头像
       </div>
       <a class="item item-icon-right" ng-click="changeName()">
@@ -18,14 +18,15 @@
       
     </div>
 
-    <div class="list card">
+    <div class="list">
       <a class="item item-icon-right" href="#/provinces">
         地区
         <span class="item-note">{{entity.region.province}} {{entity.region.city}}</span>
         <i class="icon ion-ios7-arrow-forward"></i>
       </a>
     </div>
-    <div class="list card">
+    
+    <div class="list">
       <a class="item item-icon-right" ui-sref="register({reset:1})">
         修改密码
         <i class="icon ion-ios7-arrow-forward"></i>

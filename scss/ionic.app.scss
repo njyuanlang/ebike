@@ -103,6 +103,10 @@ $user-bg:                         '../img/user-bg.png';
   background: url($user-bg) no-repeat center center;
   -webkit-background-size: cover!important;
   background-size: cover!important;
+  h2, small {
+    color: $light;
+    margin-top: 0.5rem!important;
+  }
 }
 
 .transparent-bg {
@@ -581,7 +585,19 @@ $angularSpeed: 180deg/$maxSpeed;
   }
 }
 
-// Item separeted
-.item-separeted {
+// Item 
+.item {
   margin: 5px;
+  &.user-bg {
+    margin: 0px;
+  }
+}
+
+// Item Note
+// -------------------------------
+
+.item-note {
+  float: right;
+  color: $positive;
+  font-size: 16px;
 }
