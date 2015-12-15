@@ -21,35 +21,40 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Colors
 // -------------------------------
 
-$light:                           #505866 !default;
-$stable:                          #333a54 !default;
-$positive:                        #56fa89 !default;
-$energized:                       #6e8bcd !default;
-$dark:                            #aaa !default;
+$light:                           #fff !default;
+$stable:                          #ececee !default;
+$positive:                        #0ddba9 !default;
+$energized:                       #0ddba9 !default;
+$dark:                            #000 !default;
 
 // Base
 // -------------------------------
 
-$base-background-color:           #000 !default;
-$base-color:                      #fff !default;
+$base-background-color:           #eeeeee !default;
+$base-color:                      #555555 !default;
 
 // Buttons
 // -------------------------------
+$button-border-width:             0px !default;
 
 //$button-light-bg:                 transparent !default;
-$button-light-text:               #fff !default;
+$button-light-text:               $base-color !default;
 $button-light-border:             #444 !default;
 
 $button-positive-text:            #444 !default;
 
 $button-stable-bg:                $stable !default;
-$button-stable-text:              #fff !default;
+$button-stable-text:              #555555 !default;
 $button-stable-border:            #333a54 !default;
 $button-stable-active-bg:         #e5e5e5 !default;
 $button-stable-active-border:     #a2a2a2 !default;
 
 // Items
 // -------------------------------
+
+$item-font-size:                  16px !default;
+$item-border-width:               0px !default;
+$item-padding:                    16px !default;
 
 $item-avatar-width:               60px !default;
 $item-avatar-height:              60px !default;
@@ -60,6 +65,11 @@ $item-divider-color:              #ddd !default;
 //$item-light-bg:                   transparent !default;
 
 
+// Bars
+// -------------------------------
+
+$bar-title-font-size:             22px !default;
+
 // Popups
 // -------------------------------
 
@@ -69,17 +79,16 @@ $popup-background-color:          $light !default;
 // Backgrounds
 // -------------------------------
 
-$default-bg:                      '../img/bg.png';
 $cruise-bg:                       '../img/cruise-bg.png';
 $cruise-rotate-bg:                '../img/rotation.png';
 $user-bg:                         '../img/user-bg.png';
 
-.scroll-bg {
-  background: url($default-bg) no-repeat center center fixed;
-  -webkit-background-size: cover!important;
-  background-size: cover!important;
-}
-
+//.scroll-bg {
+//  background: url($default-bg) no-repeat center center fixed;
+//  -webkit-background-size: cover!important;
+//  background-size: cover!important;
+//}
+//
 .cruise-bg {
   background: url($cruise-bg) no-repeat center center fixed;
   -webkit-background-size: cover!important;
@@ -560,4 +569,19 @@ $angularSpeed: 180deg/$maxSpeed;
   h3, p {
     color: #36F;
   }
+}
+
+
+// Bar
+.bar {
+  .button {
+    &.button-clear {
+      font-size: 14px;
+    }
+  }
+}
+
+// Item separeted
+.item-separeted {
+  margin: 5px;
 }

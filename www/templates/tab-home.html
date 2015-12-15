@@ -1,9 +1,9 @@
 <ion-view title="帮大师" hide-back-button="true" ng-init="init()"  show-tabs>
   <ion-nav-buttons side="right">
-    <a class="button" ng-click="endure()" ng-class="{'disabled':device.realtime.power > 0}" ng-if="device.workmode != 9">无电续航</a>
+    <a class="button button-clear" ng-click="endure()" ng-class="device.realtime.power > 0?'disabled':'button-positive'" ng-if="device.workmode != 9">无电续航</a>
   </ion-nav-buttons>
   
-  <ion-content class="scroll-bg" scroll="false">
+  <ion-content class="" scroll="false">
     <div class="row row-responsive-sm">
       <div class="col col-25 round-button">
         <div class="round-button-circle round-volume-{{device.task.score}}">

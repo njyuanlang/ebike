@@ -1,22 +1,22 @@
 <ion-view title="注册">
   <ion-nav-bar></ion-nav-bar>
-  <ion-content class="scroll-bg padding" scroll="false">
+  <ion-content class="padding" scroll="false">
     <div class="list">
-      <div class="item item-icon-left">
+      <div class="item item-icon-left item-separeted">
         <i class="icon ion-iphone"></i>
         <span class="item-input">
           <input type="tel" name="t" placeholder="输入手机号码" ng-model="entity.username" required>
         </span>
       </div>
-      <div class="item item-icon-left" ng-class="disableValidcode?'validcode-disable-bg':'validcode-bg'">
+      <div class="item item-icon-left item-separeted" ng-class="disableValidcode?'validcode-disable-bg':'validcode-bg'">
         <i class="icon ion-ios7-checkmark-outline"></i>
         <span class="validcode">
           <input type="tel" placeholder="输入验证码" ng-model="entity.authcode" required>
           <a class="button-energized text-center" ng-click="getAuthcode()">{{validprompt}}</a>
         </span>
       </div>
-      <div class="item item-icon-left">
-        <i class="icon ion-locked"></i>
+      <div class="item item-icon-left item-separeted">
+        <i class="icon ion-key"></i>
         <span class="item-input">
           <input type="password" placeholder="设置密码" ng-model="entity.password" required>
         </span>
