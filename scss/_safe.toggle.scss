@@ -1,0 +1,113 @@
+
+/**
+ * Safe Mode Toggle
+ * --------------------------------------------------
+ */
+
+$safe-toggle-width:                    120px !default;
+$safe-toggle-height:                   40px !default;
+$safe-toggle-border-width:             2px !default;
+$safe-toggle-border-radius:            20px !default;
+
+$safe-toggle-handle-width:             $safe-toggle-height - ($safe-toggle-border-width * 2) !default;
+$safe-toggle-handle-height:            $safe-toggle-handle-width !default;
+$safe-toggle-handle-radius:            $safe-toggle-handle-width !default;
+$safe-toggle-handle-dragging-bg-color: darken(#fff, 5%) !default;
+
+$safe-toggle-off-bg-color:             #757575 !default;
+$safe-toggle-off-border-color:         #757575 !default;
+
+$safe-toggle-on-default-bg:            orange !default;
+$safe-toggle-on-default-border:        $safe-toggle-on-default-bg !default;
+
+$safe-toggle-handle-off-bg-color:      $light !default;
+$safe-toggle-handle-on-bg-color:       $safe-toggle-handle-off-bg-color !default;
+
+$safe-toggle-transition-duration:      .2s !default;
+
+$safe-toggle-hit-area-expansion:   5px;
+
+.safe-toggle {
+  // set the color defaults
+  @include toggle-style($safe-toggle-on-default-border, $safe-toggle-on-default-bg);
+
+  position: relative;
+  display: inline-block;
+  pointer-events: auto;
+  margin: -$safe-toggle-hit-area-expansion;
+  padding: $safe-toggle-hit-area-expansion;
+
+  &.dragging {
+    .handle {
+      background-color: $safe-toggle-handle-dragging-bg-color !important;
+    }
+  }
+}
+
+.safe-toggle input {
+  // hide the actual input checkbox
+  display: none;
+}
+
+/* the track appearance when the toggle is "off" */
+.safe-toggle .track {
+  @include transition-timing-function(ease-in-out);
+  @include transition-duration($safe-toggle-transition-duration);
+  @include transition-property((background-color, border));
+
+  display: inline-block;
+  box-sizing: border-box;
+  width: $safe-toggle-width;
+  height: $safe-toggle-height;
+  border: solid $safe-toggle-border-width $safe-toggle-off-border-color;
+  border-radius: $safe-toggle-border-radius;
+  background-color: $safe-toggle-off-bg-color;
+  content: ' ';
+  cursor: pointer;
+  pointer-events: none;
+}
+
+/* Fix to avoid background color bleeding */
+/* (occured on (at least) Android 4.2, Asus MeMO Pad HD7 ME173X) */
+.platform-android4_2 .safe-toggle .track {
+  -webkit-background-clip: padding-box;
+}
+
+/* the handle (circle) thats inside the toggle's track area */
+/* also the handle's appearance when it is "off" */
+.safe-toggle .handle {
+  @include transition($safe-toggle-transition-duration ease-in-out);
+  position: absolute;
+  display: block;
+  width: $safe-toggle-handle-width*1.4;
+  height: $safe-toggle-handle-height*1.4;
+  border-radius: $safe-toggle-handle-radius;
+  background-color: $safe-toggle-handle-off-bg-color;
+  top: $safe-toggle-border-width + $safe-toggle-hit-area-expansion - $safe-toggle-handle-height*0.2;
+  left: $safe-toggle-border-width + $safe-toggle-hit-area-expansion - $safe-toggle-handle-width*0.2;
+
+  &:before {
+    // used to create a larger (but hidden) hit area to slide the handle
+    position: absolute;
+    top: -4px;
+    left: ( ($safe-toggle-handle-width / 2) * -1) - 8;
+    padding: ($safe-toggle-handle-height / 2) + 5 ($safe-toggle-handle-width + 7);
+    content: " ";
+  }
+}
+
+.safe-toggle input:checked + .track .handle {
+  // the handle when the toggle is "on"
+  @include translate3d($safe-toggle-width - $safe-toggle-handle-width - ($safe-toggle-border-width * 2), 0, 0);
+  background-color: $safe-toggle-handle-on-bg-color;
+}
+
+.safe-toggle input:disabled + .track {
+  opacity: .6;
+}
+
+.safe-toggle.disabled, .safe-toggle[disabled] {
+  opacity: 0.4;
+  cursor: default !important;
+  pointer-events: none;
+}

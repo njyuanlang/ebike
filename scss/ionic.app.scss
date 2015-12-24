@@ -177,20 +177,17 @@ $user-bg:                         '../img/user-bg.png';
 @import "ebike.test";
 @import "chat.bubble";
 @import "www/lib/sass-mediaqueries/media-queries";
+@import "ebike.home";
 
 // Slide box
 // -------------------------------
-
-.slider-slide img {
-  width: 100%;
-  height: 100%;
-}
 
 .button-starter {
   position: absolute;
   width: 100%;
   bottom: 4rem;
 }
+
 
 /* -------------------------------------
  * Round Button Circle
@@ -202,7 +199,7 @@ $user-bg:                         '../img/user-bg.png';
   height:0;
   padding-bottom: 100%;
   border-radius: 50%;
-	border:3px solid $light;
+  border:3px solid $light;
   overflow:hidden;
   box-shadow: 0 0 3px gray;
 }
@@ -220,12 +217,12 @@ $user-bg:                         '../img/user-bg.png';
 
 .round-button a {
   display:block;
-	width:100%;
-	padding-top:20%;
+  width:100%;
+  padding-top:20%;
   padding-bottom:20%;
   line-height:0.3rem;
-	text-align:center;
-	color:$light;
+  text-align:center;
+  color:$light;
   font-weight:bold;
   text-decoration:none;
   > h1 {
@@ -248,30 +245,6 @@ $loops2: round(100 / $step2);
   .round-volume-#{$i2*$step2} {
     background-image: linear-gradient(to top, $energized percentage($i2*$step2/100), transparent 0%);
     background-image: -webkit-linear-gradient(bottom, $energized percentage($i2*$step2/100), transparent 0%);
-  }
-}
-
-
-/* -------------------------------------
- * Bluetooth connecting
- * ------------------------------------- */
-
-.bluetooth {
-//  position: absolute;
-  font-size: 2.5rem;
-//  border-radius: 100%;
-//  border: 1px solid;
-//  padding: 15%;
-  
-  small { 
-    font-size: 80%; 
-    padding: 0.4rem 0px 0px 0.1rem;
-    .connecting {
-      -webkit-animation: twinkling 2s infinite ease-in;
-    }
-    .disconnected {
-      display: none;
-    }
   }
 }
 
