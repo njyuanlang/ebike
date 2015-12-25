@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.controllers', 'ebike.services', 'ebike.filters', 'ebike.directives'])
 
-.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory, $cordovaNetwork, User, RemoteStorage, $http, $ionicPopup, MyPreferences, BLEDevice) {
+.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory, $cordovaNetwork, User, RemoteStorage, $http, $ionicPopup, MyPreferences, BLEDevice, $ionicLoading) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -122,11 +122,48 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
   
   $rootScope.$watch('currentBike', function (newValue, oldValue) {
     if(newValue !== oldValue) {
-      $rootScope.device = new BLEDevice(newValue);
-      $rootScope.device.autoconnect();
+      if(!$rootScope.device || $rootScope.device.localId != newValue.localId) {
+        $rootScope.device = new BLEDevice(newValue);
+        $rootScope.device.autoconnect();
+      }
     }
   })
-  
+
+  $rootScope.$watch('currentBike.safe', function (newValue, oldValue) {
+    if(newValue !== oldValue) {
+      if($rootScope.correctSafeMode) {
+        $rootScope.correctSafeMode = false;
+        return;
+      }
+      
+      $rootScope.device.safeMode(newValue)
+      .then(function (result) {
+        console.debug('Success Set SafeMode:'+newValue);
+      }, function (reason) {
+        $rootScope.correctSafeMode = true;
+        $rootScope.currentBike.safe = oldValue;
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-information-outline padding"></i>'+reason,
+          duration: 2000
+        });
+      });
+    }
+  });
+
+  $rootScope.$watch('currentBike.antiTheft', function (newValue, oldValue) {
+    if(newValue !== oldValue) {
+      $rootScope.device.antiTheft(newValue)
+      .then(function (result) {
+        console.debug('Success Set AntiTheft:'+newValue);
+      }, function (reason) {
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios7-information-outline padding"></i>'+reason,
+          duration: 2000
+        });
+      });
+    }
+  });
+    
   $rootScope.isAndroid = ionic.Platform.isAndroid()
   
   $ionicPlatform.on('pause', function () {

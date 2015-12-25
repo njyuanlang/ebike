@@ -18,41 +18,7 @@ controllers
       });
     });
   };
-  
-  $scope.$watch('currentBike.safe', function (newValue, oldValue) {
-    if(newValue !== oldValue) {
-      if($scope.correctSafeMode) {
-        $scope.correctSafeMode = false;
-        return;
-      }
-      
-      $scope.device.safeMode(newValue)
-      .then(function (result) {
-        console.debug('Success Set SafeMode:'+newValue);
-      }, function (reason) {
-        $scope.correctSafeMode = true;
-        $scope.currentBike.safe = oldValue;
-        $ionicLoading.show({
-          template: '<i class="icon ion-ios7-information-outline padding"></i>'+reason,
-          duration: 2000
-        });
-      });
-    }
-  });
 
-  $scope.$watch('currentBike.antiTheft', function (newValue, oldValue) {
-    if(newValue !== oldValue) {
-      $scope.device.antiTheft(newValue)
-      .then(function (result) {
-        console.debug('Success Set AntiTheft:'+newValue);
-      }, function (reason) {
-        $ionicLoading.show({
-          template: '<i class="icon ion-ios7-information-outline padding"></i>'+reason,
-          duration: 2000
-        });
-      });
-    }
-  });
 })
 
 .controller('BrandsCtrl', function($scope, $state, Brand) {
@@ -231,6 +197,7 @@ controllers
       delete bike.newpassword;
       delete bike.newpassword2;
       $rootScope.device = device;
+      $rootScope.currentBike = bike;
       Bike.upsert(bike, function (result) {
         $state.go('tab.home');
       }, function (res) {
@@ -252,7 +219,7 @@ controllers
   }
   
   $scope.selectEntity = function (item) {
-    $scope.bike = $scope.currentBike
+    $scope.bike = angular.copy($scope.currentBike);
     $scope.bike.localId = item.id
     $scope.bike.name = item.name
 

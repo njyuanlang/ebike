@@ -194,6 +194,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
   
   BLEDevice.prototype.connect = function () {
+    if(!this.localId) return $q.reject('车辆标示ID不能为空！');
     return $cordovaBLE.connect(this.localId).then(function (result) {
       return result;
     }, function (reason) {
@@ -418,7 +419,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
   BLEDevice.prototype.safeMode = function (mode) {
     var q = $q.defer()
-    if(!$rootScope.online) {
+    if(!$rootScope.online || !this.localId) {
       q.resolve(true)
     } else {
       if(mode === undefined) {
@@ -445,7 +446,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
   BLEDevice.prototype.antiTheft = function (enable) {
     var q = $q.defer()
-    if(!$rootScope.online) {
+    if(!$rootScope.online || !this.localId) {
       q.resolve(true)
     } else {
       if(enable === undefined) {

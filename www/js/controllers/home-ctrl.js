@@ -62,7 +62,7 @@ controllers
   $scope.reconnectDevice = reconnectDevice
   
   $scope.$on('home.reconnect', reconnectDevice);
-  
+    
   $scope.init = function () {
   }
 })

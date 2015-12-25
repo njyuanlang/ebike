@@ -4,16 +4,16 @@
   </ion-nav-buttons>
   
   <ion-content class="" scroll="false">
-    <div class="row row-responsive-sm">
+    <div class="row">
       <div class="col col-25 image-button">
-        <a ng-click="goTest()">
+        <a class="button button-clear" ng-click="goTest()">
           <img ng-src="img/test-{{device.status === 'connected'?'light':'gray'}}.png">
         </a>
       </div>
       <div class="col col-50">
       </div>
       <div class="col col-25 image-button">
-        <a ng-click="reconnectDevice()">
+        <a class="button button-clear" ng-click="reconnectDevice()">
           <img ng-src="img/bluetooth-{{device.status === 'connected'?'light':'gray'}}.png">
           <!-- <div class="bluetooth">
             <div class="row">
@@ -26,12 +26,13 @@
         </a>
       </div>
     </div>
-    <div class="row">
-      <div class="col col-80 col-offset-10">
+    <div class="row mt-sm">
+      <div class="col"></div>
+      <div class="col col-75">
         <div class="home-power-cycle home-power-cycle-{{device.realtime.power}}">
           <div class="overlay image-button" ng-show="device.workmode != 9">
-            <a ng-click="switchLock()">
-              <img ng-src="img/lock-{{device.status === 'connected'?'light':'gray'}}.png">
+            <a ng-click="currentBike.antiTheft = !currentBike.antiTheft">
+              <img ng-src="img/lock-{{!currentBike.antiTheft?'light':'gray'}}.png">
             </a>
           </div>
           <div class="overlay" ng-show="device.workmode == 9">
@@ -40,57 +41,43 @@
           </div>
         </div>        
       </div>
+      <div class="col"></div>
     </div>
     <div class="row text-center">
       <div class="col col-50 digital-display">
         <h2 class="{{device.status}}">{{device.realtime.power||0}} <small>% 剩余电量</small></h2>
         <h2 class="{{device.status}}">{{device.realtime.mileage||0}} <small>km 续航估值</small></h2>
       </div>
-      <div class="col col-40 col-offset-10">
+      <div class="col col-50 padding">
         <label class="safe-toggle" ng-disabled="device.status !== 'connected'">
-           <input type="checkbox" ng-model="device.bike.safe" ng-checked="device.bike.safe">
+           <input type="checkbox" ng-model="currentBike.safe" ng-checked="currentBike.safe">
            <div class="track">
              <div class="handle"></div>
            </div>
         </label>
-        <h4>安全模式</h4>
+        <h5>安全模式</h5>
       </div>
     </div>
     <div class="row text-center">
-      <div class="col col-30 image-button col-offset-5">
-        <a class="button" ng-class="{'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(1)">
+      <div class="col col-25 col-offset-10 image-button">
+        <a class="button button-clear" ng-class="{'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(1)">
           <img src="img/powersave-{{device.bike.workmode%8 === 1?'light':'gray'}}.png">
           省电
         </a>
       </div>
-      <div class="col col-30 image-button">
-        <a class="button" ng-class="{'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(2)">
+      <div class="col col-25 image-button">
+        <a class="button button-clear" ng-class="{'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(2)">
           <img src="img/climb-{{device.bike.workmode == 2?'light':'gray'}}.png">
           爬坡
         </a>
       </div>
-      <div class="col col-30 image-button">
-        <a class="button" ng-class="{'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(3)">
-          <img src="img/speed-{{device.bike.workmode == 3?'light':'gray'}}.png">
+      <div class="col col-25 image-button">
+        <a class="button button-clear" ng-class="{'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(15)">
+          <img src="img/speed-{{device.bike.workmode == 15?'light':'gray'}}.png">
           超速
         </a>
       </div>
     </div>
-    <!-- <div class="workstate">
-
-      <div class="row">
-        <a class="col-33 button" ng-class="{active: device.bike.workmode%8 == 1, 'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(1)">
-          <img src="img/downhill.png">省电
-        </a>
-        <a class="col-33 button" ng-class="{active: device.bike.workmode == 0, 'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(0)">
-          <img src="img/normal.png">正常
-        </a>
-        <a class="col-33 button" ng-class="{active: device.bike.workmode == 2, 'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(2)">
-          <img src="img/uphill.png">爬坡
-        </a>
-      </div>
-
-    </div> -->
   </ion-content>
   
 </ion-view>
