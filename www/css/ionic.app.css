@@ -7586,13 +7586,14 @@ a.autolinker {
 /* -------------------------------------
  * digital display
  * ------------------------------------- */
-.digital-display h2 {
+.digital-display {
   text-align: right; }
   @media (width: 320px) {
     .digital-display h2 {
       font-size: 1.5rem; } }
   @media (width: 360px) {
     .digital-display h2 {
+      font-family: 'Helvetica Neue', Roboto, sans-serif;
       font-size: 1.5rem; } }
   @media (width: 375px) {
     .digital-display h2 {
@@ -7600,11 +7601,15 @@ a.autolinker {
   @media (width: 414px) {
     .digital-display h2 {
       font-size: 2rem; } }
+  .digital-display h2 span {
+    white-space: pre;
+    text-align: left;
+    font-size: 60%; }
   .digital-display h2 small {
     font-size: 60%;
     color: #555; }
-.digital-display .connected {
-  color: #0ddba9; }
+  .digital-display .connected {
+    color: #0ddba9; }
 
 /* -------------------------------------
  * Power Cycle
@@ -9046,7 +9051,8 @@ a.autolinker {
     color: #36F; }
 
 .bar .button.button-clear {
-  font-size: 14px; }
+  font-size: 14px;
+  margin-top: 3px; }
 
 .item {
   margin: 5px; }

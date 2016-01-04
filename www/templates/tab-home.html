@@ -45,8 +45,8 @@
     </div>
     <div class="row text-center">
       <div class="col col-50 digital-display">
-        <h2 class="{{device.status}}">{{device.realtime.power||0}} <small>%&nbsp 剩余电量</small></h2>
-        <h2 class="{{device.status}}">{{device.realtime.mileage||0}} <small>km 续航估值</small></h2>
+        <h2 class="{{device.status}}">{{device.realtime.power||0}}<span>%  </span><small> 剩余电量</small></h2>
+        <h2 class="{{device.status}}">{{device.realtime.mileage||0}}<span>km</span><small> 续航估值</small></h2>
       </div>
       <div class="col col-50 padding">
         <label class="safe-toggle" ng-disabled="device.status !== 'connected'">

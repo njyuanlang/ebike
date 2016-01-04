@@ -47,12 +47,13 @@
 $gray:                                #555 !default;
 
 .digital-display {
+  text-align: right;
   h2 {
-    text-align: right;
     @media (width: 320px){
       font-size: 1.5rem;
     }
     @media (width: 360px){
+      font-family: 'Helvetica Neue', Roboto, sans-serif;
       font-size: 1.5rem;
     }
     @media (width: 375px){
@@ -60,6 +61,11 @@ $gray:                                #555 !default;
     }
     @media (width: 414px){
       font-size: 2.0rem;
+    }
+    span {
+      white-space: pre;
+      text-align: left;
+      font-size: 60%;
     }
     small {
       font-size: 60%;
