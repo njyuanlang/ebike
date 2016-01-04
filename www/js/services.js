@@ -184,6 +184,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
   
   BLEDevice.prototype.setWorkmode = function (mode) {
+    if(this.bike.workmode == mode) mode = 0;
     this.bike.workmode = mode
     if($rootScope.online) {
       var hexs = [0xb0, 0xb0]
