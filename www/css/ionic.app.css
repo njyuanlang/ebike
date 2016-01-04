@@ -7586,21 +7586,23 @@ a.autolinker {
 /* -------------------------------------
  * digital display
  * ------------------------------------- */
-@media (width: 320px) {
-  .digital-display h2 {
-    font-size: 1.5rem; } }
-@media (width: 360px) {
-  .digital-display h2 {
-    font-size: 1.5rem; } }
-@media (width: 375px) {
-  .digital-display h2 {
-    font-size: 1.8rem; } }
-@media (width: 414px) {
-  .digital-display h2 {
-    font-size: 2rem; } }
-.digital-display h2 small {
-  font-size: 60%;
-  color: #aaa; }
+.digital-display h2 {
+  text-align: right; }
+  @media (width: 320px) {
+    .digital-display h2 {
+      font-size: 1.5rem; } }
+  @media (width: 360px) {
+    .digital-display h2 {
+      font-size: 1.5rem; } }
+  @media (width: 375px) {
+    .digital-display h2 {
+      font-size: 1.8rem; } }
+  @media (width: 414px) {
+    .digital-display h2 {
+      font-size: 2rem; } }
+  .digital-display h2 small {
+    font-size: 60%;
+    color: #555; }
 .digital-display .connected {
   color: #0ddba9; }
 
