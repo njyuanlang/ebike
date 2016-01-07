@@ -95,12 +95,16 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   var noitficationCbs = {
     power: function (result) {
       var res = new Uint8Array(result) 
-      realtime.power = res[0]   
+      if(res[0] == 255) res[0] = 0;
+      if(res[1] == 255) res[1] = 0;
+      realtime.power = res[0];
       realtime.mileage = res[1]
       $rootScope.$broadcast('realtime.update')
     },
     speed: function (result) {
       var res = new Uint8Array(result) 
+      if(res[0] == 255) res[0] = 0;
+      if(res[1] == 255) res[1] = 0;
       realtime.speed = res[0]
       realtime.current = res[1]
       $rootScope.$broadcast('realtime.update')
