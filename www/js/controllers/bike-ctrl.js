@@ -123,7 +123,7 @@ controllers
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, $timeout, $ionicLoading, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService, BLEDevice) {
+.controller('BikesAddCtrl', function($scope, $state, $timeout, $ionicLoading, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService, BLEDevice, MyPreferences) {
   
   var devices = [];
 
@@ -197,7 +197,9 @@ controllers
       delete bike.newpassword;
       delete bike.newpassword2;
       $rootScope.device = device;
+      $rootScope.currentBike.localId = bike.localId
       $rootScope.currentBike = bike;
+      MyPreferences.save();
       Bike.upsert(bike, function (result) {
         $state.go('tab.home');
       }, function (res) {

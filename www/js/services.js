@@ -420,7 +420,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
   BLEDevice.prototype.safeMode = function (mode) {
     var q = $q.defer()
-    if(!$rootScope.online || !this.localId) {
+    if(!$rootScope.online || !this.localId || this.status != 'connected') {
       q.resolve(true)
     } else {
       if(mode === undefined) {
@@ -447,7 +447,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   
   BLEDevice.prototype.antiTheft = function (enable) {
     var q = $q.defer()
-    if(!$rootScope.online || !this.localId) {
+    if(!$rootScope.online || !this.localId || this.status != 'connected') {
       q.resolve(true)
     } else {
       if(enable === undefined) {
