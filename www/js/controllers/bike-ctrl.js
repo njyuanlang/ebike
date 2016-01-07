@@ -197,7 +197,7 @@ controllers
       delete bike.newpassword;
       delete bike.newpassword2;
       $rootScope.device = device;
-      $rootScope.currentBike.localId = bike.localId
+      $rootScope.currentBike.localId = bike.localId;
       $rootScope.currentBike = bike;
       MyPreferences.save();
       Bike.upsert(bike, function (result) {
