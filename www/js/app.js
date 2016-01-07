@@ -121,7 +121,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
   })
   
   $rootScope.$watch('currentBike', function (newValue, oldValue) {
-    if(newValue !== oldValue) {
+    if(newValue && newValue.id && newValue !== oldValue) {
       if(!$rootScope.device || $rootScope.device.localId != newValue.localId) {
         $rootScope.device = new BLEDevice(newValue);
         $rootScope.device.autoconnect();

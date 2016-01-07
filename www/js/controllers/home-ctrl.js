@@ -27,19 +27,11 @@ controllers
   $scope.endure = function () {
     $scope.device.setWorkmode(9)
   }
-  
-  var registerBike = function () {
-    $state.go('brands', {id:'create'})
-    $ionicLoading.show({
-      template: '<i class="icon ion-ios7-information-outline padding"></i>请注册车辆',
-      duration: 1000
-    })
-  }
-  
+    
   var reconnectDevice = function () {
     if(!$scope.online) return $scope.device.onConnected()
 
-    if($scope.device.bike.id) {
+    if($scope.currentBike && $scope.currentBike.id) {
       $scope.device.autoconnect().then(function (result) {
 
       }, function (reason) {
@@ -55,7 +47,7 @@ controllers
         }
       })
     } else {
-      registerBike()
+      $state.go('brands', {id:'create'});
     }
   }
   
