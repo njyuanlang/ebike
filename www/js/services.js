@@ -60,7 +60,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
 })
 
-.factory('RTMonitor', function ($rootScope, $interval, Cruise) {
+.factory('RTMonitor', function ($rootScope, $interval, Cruise, $cordovaVibration) {
   var service = {
     uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
     power: "0000D00A-D102-11E1-9B23-00025B00A5A5",// power mileage
@@ -108,6 +108,12 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       realtime.speed = res[0]
       realtime.current = res[1]
       $rootScope.$broadcast('realtime.update')
+      if(res[2] == 0x11) {
+        // console.log('realtime.warning=======');
+        $cordovaVibration.vibrate(100);
+      } else {
+        // console.log('realtime.allclear========');
+      }
     }
   }
   
