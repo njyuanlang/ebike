@@ -33,6 +33,9 @@
         <span class="assertive input-label" ng-show="pairForm.newpassword.$invalid && !pairForm.newpassword.$pristine">
           新密码必须是6位数字
         </span>
+        <span class="assertive input-label" ng-show="bike.newpassword == '123456' && !pairForm.newpassword.$pristine">
+          新密码不能是123456
+        </span>
       </div>
       <div class="item item-input item-stacked-label">
         <input type="tel" ng-model="bike.newpassword2" placeholder="请再输入一次新密码" required>    

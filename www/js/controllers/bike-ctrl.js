@@ -239,6 +239,8 @@ controllers
               e.preventDefault();
             } else if(!$scope.bike.newpassword || $scope.bike.newpassword.length !== 6) {
               e.preventDefault();
+            } else if($scope.bike.newpassword == '123456') {
+              e.preventDefault();
             } else if($scope.bike.newpassword != $scope.bike.newpassword2) {
               e.preventDefault();
             } else {
