@@ -8,7 +8,7 @@
     <div class="list">
       <a ng-if="!setting" ng-repeat="item in entities" href="#/tab/messages/{{item}}" class="item item-icon-right">
         {{ item | reminderDic}} 
-        <i class="icon ion-ios7-arrow-right"></i>
+        <i class="icon ion-ios-arrow-right"></i>
       </a>
       
       <ion-toggle ng-if="setting" ng-repeat="item in entities" ng-model="bike.reminder[item]" ng-checked="bike.reminder[item]">
