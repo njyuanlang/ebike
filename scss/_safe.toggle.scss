@@ -5,7 +5,7 @@
  */
 
 $safe-toggle-width:                    80px !default;
-$safe-toggle-height:                   32px !default;
+$safe-toggle-height:                   28px !default;
 $safe-toggle-border-width:             2px !default;
 $safe-toggle-border-radius:            20px !default;
 
@@ -67,6 +67,12 @@ $safe-toggle-hit-area-expansion:   5px;
   pointer-events: none;
 }
 
+.safe-toggle .icon {
+  font-size: 22px;
+  vertical-align: top;
+  color: $light;
+}
+
 /* Fix to avoid background color bleeding */
 /* (occured on (at least) Android 4.2, Asus MeMO Pad HD7 ME173X) */
 .platform-android4_2 .safe-toggle .track {
@@ -82,7 +88,8 @@ $safe-toggle-hit-area-expansion:   5px;
   width: $safe-toggle-handle-width*1.4;
   height: $safe-toggle-handle-height*1.4;
   border-radius: $safe-toggle-handle-radius;
-  background-color: $safe-toggle-handle-off-bg-color;
+//  background-color: $safe-toggle-handle-off-bg-color;
+  background: radial-gradient(#eee 35%, #fff 40%, #eee 100%);
   top: $safe-toggle-border-width + $safe-toggle-hit-area-expansion - $safe-toggle-handle-height*0.2;
   left: $safe-toggle-border-width + $safe-toggle-hit-area-expansion - $safe-toggle-handle-width*0.2;
 
@@ -94,6 +101,7 @@ $safe-toggle-hit-area-expansion:   5px;
     padding: ($safe-toggle-handle-height / 2) + 5 ($safe-toggle-handle-width + 7);
     content: " ";
   }
+  
 }
 
 .safe-toggle input:checked + .track .handle {

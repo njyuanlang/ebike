@@ -7873,13 +7873,18 @@ a.autolinker {
   display: inline-block;
   box-sizing: border-box;
   width: 80px;
-  height: 32px;
+  height: 28px;
   border: solid 2px #757575;
   border-radius: 20px;
   background-color: #757575;
   content: ' ';
   cursor: pointer;
   pointer-events: none; }
+
+.safe-toggle .icon {
+  font-size: 22px;
+  vertical-align: top;
+  color: #fff; }
 
 /* Fix to avoid background color bleeding */
 /* (occured on (at least) Android 4.2, Asus MeMO Pad HD7 ME173X) */
@@ -7893,22 +7898,22 @@ a.autolinker {
   transition: 0.2s ease-in-out;
   position: absolute;
   display: block;
-  width: 39.2px;
-  height: 39.2px;
-  border-radius: 28px;
-  background-color: #fff;
-  top: 1.4px;
-  left: 1.4px; }
+  width: 33.6px;
+  height: 33.6px;
+  border-radius: 24px;
+  background: radial-gradient(#eee 35%, #fff 40%, #eee 100%);
+  top: 2.2px;
+  left: 2.2px; }
   .safe-toggle .handle:before {
     position: absolute;
     top: -4px;
-    left: -22px;
-    padding: 19px 35px;
+    left: -20px;
+    padding: 17px 31px;
     content: " "; }
 
 .safe-toggle input:checked + .track .handle {
-  -webkit-transform: translate3d(48px, 0, 0);
-  transform: translate3d(48px, 0, 0);
+  -webkit-transform: translate3d(52px, 0, 0);
+  transform: translate3d(52px, 0, 0);
   background-color: #fff; }
 
 .safe-toggle input:disabled + .track {
