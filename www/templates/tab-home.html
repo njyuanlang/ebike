@@ -13,8 +13,8 @@
       <div class="col col-50">
       </div>
       <div class="col col-25 image-button">
-        <a class="button button-clear" ng-click="reconnectDevice()">
-          <img ng-src="img/bluetooth-{{device.status === 'connected'?'light':'gray'}}.png">
+        <a class="button button-clear {{device.status}}" ng-click="reconnectDevice()">
+          <img ng-src="img/bluetooth-{{!device || !device.status || device.status === 'disconnected'?'gray':'light'}}.png">
           <!-- <div class="bluetooth">
             <div class="row">
               <i class="ion-bluetooth" ng-class="device.status === 'connected' ? 'energized' : 'light'"></i>

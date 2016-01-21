@@ -21,6 +21,10 @@
  * Bluetooth connecting
  * ------------------------------------- */
 
+.connecting {
+  -webkit-animation: twinkling 2s infinite ease-in;
+}
+
 .bluetooth {
 //  position: absolute;
   font-size: 2.5rem;
@@ -157,7 +161,8 @@ $percent20: round($loops/5);
     }
     @else {
       $nextdeg: 360deg - $increment * $i;
-      $p1: percentage(($i - 50)/100);
+      $p1: percentage(($i - $half)/$loops);
+      $p2: percentage(($loops - $i)/$loops);
       background:
 //      -webkit-linear-gradient($nextdeg, $barColor 50%, transparent 50%),
 //      -webkit-linear-gradient(right, transparent 50%, $backColor 50%),

@@ -7936,6 +7936,9 @@ a.autolinker {
 /* -------------------------------------
  * Bluetooth connecting
  * ------------------------------------- */
+.connecting {
+  -webkit-animation: twinkling 2s infinite ease-in; }
+
 .bluetooth {
   font-size: 2.5rem; }
   .bluetooth small {
