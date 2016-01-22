@@ -4,7 +4,7 @@ Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
 <!-- <ion-tabs class="tabs-icon-top tabs-color-active-positive tabs-stable tabs-item-hide"> -->
-<ion-tabs class="tabs-icon-top tabs-color-active-positive tabs-stable" ng-class="{'tabs-item-hide':$root.hideTabs}">
+<ion-tabs class="tabs-icon-top tabs-color-active-positive tabs-stable" ng-class="{'tabs-item-hide':$rootScope.hideTabs}">
 
   <!-- Home Tab -->
   <ion-tab title="帮大师" icon-off="ion-ebike" icon-on="ion-ebike" href="#/tab/home">
