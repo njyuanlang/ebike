@@ -143,7 +143,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         $rootScope.correctSafeMode = true;
         $rootScope.currentBike.safe = oldValue;
         $ionicLoading.show({
-          template: '<i class="icon ion-ios7-information-outline padding"></i>'+reason,
+          template: '<i class="icon ion-ios-information-outline padding"></i>'+reason,
           duration: 2000
         });
       });
@@ -157,7 +157,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         console.debug('Success Set AntiTheft:'+newValue);
       }, function (reason) {
         $ionicLoading.show({
-          template: '<i class="icon ion-ios7-information-outline padding"></i>'+reason,
+          template: '<i class="icon ion-ios-information-outline padding"></i>'+reason,
           duration: 2000
         });
       });

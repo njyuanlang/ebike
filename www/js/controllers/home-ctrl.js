@@ -18,7 +18,7 @@ controllers
       $state.go('tab.test')
     } else {
       $ionicLoading.show({
-        template: '<i class="icon ion-ios7-information-outline padding"></i>请连接车辆',
+        template: '<i class="icon ion-ios-information-outline padding"></i>请连接车辆',
         duration: 2000
       })
     }
@@ -41,7 +41,7 @@ controllers
           console.debug('prevent from contiuning autoconnect');
         } else {
           $ionicLoading.show({
-            template: '<i class="icon ion-ios7-close-outline padding"></i>连接车辆失败',
+            template: '<i class="icon ion-ios-close-outline padding"></i>连接车辆失败',
             duration: 2000
           })
         }

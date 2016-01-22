@@ -62,7 +62,7 @@ controllers
     User.login($scope.entity, function (accessToken) {
       $timeout.cancel($scope.loginPromise)
       $ionicLoading.show({
-        template: '<i class="icon ion-ios7-checkmark-outline padding"></i>登录成功',
+        template: '<i class="icon ion-ios-checkmark-outline padding"></i>登录成功',
         duration: 1000
       })
       $localstorage.setObject('$$LastLoginData$$', $scope.entity)
@@ -71,7 +71,7 @@ controllers
     }, function (res) {
       $timeout.cancel($scope.loginPromise)
       var option = {
-        template: '<i class="icon ion-ios7-close-outline padding"></i>',
+        template: '<i class="icon ion-ios-close-outline padding"></i>',
         duration: 2000
       }
       console.trace(JSON.stringify(arguments));
@@ -81,7 +81,7 @@ controllers
     
     $scope.loginPromise = $timeout(function () {
       $ionicLoading.show({
-        template: '<i class="icon ion-ios7-close-outline padding"></i>无法连接到服务器',
+        template: '<i class="icon ion-ios-close-outline padding"></i>无法连接到服务器',
         duration: 2000
       })
     }, 10000)
@@ -131,7 +131,7 @@ controllers
     User.create(entity, function (user) {
       User.login(entity, function (accessToken) {
         $ionicLoading.show({
-          template: '<i class="icon ion-ios7-checkmark-outline padding"></i>注册账户成功',
+          template: '<i class="icon ion-ios-checkmark-outline padding"></i>注册账户成功',
           duration: 1000
         })
         $localstorage.setObject('$$LastLoginData$$', {username: entity.username, password: entity.password})
@@ -140,7 +140,7 @@ controllers
       })
     }, function (res) {
       var option = {
-        template: '<i class="icon ion-ios7-close-outline padding"></i>',
+        template: '<i class="icon ion-ios-close-outline padding"></i>',
         duration: 2000
       }
       option.template += $filter('registerErrorPrompt')(res.data.error.message)
@@ -158,13 +158,13 @@ controllers
 
     User.resetPassword(entity, function (user) {
       $ionicLoading.show({
-        template: '<i class="icon ion-ios7-checkmark-outline padding"></i>重置密码成功',
+        template: '<i class="icon ion-ios-checkmark-outline padding"></i>重置密码成功',
         duration: 1000
       })
       $ionicHistory.goBack()
     }, function (res) {
       var option = {
-        template: '<i class="icon ion-ios7-close-outline padding"></i>',
+        template: '<i class="icon ion-ios-close-outline padding"></i>',
         duration: 2000
       }
       option.template += $filter('registerErrorPrompt')(res.data.error.message)

@@ -191,7 +191,7 @@ controllers
     .then(function (result) {
       $scope.$ionicGoBack();
       $ionicLoading.show({
-        template: '<i class="icon ion-ios7-checkmark-outline padding"></i>绑定车辆成功',
+        template: '<i class="icon ion-ios-checkmark-outline padding"></i>绑定车辆成功',
         duration: 2000
       })
       delete bike.newpassword;
@@ -209,13 +209,14 @@ controllers
     .catch(function (error) {
       device.disconnect();
       $ionicLoading.show({
-        template: '<i class="icon ion-ios7-close-outline padding"></i>绑定失败：'+error,
+        template: '<i class="icon ion-ios-close-outline padding"></i>绑定失败：'+error,
         duration: 5000
       })
     })
     
     $ionicLoading.show({
-      template:'<i class="icon ion-loading-c ion-loading padding"></i>请稍后，正在连接'+bike.name+"...",
+      // template:'<i class="icon ion-loading-c ion-loading padding"></i>请稍后，正在连接'+bike.name+"...",
+      template:'<ion-spinner></ion-spinner>请稍后，正在连接'+bike.name+"...",
       duration: 30000
     })
   }
