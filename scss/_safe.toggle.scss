@@ -89,7 +89,7 @@ $safe-toggle-hit-area-expansion:   5px;
   height: $safe-toggle-handle-height*1.4;
   border-radius: $safe-toggle-handle-radius;
 //  background-color: $safe-toggle-handle-off-bg-color;
-  background: radial-gradient(#eee 35%, #fff 40%, #eee 100%);
+  background: -webkit-radial-gradient(#eee 35%, #fff 40%, #eee 100%);
   top: $safe-toggle-border-width + $safe-toggle-hit-area-expansion - $safe-toggle-handle-height*0.2;
   left: $safe-toggle-border-width + $safe-toggle-hit-area-expansion - $safe-toggle-handle-width*0.2;
 

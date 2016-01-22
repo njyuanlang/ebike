@@ -21,13 +21,12 @@
  * Bluetooth connecting
  * ------------------------------------- */
 
-.connecting {
-  -webkit-animation: twinkling 2s infinite ease-in;
-}
-
 .bluetooth {
+  .connecting {
+    -webkit-animation: twinkling 2s infinite ease-in;
+  }
 //  position: absolute;
-  font-size: 2.5rem;
+//  font-size: 2.5rem;
 //  border-radius: 100%;
 //  border: 1px solid;
 //  padding: 15%;
@@ -169,6 +168,7 @@ $percent20: round($loops/5);
       -webkit-linear-gradient($nextdeg, yellow $p1, transparent 50%),
       -webkit-linear-gradient(right, transparent 50%, $backColor 50%),
       -webkit-linear-gradient(top, red, orange, yellow);
+//      -webkit-background-clip: padding-box;
     }
   }
 }
