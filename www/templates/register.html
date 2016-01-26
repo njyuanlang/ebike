@@ -1,6 +1,5 @@
-<ion-view title="注册">
-  <ion-nav-bar></ion-nav-bar>
-  <ion-content class="scroll-bg padding" scroll="false">
+<ion-view title="{{title}}" cache-view="false" hide-back-button="false" has-header="true" hide-nav-bar="false">
+  <ion-content class="padding" scroll="false">
     <div class="list">
       <div class="item item-icon-left">
         <i class="icon ion-iphone"></i>
@@ -12,7 +11,7 @@
         <i class="icon ion-ios7-checkmark-outline"></i>
         <span class="validcode">
           <input type="tel" placeholder="输入验证码" ng-model="entity.authcode" required>
-          <a class="button-energized text-center" ng-click="getAuthcode()">{{validprompt}}</a>
+          <a class="dark text-center" ng-click="getAuthcode()">{{validprompt}}</a>
         </span>
       </div>
       <div class="item item-icon-left">
