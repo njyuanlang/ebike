@@ -98,8 +98,10 @@ controllers
   $scope.entity = {realm: "client"}
   $scope.validprompt = "获取验证码"
   $scope.$on("$ionicView.enter", function (event) {
+    $scope.isReset = $state.params.reset == '1';
+    $scope.title = $scope.isReset?'重置密码':'注册';
     $ionicNavBarDelegate.showBar(true);
-    $ionicNavBarDelegate.title($state.params.reset?'重置密码':'注册');
+    // $ionicNavBarDelegate.title($scope.isReset?'重置密码':'注册');
     // $ionicNavBarDelegate.showBackButton(true);
   });
   
