@@ -10327,3 +10327,6 @@ a.autolinker {
   float: right;
   color: #0ddba9;
   font-size: 16px; }
+
+.box > img {
+  width: 100%; }

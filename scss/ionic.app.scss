@@ -575,3 +575,12 @@ $angularSpeed: 180deg/$maxSpeed;
   color: $positive;
   font-size: 16px;
 }
+
+// Sliders
+// -------------------------------
+
+.box {
+  > img {
+    width: 100%;
+  }
+}
