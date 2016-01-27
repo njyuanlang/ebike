@@ -31,7 +31,7 @@ controllers
   })
   
   $scope.$on("$ionicView.leave", function () {
-    $scope.deregisterBackButtonAction()
+    if($scope.deregisterBackButtonAction) $scope.deregisterBackButtonAction();
   })
   
 })

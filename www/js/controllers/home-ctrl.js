@@ -12,11 +12,12 @@ controllers
   $scope.$on('$ionicView.enter', function (event) {
     $scope.showPrompt = false;
     if(!$scope.online) return $scope.device.onConnected();
-    var promptCount = $localstorage.get('$EBIKE$PromptCount', 0);
-    if( promptCount < 5) {
-      $scope.showPrompt = true;
-      $localstorage.set('$EBIKE$PromptCount', ++promptCount);
-      console.log(promptCount);
+    if(!$scope.device || $scope.device.status === 'disconnected') {
+      var promptCount = $localstorage.get('$EBIKE$PromptCount', 0);
+      if( promptCount < 5) {
+        $scope.showPrompt = true;
+        $localstorage.set('$EBIKE$PromptCount', ++promptCount);
+      }
     }
   })
 

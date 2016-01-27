@@ -189,7 +189,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     this.realtime = RTMonitor
     this.realtime.bikeId = bike.id
     this.task = new TestTask(bike)
-    this.bike.status = 'disconnected'
+    this.bike.status = this.status = 'disconnected'
     this.bike.workmode = 0;
   }
   
