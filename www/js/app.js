@@ -468,6 +468,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
 })
 
 .config(function ($ionicConfigProvider) {
+  $ionicConfigProvider.tabs.style('standard');
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.navBar.alignTitle('center');
 })
