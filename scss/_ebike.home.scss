@@ -21,26 +21,28 @@
  * Bluetooth connecting
  * ------------------------------------- */
 
+@-webkit-keyframes move_body { 
+  from { margin-left:32%; } to { margin-left:40%; }  
+}
+
+.prompt {
+  color: $positive;
+//  z-index: 200;
+  font-size: 1.0rem;
+  -webkit-animation: move_body 0.3s linear 0s infinite alternate;
+}
+  
 .bluetooth {
   .connecting {
     -webkit-animation: twinkling 2s infinite ease-in;
   }
+  
 //  position: absolute;
 //  font-size: 2.5rem;
 //  border-radius: 100%;
 //  border: 1px solid;
 //  padding: 15%;
   
-  small { 
-    font-size: 80%; 
-    padding: 0.4rem 0px 0px 0.1rem;
-    .connecting {
-      -webkit-animation: twinkling 2s infinite ease-in;
-    }
-    .disconnected {
-      display: none;
-    }
-  }
 }
 
 /* -------------------------------------
@@ -108,7 +110,7 @@ $bandwidth:                           6%;
   margin-top: -1.0rem !important;
 }
 
-.col {
+.col, .row-center {
   position: relative;
   width: 100%;
   .home-power-cycle {
@@ -122,7 +124,7 @@ $bandwidth:                           6%;
   }
 }
 
-.col {
+.col, .row-center {
   .home-power-cycle .overlay {
     position: absolute;
     top: 0;
@@ -149,6 +151,7 @@ $percent20: round($loops/5);
 
 @for $i from 0 through $loops {
   .home-power-cycle-#{$i*$step} {
+//    margin: 0 13% 0 13%;
     -webkit-box-shadow: 0 0 0rem;
     @if $i < $half {
       $nextdeg: 180deg - ( $increment * $i );

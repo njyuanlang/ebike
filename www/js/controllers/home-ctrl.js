@@ -1,6 +1,6 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, $ionicLoading, User, $rootScope) {
+.controller('HomeCtrl', function($scope, $state, $ionicLoading, User, $localstorage) {
     
   $scope.$on( 'realtime.update', function (event) {
     if($scope.device.bike.workmode === 9 && $scope.device.realtime.power > 24) {
@@ -10,7 +10,14 @@ controllers
   })
   
   $scope.$on('$ionicView.enter', function (event) {
+    $scope.showPrompt = false;
     if(!$scope.online) return $scope.device.onConnected();
+    var promptCount = $localstorage.get('$EBIKE$PromptCount', 0);
+    if( promptCount < 5) {
+      $scope.showPrompt = true;
+      $localstorage.set('$EBIKE$PromptCount', ++promptCount);
+      console.log(promptCount);
+    }
   })
 
   $scope.goTest = function () {
@@ -29,6 +36,7 @@ controllers
   }
     
   var reconnectDevice = function () {
+    $scope.showPrompt = false;
     if(!$scope.online) return $scope.device.onConnected()
 
     if($scope.currentBike && $scope.currentBike.id) {

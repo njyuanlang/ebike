@@ -8832,15 +8832,20 @@ a.autolinker {
 /* -------------------------------------
  * Bluetooth connecting
  * ------------------------------------- */
+@-webkit-keyframes move_body {
+  from {
+    margin-left: 32%; }
+
+  to {
+    margin-left: 40%; } }
+
+.prompt {
+  color: #0ddba9;
+  font-size: 1rem;
+  -webkit-animation: move_body 0.3s linear 0s infinite alternate; }
+
 .bluetooth .connecting {
   -webkit-animation: twinkling 2s infinite ease-in; }
-.bluetooth small {
-  font-size: 80%;
-  padding: 0.4rem 0px 0px 0.1rem; }
-  .bluetooth small .connecting {
-    -webkit-animation: twinkling 2s infinite ease-in; }
-  .bluetooth small .disconnected {
-    display: none; }
 
 /* -------------------------------------
  * digital display
@@ -8885,10 +8890,10 @@ a.autolinker {
 .mt-xs {
   margin-top: -1rem !important; }
 
-.col {
+.col, .row-center {
   position: relative;
   width: 100%; }
-  .col .home-power-cycle {
+  .col .home-power-cycle, .row-center .home-power-cycle {
     top: 0;
     left: 0;
     width: 100%;
@@ -8897,7 +8902,7 @@ a.autolinker {
     border-radius: 50%;
     padding-bottom: 100%; }
 
-.col .home-power-cycle .overlay {
+.col .home-power-cycle .overlay, .row-center .home-power-cycle .overlay {
   position: absolute;
   top: 0;
   left: 0;

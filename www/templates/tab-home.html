@@ -10,20 +10,18 @@
           <img ng-src="img/test-{{device.status === 'connected'?'light':'gray'}}.png">
         </a>
       </div>
-      <div class="col col-50">
+      <div class="col col-20"></div>
+      <div class="col col-30 col-center">
+        <div class="prompt" ng-if="showPrompt">
+          连接 <i class="icon ion-arrow-right-a"></i>
+        </div>
       </div>
       <div class="col col-25 image-button bluetooth">
-        <a class="button button-clear {{device.status}}" ng-click="reconnectDevice()">
-          <img ng-src="img/bluetooth-{{!device || !device.status || device.status === 'disconnected'?'gray':'light'}}.png">
-          <!-- <div class="bluetooth">
-            <div class="row">
-              <i class="ion-bluetooth" ng-class="device.status === 'connected' ? 'energized' : 'light'"></i>
-              <small>
-                <i class="ion-connection-bars energized {{device.status}}"></i>
-              </small>
-            </div>
-          </div> -->
-        </a>
+        <div class="row-wrap">
+          <a class="button button-clear {{device.status}}" ng-click="reconnectDevice()">
+            <img ng-src="img/bluetooth-{{!device || !device.status || device.status === 'disconnected'?'gray':'light'}}.png">
+          </a>
+        </div>
       </div>
     </div>
     <div class="row mt-sm">
@@ -39,7 +37,7 @@
             <h3 class="assertive">无电续航模式</h3>
             <label>此功能仅限本次使用，请尽快充电！</label>
           </div>
-        </div>        
+        </div>
       </div>
       <div class="col"></div>
     </div>
