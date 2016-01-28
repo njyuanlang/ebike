@@ -128,7 +128,11 @@ controllers
   var devices = [];
 
   function scanSuccessCb(result) {
-    if(result && result.name && result.name != '') {
+    if(result) {
+      if(!result.name || result.name == '' || result.name == '\u0004') {
+        result.name = "未命名车辆";
+      }
+      console.log(result);
       var exist = devices.some(function (item) {
         return item.id === result.id;
       });
