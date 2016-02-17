@@ -28,10 +28,12 @@
       <div class="col col-25">
         <div class="round-button round-button-lg">
           <div class="round-button-circle lg-2x">
-            <a class="button" ng-click="switchWorkmode()" ng-class="{'disabled': device.bike.workmode == 9}">
-              <h1 ng-if="device.bike.workmode%8 == 1">省电</h1>
+            <a class="button light" ng-click="switchWorkmode()" ng-class="{'disabled': device.bike.workmode == 9}">
+              <h1 ng-if="device.bike.workmode == 1">省电</h1>
               <h1 ng-if="device.bike.workmode == 0">正常</h1>
               <h1 ng-if="device.bike.workmode == 2">爬坡</h1>
+              <h1 ng-if="device.bike.workmode == 9">无电</h1>
+              <h1 ng-if="device.bike.workmode == 15">超速</h1>
               模式
             </a>
           </div>

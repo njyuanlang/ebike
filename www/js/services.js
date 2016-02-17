@@ -112,6 +112,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         // console.log('realtime.warning=======');
         $cordovaVibration.vibrate(100);
       } else {
+        // console.log('antiTheft:'+res[2]);
         // console.log('realtime.allclear========');
       }
     }

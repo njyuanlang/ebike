@@ -25,8 +25,11 @@ controllers
     }
   }, false);
 
+  var workmodes = [1, 0, 2, 15];
   $scope.switchWorkmode = function () {
-    $scope.device.setWorkmode((++$scope.device.bike.workmode)%3)
+    if($scope.device.bike.workmode === 9 ||
+      $scope.workmodeIdx === -1) return;
+    $scope.device.setWorkmode((workmodes[++$scope.workmodeIdx%4]));
   }
   
   $scope.init = function () {
@@ -34,6 +37,8 @@ controllers
     
     $scope.promptRotate = Math.abs(window.orientation) !== 90
     // $scope.promptRotate = false
+    
+    $scope.workmodeIdx = workmodes.indexOf($scope.device.bike.workmode);
   }
   
 })
