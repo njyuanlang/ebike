@@ -23,7 +23,14 @@ controllers
 
   $scope.goTest = function () {
     if($scope.device.status === 'connected') {
-      $state.go('tab.test')
+      if(!$scope.device.realtime.offline) {
+        $state.go('tab.test')
+      } else {
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios-information-outline padding"></i>请用钥匙开启车辆',
+          duration: 2000
+        })
+      }
     } else {
       $ionicLoading.show({
         template: '<i class="icon ion-ios-information-outline padding"></i>请连接车辆',
