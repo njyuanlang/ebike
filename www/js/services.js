@@ -113,9 +113,9 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       realtime.speed = res[0]
       realtime.current = res[1]
       $rootScope.$broadcast('realtime.update')
-      if(res[2] == 0x11) {
+      if($rootScope.device.bike.antiTheft && res[2] == 0x11) {
         // console.log('realtime.warning=======');
-        $cordovaVibration.vibrate(100);
+        $cordovaVibration.vibrate(200);
       } else {
         // console.log('antiTheft:'+res[2]);
         // console.log('realtime.allclear========');
