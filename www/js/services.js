@@ -305,7 +305,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         var handleError = function (reason) {
           console.debug('Retry '+tryCount+' times')
           if(++tryCount < 3) {
-            if(/not found.$/.test(reason)) {
+            if(/not found.$/.test(reason) || /pair error/.test(reason)) {
               ble.scan([], 3, function () {}, function () {});
               $timeout(tryConnect, 3000);
             } else {
@@ -326,7 +326,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
             }, function (reason) {
               console.debug('Pair Error: '+reason);
               kThis.disconnect();
-              handleError(reason);
+              handleError('pair error');
             });
           }, function (reason) {
             console.debug('Connect Error: '+reason);

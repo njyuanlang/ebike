@@ -57,7 +57,7 @@ controllers
           console.debug('prevent from contiuning autoconnect');
         } else {
           $ionicLoading.show({
-            template: '<i class="icon ion-ios-close-outline padding"></i>连接车辆失败',
+            template: '<i class="icon ion-ios-close-outline padding"></i>连接车辆失败'+reason,
             duration: 2000
           })
         }
