@@ -35,6 +35,7 @@ controllers
     if(loading) return;
     loading = true;
     Brand.find({filter:{
+      order: "created ASC",
       skip: pages*10,
       limit:10
     }}, function (results) {
