@@ -1,7 +1,7 @@
 <ion-view view-title="{{currentChat.user.name}}">
   <ion-content has-bouncing="true" class=" has-header has-footer" delegate-handle="userMessageScroll">
 
-    <ion-refresher pulling-text="下拉更早消息" refreshing-text="正在获取更早消息" on-refresh="fetchEarlier()">
+    <ion-refresher pulling-text="{{'PULL_FETCH_EARLY_MESSAGE'|translate}}" refreshing-text="{{'FETCHING_EARLY_MESSAGE'| translate}}" on-refresh="fetchEarlier()">
     </ion-refresher>
 
     <div ng-repeat="message in messages | orderBy:'+CreateTime'" class="message-wrapper" on-hold="onMessageHold($event, $index, message)">
@@ -21,10 +21,10 @@
       </div>
       <div class="cf"></div>
     </div>
-    
-    
+
+
   </ion-content>
-  
+
   <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate>
     <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
       <label class="item-input-wrapper">

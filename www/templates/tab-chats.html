@@ -1,4 +1,4 @@
-<ion-view view-title="消息" show-tabs>
+<ion-view view-title="{{'MESSAGE'|translate}}" show-tabs>
 
   <ion-content class="" delegate-handle="messageScroll">
     <ion-refresher pulling-text="下拉刷新" refreshing-text="正在获取消息" on-refresh="sync()">
@@ -11,10 +11,10 @@
         <span class="item-note">{{chat.message.CreateTime | moment_unix : 'from_now'}}</span>
         <h2 class="padding-bottom">{{chat.user.name || '未知账号'}} </h2>
         <p class="calm">{{chat.message.Content}}</p>
-        
+
         <ion-option-button class="button-assertive" ng-click="remove(chat)">删除</ion-option-button>
       </ion-item>
     </ion-list>
-    
+
   </ion-content>
 </ion-view>

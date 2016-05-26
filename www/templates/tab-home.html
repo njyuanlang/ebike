@@ -1,8 +1,10 @@
-<ion-view title="帮大师" hide-back-button="true" ng-init="init()"  show-tabs>
+<ion-view title="{{'BRAND'|translate}}" hide-back-button="true" ng-init="init()"  show-tabs>
   <ion-nav-buttons side="right">
-    <a class="button button-clear" ng-click="endure()" ng-class="device.realtime.power > 0?'disabled':'button-positive'" ng-if="device.workmode != 9">无电续航</a>
+    <a class="button button-clear" ng-click="endure()"
+      ng-class="device.realtime.power > 0?'disabled':'button-positive'"
+      ng-if="device.workmode != 9">{{'POWERLESS_ENDURE'|translate}}</a>
   </ion-nav-buttons>
-  
+
   <ion-content class="" scroll="false">
     <div class="row">
       <div class="col col-25 image-button">
@@ -13,7 +15,7 @@
       <div class="col col-20"></div>
       <div class="col col-30 col-center">
         <div class="prompt" ng-if="showPrompt">
-          连接 <i class="icon ion-arrow-right-a"></i>
+          {{'CONNECT'|translate}} <i class="icon ion-arrow-right-a"></i>
         </div>
       </div>
       <div class="col col-25 image-button bluetooth">
@@ -34,8 +36,8 @@
             </a>
           </div>
           <div class="overlay" ng-show="device.workmode == 9">
-            <h3 class="assertive">无电续航模式</h3>
-            <label>此功能仅限本次使用，请尽快充电！</label>
+            <h3 class="assertive">{{'POWERLESS_ENDURE'|translate}}{{'MODE'|translate}}</h3>
+            <label>{{'POWERLESS_ENDURE_TIPS'|translate}}</label>
           </div>
         </div>
       </div>
@@ -43,8 +45,8 @@
     </div>
     <div class="row text-center">
       <div class="col col-50 digital-display">
-        <h2 class="{{device.status}}">{{device.realtime.power||0}}<span>% </span><small> 剩余电量</small></h2>
-        <h2 class="{{device.status}}">{{device.realtime.mileage||0}}<span>km</span><small> 续航估值</small></h2>
+        <h2 class="{{device.status}}">{{device.realtime.power||0}}<span>% </span><small> {{'BATTERY_LEVEL'|translate}}</small></h2>
+        <h2 class="{{device.status}}">{{device.realtime.mileage||0}}<span>km</span><small> {{'RANGE_OF_KM'|translate}}</small></h2>
       </div>
       <div class="col col-50 padding">
         <label class="safe-toggle" ng-disabled="device.status !== 'connected'">
@@ -54,29 +56,29 @@
              <div class="handle"></div>
            </div>
         </label>
-        <h5>安全模式</h5>
+        <h5>{{'SAFE_MODE'|translate}}</h5>
       </div>
     </div>
     <div class="row text-center">
       <div class="col col-25 image-button col-offset-10">
         <a class="button button-clear" ng-class="{'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(1)">
           <img src="img/powersave-{{device.bike.workmode%8 === 1?'light':'gray'}}.png">
-          省电
+          {{'SAVE_POWER'|translate}}
         </a>
       </div>
       <div class="col col-25 image-button">
         <a class="button button-clear" ng-class="{'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(2)">
           <img src="img/climb-{{device.bike.workmode == 2?'light':'gray'}}.png">
-          爬坡
+          {{'CLIMB'|translate}}
         </a>
       </div>
       <div class="col col-25 image-button">
         <a class="button button-clear" ng-class="{'disabled': device.bike.workmode == 9}" ng-click="device.setWorkmode(15)">
           <img src="img/speed-{{device.bike.workmode == 15?'light':'gray'}}.png">
-          超速
+          {{'SPEED'|translate}}
         </a>
       </div>
     </div>
   </ion-content>
-  
+
 </ion-view>

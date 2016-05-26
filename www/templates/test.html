@@ -1,14 +1,14 @@
-<ion-view cache-view="false" title="检测" ng-init="init()">
+<ion-view cache-view="false" title="{{'TEST'|translate}}" ng-init="init()">
   <ion-nav-buttons side="right">
-    <a class="button button-clear" ng-class="task.items[1].state != 'error'?'disabled':'button-positive'" ng-click="device.repair(task)">一键修复</a>
+    <a class="button button-clear" ng-class="task.items[1].state != 'error'?'disabled':'button-positive'" ng-click="device.repair(task)">{{'1_CLICK_FIX'|translate}}</a>
   </ion-nav-buttons>
-  
+
   <ion-content class="" padding="false">
     <div class="row col">
       <h3 class="text-center">{{task | testTask: 'state'}}</h3>
     </div>
     <div class="row padding">
-      
+
       <div class="col col-80 col-offset-10">
         <div class="container">
           <div class="outer">
@@ -42,8 +42,8 @@
         <i class="ion-checkmark positive" ng-show="entity.state == 'pass' || entity.state == 'repaired'"></i>
         <i class="ion-alert assertive" ng-show="entity.state == 'error' || entity.state == 'broken'"></i>
         {{entity | testItem: 'state' }}
-      </div>      
+      </div>
     </div>
   </ion-content>
-  
+
 </ion-view>

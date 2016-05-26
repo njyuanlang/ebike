@@ -3,10 +3,34 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.controllers', 'ebike.services', 'ebike.filters', 'ebike.directives'])
+angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9UIWebViewPatch','ebike.controllers', 'ebike.services', 'ebike.filters', 'ebike.directives'])
 
-.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen, $cordovaStatusbar, $ionicHistory, $cordovaNetwork, User, RemoteStorage, $http, $ionicPopup, MyPreferences, BLEDevice, $ionicLoading) {
+.constant('defaultLanguage', 'zh')
+.config(function($stateProvider, $urlRouterProvider, $translateProvider, defaultLanguage) {
+  $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
+  $translateProvider.useStaticFilesLoader({
+    'prefix': 'i18n/',
+    'suffix': '.json'
+  });
+  $translateProvider.preferredLanguage(defaultLanguage);
+  $translateProvider.fallbackLanguage(defaultLanguage);
+})
+
+.run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen,
+  $cordovaStatusbar, $ionicHistory, $cordovaNetwork, User, RemoteStorage, $http,
+  $ionicPopup, MyPreferences, BLEDevice, $ionicLoading, $cordovaGlobalization, $translate) {
+
+  function setLanguage() {
+    if(typeof navigator.globalization !== "undefined") {
+      $cordovaGlobalization.getPreferredLanguage().then(function(language) {
+        $translate.use(language.value.split('-')[0]);
+      });
+    }
+  }
   $ionicPlatform.ready(function() {
+
+    setLanguage();
+
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
@@ -18,7 +42,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
-    
+
     if(window.cordova) {
       cordova.getAppVersion.getVersionNumber(function(version) {
         $rootScope.appVersion = version;
@@ -26,8 +50,11 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       cordova.getAppVersion.getVersionCode(function (build) {
         $rootScope.appBuild = build;
       });
+    } else {
+      $rootScope.appVersion = '4.0.0';
+      $rootScope.appBuild = '1000';
     }
- 
+
     if(screen.lockOrientation) {
       window.addEventListener("orientationchange", function() {
         if(Math.abs(window.orientation) === 90) {
@@ -38,7 +65,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
           $state.go('tab.home')
         }
       }, false);
-  
+
       // screen.lockOrientation('portrait-primary')
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         if(toState.name === 'tab.home') {
@@ -49,25 +76,25 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
           screen.unlockOrientation()
           // screen.lockOrientation('landscape-primary')
         } else {
-          screen.lockOrientation('portrait-primary')   
+          screen.lockOrientation('portrait-primary')
         }
       })
     }
-    
+
     if(navigator.splashscreen) {
       setTimeout(function() {
         navigator.splashscreen.hide()
       }, 300);
     }
-    
+
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
       if(toState.name === 'home') {
-        if(fromState.name === 'login' 
+        if(fromState.name === 'login'
         || fromState.name === 'cities') {
           $rootScope.$broadcast('home.reconnect')
         }
         $ionicHistory.clearHistory()
-      }      
+      }
     })
 
     if(window.ble) {
@@ -77,7 +104,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         $rootScope.$broadcast('bluetooth.disabled');
       })
     }
-    
+
     $rootScope.$on('bluetooth.disabled', function (event, args) {
       if(!ionic.Platform.isIOS()) {
         $ionicPopup.confirm({
@@ -92,18 +119,18 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         });
       }
     });
-    
+
     if(User.isAuthenticated()) {
       $rootScope.$broadcast('user.DidLogin');
     } else {
       $state.go('entry')
     }
-  });  
-  
+  });
+
   $rootScope.hideTabs = false;
   $rootScope.online = true
   $rootScope.avatar = null
-  
+
   $rootScope.$on('user.DidLogin', function (event, args) {
     var userId = User.getCurrentId();
     $rootScope.currentUser = User.getCurrent();
@@ -119,7 +146,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         })
     }
   })
-  
+
   $rootScope.$watch('currentBike', function (newValue, oldValue) {
     if((!$rootScope.online || (newValue && newValue.id)) && newValue !== oldValue) {
       if(!$rootScope.device || $rootScope.device.localId != newValue.localId) {
@@ -135,7 +162,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         $rootScope.correctSafeMode = false;
         return;
       }
-      
+
       $rootScope.device.safeMode(newValue)
       .then(function (result) {
         console.debug('Success Set SafeMode:'+newValue);
@@ -163,23 +190,23 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       });
     }
   });
-    
+
   $rootScope.isAndroid = ionic.Platform.isAndroid()
-  
+
   $ionicPlatform.on('pause', function () {
     if($rootScope.device) {
       $rootScope.device.disconnect();
     }
   })
-  
+
   $ionicPlatform.on('resume', function () {
     if($rootScope.device) {
       $rootScope.device.autoconnect();
     }
   })
-  
+
   moment.locale('zh-CN');
-  
+
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -190,21 +217,21 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-    // entry 
+    // entry
     .state('entry', {
       url: "/entry",
       templateUrl: "templates/entry.html",
       controller: 'EntryCtrl'
     })
 
-    // login 
+    // login
     .state('login', {
       url: "/login",
       templateUrl: "templates/login.html",
       controller: 'LoginCtrl'
     })
 
-    // register 
+    // register
     .state('register', {
       url: "/register?reset",
       templateUrl: "templates/register.html",
@@ -226,8 +253,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       abstract: true,
       templateUrl: 'templates/tabs.html'
     })
-    
-    // home 
+
+    // home
     .state('tab.home', {
       url: "/home",
       views: {
@@ -238,7 +265,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       }
     })
 
-    // test 
+    // test
     .state('tab.test', {
       url: "/test",
       views: {
@@ -257,13 +284,13 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         }
       }
     })
-    // cruise 
+    // cruise
     .state('cruise', {
       url: "/cruise",
       templateUrl: "templates/cruise.html",
       controller: 'CruiseCtrl'
     })
-    
+
     // merchants
     .state('tab.merchants', {
       url: "/merchants",
@@ -313,7 +340,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       }
     })
 
-    // menu 
+    // menu
     .state('tab.menu', {
       url: "/menu",
       views: {
@@ -323,8 +350,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
         }
       }
     })
-    
-    // account 
+
+    // account
     .state('tab.account', {
       url: "/account",
       views: {
@@ -460,7 +487,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'ngIOS9UIWebViewPatch','ebike.con
       url: "/intro",
       templateUrl: "templates/help.html"
     })
-    
+
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/home');

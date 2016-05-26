@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "jr-crop": "https://github.com/JrSchild/jr-crop.git#~1.0.0",
-    "moment": "~2.10.6"
+    "moment": "~2.10.6",
+    "angular-translate": "^2.11.0",
+    "angular-translate-loader-static-files": "^2.11.0"
   }
 }

@@ -1,26 +1,28 @@
 <ion-view cache-view="false" hide-back-button="true" has-header="false" hide-nav-bar="true" ng-init="init()">
   <ion-content class=" padding" scroll="false">
     <div class="col col-60 col-offset-20">
-      
+
     </div>
     <div class="logo">
       <img src='img/logo.png'>
-      <h2 class="text-center">帮大师</h1>
+      <h2 class="text-center" translate='BRAND'></h1>
     </div>
     <div class="row">
       <div class="col col-50">
-        <button class="button button-block button-positive pull-left" type="button" ui-sref="register()">注册</button>
+        <button class="button button-block button-positive pull-left" translate="REGISTER" ui-sref="register()">
+        </button>
       </div>
-      
+
       <div class="col col-50">
-        <button class="button button-block button-positive pull-right" type="button" ui-sref="login()">登录</button>
+        <button class="button button-block button-positive pull-right" translate="LOGIN" ui-sref="login()">
+        </button>
       </div>
-      
+
     </div>
 
     <div class="row padding">
-      <a class="col col-50 col-offset-50 text-right" ng-click="goTrial()">体验账号</a>
+      <a class="col col-50 col-offset-50 text-right" ng-click="goTrial()" translate="TRIAL"></a>
     </div>
-        
+
   </ion-content>
 </ion-view>

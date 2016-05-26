@@ -1,27 +1,28 @@
-<ion-view title ="登录" cache-view="false" hide-back-button="false" has-header="true" hide-nav-bar="false">
+<ion-view title ="{{ 'LOGIN'| translate}}" cache-view="false" hide-back-button="false" has-header="true" hide-nav-bar="false">
   <ion-content class=" padding" scroll="false">
     <form class="padding">
-      <div class="list">        
+      <div class="list">
         <div class="item item-icon-left">
           <i class="icon ion-iphone"></i>
           <span class="item-input">
-            <input type="tel" name="t" placeholder="输入手机号码" ng-model="entity.username" required>
+            <input type="tel" name="t" placeholder="{{'INPUT_PHONENUMBER'| translate}}" ng-model="entity.username" required>
           </span>
         </div>
         <div class="item item-icon-left">
           <i class="icon ion-key"></i>
           <span class="item-input">
-            <input type="password" placeholder="输入密码" ng-model="entity.password" required>
+            <input type="password" placeholder="{{'INPUT_PASSWORD'|translate}}" ng-model="entity.password" required>
           </span>
         </div>
       </div>
     </form>
     <div class="row">
-      <button class="button button-block button-positive" type="button" ng-click="tryLogin()">登录</button>
+      <button class="button button-block button-positive" type="button" ng-click="tryLogin()" translate='LOGIN'>
+      </button>
     </div>
-        
+
     <div class="row padding">
-      <a class="col col-50 col-offset-50 text-right" ng-click="goRegister(1)">忘记密码？</a>
+      <a class="col col-50 col-offset-50 text-right" ng-click="goRegister(1)" translate='FORGOT_PASSWORD'></a>
     </div>
   </ion-content>
 </ion-view>

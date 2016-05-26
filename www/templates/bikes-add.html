@@ -1,19 +1,19 @@
-<ion-view title="绑定车辆">
+<ion-view title="{{'BIND_BIKE'|translate}}">
   <ion-nav-buttons side="right">
-    <a class="button" ng-click="goHome()">主页</a>
+    <a class="button" ng-click="goHome()" translate='HOME'></a>
   </ion-nav-buttons>
   <ion-content has-header="true" class=" padding" delegate-handle="mainScroll">
-    <ion-refresher pulling-text="下拉搜索周边车辆" refreshing-text="正在搜索周边车辆" on-refresh="doScan()"></ion-refresher>
+    <ion-refresher pulling-text="{{'PULL_REFRESH_BIKES'|translate}}" refreshing-text="{{'REFRESHING_BIKES'|translate}}" on-refresh="doScan()"></ion-refresher>
 
     <div class="list">
       <div class="item text-center" ng-if="!online">
-        体验账号不能绑定车辆
+        {{'TRIAL_UNABLE_TO_BIND'|translate}}
       </div>
       <div ng-repeat="item in entities" ng-click="selectEntity(item)" class="item">
         {{ item.name }}
         <h4> {{item.id}} </h4>
       </div>
-      
+
     </div>
 
   </ion-content>
@@ -23,27 +23,23 @@
   <form name="pairForm" novalidate>
     <div class="list">
       <div class="item item-input item-stacked-label">
-        <input name="password" type="tel" ng-model="bike.password" placeholder="请输入现在的密码" ng-minlength="6" ng-maxlength="6" required autofocus>
+        <input name="password" type="tel" ng-model="bike.password" placeholder="{{'INPUT_PASSWORD'| translate}}" ng-minlength="6" ng-maxlength="6" required autofocus>
         <span class="assertive input-label" ng-show="pairForm.password.$invalid && !pairForm.password.$pristine">
-          密码必须是6位数字
+          {{'PASSWORD_SHOULD_BE_6_NUMBER'| translate}}
         </span>
       </div>
       <div class="item item-input item-stacked-label">
-        <input name="newpassword" type="tel" ng-model="bike.newpassword" placeholder="请输入新密码" ng-minlength="6" ng-maxlength="6" required>
+        <input name="newpassword" type="tel" ng-model="bike.newpassword" placeholder="{{'INPUT_NEW_PASSWORD'| translate}}" ng-minlength="6" ng-maxlength="6" required>
         <span class="assertive input-label" ng-show="pairForm.newpassword.$invalid && !pairForm.newpassword.$pristine">
-          新密码必须是6位数字
-        </span>
-        <span class="assertive input-label" ng-show="bike.newpassword == '123456' && !pairForm.newpassword.$pristine">
-          新密码不能是123456
+          {{'PASSWORD_SHOULD_BE_6_NUMBER'| translate}}
         </span>
       </div>
       <div class="item item-input item-stacked-label">
-        <input type="tel" ng-model="bike.newpassword2" placeholder="请再输入一次新密码" required>    
+        <input type="tel" ng-model="bike.newpassword2" placeholder="{{'INPUT_PASSWORD_AGAIN'| translate}}" required>
         <span class="assertive input-label" ng-show="bike.newpassword !== bike.newpassword2 && !pairForm.newpassword2.$pristine">
-          两遍密码不一致
+          {{'INPUT_PASSWORD_DIFFERENT'|translate}}
         </span>
       </div>
     </div>
   </form>
 </script>
-

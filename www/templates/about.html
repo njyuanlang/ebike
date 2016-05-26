@@ -1,24 +1,19 @@
-<ion-view title="关于我们">
+<ion-view title="{{'ABOUT_US'|translate}}">
   <ion-content has-header="true" class=" padding">
-    <h2>帮大师</h2>
-    
-    <div class="list">
-      <div class="item transparent-bg">
-        版本号：{{appVersion}}
+    <h2 translate='BRAND'></h2>
+
+    <div class="list card">
+      <div class="item transparent-bg" translate='APP_VERSION' translate-values="{appVersion: appVersion}">
+      </div>
+      <div class="item transparent-bg" translate='BUILD_VERION' translate-values="{appBuild: appBuild}">
+      </div>
+      <div class="item transparent-bg" translate='COPYRIGHT'>
       </div>
       <div class="item transparent-bg">
-        Build：{{appBuild}}
-      </div>
-      <div class="item transparent-bg">
-        Copyright@<br>江苏南京宝旭信息技术有限公司
-      </div>
-      <div class="item transparent-bg">
-        <div ng-if="!isAndroid">支持手机：iOS 6.0以上</div>
-        <div ng-if="isAndroid">支持手机：Android 4.3以上</div>
+        <div ng-if="!isAndroid" translate="SUPPORT_IOS"></div>
+        <div ng-if="isAndroid" translate="SUPPORT_ANDROID"></div>
       </div>
     </div>
-    <p class="">
-      软件下载及使用过程中产生的流量费用由运营商收取。
-    </p>
+    <h6 translate="FEE_PROMPT"></h6>
   </ion-content>
 </ion-view>

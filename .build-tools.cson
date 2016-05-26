@@ -1,0 +1,53 @@
+providers: [
+  {
+    key: "bt"
+    config:
+      commands: [
+        {
+          project: "/Users/guanbo/repo/ebike"
+          source: "/Users/guanbo/repo/ebike/.build-tools.cson"
+          name: "build ios"
+          command: "make ios"
+          wd: "."
+          env: {}
+          modifier:
+            save_all: {}
+          environment:
+            name: "child_process"
+            config:
+              stdoe: "both"
+          stdout:
+            pipeline: []
+          stderr:
+            pipeline: []
+          output: {}
+          version: 2
+        }
+        {
+          project: "/Users/guanbo/repo/ebike"
+          source: "/Users/guanbo/repo/ebike/.build-tools.cson"
+          name: "build android"
+          command: "make android"
+          wd: "."
+          env: {}
+          modifier:
+            save_all: {}
+          environment:
+            name: "child_process"
+            config:
+              stdoe: "both"
+          stdout:
+            pipeline: []
+          stderr:
+            pipeline: []
+          output:
+            console:
+              close_success: true
+              queue_in_buffer: true
+              colors: false
+              stdin: false
+          version: 2
+        }
+      ]
+  }
+]

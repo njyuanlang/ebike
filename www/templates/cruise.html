@@ -6,48 +6,48 @@
         <div class="power-cycle power-cycle-{{device.realtime.power}}">
           <div class="overlay" ng-if="device.bike.workmode != 9">
             <h3>{{device.realtime.power}}<small>%</small></h3>
-            <label><small>剩余电量</small></label>
+            <label><small>{{'BATTERY_LEVEL'|translate}}</small></label>
           </div>
           <a class="overlay powerless" ng-if="device.bike.workmode !=9 && device.realtime.power <= 0" ng-click="device.setWorkmode(9)">
-            <h4>开启<br>无电续航</h4>
+            <h4>{{'EANBLE'|translate}}<br>{{'POWERLESS_ENDURE'| translate}}</h4>
           </a>
           <div class="overlay" ng-if="device.bike.workmode == 9">
-            <h4 class="assertive"><br>无电续航</h4>
+            <h4 class="assertive"><br>{{'POWERLESS_ENDURE'| translate}}</h4>
           </div>
         </div>
       </div>
       <div class="col col-50">
-        <h1 class="text-center"><small>剩余</small> {{device.realtime.mileage}} <small>续航公里</small></h1>
+        <h1 class="text-center"><small>{{'REMAIN'|translate}}</small> {{device.realtime.mileage}} <small>{{'RANGE_OF_KM'| translate}}</small></h1>
         <div>
-          <span class="assertive" ng-show="device.realtime.power <= 0 && device.bike.workmode != 9">请尽快充电或开启无电续航！</span>
-          <span class="assertive" ng-show="device.bike.workmode == 9">无电续航中请尽快充电！</span>
-          <span class="assertive" ng-show="reminder.overload">车辆超载！</span>
-          <span class="assertive" ng-show="reminder.temperature">温度过高！</span>
+          <span class="assertive" ng-show="device.realtime.power <= 0 && device.bike.workmode != 9">{{'LOW_POWER_TIPS'|translate}}</span>
+          <span class="assertive" ng-show="device.bike.workmode == 9">{{'POWERLESS_ENDURE_TIPS'|translate}}</span>
+          <span class="assertive" ng-show="reminder.overload">{{'OVERLOAD_PROMPT'| translate}}</span>
+          <span class="assertive" ng-show="reminder.temperature">{{'TEMPERATURE_PROMPT'| translate}}</span>
         </div>
       </div>
       <div class="col col-25">
         <div class="round-button round-button-lg">
           <div class="round-button-circle lg-2x">
             <a class="button light" ng-click="switchWorkmode()" ng-class="{'disabled': device.bike.workmode == 9}">
-              <h1 ng-if="device.bike.workmode == 1">省电</h1>
-              <h1 ng-if="device.bike.workmode == 0">正常</h1>
-              <h1 ng-if="device.bike.workmode == 2">爬坡</h1>
-              <h1 ng-if="device.bike.workmode == 9">无电</h1>
-              <h1 ng-if="device.bike.workmode == 15">超速</h1>
-              模式
+              <h1 ng-if="device.bike.workmode == 1" translate='SAVE_POWER'></h1>
+              <h1 ng-if="device.bike.workmode == 0" translate='NORMAL'></h1>
+              <h1 ng-if="device.bike.workmode == 2" translate='CLIMB'></h1>
+              <h1 ng-if="device.bike.workmode == 9" translate='POWERLESS'></h1>
+              <h1 ng-if="device.bike.workmode == 15" translate='SPEED'></h1>
+              {{'MODE'|translate}}
             </a>
           </div>
-          
+
         </div>
       </div>
     </div>
-    
+
     <div class="speed-gauge">
       <div class="speed-gauge-pointer speed-gauge-{{device.realtime.speed}}"></div>
       <div class="speed-gauge-digital">
         <h1> {{device.realtime.speed}}<small>km/h</small></h1>
       </div>
     </div>
-      
+
   </ion-content>
 </ion-view>

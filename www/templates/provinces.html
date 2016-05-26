@@ -1,23 +1,23 @@
-<ion-view title="选择地区">
+<ion-view title="{{'SELECT_REGION'}}">
   <ion-nav-bar></ion-nav-bar>
   <ion-content class=" padding">
-    
+
     <div class="list">
       <div class="item item-divider">
-        当前城市
+        {{'CURRENT_CITY'|translate}}
       </div>
       <a class="item transparent-bg item-icon-right" ng-click="selectCurrentCity()">
         {{ currentCity }}
         <i class="icon ion-load-c" ng-show="locating"></i>
       </a>
       <div class="item item-divider">
-        手动选择
+        {{'MANUAL_SELECT'|translate}}
       </div>
-      <a ng-repeat="item in entities" class="item transparent-bg" 
+      <a ng-repeat="item in entities" class="item transparent-bg"
          ng-click="goCities(item)">
         {{ item.name }}
       </a>
     </div>
-    
+
   </ion-content>
 </ion-view>

@@ -1,40 +1,40 @@
-<ion-view title="我" hide-back-button="true" cache-view="false" show-tabs>
+<ion-view title="{{'ME'|translate}}" hide-back-button="true" cache-view="false" show-tabs>
   <ion-content has-header="true"  scroll="false" padding="false">
     <a class="item item-avatar item-icon-right user-bg" href="#/tab/account">
       <img src="{{avatar || 'img/user-icon.png'}}">
       <h2>{{currentUser.name || currentUser.username}}</h2>
       <small>
-        {{currentUser.created | date : 'yyyy-MM-dd'}} 加入
-      </small>        
+        {{currentUser.created | date : 'yyyy-MM-dd'}} {{'REGISTER'|translate}}
+      </small>
       <i class="icon ion-ios-arrow-forward"></i>
     </a>
     <div class="menu-grid text-center">
       <div class="row">
         <a class="col button" ui-sref="tab.bike()">
           <img src="img/ebike-icon.png">
-          <p>我的车辆</p>
+          <p>{{'MYBIKE'|translate}}</p>
         </a>
         <a class="col button" ui-sref="tab.bikes-add()">
           <img src="img/bluetooth-icon.png">
-          <p>连接车辆</p>
+          <p>{{'BIND_BIKE'|translate}}</p>
         </a>
         <a class="col button" ui-sref="tab.messages()">
           <img src="img/message-icon.png">
-          <p>消息提醒</p>
+          <p>{{'REMIND_MESSAGE'|translate}}</p>
         </a>
       </div>
       <div class="row">
         <a class="col button" href="#/tab/services">
           <img src="img/list-icon.png">
-          <p>服务条款</p>
+          <p>{{'SERVICE_LICENSE'|translate}}</p>
         </a>
         <a class="col button" ui-sref="tab.help()">
           <img src="img/help-icon.png">
-          <p>使用帮助</p>
+          <p>{{'HELP_MANUAL'|translate}}</p>
         </a>
         <a class="col button" href="#/tab/about">
           <img src="img/about-icon.png">
-          <p>关于我们</p>
+          <p>{{'ABOUT_US'|translate}}</p>
         </a>
       </div>
       <!-- <div class="row">
@@ -47,9 +47,8 @@
         <a class="col button">
         </a>
       </div> -->
-    
+
     </div>
   </ion-content>
-  
-</ion-view>
 
+</ion-view>

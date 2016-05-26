@@ -1,49 +1,37 @@
-<ion-view title="我要入住">
+<ion-view title="{{'REGISTER_MERCHANT'|translate}}">
   <ion-content has-header="true" class="padding">
     <form name="merchantForm" ng-submit="submitForm(merchantForm.$valid)" novalidate>
-      
+
       <div class="card">
         <label class="item item-input item-stacked-label item-light">
           <span class="input-label">
-            商户名称：必填
+            {{'MERCHANT_NAME'|translate}}：{{'REQUIRED'|translate}}
           </span>
           <input type="text" placeholder="例如：XXX电动车维修部" ng-model="entity._name" name="name" required>
           <span class="assertive input-label" ng-show="merchantForm.name.$invalid && !merchantForm.name.$pristine">
-            商户名不能为空
+            {{'MERCHANT_NAME'|translate}}{{'SHOULD_NOT_EMPTY'|translate}}
           </span>
         </label>
-      
-      
-        <!-- <label class="item">
-          <span class="input-label">门头图片</span>
-          <a class="button button-block text-center" ng-click="chooseImage()">
-            <i class="icon ion-upload ion-2x" ng-if="!entity.avatar">上传照片</i>
-            <div ng-if="!!entity.avatar" >
-              <img src="{{entity.avatar}}" >
-            </div>
-          </a>
-        </label> -->
       </div>
-      
+
       <div class="card">
-        <div class="item item-divider">联系方式</div>
+        <div class="item item-divider">{{'CONTACT'|translate}}</div>
         <div class="item" ui-sref="tab.merchant-mark()">
           <div id="container2"></div>
-          <a class="button button-block button-royal icon-left ion-location">点击选择地址</a>
+          <a class="button button-block button-royal icon-left ion-location">{{'MARK_ADDRESS_TIPS'|translate}}</a>
         </div>
         <div class="item item-stacked-label item-light">
-          <!-- <span class="input-label">地区</span> -->
-          <span class="input-label">地区  {{entity.province}} {{entity.city}} {{entity.district}}</span>
+          <span class="input-label">{{'REGION'|translate}}  {{entity.province}} {{entity.city}} {{entity.district}}</span>
         </div>
         <label class="item item-input item-stacked-label item-light">
-          <span class="input-label">详细地址：必填</span>
+          <span class="input-label">{{'ADDRESS'|translate}}：{{'REQUIRED'|translate}}</span>
           <input type="text" placeholder="例如：迎翠路7号" ng-model="entity._address" name="address" required>
           <span class="assertive input-label" ng-show="merchantForm.address.$invalid && !merchantForm.address.$pristine">
             地址不能为空
           </span>
         </label>
         <label class="item item-input item-stacked-label item-light">
-          <span class="input-label">联系人：必填</span>
+          <span class="input-label">{{'LINK_MAN'|translate}}：{{'REQUIRED'|translate}}</span>
           <input type="text" placeholder="例如：李明" ng-model="entity.linkman" name="linkman" required>
           <span class="assertive input-label" ng-show="merchantForm.linkman.$invalid && !merchantForm.telephone.$pristine">
             联系人不能为空
@@ -57,14 +45,14 @@
           </span>
         </label>
       </div>
-    
+
       <div class="card">
         <div class="item item-divider">支持</div>
         <ion-toggle ng-model="entity.anybrand" toggle-class="toggle-balance">维修任意品牌</ion-toggle>
         <ion-toggle ng-model="ability.charge" toggle-class="toggle-balance">可充电</ion-toggle>
         <ion-toggle ng-model="ability.onsite" toggle-class="toggle-balance">5公里上门服务</ion-toggle>
       </div>
-      
+
       <ul class="list">
         <div class="item item-divider">车型</div>
 
@@ -81,7 +69,7 @@
           三轮车
         </li>
       </ul>
-      
+
       <button type="submit" class="button button-block button-positive" ng-disabled="merchantForm.$invalid">提交</button>
     </form>
     <br><br>

@@ -5,8 +5,8 @@ controllers
   $scope.goTrial = function () {
     $rootScope.online = false
     $rootScope.currentBike = {
-      brand: {name: '宝旭'}, 
-      model:'演示型号', 
+      brand: {name: '宝旭'},
+      model:'演示型号',
       workmode:0,
       wheeldiameter: 12,
       voltage: 48,
@@ -15,7 +15,7 @@ controllers
     }
     $state.go('tab.home');
   }
-  
+
   $scope.init = function () {
     if($localstorage.get('$EBIKE$IsNewbie', "YES") === "YES") {
       $localstorage.set('$EBIKE$IsNewbie', "NO")
@@ -29,21 +29,21 @@ controllers
       ionic.Platform.exitApp();
     }, 101)
   })
-  
+
   $scope.$on("$ionicView.leave", function () {
     if($scope.deregisterBackButtonAction) $scope.deregisterBackButtonAction();
   })
-  
+
 })
 
 .controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout) {
-  
+
   $scope.entity = {realm: 'client'}
   var lastLoginData = $localstorage.getObject('$$LastLoginData$$')
   for(key in lastLoginData) {
     $scope.entity[key] = lastLoginData[key]
   }
-  
+
   $scope.tryLogin = function () {
     if(navigator.connection && $cordovaNetwork.isOffline()) {
       return $ionicLoading.show({
@@ -53,11 +53,11 @@ controllers
     }
 
     $rootScope.online = true
-    
+
     $ionicLoading.show({
       template: '<i class="icon ion-loading-c ion-loading padding"></i>登录中...'
     })
-    
+
     console.debug(JSON.stringify($scope.entity));
     User.login($scope.entity, function (accessToken) {
       $timeout.cancel($scope.loginPromise)
@@ -76,9 +76,9 @@ controllers
       }
       console.trace(JSON.stringify(arguments));
       option.template += $filter('loginErrorPrompt')(res.data && res.data.error.message)
-      $ionicLoading.show(option)      
+      $ionicLoading.show(option)
     })
-    
+
     $scope.loginPromise = $timeout(function () {
       $ionicLoading.show({
         template: '<i class="icon ion-ios-close-outline padding"></i>无法连接到服务器',
@@ -90,21 +90,30 @@ controllers
   $scope.goRegister = function (reset) {
     $state.go('register', {reset:reset})
   }
-  
+
 })
 
-.controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading, User, $localstorage, Authmessage, $filter, $ionicHistory, $rootScope, $ionicNavBarDelegate) {
-  
+.controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading,
+  User, $localstorage, Authmessage, $filter, $ionicHistory, $rootScope,
+  $ionicNavBarDelegate, $translate) {
+
+  var translations = {
+    GET_AUTH_CODE: '',
+    ELAPSE_SUFFIX: '',
+    RESET_PASSWORD: '',
+    REGISTER: ''
+  };
   $scope.entity = {realm: "client"}
-  $scope.validprompt = "获取验证码"
   $scope.$on("$ionicView.enter", function (event) {
     $scope.isReset = $state.params.reset == '1';
-    $scope.title = $scope.isReset?'重置密码':'注册';
+    $translate(Object.keys(translations)).then(function (result) {
+      translations = result;
+      $scope.validprompt = result.GET_AUTH_CODE;
+      $scope.title = $scope.isReset?result.RESET_PASSWORD:result.REGISTER;
+    });
     $ionicNavBarDelegate.showBar(true);
-    // $ionicNavBarDelegate.title($scope.isReset?'重置密码':'注册');
-    // $ionicNavBarDelegate.showBackButton(true);
   });
-  
+
   $scope.getAuthcode = function () {
     if($scope.disableValidcode) return
     $scope.disableValidcode = true
@@ -113,15 +122,15 @@ controllers
       if(--$scope.elapse === 0) {
         $interval.cancel($scope.promise)
         $scope.disableValidcode = false
-        $scope.validprompt = "获取验证码"
+        $scope.validprompt = translations.GET_AUTH_CODE;
       } else {
-        $scope.validprompt = $scope.elapse+"秒后重试"
+        $scope.validprompt = $scope.elapse+translations.ELAPSE_SUFFIX;
       }
     }, 1000)
-    
+
     Authmessage.create({phone: $scope.entity.username})
   }
-  
+
   $scope.tryRegister = function () {
     var entity = $scope.entity
     entity.email = entity.username+"@example.com"
@@ -149,7 +158,7 @@ controllers
       $ionicLoading.show(option)
     })
   }
-  
+
   $scope.tryResetPassword = function () {
     var entity = $scope.entity
     entity.email = entity.username+"@example.com"
@@ -176,7 +185,7 @@ controllers
 })
 
 .controller('AccountCtrl', function($scope, $state, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http, $rootScope, LoopBackAuth, $ionicActionSheet) {
-  
+
   $scope.entity = User.getCurrent()
 
   $scope.logout = function () {
@@ -196,7 +205,7 @@ controllers
     }
     $state.go('entry');
   }
-  
+
   var uploadAvatar = function () {
     var url = RemoteStorage.getUploadURL('uploads', $scope.entity.id)
     // var fd = new FormData();
@@ -220,7 +229,7 @@ controllers
     //
     // })
 
-   
+
     var targetPath = cordova.file.dataDirectory + "avatar.png";
     var options = {
       mimeType: "image/png",
@@ -235,7 +244,7 @@ controllers
       // console.debug(progress)
     })
   }
-  
+
   var getPicture = function (index) {
     var options = {sourceType: Camera.PictureSourceType.PHOTOLIBRARY}
     if(index === 0) {
@@ -251,9 +260,9 @@ controllers
 
     $cordovaCamera.getPicture(options).then(function(imageURI) {
       return $jrCrop.crop({
-        url: imageURI, 
-        width: 300, 
-        height: 300, 
+        url: imageURI,
+        width: 300,
+        height: 300,
         cancelText: "取消",
         chooseText: "选择"
       })
@@ -282,10 +291,10 @@ controllers
     }, function (err) {
       console.debug("Create/GET Container ERROR:", JSON.stringify(err))
     })
-    
+
     return true;
   }
-  
+
   $scope.changeAvatar = function () {
     $ionicActionSheet.show({
       buttons: [
@@ -296,7 +305,7 @@ controllers
       buttonClicked: getPicture
     })
   }
-  
+
   $scope.changeName = function () {
     $ionicPopup.prompt({
       title: '更改真实姓名',
@@ -309,7 +318,7 @@ controllers
        }
      });
   }
-  
+
 })
 
 .controller('ProvincesCtrl', function ($scope, $state, ChinaRegion, $ionicNavBarDelegate, User, $ionicLoading) {
@@ -323,7 +332,7 @@ controllers
     $ionicNavBarDelegate.showBar(true);
     $ionicNavBarDelegate.showBackButton(true);
   });
-  
+
   $scope.getLocalCity = function () {
     $scope.locating = true;
     $scope.currentCity = "正在定位..."
@@ -342,7 +351,7 @@ controllers
       });
     });
   };
-  
+
   $scope.selectCurrentCity = function () {
     AMap.service(["AMap.Geocoder"], function () {
       var geocoder = new AMap.Geocoder({city: $scope.currentCity});
@@ -368,7 +377,7 @@ controllers
 .controller('CitiesCtrl', function ($scope, $state, ChinaRegion, User, $rootScope, $window) {
   var province = JSON.parse($state.params.province)
   $scope.entities = province.sub
-  
+
   $scope.selectEntity = function (item) {
     User.getCurrent(function (user) {
       user.region = {
@@ -380,6 +389,5 @@ controllers
     });
     $state.go('tab.account');
   }
-  
-})
 
+})
