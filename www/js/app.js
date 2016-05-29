@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9UIWebViewPatch','ebike.controllers', 'ebike.services', 'ebike.filters', 'ebike.directives'])
 
-.constant('defaultLanguage', 'zh')
+.constant('defaultLanguage', 'en')
 .config(function($stateProvider, $urlRouterProvider, $translateProvider, defaultLanguage) {
   $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
   $translateProvider.useStaticFilesLoader({
@@ -23,7 +23,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
   function setLanguage() {
     if(typeof navigator.globalization !== "undefined") {
       $cordovaGlobalization.getPreferredLanguage().then(function(language) {
-        $translate.use(language.value.split('-')[0]);
+        $rootScope.language = language.value.split('-')[0];
+        $translate.use($rootScope.language);
       });
     }
   }
