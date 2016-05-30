@@ -81,5 +81,9 @@ controllers
   $scope.$on('home.reconnect', reconnectDevice);
 
   $scope.init = function () {
+    if($localstorage.get('$EBIKE$IsNewbie', "YES") === "YES") {
+      $localstorage.set('$EBIKE$IsNewbie', "NO")
+      $state.go('intro')
+    }
   }
 })

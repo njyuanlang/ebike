@@ -18,7 +18,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 
 .run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen,
   $cordovaStatusbar, $ionicHistory, $cordovaNetwork, User, RemoteStorage, $http,
-  $ionicPopup, MyPreferences, BLEDevice, $ionicLoading, $cordovaGlobalization, $translate) {
+  $ionicPopup, MyPreferences, BLEDevice, $ionicLoading, $cordovaGlobalization,
+  $translate, $cordovaDevice) {
 
   function setLanguage() {
     if(typeof navigator.globalization !== "undefined") {
@@ -124,7 +125,25 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
     if(User.isAuthenticated()) {
       $rootScope.$broadcast('user.DidLogin');
     } else {
-      $state.go('entry')
+      var entity = {
+        email: $cordovaDevice.getUUID()+'@ebike.com',
+        password: '123456',
+        realm: 'globalclient'
+      }
+      function tryLogin(user, next) {
+        console.log(arguments);
+        user.password = '123456';
+        User.login(user).$promise.then(function () {
+          $rootScope.$broadcast('user.DidLogin');
+          $state.go('tab.home');
+        }, next);
+      }
+      tryLogin(entity, function (err) {
+        if(err) {
+          console.log(err);
+          User.create(entity).$promise.then(tryLogin);
+        }
+      });
     }
   });
 
@@ -212,10 +231,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 
 .config(function($stateProvider, $urlRouterProvider) {
 
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
   $stateProvider
 
     // entry
@@ -508,7 +523,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
         if (rejection.status == 401) {
           LoopBackAuth.clearUser();
           LoopBackAuth.clearStorage();
-          $location.path('/entry')
+          $location.path('/tab/home')
         }
         return $q.reject(rejection);
       }
