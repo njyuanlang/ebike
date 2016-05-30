@@ -1,14 +1,23 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, $ionicLoading, User, $localstorage) {
-    
+.controller('HomeCtrl', function($scope, $state, $ionicLoading, User, $localstorage, $translate) {
+
+  var translations = {
+    OPEN_WITH_KEY: '',
+    REQUIRE_CONNECT_BIKE_TIPS: '',
+    CONNECT_BIKE_FAILURE: ''
+  };
+  $translate(Object.keys(translations)).then(function (result) {
+    translations = result;
+  });
+
   $scope.$on( 'realtime.update', function (event) {
     if($scope.device.bike.workmode === 9 && $scope.device.realtime.power > 24) {
       $scope.device.setWorkmode(0)
     }
     $scope.$apply()
   })
-  
+
   $scope.$on('$ionicView.enter', function (event) {
     $scope.showPrompt = false;
     if(!$scope.online) return $scope.device.onConnected();
@@ -27,22 +36,22 @@ controllers
         $state.go('tab.test')
       } else {
         $ionicLoading.show({
-          template: '<i class="icon ion-ios-information-outline padding"></i>请用钥匙开启车辆',
+          template: '<i class="icon ion-ios-information-outline padding"></i>'+translations.OPEN_WITH_KEY,
           duration: 2000
         })
       }
     } else {
       $ionicLoading.show({
-        template: '<i class="icon ion-ios-information-outline padding"></i>请连接车辆',
+        template: '<i class="icon ion-ios-information-outline padding"></i>'+translations.REQUIRE_CONNECT_BIKE_TIPS,
         duration: 2000
       })
     }
   }
-  
+
   $scope.endure = function () {
     $scope.device.setWorkmode(9)
   }
-    
+
   var reconnectDevice = function () {
     $scope.showPrompt = false;
     if(!$scope.online) return $scope.device.onConnected()
@@ -57,7 +66,7 @@ controllers
           console.debug('prevent from contiuning autoconnect');
         } else {
           $ionicLoading.show({
-            template: '<i class="icon ion-ios-close-outline padding"></i>连接车辆失败'+reason,
+            template: '<i class="icon ion-ios-close-outline padding"></i>'+translations.CONNECT_BIKE_FAILURE+reason,
             duration: 2000
           })
         }
@@ -66,11 +75,11 @@ controllers
       $state.go('brands', {id:'create'});
     }
   }
-  
+
   $scope.reconnectDevice = reconnectDevice
-  
+
   $scope.$on('home.reconnect', reconnectDevice);
-    
+
   $scope.init = function () {
   }
 })

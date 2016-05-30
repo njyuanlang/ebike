@@ -138,7 +138,7 @@ controllers
   var translations = {
     CANCEL: '',
     UNNAMED: '',
-    BIND_BIKE_SUCCESS: ''
+    BIND_BIKE_SUCCESS: '',
     REGISTER_BIKE_FAILURE: "",
     BIND_BIKE_SUCCESS: "",
     BIND_BIKE_FAILURE: "",

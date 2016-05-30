@@ -2,14 +2,23 @@
 
 angular.module('ebike.filters',[])
 
-.filter("reminderDic", function () {
+.filter("reminderDic", function ($translate) {
+
   var dictionary = {
-    "overload": "超载提醒",
-    "temperature": "温度过高提醒",
-    "voltage": "电瓶低电压提醒",
-    "guard": "防盗提醒"
+    "overload": "",
+    "temperature": "",
+    "voltage": "",
+    "guard": ""
   }
-  
+
+  $translate(['REMIND_OVERLOAD', 'REMIND_TEMPERATRUE', 'REMIND_VOLTAGE',
+    'REMIND_GUARD']).then(function (result) {
+    dictionary.overload = result.REMIND_OVERLOAD;
+    dictionary.temperature = result.REMIND_TEMPERATRUE;
+    dictionary.voltage = result.REMIND_VOLTAGE;
+    dictionary.guard = result.REMIND_GUARD;
+  });
+
   return function (key) {
     return dictionary[key];
   }
@@ -22,42 +31,63 @@ angular.module('ebike.filters',[])
   }
 })
 
-.filter("testItem", function () {
+.filter("testItem", function ($translate) {
   var testItems = {
     id: {
-      "brake": "刹车",
-      "motor": "电机",
-      "controller": "控制器",
-      "steering": "转把"
+      "brake": "",
+      "motor": "",
+      "controller": "",
+      "steering": ""
     },
     state: {
-      testing: '检测中',
-      pass: '正常',
-      error: '故障',
-      repairing: '修复中',
-      repaired: '修复',
-      broken: '损坏'
+      testing: '',
+      pass: '',
+      error: '',
+      repairing: '',
+      repaired: '',
+      broken: ''
     }
-  } 
-  
+  }
+
+  $translate(['BRAKE','MOTOR','CONTROLLER','STEERING','TESTING','PASS','ERROR',
+  'REPAIRING', 'REPAIRED', 'BROKEN']).then(function (result) {
+    testItems.id.brake = result.BRAKE;
+    testItems.id.motor = result.MOTOR;
+    testItems.id.controller = result.CONTROLLER;
+    testItems.id.steering = result.STEERING;
+    testItems.state.testing = result.TESTING;
+    testItems.state.pass = result.PASS;
+    testItems.state.error = result.ERROR;
+    testItems.state.repairing = result.REPAIRING;
+    testItems.state.repaired = result.REPAIRED;
+    testItems.state.broken = result.BROKEN;
+  });
+
   return function (item, dic) {
     var key = item[dic]
     return testItems[dic][key]
   }
 })
 
-.filter("testTask", function () {
+.filter("testTask", function ($translate) {
   var dictionary = {
     state: {
-      idle: '准备测试',
-      testing: '系统扫描中...',
-      pass: '扫描结束',
-      error: '故障! 请到维修点维修',
-      repairing: '系统修复中...',
-      repaired: '修复结束',
-      broken: '故障! 请到维修点维修'
+      idle: '',
+      testing: '',
+      pass: '',
+      error: '',
+      repairing: '',
+      repaired: '',
+      broken: ''
     }
   }
+  $translate(['STATE_IDLE', 'STATE_TESTING', 'STATE_PASS', 'STATE_ERROR',
+    'STATE_REPAIRING', 'STATE_REPAIRED', 'STATE_BROKEN']).then(function (result) {
+    for (var key in result) {
+      var keys = key.toLowerCase().split('_');
+      dictionary[keys[0]][keys[1]] = result[key];
+    }
+  });
   return function (task, dic) {
     var key = task[dic]
     return dictionary[dic][key]
@@ -83,7 +113,7 @@ angular.module('ebike.filters',[])
     "username or email is required": "用户名不能为空",
     "login failed": "用户名或密码错误"
   }
-  
+
   return function (msg) {
     return dictionary[msg] || "登录失败"
   }
