@@ -74,7 +74,7 @@ controllers
       model:item,
       workmode:0,
       wheeldiameter: 16,
-      voltage: 48,
+      voltage: 60,
       current: 20,
       "name": brand.name
     }
@@ -84,7 +84,7 @@ controllers
 })
 
 .controller('WheelDiametersCtrl', function($scope, $state, Bike, MyPreferences) {
-  $scope.entities = [10, 12, 14, 16, 18, 20, 22, 24, 26]
+  $scope.entities = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26]
 
   $scope.selectEntity = function (item) {
     if($scope.registering) {
@@ -100,7 +100,7 @@ controllers
 })
 
 .controller('VoltagesCtrl', function($scope, $state, Bike, MyPreferences) {
-  $scope.entities = [36, 48, 60, 72]
+  $scope.entities = [18, 24, 36, 48, 60, 72]
 
   $scope.selectEntity = function (item) {
     if($scope.registering) {
@@ -116,7 +116,7 @@ controllers
 })
 
 .controller('CurrentsCtrl', function($scope, $state, Bike, MyPreferences) {
-  $scope.entities = [12, 20, 30, 36]
+  $scope.entities = [8, 10, 12, 20, 30, 36]
 
   $scope.selectEntity = function (item) {
     if($scope.registering) {
