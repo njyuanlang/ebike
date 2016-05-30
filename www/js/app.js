@@ -117,9 +117,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       tryLogin(entity, function (err) {
         if(err) {
           console.log(err);
-          User.create(entity).$promise.then(tryLogin, function (reason) {
-            console.log(arguments);
-          });
+          User.create(entity).$promise.then(tryLogin);
         }
       });
     }
