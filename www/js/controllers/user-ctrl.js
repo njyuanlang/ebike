@@ -101,7 +101,9 @@ controllers
     GET_AUTH_CODE: '',
     ELAPSE_SUFFIX: '',
     RESET_PASSWORD: '',
-    REGISTER: ''
+    REGISTER: '',
+    REGISTERING: '',
+    REGISTER_SUCCESS: ''
   };
   $scope.entity = {realm: "client"}
   $scope.$on("$ionicView.enter", function (event) {
@@ -136,13 +138,13 @@ controllers
     entity.email = entity.username+"@example.com"
 
     $ionicLoading.show({
-      template: '<i class="icon ion-loading-c ion-loading padding"></i>正在注册新账户...'
+      template: '<i class="icon ion-loading-c ion-loading padding"></i>'+translations.REGISTERING
     })
 
     User.create(entity, function (user) {
       User.login(entity, function (accessToken) {
         $ionicLoading.show({
-          template: '<i class="icon ion-ios-checkmark-outline padding"></i>注册账户成功',
+          template: '<i class="icon ion-ios-checkmark-outline padding"></i>'+translations.REGISTER_SUCCESS,
           duration: 1000
         })
         $localstorage.setObject('$$LastLoginData$$', {username: entity.username, password: entity.password})

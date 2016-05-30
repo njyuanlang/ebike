@@ -92,5 +92,13 @@
   "SELECT_BATTERY_CURRENT": "选择电池电压",
   "SELECT_WHEEL_DIAMETER": "选择车辆轮径",
   "GET_AUTH_CODE": "获取验证码",
-  "ELAPSE_SUFFIX": "秒后重试"
+  "ELAPSE_SUFFIX": "秒后重试",
+  "REGISTERING": "正在注册新账户...",
+  "REGISTER_SUCCESS": "注册账户成功",
+  "REGISTER_BIKE_FAILURE": "创建车辆失败",
+  "BIND_BIKE_SUCCESS": "绑定车辆成功",
+  "BIND_BIKE_FAILURE": "绑定车辆失败",
+  "BINDING_TIPS": "请稍后，正在连接",
+  "INPUT_BIND_PASSWORD": "输入车辆配对密码",
+  "CONFIRM": "确定"
 }

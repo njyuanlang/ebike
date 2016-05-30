@@ -1,19 +1,26 @@
 controllers
 
-.controller('BikeCtrl', function($scope, $state, Bike, $rootScope, $ionicLoading, MyPreferences) {
-  
+.controller('BikeCtrl', function($scope, $state, Bike, $rootScope, $ionicLoading, MyPreferences, $translate) {
+
   $rootScope.registering = $state.params.bikeId && $state.params.bikeId === 'create';
+
+  var translations = {
+    REGISTER_BIKE_FAILURE: ''
+  };
+  $translate(Object.keys(translations)).then(function (result) {
+    translations = result;
+  });
 
   $scope.register = function () {
     Bike.create($scope.registerBike, function (result) {
       $rootScope.registering = false;
       $rootScope.currentBike = result;
       MyPreferences.save();
-      $state.go('tab.home');   
+      $state.go('tab.home');
     }, function (reason) {
       console.log(JSON.stringify(reason));
       $ionicLoading.show({
-        template: "创建车辆失败："+reason.data.error.message,
+        template: translations.REGISTER_BIKE_FAILURE+":"+reason.data.error.message,
         duration: 2000
       });
     });
@@ -26,11 +33,11 @@ controllers
   var pages = 0;
   var isMoreData = true;
   var loading = false;
-  
+
   $scope.selectEntity = function (item) {
     $state.go('models', {brandId: item.id})
   }
-  
+
   $scope.loadMoreData = function () {
     if(loading) return;
     loading = true;
@@ -46,11 +53,11 @@ controllers
       $scope.$broadcast('scroll.infiniteScrollComplete');
     });
   }
-  
+
   $scope.$on('$ionicView.enter', function() {
     $scope.loadMoreData();
   });
-  
+
   $scope.moreDataCanBeLoaded = function () {
     return isMoreData;
   }
@@ -63,15 +70,15 @@ controllers
 
   $scope.selectEntity = function (item) {
     $rootScope.registerBike = {
-      brand: brand, 
-      model:item, 
+      brand: brand,
+      model:item,
       workmode:0,
       wheeldiameter: 16,
       voltage: 48,
       current: 20,
-      "name": brand.name+"牌电动车"
+      "name": brand.name
     }
-    
+
     $state.go('bike-register', {bikeId: 'create'})
   }
 })
@@ -125,13 +132,28 @@ controllers
 })
 
 .controller('BikesAddCtrl', function($scope, $state, $timeout, $ionicLoading, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService, BLEDevice, MyPreferences) {
-  
+
   var devices = [];
+
+  var translations = {
+    CANCEL: '',
+    UNNAMED: '',
+    BIND_BIKE_SUCCESS: ''
+    REGISTER_BIKE_FAILURE: "",
+    BIND_BIKE_SUCCESS: "",
+    BIND_BIKE_FAILURE: "",
+    BINDING_TIPS: "",
+    INPUT_BIND_PASSWORD: "",
+    CONFIRM: ''
+  };
+  $translate(Object.keys(translations)).then(function (result) {
+    translations = result;
+  });
 
   function scanSuccessCb(result) {
     if(result) {
       if(!result.name || result.name == '' || result.name == '\u0004') {
-        result.name = "未命名车辆";
+        result.name = translations.UNNAMED;
       }
       console.log(result);
       var exist = devices.some(function (item) {
@@ -142,11 +164,11 @@ controllers
       }
     }
   }
-  
+
   function scanErrorCb(reason) {
     $scope.$broadcast('scroll.refreshComplete')
   }
-  
+
   function stopScan(isForce) {
     if(isForce || devices.length > 0) {
       $scope.scanTimer = null;
@@ -159,7 +181,7 @@ controllers
 
   function doScan() {
     if(!$scope.online) return;
-    
+
     $scope.device.disconnect()
     .then(function () {
       if($window.ble) {
@@ -173,7 +195,7 @@ controllers
         }, function (error) {
           $rootScope.$broadcast('bluetooth.disabled');
           $timeout(scanErrorCb, 2000);
-        })      
+        })
       } else {
         $timeout(scanErrorCb, 2000);
       }
@@ -196,7 +218,7 @@ controllers
     .then(function (result) {
       $scope.$ionicGoBack();
       $ionicLoading.show({
-        template: '<i class="icon ion-ios-checkmark-outline padding"></i>绑定车辆成功',
+        template: '<i class="icon ion-ios-checkmark-outline padding"></i>'+translations.BIND_BIKE_SUCCESS,
         duration: 2000
       })
       delete bike.newpassword;
@@ -214,38 +236,35 @@ controllers
     .catch(function (error) {
       device.disconnect();
       $ionicLoading.show({
-        template: '<i class="icon ion-ios-close-outline padding"></i>绑定失败：'+error,
+        template: '<i class="icon ion-ios-close-outline padding"></i>'+translations.BIND_BIKE_FAILURE+':'+error,
         duration: 5000
       })
     })
-    
+
     $ionicLoading.show({
-      // template:'<i class="icon ion-loading-c ion-loading padding"></i>请稍后，正在连接'+bike.name+"...",
-      template:'<ion-spinner></ion-spinner>请稍后，正在连接'+bike.name+"...",
+      template:'<ion-spinner></ion-spinner>'+translations.BINDING_TIPS+bike.name+"...",
       duration: 30000
     })
   }
-  
+
   $scope.selectEntity = function (item) {
     $scope.bike = angular.copy($scope.currentBike);
     $scope.bike.localId = item.id
     $scope.bike.name = item.name
 
     $ionicPopup.show({
-      title: '输入车辆配对密码',
+      title: translations.INPUT_BIND_PASSWORD,
       templateUrl: 'pair-Popup.html',
       scope: $scope,
       buttons: [
-        {text: '取消'},
+        {text: translations.CANCEL},
         {
-          text: '<b>确定</b>',
+          text: '<b>'+translations.CONFIRM+'</b>',
           type: 'button-positive',
           onTap: function (e) {
             if (!$scope.bike.password || $scope.bike.password.length !== 6) {
               e.preventDefault();
             } else if(!$scope.bike.newpassword || $scope.bike.newpassword.length !== 6) {
-              e.preventDefault();
-            } else if($scope.bike.newpassword == '123456') {
               e.preventDefault();
             } else if($scope.bike.newpassword != $scope.bike.newpassword2) {
               e.preventDefault();
@@ -256,21 +275,21 @@ controllers
         }
       ]
     })
-    .then(tryConnect);     
+    .then(tryConnect);
   }
-    
+
   $scope.goHome = function () {
     $state.go('tab.home');
   }
-  
+
   $scope.$on("$ionicView.beforeLeave", function () {
     stopScan(true);
     $scope.device.autoconnect()
   })
-  
+
   $scope.$on("$ionicView.enter", function () {
     $scope.entities = [];
     if($scope.online) PtrService.triggerPtr('mainScroll');
   })
-    
+
 })
