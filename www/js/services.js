@@ -1,4 +1,4 @@
-mangular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
+angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
 .factory('Util', function () {
 
