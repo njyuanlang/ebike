@@ -39,7 +39,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     },
     setObject: function(key, value) {
       if(!value || value === undefined) {
-        $window.localStorage[key] = undefined       
+        $window.localStorage[key] = undefined
       } else {
         $window.localStorage[key] = JSON.stringify(value);
       }
@@ -66,7 +66,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     power: "0000D00A-D102-11E1-9B23-00025B00A5A5",// power mileage
     speed: "0000D00B-D102-11E1-9B23-00025B00A5A5" // speed current
   }
-  
+
   var realtime = {
     power: 0,
     mileage: 0,
@@ -91,10 +91,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
   }
   var fakeIntervals = {}
-  
+
   var noitficationCbs = {
     power: function (result) {
-      var res = new Uint8Array(result) 
+      var res = new Uint8Array(result)
       if(res[0] == 255) {
         res[0] = 0;
         realtime.offline = true;
@@ -107,7 +107,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       $rootScope.$broadcast('realtime.update')
     },
     speed: function (result) {
-      var res = new Uint8Array(result) 
+      var res = new Uint8Array(result)
       if(res[0] == 255) res[0] = 0;
       if(res[1] == 255) res[1] = 0;
       realtime.speed = res[0]
@@ -115,14 +115,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       $rootScope.$broadcast('realtime.update')
       if($rootScope.device.bike.antiTheft && res[2] == 0x11) {
         // console.log('realtime.warning=======');
-        $cordovaVibration.vibrate(200);
       } else {
         // console.log('antiTheft:'+res[2]);
         // console.log('realtime.allclear========');
       }
     }
   }
-  
+
   var uploadInterval = null
   var notify = function(localId, characteristic) {
     if($rootScope.online) {
@@ -144,10 +143,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       fakeIntervals[characteristic] = null;
     }
   }
-  
+
   var uploadFn = function () {
     if(!realtime.bikeId) return;
-    
+
     Cruise.create({
       power: realtime.power,
       mileage: realtime.mileage,
@@ -156,7 +155,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       bikeId: realtime.bikeId
     })
   }
-  
+
   realtime.startNotifications = function (localId) {
     notify(localId, "power")
     notify(localId, "speed")
@@ -165,7 +164,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       uploadFn()
     }
   }
-  
+
   realtime.stopNotifications = function (localId) {
     stopNotify(localId, "power")
     stopNotify(localId, "speed")
@@ -176,12 +175,12 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     realtime.speed = 0
     realtime.current = 0
   }
-  
+
   return realtime
 })
 
 .factory('BLEDevice', function ($cordovaBLE, RTMonitor, $rootScope, $q, Util, $interval, $timeout, $window, TestTask, Test, $ionicLoading) {
-  
+
   function BLEDevice(bike) {
     bike = bike || {}
     this.bike = bike
@@ -198,8 +197,9 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     this.bike.status = this.status = 'disconnected'
     this.bike.workmode = 0;
   }
-  
+
   BLEDevice.prototype.setWorkmode = function (mode) {
+    if (this.status !== 'connected') return;
     if(this.bike.workmode == mode) mode = 0;
     this.bike.workmode = mode
     if($rootScope.online) {
@@ -209,7 +209,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       this.sendOrder(hexs)
     }
   }
-  
+
   BLEDevice.prototype.connect = function () {
     if(!this.localId) return $q.reject('车辆标示ID不能为空！');
     return $cordovaBLE.connect(this.localId).then(function (result) {
@@ -218,7 +218,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       return $q.reject('无法连接车辆:'+reason);
     })
   }
-  
+
   var testService = {
     uuid: "0000B000-D102-11E1-9B23-00025B00A5A5",
     test: "0000B00A-D102-11E1-9B23-00025B00A5A5",
@@ -245,7 +245,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     if($rootScope.online) {
       this.connectingInterval = $interval(function () {
         kThis.isConnected().then(function (result) {
-          
+
         }, function (reason) {
           console.debug('Check connecting broken: '+reason);
           kThis.disconnect();
@@ -256,7 +256,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       })
     }
   }
-  
+
   BLEDevice.prototype.onDisconnected = function () {
     console.debug('Start onDisconnected');
     this.status = 'disconnected'
@@ -265,9 +265,9 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       $interval.cancel(this.connectingInterval)
       this.connectingInterval = null
     }
-    RTMonitor.stopNotifications(this.localId)    
+    RTMonitor.stopNotifications(this.localId)
   };
-  
+
   BLEDevice.prototype.isConnected = function () {
     var q = $q.defer()
     if($window.ble && $rootScope.online) {
@@ -281,7 +281,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
     return q.promise
   }
-  
+
   BLEDevice.prototype.autoconnect = function () {
     console.debug('Start autoconnect...');
     var q = $q.defer()
@@ -331,17 +331,17 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           }, function (reason) {
             console.debug('Connect Error: '+reason);
             handleError(reason);
-          })  
+          })
         };
         this.isConnected().then(connectSucceed, tryConnect);
       }
     } else {
       q.reject('no localId')
     }
-    
+
     return q.promise
   }
-  
+
   BLEDevice.prototype.disconnect = function () {
     this.onDisconnected();
     if(!$window.ble || !this.localId) {
@@ -354,7 +354,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       return $cordovaBLE.disconnect(this.localId);
     }
   }
-  
+
   BLEDevice.prototype.readSerialNumber = function () {
     var q = $q.defer()
     if($window.ble && $rootScope.online) {
@@ -374,7 +374,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
     return q.promise
   }
-  
+
   var order = {
     uuid: "00001C00-D102-11E1-9B23-00025B00A5A5",
     order: "00001C01-D102-11E1-9B23-00025B00A5A5",
@@ -387,14 +387,14 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   BLEDevice.prototype.sendOrder = function (hexs) {
     if(!$rootScope.online || !$window.ble) return;
     var value = Util.hexToBytes(hexs)
-    ble.write(this.localId, order.uuid, order.order, value) 
+    ble.write(this.localId, order.uuid, order.order, value)
   }
   BLEDevice.prototype.sendSpec = function () {
     if(!$rootScope.online || !$window.ble) return;
     if(this.bike.wheeldiameter < 10) this.bike.wheeldiameter = 10;
     var hexs = [this.bike.voltage, this.bike.current, 0, this.bike.wheeldiameter]
     var value = Util.hexToBytes(hexs)
-    ble.write(this.localId, order.uuid, order.spec, value) 
+    ble.write(this.localId, order.uuid, order.spec, value)
   }
   BLEDevice.prototype.pair = function (password) {
     var q = $q.defer()
@@ -433,7 +433,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
     return q.promise
   }
-  
+
   BLEDevice.prototype.safeMode = function (mode) {
     var q = $q.defer()
     if(!$rootScope.online || !this.localId || this.status != 'connected') {
@@ -460,7 +460,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
     return q.promise
   };
-  
+
   BLEDevice.prototype.antiTheft = function (enable) {
     var q = $q.defer()
     if(!$rootScope.online || !this.localId || this.status != 'connected') {
@@ -487,7 +487,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
     return q.promise
   };
-  
+
   BLEDevice.prototype.changePassword = function (password) {
     var q = $q.defer()
     if(password.length !== 6) {
@@ -514,7 +514,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
     return q.promise;
   };
-  
+
   var reminder = {
     uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
     msg: "0000D00C-D102-11E1-9B23-00025B00A5A5"
@@ -546,7 +546,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       })
     }
   }
-  
+
   BLEDevice.prototype.fetchReminders = function (type) {
     var q = $q.defer()
     var reminders = []
@@ -564,15 +564,15 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         })
       })).then(function (result) {
         q.resolve(reminders)
-      })      
-    })    
+      })
+    })
     return q.promise
   }
-    
+
   BLEDevice.prototype.testTaskCb = function (result, task) {
     if(result === 0xE || (task.state !== 'testing' && task.state !== 'repairing')) return;
     if(this.testInterval) return;
-    
+
     var states = ['pass', 'error']
     var items = task.items.filter(function (item, index) {
       if(item.state === 'error') {
@@ -599,7 +599,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         if(task.state === 'testing') {
           task.score = Math.round(count*100/task.items.length)
           task.state = count === itemLen ? 'pass':'error'
-          // only motor error can be repaired, so pass 
+          // only motor error can be repaired, so pass
           if(task.items[1].state === 'error' && task.score === 75) {
             task.state = 'pass'
           }
@@ -615,11 +615,11 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
             Test.upsert(task)
           }
         }
-        kThis.testInterval = null        
+        kThis.testInterval = null
       }
     }, 1000)
   }
-  
+
   BLEDevice.prototype.test = function () {
     this.task = new TestTask(this.bike)
     var task = this.task
@@ -639,7 +639,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
   BLEDevice.prototype.repair = function (task) {
     task.state = 'repairing'
-    
+
     if($rootScope.online) {
       this.sendOrder([0x91, 0x91])
       this.testTaskCb(2, task)
@@ -649,42 +649,47 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
 
   return BLEDevice
-  
+
 })
 
 .service('MyPreferences', function ($rootScope, User, $cordovaPreferences, $localstorage) {
 
-  function successLoadMyEBike(bike) {
-    $rootScope.currentBike = bike;
+  function successLoad(options) {
+    options = options || {}
+    $rootScope.currentBike = options.bike;
+    $rootScope.buttonVibrate = options.buttonVibrate || true;
   }
 
   return {
     load: function (dictionary) {
       dictionary = dictionary || User.getCurrentId();
-      $cordovaPreferences.fetch('myEBike', dictionary)
-      .success(successLoadMyEBike)
+      $cordovaPreferences.fetch('MyPreferences', dictionary)
+      .success(successLoad)
       .error(function (error) {
         console.log('Load Preferences Failure:'+error);
-        successLoadMyEBike($localstorage.getObject('#EBIKE#myEBike'));
-      })      
+        successLoad($localstorage.getObject('#EBIKE#MyPreferences'));
+      })
     },
     save: function (options, dictionary) {
-      options = options || {bike: $rootScope.currentBike};
+      options = options || {
+        bike: $rootScope.currentBike,
+        buttonVibrate: $rootScope.buttonVibrate
+      };
       dictionary = dictionary || User.getCurrentId();
-      $cordovaPreferences.store('myEBike', options.bike, dictionary)
+      $cordovaPreferences.store('MyPreferences', options, dictionary)
       .success(function (bike) {
         console.log('Save Preferences Success!');
       })
       .error(function (error) {
         console.log('Save Preferences Failure:'+error);
-        $localstorage.setObject('#EBIKE#myEBike', options.bike);
+        $localstorage.setObject('#EBIKE#MyPreferences', options);
       })
     }
   }
 })
 
 .factory('TestTask', function ($q) {
-  
+
   function TestTask(bike) {
     this.state = 'idle'
     this.score = 100
@@ -696,7 +701,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     ]
     this.bikeId = bike.id
   }
-    
+
   return TestTask
 })
 

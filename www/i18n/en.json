@@ -126,5 +126,6 @@
   "STATE_ERROR": "Error, contact service",
   "STATE_REPAIRING": "Repairing...",
   "STATE_REPAIRED": "Repaired",
-  "STATE_BROKEN": "Broken, contact service"
+  "STATE_BROKEN": "Broken, contact service",
+  "BUTTON_VIBRATE": "Button Vibrate"
 }

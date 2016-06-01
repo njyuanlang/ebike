@@ -1,6 +1,7 @@
 controllers
 
-.controller('HomeCtrl', function($scope, $state, $ionicLoading, User, $localstorage, $translate) {
+.controller('HomeCtrl', function($scope, $state, $ionicLoading, User,
+  $localstorage, $translate, $cordovaVibration) {
 
   var translations = {
     OPEN_WITH_KEY: '',
