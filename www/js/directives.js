@@ -46,3 +46,16 @@ angular.module('ebike.directives',[])
     }
   };
 })
+
+.directive('pushvibrate', function($rootScope, $cordovaVibration) {
+  return {
+    restrict: 'A',
+    link: function($scope, $el) {
+      $el.bind('click', function () {
+        if($rootScope.buttonVibrate) {
+          $cordovaVibration.vibrate(50);
+        }
+      });
+    }
+  };
+})

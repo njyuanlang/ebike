@@ -149,7 +149,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 
   $rootScope.hideTabs = false;
   $rootScope.online = true
-  $rootScope.avatar = null
+  $rootScope.avatar = null;
+  $rootScope.buttonVibrate = true;
 
   $rootScope.$on('user.DidLogin', function (event, args) {
     var userId = User.getCurrentId();
@@ -502,6 +503,15 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
     .state('intro', {
       url: "/intro",
       templateUrl: "templates/help.html"
+    })
+    // setting
+    .state('tab.setting', {
+      url: "/setting",
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/setting.html"
+        }
+      }
     })
 
 

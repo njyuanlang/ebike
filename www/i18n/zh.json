@@ -126,5 +126,6 @@
   "STATE_ERROR": "故障! 请到维修点维修",
   "STATE_REPAIRING": "系统修复中...",
   "STATE_REPAIRED": "修复结束",
-  "STATE_BROKEN": "故障! 请到维修点维修"
+  "STATE_BROKEN": "故障! 请到维修点维修",
+  "BUTTON_VIBRATE": "按键震动"
 }
