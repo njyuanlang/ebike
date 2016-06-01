@@ -126,10 +126,11 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       $rootScope.$broadcast('user.DidLogin');
     } else {
       var entity = {
-        email: $cordovaDevice.getUUID()+'@ebike.com',
+        username: $cordovaDevice.getUUID(),
         password: '123456',
         realm: 'globalclient'
       }
+      entity.email = entity.username+'@ebike.com';
       function tryLogin(user, next) {
         console.log(arguments);
         user.password = '123456';
@@ -141,7 +142,9 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       tryLogin(entity, function (err) {
         if(err) {
           console.log(err);
-          User.create(entity).$promise.then(tryLogin);
+          User.create(entity).$promise.then(tryLogin, function (reason) {
+            console.log(arguments);
+          });
         }
       });
     }
