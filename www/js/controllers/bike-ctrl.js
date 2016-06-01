@@ -131,7 +131,9 @@ controllers
   }
 })
 
-.controller('BikesAddCtrl', function($scope, $state, $timeout, $ionicLoading, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService, BLEDevice, MyPreferences) {
+.controller('BikesAddCtrl', function($scope, $state, $timeout, $ionicLoading,
+   Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService,
+   BLEDevice, MyPreferences, $translate) {
 
   var devices = [];
 
@@ -291,5 +293,4 @@ controllers
     $scope.entities = [];
     if($scope.online) PtrService.triggerPtr('mainScroll');
   })
-
 })

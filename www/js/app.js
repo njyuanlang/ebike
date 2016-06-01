@@ -296,7 +296,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       }
     })
     .state('tab.home-bind', {
-      url: "/bikes/add",
+      url: "/bikes/bind",
       views: {
         'tab-home': {
           templateUrl: "templates/bikes-add.html",
@@ -481,15 +481,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       views: {
         'tab-menu': {
           templateUrl: "templates/services.html"
-        }
-      }
-    })
-    // help
-    .state('tab.help', {
-      url: "/help",
-      views: {
-        'tab-menu': {
-          templateUrl: "templates/help.html"
         }
       }
     })
