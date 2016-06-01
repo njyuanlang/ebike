@@ -657,7 +657,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   function successLoad(options) {
     options = options || {}
     $rootScope.currentBike = options.bike;
-    $rootScope.buttonVibrate = options.buttonVibrate || true;
+    $rootScope.buttonVibrate = options.buttonVibrate;
   }
 
   return {
@@ -672,12 +672,12 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     },
     save: function (options, dictionary) {
       options = options || {
-        bike: $rootScope.currentBike,
-        buttonVibrate: $rootScope.buttonVibrate
+        bike: $rootScope.currentBike || {},
+        buttonVibrate: $rootScope.buttonVibrate || true
       };
       dictionary = dictionary || User.getCurrentId();
       $cordovaPreferences.store('MyPreferences', options, dictionary)
-      .success(function (bike) {
+      .success(function (result) {
         console.log('Save Preferences Success!');
       })
       .error(function (error) {

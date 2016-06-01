@@ -6,7 +6,14 @@ controllers
 
 })
 
-.controller('MessagesCtrl', function($scope, $state, $rootScope) {
+.controller('SettingCtrl', function ($scope, MyPreferences) {
+  $scope.data = {buttonVibrate: $scope.buttonVibrate};
+  $scope.save = function () {
+    MyPreferences.save($scope.data);
+  };
+})
+
+.controller('MessagesCtrl', function($scope, $state, $rootScope, $translate) {
 
   var translations = {
     OPEN_WITH_KEY: '',

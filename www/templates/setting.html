@@ -1,7 +1,9 @@
-<ion-view title="{{'SETTING'|translate}}">
+<ion-view title="{{'SETTING'|translate}}" ng-controller="SettingCtrl">
+	<ion-nav-buttons side="right">
+		<a class="button button-clear button-positive" ng-click="save()">{{'SAVE'|translate}}</a>
+	</ion-nav-buttons>
+
 	<ion-content padding="true">
-		<ion-list>
-			<ion-toggle ng-model="buttonVibrate" toggle-class="toggle-balance">{{'BUTTON_VIBRATE'|translate}}</ion-toggle>
-		</ion-list>
+		<ion-toggle ng-model="data.buttonVibrate" toggle-class="toggle-balance">{{'BUTTON_VIBRATE'|translate}}</ion-toggle>
   </ion-content>
 </ion-view>
