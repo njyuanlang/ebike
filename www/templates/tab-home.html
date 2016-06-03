@@ -1,24 +1,31 @@
 <ion-view title="{{'BRAND'|translate}}" hide-back-button="true" ng-init="init()"  show-tabs>
   <ion-nav-buttons side="right">
     <a class="button button-clear" ng-click="endure()"
-      ng-class="device.realtime.power > 0?'disabled':'button-positive'"
+      ng-class="device.realtime.power > 0 || device.status!='connected'?'disabled':'button-positive'"
       ng-if="device.workmode != 9">{{'POWERLESS_ENDURE'|translate}}</a>
   </ion-nav-buttons>
 
   <ion-content class="" scroll="false">
+
+    <div class="bluetooth-connect text-center" ng-show="device.status!='connected'">
+      <i class="icon ion-ios-close-outline calm" ng-if="device.status!='connecting'"></i>
+      <ion-spinner class="spinner-calm" icon="spiral" ng-if="device.status=='connecting'"></ion-spinner>
+      <h4 class="light" ng-if="device.status==='connecting'">{{'PERIPHERAL_SCANING'|translate}}</h4>
+      <h4 class="light" ng-if="device.status!=='connecting'">{{'PERIPHERAL_NOT_FOUND'|translate}}</h4>
+      <button class="button button-calm" ng-click="reconnectDevice()"
+        ng-class="device.status!='connecting'?'button-outline':'button-clear'">
+        <span ng-if="device.status!='connecting'">{{'RESCAN'|translate}}</span>
+      </button>
+    </div>
+
     <div class="row">
       <div class="col col-25 image-button">
         <a class="button button-clear" ng-click="goTest()" pushvibrate>
           <img ng-src="img/test-{{device.status === 'connected'?'light':'gray'}}.png">
         </a>
       </div>
-      <div class="col col-20"></div>
-      <div class="col col-30 col-center">
-        <div class="prompt" ng-if="showPrompt">
-          {{'CONNECT'|translate}} <i class="icon ion-arrow-right-a"></i>
-        </div>
-      </div>
-      <div class="col col-25 image-button bluetooth">
+      <div class="col col-50"></div>
+      <div class="col col-25 image-button">
         <div class="row-wrap">
           <a class="button button-clear {{device.status}}" ng-click="reconnectDevice()" pushvibrate>
             <img ng-src="img/bluetooth-{{!device || !device.status || device.status === 'disconnected'?'gray':'light'}}.png">
@@ -83,5 +90,4 @@
       </div>
     </div>
   </ion-content>
-
 </ion-view>

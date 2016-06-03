@@ -20,14 +20,11 @@ controllers
   })
 
   $scope.$on('$ionicView.enter', function (event) {
-    $scope.showPrompt = false;
     if(!$scope.online) return $scope.device.onConnected();
-    if(!$scope.device || $scope.device.status === 'disconnected') {
-      var promptCount = $localstorage.get('$EBIKE$PromptCount', 0);
-      if( promptCount < 5) {
-        $scope.showPrompt = true;
-        $localstorage.set('$EBIKE$PromptCount', ++promptCount);
-      }
+    if($scope.currentBike && !$scope.currentBike.id) {
+      $state.go('brands', {id:'create'});
+    } else {
+      reconnectDevice();
     }
   })
 
@@ -54,27 +51,30 @@ controllers
   }
 
   var reconnectDevice = function () {
-    $scope.showPrompt = false;
+    // $scope.device.status = 'connecting';
+    // return setTimeout(function () {
+    //   $scope.device.status = 'disconnected';
+    //   $scope.$apply();
+    // }, 2000);
+    if(!$scope.device || $scope.device.status!='disconnected') return;
     if(!$scope.online) return $scope.device.onConnected()
 
-    if($scope.currentBike && $scope.currentBike.id) {
-      $scope.device.autoconnect().then(function (result) {
+    $scope.device.autoconnect().then(function (result) {
 
-      }, function (reason) {
-        if(reason === 'no localId') {
-          $state.go('tab.home-bind')
-        } else if(reason === 'connecting') {
-          console.debug('prevent from contiuning autoconnect');
-        } else {
-          $ionicLoading.show({
-            template: '<i class="icon ion-ios-close-outline padding"></i>'+translations.CONNECT_BIKE_FAILURE+reason,
-            duration: 2000
-          })
-        }
-      })
-    } else {
-      $state.go('brands', {id:'create'});
-    }
+    }, function (reason) {
+      if(reason === 'no localId') {
+        $state.go('tab.home-bind')
+      } else if(reason === 'connecting') {
+        console.log('prevent from contiuning autoconnect');
+      } else if(reason === 'timeout') {
+        $scope.$apply();
+      } else {
+        $ionicLoading.show({
+          template: '<i class="icon ion-ios-close-outline padding"></i>'+translations.CONNECT_BIKE_FAILURE+reason,
+          duration: 2000
+        })
+      }
+    });
   }
 
   $scope.reconnectDevice = reconnectDevice

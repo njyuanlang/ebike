@@ -58,7 +58,7 @@ controllers
       template: '<i class="icon ion-loading-c ion-loading padding"></i>登录中...'
     })
 
-    console.debug(JSON.stringify($scope.entity));
+    console.log(JSON.stringify($scope.entity));
     User.login($scope.entity, function (accessToken) {
       $timeout.cancel($scope.loginPromise)
       $ionicLoading.show({
@@ -195,14 +195,14 @@ controllers
       if($scope.device) $scope.device.disconnect();
       User.logout().$promise
         .then(function () {
-          console.debug('Success Logout');
+          console.log('Success Logout');
         }, function (reason) {
-          console.debug('Logout Failure for '+reason.data.error.message);
+          console.log('Logout Failure for '+reason.data.error.message);
         });
         LoopBackAuth.clearUser();
         LoopBackAuth.clearStorage();
     } else {
-      console.debug('logout Trial');
+      console.log('logout Trial');
       $rootScope.online = true;
     }
     $state.go('entry');
@@ -217,16 +217,16 @@ controllers
     //   headers: {'Content-Type': undefined}
     // })
     // .success(function(){
-    //   console.debug('SUCCESS')
+    //   console.log('SUCCESS')
     // })
     // .error(function(){
-    //   console.debug('FAILED')
+    //   console.log('FAILED')
     // });
     // Upload.upload({container: $scope.entity.id}, $scope.avatar)
     // .$promise.then(function (result) {
-    //   console.debug('Transfer SUCCESS: ', JSON.stringify(result))
+    //   console.log('Transfer SUCCESS: ', JSON.stringify(result))
     // }, function (err) {
-    //   console.debug(err.message)
+    //   console.log(err.message)
     // }, function (progress) {
     //
     // })
@@ -239,11 +239,11 @@ controllers
     }
 
     $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
-      console.debug('Transfer SUCCESS: ', JSON.stringify(result))
+      console.log('Transfer SUCCESS: ', JSON.stringify(result))
     }, function (err) {
-      console.debug(err.message)
+      console.log(err.message)
     }, function (progress) {
-      // console.debug(progress)
+      // console.log(progress)
     })
   }
 
@@ -269,19 +269,19 @@ controllers
         chooseText: "选择"
       })
     }, function(err) {
-      console.debug("getPicture ERROR: ", err.message)
+      console.log("getPicture ERROR: ", err.message)
     })
     .then(function (canvas) {
       $rootScope.avatar = canvas.toDataURL()
       var base64Data = $scope.avatar
       return $cordovaFile.writeFile(cordova.file.dataDirectory, "avatar.png", base64Data, true)
     }, function (err) {
-      console.debug('Crop Error:', err)
+      console.log('Crop Error:', err)
     })
     .then(function (evt) {
       return Upload.getContainer({container: $scope.entity.id}).$promise
     }, function (err) {
-      console.debug('Save avatar to local error:', JSON.stringify(err))
+      console.log('Save avatar to local error:', JSON.stringify(err))
     })
     .then(function (container) {
       return container
@@ -291,7 +291,7 @@ controllers
     .then(function (container) {
       uploadAvatar()
     }, function (err) {
-      console.debug("Create/GET Container ERROR:", JSON.stringify(err))
+      console.log("Create/GET Container ERROR:", JSON.stringify(err))
     })
 
     return true;
@@ -370,7 +370,7 @@ controllers
             duration: 2000
           });
         }
-        console.debug(arguments);
+        console.log(arguments);
       });
     })
   };

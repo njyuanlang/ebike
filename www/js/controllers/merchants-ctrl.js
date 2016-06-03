@@ -22,7 +22,7 @@ controllers
         setMyPosition(result.position);
       });
       AMap.event.addListener(geolocation, 'error', function (error) {
-        console.debug("Location error: "+JSON.stringify(error));
+        console.log("Location error: "+JSON.stringify(error));
       });
       geolocation.getCurrentPosition();
     }
@@ -72,7 +72,7 @@ controllers
       console.log("amaplocation==="+JSON.stringify(result));
       setMyPosition(new AMap.LngLat(result.lng, result.lat));
     }, function (err) {
-      console.debug("Location error: "+JSON.stringify(arguments));
+      console.log("Location error: "+JSON.stringify(arguments));
     });
   }
   
@@ -128,10 +128,10 @@ controllers
     if(geocoder) {
       geocoder.getAddress($scope.entity._location, function(status, result){
         if(status=='error') {
-          console.debug('amap service error');
+          console.log('amap service error');
         }
         if(status=='no_data') {
-          console.debug("no data, try other key words");
+          console.log("no data, try other key words");
         }
         else {
           var ac = result.regeocode.addressComponent;
@@ -140,14 +140,14 @@ controllers
           $scope.entity.district = ac.district;
           $scope.entity._address = ac.street+ac.streetNumber;
           $scope.$apply();
-          console.debug(result);
+          console.log(result);
         }
       });
     }
   });
 
   $scope.chooseImage = function () {
-    console.debug('==========='+$scope.entity);
+    console.log('==========='+$scope.entity);
     $scope.entity.avatar = "img/logo.png";
   };
   

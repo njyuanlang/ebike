@@ -212,7 +212,9 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
   BLEDevice.prototype.connect = function () {
     if(!this.localId) return $q.reject('车辆标示ID不能为空！');
+    var connectTimer = setTimeout(this.disconnect, 5000);
     return $cordovaBLE.connect(this.localId).then(function (result) {
+      clearTimeout(connectTimer);
       return result;
     }, function (reason) {
       return $q.reject('无法连接车辆:'+reason);
@@ -235,19 +237,19 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       kThis.bike.safe = safe;
       console.log("onConnect Safe Mode:"+safe);
     }, function (reason) {
-      console.debug(reason);
+      console.log(reason);
     });
     this.antiTheft().then(function (enable) {
       kThis.bike.antiTheft = enable
     }, function (reason) {
-      console.debug(reason);
+      console.log(reason);
     });
     if($rootScope.online) {
       this.connectingInterval = $interval(function () {
         kThis.isConnected().then(function (result) {
 
         }, function (reason) {
-          console.debug('Check connecting broken: '+reason);
+          console.log('Check connecting broken: '+reason);
           kThis.disconnect();
         })
       }, 1000)
@@ -258,10 +260,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
 
   BLEDevice.prototype.onDisconnected = function () {
-    console.debug('Start onDisconnected');
+    console.log('Start onDisconnected:'+this.status);
     this.status = 'disconnected'
     if(this.connectingInterval) {
-      console.debug('Cancel Interval');
+      console.log('Cancel Interval');
       $interval.cancel(this.connectingInterval)
       this.connectingInterval = null
     }
@@ -283,27 +285,23 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
 
   BLEDevice.prototype.autoconnect = function () {
-    console.debug('Start autoconnect...');
+    console.log('Start autoconnect...'+this.localId+' status:'+this.status);
+    var kThis = this;
     var q = $q.defer()
     if(this.localId) {
-      if(this.status === 'connecting') {
+      if(this.status === 'connecting' || this.status === 'connected') {
         $timeout(function () {
-          q.reject('connecting');
-        }, 100);
-      } else if(this.status === 'connected') {
-        $timeout(function () {
-          q.resolve({});
+          q.reject(this.status);
         }, 100);
       } else {
         this.status = 'connecting';
-        var kThis = this;
         var tryCount = 0;
         var connectSucceed = function (result) {
           q.resolve(result);
           kThis.status = 'connected';
         }
         var handleError = function (reason) {
-          console.debug('Retry '+tryCount+' times')
+          console.log('Retry '+tryCount+' times')
           if(++tryCount < 3) {
             if(/not found.$/.test(reason) || /pair error/.test(reason)) {
               ble.scan([], 3, function () {}, function () {});
@@ -312,24 +310,30 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
               tryConnect();
             }
           } else {
-            console.debug('Try out')
+            console.log('Try out')
             q.reject(reason);
+            kThis.disconnect();
           }
         };
         var tryConnect = function () {
+          var connectTimer = setTimeout(function () {
+            kThis.disconnect();
+            q.reject('timeout');
+          }, 5000);
           $cordovaBLE.connect(kThis.localId)
           .then(function (result) {
+            clearTimeout(connectTimer);
             return kThis.pair(kThis.bike.password)
             .then(function (result) {
-              console.debug('Success Connected.');
+              console.log('Success Connected.');
               connectSucceed(result);
             }, function (reason) {
-              console.debug('Pair Error: '+reason);
+              console.log('Pair Error: '+reason);
               kThis.disconnect();
               handleError('pair error');
             });
           }, function (reason) {
-            console.debug('Connect Error: '+reason);
+            console.log('Connect Error: '+reason);
             handleError(reason);
           })
         };
@@ -397,18 +401,19 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     ble.write(this.localId, order.uuid, order.spec, value)
   }
   BLEDevice.prototype.pair = function (password) {
+    console.log('Start Pair...');
     var q = $q.defer()
     if(!$rootScope.online) {
       q.resolve()
     } else {
       var pairtimer = $timeout(function () {
-        console.debug('Pair timeout');
+        console.log('Pair timeout');
         q.reject("配对超时,请重新绑定车辆或者重新启动蓝牙再尝试！");
       }, 5000)
       var value = Util.stringToBytes(password)
       var kThis = this
       var checkPassword = function () {
-        console.debug('Check pair result...')
+        console.log('Check pair result...')
         ble.read(kThis.localId, order.uuid, order.pair, function (result) {
           var ret = Util.byteToDecString(result)
           if(ret === "1") {
@@ -442,10 +447,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       if(mode === undefined) {
         ble.read(this.localId, order.uuid, order.mode, function (result) {
           var ret = Util.byteToDecString(result);
-          console.debug('safeMode:'+(ret==0x11));
+          console.log('safeMode:'+(ret==0x11));
           q.resolve(ret==0x11);
         }, function (reason) {
-          console.debug('SafeMode Get:'+JSON.stringify(reason))
+          console.log('SafeMode Get:'+JSON.stringify(reason))
           q.reject('获取安全模式失败');
         });
       } else {
@@ -453,7 +458,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         ble.write(this.localId, order.uuid, order.mode, value, function () {
           q.resolve();
         }, function (reason) {
-          console.debug('SafeMode Switch:'+JSON.stringify(reason))
+          console.log('SafeMode Switch:'+JSON.stringify(reason))
           q.reject('切换安全模式失败');
         });
       }
@@ -469,10 +474,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       if(enable === undefined) {
         ble.read(this.localId, order.uuid, order.antitheft, function (result) {
           var ret = Util.byteToDecString(result);
-          console.debug('AntiTheft:'+(ret==0x11));
+          console.log('AntiTheft:'+(ret==0x11));
           q.resolve(ret==0x11);
         }, function (reason) {
-          console.debug('AntiTheft Get:'+JSON.stringify(reason));
+          console.log('AntiTheft Get:'+JSON.stringify(reason));
           q.reject('获取防盗模式失败');
         });
       } else {
@@ -480,7 +485,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         ble.write(this.localId, order.uuid, order.antitheft, value, function () {
           q.resolve();
         }, function (reason) {
-          console.debug('AntiTheft Get:'+JSON.stringify(reason));
+          console.log('AntiTheft Get:'+JSON.stringify(reason));
           q.reject('切换防盗模式失败');
         });
       }
@@ -506,7 +511,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       var kThis = this;
       ble.write(this.localId, order.uuid, order.changepassword, value, function () {
         kThis.bike.password = password;
-        console.debug('Success Set Password:'+password);
+        console.log('Success Set Password:'+password);
         q.resolve();
       }, function (reason) {
         q.reject('设置密码失败');
@@ -656,7 +661,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
   function successLoad(options) {
     options = options || {}
-    $rootScope.currentBike = options.bike;
+    $rootScope.currentBike = options.bike || $rootScope.currentBike || {};
     $rootScope.buttonVibrate = options.buttonVibrate;
     console.log('Preferences Load:'+JSON.stringify(options));
   }
