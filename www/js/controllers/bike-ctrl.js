@@ -206,7 +206,7 @@ controllers
   $scope.doScan = doScan
 
   function tryConnect(bike) {
-    console.debug('===='+JSON.stringify(bike));
+    console.log('===='+JSON.stringify(bike));
     var device = new BLEDevice(bike)
     device.connect().then(function (result) {
       return device.readSerialNumber()

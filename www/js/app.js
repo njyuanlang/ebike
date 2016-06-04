@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9UIWebViewPatch','ebike.controllers', 'ebike.services', 'ebike.filters', 'ebike.directives'])
 
-.constant('defaultLanguage', 'en')
+.constant('defaultLanguage', 'zh')
 .config(function($stateProvider, $urlRouterProvider, $translateProvider, defaultLanguage) {
   $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
   $translateProvider.useStaticFilesLoader({
@@ -89,16 +89,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       }, 300);
     }
 
-    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-      if(toState.name === 'home') {
-        if(fromState.name === 'login'
-        || fromState.name === 'cities') {
-          $rootScope.$broadcast('home.reconnect')
-        }
-        $ionicHistory.clearHistory()
-      }
-    })
-
     if(window.ble) {
       ble.isEnabled(function (result) {
         ble.scan([], 10, function () {}, function () {})
@@ -164,7 +154,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
           $rootScope.avatar = buffer
         })
         .error(function () {
-          console.debug(JSON.stringify(arguments));
+          console.log(JSON.stringify(arguments));
         })
     }
   })
@@ -187,7 +177,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 
       $rootScope.device.safeMode(newValue)
       .then(function (result) {
-        console.debug('Success Set SafeMode:'+newValue);
+        console.log('Success Set SafeMode:'+newValue);
       }, function (reason) {
         $rootScope.correctSafeMode = true;
         $rootScope.currentBike.safe = oldValue;
@@ -203,7 +193,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
     if(newValue !== oldValue) {
       $rootScope.device.antiTheft(newValue)
       .then(function (result) {
-        console.debug('Success Set AntiTheft:'+newValue);
+        console.log('Success Set AntiTheft:'+newValue);
       }, function (reason) {
         $ionicLoading.show({
           template: '<i class="icon ion-ios-information-outline padding"></i>'+reason,

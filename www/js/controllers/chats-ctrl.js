@@ -59,7 +59,7 @@ controllers
   var txtInput; // ^^^
 
   $scope.$on('$ionicView.enter', function() {
-    console.debug('UserMessages $ionicView.enter');
+    console.log('UserMessages $ionicView.enter');
 
     getMessages();
     
@@ -76,7 +76,7 @@ controllers
   });
 
   $scope.$on('$ionicView.leave', function() {
-    console.debug('leaving UserMessages view, destroying interval');
+    console.log('leaving UserMessages view, destroying interval');
     // Make sure that the interval is destroyed
     if (angular.isDefined(messageCheckTimer)) {
       $interval.cancel(messageCheckTimer);
@@ -139,7 +139,7 @@ controllers
   }
 
   $scope.$watch('input.message', function(newValue, oldValue) {
-    console.debug('input.message $watch, newValue ' + newValue);
+    console.log('input.message $watch, newValue ' + newValue);
     if (!newValue) newValue = '';
     localStorage['userMessage-' + $scope.currentChat.user.id] = newValue;
   });
@@ -174,16 +174,16 @@ controllers
   
   // this keeps the keyboard open on a device only after sending a message, it is non obtrusive
   function keepKeyboardOpen() {
-    console.debug('keepKeyboardOpen');
+    console.log('keepKeyboardOpen');
     txtInput.one('blur', function() {
-      console.debug('textarea blur, focus back on it');
+      console.log('textarea blur, focus back on it');
       txtInput[0].focus();
     });
   }
 
   $scope.onMessageHold = function(e, itemIndex, message) {
-    console.debug('onMessageHold');
-    console.debug('message: ' + JSON.stringify(message, null, 2));
+    console.log('onMessageHold');
+    console.log('message: ' + JSON.stringify(message, null, 2));
     $ionicActionSheet.show({
       buttons: [{
         text: 'Copy Text'
@@ -222,11 +222,11 @@ controllers
   
   // I emit this event from the monospaced.elastic directive, read line 480
   $scope.$on('taResize', function(e, ta) {
-    console.debug('taResize');
+    console.log('taResize');
     if (!ta) return;
     
     var taHeight = ta[0].offsetHeight;
-    console.debug('taHeight: ' + taHeight);
+    console.log('taHeight: ' + taHeight);
     
     if (!footerBar) return;
     
@@ -273,7 +273,7 @@ controllers
           for (var i = 0; i < autolinks.length; i++) {
             angular.element(autolinks[i]).bind('click', function(e) {
               var href = e.target.href;
-              console.debug('autolinkClick, href: ' + href);
+              console.log('autolinkClick, href: ' + href);
 
               if (href) {
                 //window.open(href, '_system');

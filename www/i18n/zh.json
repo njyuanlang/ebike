@@ -127,5 +127,8 @@
   "STATE_REPAIRING": "系统修复中...",
   "STATE_REPAIRED": "修复结束",
   "STATE_BROKEN": "故障! 请到维修点维修",
-  "BUTTON_VIBRATE": "按键震动"
+  "BUTTON_VIBRATE": "按键震动",
+  "PERIPHERAL_SCANING": "正在搜索设备",
+  "PERIPHERAL_NOT_FOUND": "未找到设备",
+  "RESCAN": "重新搜索"
 }
