@@ -1,9 +1,6 @@
 controllers
 
 .controller('MenuCtrl', function($scope, $state, User) {
-
-  // $scope.entity = User.getCurrent()
-
 })
 
 .controller('SettingCtrl', function ($scope, MyPreferences) {
