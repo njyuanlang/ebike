@@ -66,7 +66,7 @@ $dark:                            #444 !default;
   background-image: -webkit-linear-gradient(left, #fff 60%, #0ddba9 40%); }
 
 .validcode-disable-bg {
-  background-image: -webkit-linear-gradient(left, #fff 60%, #000 40%); }
+  background-image: -webkit-linear-gradient(left, #fff 60%, #ececee 40%); }
 
 /*!
   Ionicons, v2.0.1
