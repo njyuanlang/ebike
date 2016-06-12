@@ -728,6 +728,55 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
       if (!scrollView) return;
 
+      if (scrollView.isNative) {
+        var refresher = (angular.element(scrollView.el.children[0].children[0]).controller('ionRefresher'));
+        var child = refresher.__getScrollChild();
+
+        refresher.getRefresherDomMethods().show();
+        refresher.getRefresherDomMethods().activate();
+        refresher.getRefresherDomMethods().start();
+
+        // decelerating to zero velocity
+        function easeOutCubic(t) {
+            return (--t) * t * t + 1;
+        }
+
+        var start = Date.now(),
+            duration = 500,
+            from = 0,
+            Y = 60;
+
+        // scroll loop
+        function scroll() {
+            var currentTime = Date.now(),
+                time = Math.min(1, ((currentTime - start) / duration)),
+            // where .5 would be 50% of time on a linear scale easedT gives a
+            // fraction based on the easing method
+                easedT = easeOutCubic(time);
+
+            overscroll(parseInt((easedT * (Y - from)) + from, 10));
+
+            if (time < 1)
+                ionic.requestAnimationFrame(scroll);
+        };
+        ionic.requestAnimationFrame(scroll);
+
+        var listener = angular.element(scrollView.el.children[0].children[0]).scope().$on("scroll.refreshComplete", function () {
+            from = 60;
+            Y = 0;
+            start = Date.now();
+            ionic.requestAnimationFrame(scroll);
+
+            refresher.getRefresherDomMethods().tail();
+            refresher.getRefresherDomMethods().deactivate();
+            refresher.getRefresherDomMethods().hide();
+
+            listener();
+        });
+
+        return;
+      }
+      
       scrollView.__publish(
         scrollView.__scrollLeft, -scrollView.__refreshHeight,
         scrollView.__zoomLevel, true);
