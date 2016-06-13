@@ -30,7 +30,8 @@ controllers
 
   $scope.goTest = function () {
     if($scope.device.status === 'connected') {
-      if(!$scope.device.realtime.offline) {
+      i
+            f(!$scope.device.realtime.offline) {
         $state.go('tab.test')
       } else {
         $ionicLoading.show({
