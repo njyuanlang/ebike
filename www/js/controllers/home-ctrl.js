@@ -51,11 +51,11 @@ controllers
   }
 
   var reconnectDevice = function () {
-    $scope.device.status = 'connecting';
-    return setTimeout(function () {
-      $scope.device.status = 'disconnected';
-      $scope.$apply();
-    }, 5000);
+    // $scope.device.status = 'connecting';
+    // return setTimeout(function () {
+    //   $scope.device.status = 'disconnected';
+    //   $scope.$apply();
+    // }, 5000);
     if(!$scope.device || $scope.device.status!='disconnected') return;
     if(!$scope.online) return $scope.device.onConnected()
 
