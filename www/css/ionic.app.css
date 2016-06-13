@@ -820,7 +820,8 @@ $dark:                            #444 !default;
 .ion-woman:before,
 .ion-wrench:before,
 .ion-xbox:before,
-.ion-ebike:before {
+.ion-ebike:before,
+.ion-ebike-close-outline:before {
   display: inline-block;
   font-family: "Ionicons";
   speak: none;
@@ -10621,7 +10622,8 @@ a.button {
 .ion-woman:before,
 .ion-wrench:before,
 .ion-xbox:before,
-.ion-ebike:before {
+.ion-ebike:before,
+.ion-ebike-close-outline:before {
   display: inline-block;
   font-family: "Ionicons";
   speak: none;
@@ -11278,6 +11280,9 @@ a.button {
 
 .ion-ebike:before {
   content: ""; }
+
+.ion-ebike-close-outline:before {
+  content: ""; }
 
 .ion-edit:before {
   content: ""; }
@@ -13356,6 +13361,8 @@ a.autolinker {
     padding: 2% 12.5%;
     width: 100%;
     height: 100%; }
+    .bluetooth-connect .spinner svg g {
+      stroke-width: 1; }
   .bluetooth-connect i {
     position: relative;
     font-size: 16rem; }

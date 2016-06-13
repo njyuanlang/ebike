@@ -8,7 +8,7 @@
   <ion-content class="" scroll="false">
 
     <div class="bluetooth-connect text-center" ng-show="device.status!='connected'">
-      <i class="icon ion-ios-close-outline calm" ng-if="device.status!='connecting'"></i>
+      <i class="icon ion-ebike-close-outline calm" ng-if="device.status!='connecting'"></i>
       <ion-spinner class="spinner-calm" icon="spiral" ng-if="device.status=='connecting'"></ion-spinner>
       <h4 class="light" ng-if="device.status==='connecting'">{{'PERIPHERAL_SCANING'|translate}}</h4>
       <h4 class="light" ng-if="device.status!=='connecting'">{{'PERIPHERAL_NOT_FOUND'|translate}}</h4>
