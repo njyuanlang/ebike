@@ -660,13 +660,23 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 .service('MyPreferences', function ($rootScope, User, $cordovaPreferences, $localstorage) {
 
   function successLoad(options) {
-    options = options || {}
+    // Backward compatibility
+    if(!options) {
+      var dictionary = User.getCurrentId();
+      $cordovaPreferences.fetch('myEBike', dictionary)
+      .success(function (bike) {
+        $rootScope.currentBike = bike;
+        $rootScope.buttonVibrate = true;
+        pref.save(null, dictionary);
+      })
+    }
+    options = options || {};
     $rootScope.currentBike = options.bike || $rootScope.currentBike || {};
     $rootScope.buttonVibrate = options.buttonVibrate;
     console.log('Preferences Load:'+JSON.stringify(options));
-  }
+  };
 
-  return {
+  var pref = {
     load: function (dictionary) {
       dictionary = dictionary || User.getCurrentId();
       $cordovaPreferences.fetch('MyPreferences', dictionary)
@@ -695,6 +705,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       })
     }
   }
+
+  return pref;
 })
 
 .factory('TestTask', function ($q) {
@@ -776,7 +788,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
         return;
       }
-      
+
       scrollView.__publish(
         scrollView.__scrollLeft, -scrollView.__refreshHeight,
         scrollView.__zoomLevel, true);
