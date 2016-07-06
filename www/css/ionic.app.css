@@ -13265,7 +13265,8 @@ a.autolinker {
   position: relative;
   display: inline-block;
   pointer-events: auto;
-  margin: -5px;
+  margin-top: 10px;
+  margin-left: -20px;
   padding: 5px; }
   .safe-toggle input:checked + .track {
     border-color: orange;
@@ -13286,17 +13287,18 @@ a.autolinker {
   transition-property: background-color, border;
   display: inline-block;
   box-sizing: border-box;
-  width: 80px;
-  height: 28px;
-  border: solid 2px #757575;
+  width: 70px;
+  height: 22px;
+  border: solid 1px #757575;
   border-radius: 20px;
   background-color: #757575;
   content: ' ';
   cursor: pointer;
-  pointer-events: none; }
+  pointer-events: none;
+  text-align: center; }
 
 .safe-toggle .icon {
-  font-size: 22px;
+  font-size: 20px;
   vertical-align: top;
   color: #fff; }
 
@@ -13312,22 +13314,22 @@ a.autolinker {
   transition: 0.2s ease-in-out;
   position: absolute;
   display: block;
-  width: 33.6px;
-  height: 33.6px;
-  border-radius: 24px;
+  width: 28px;
+  height: 28px;
+  border-radius: 20px;
   background: -webkit-radial-gradient(#eee 35%, #fff 40%, #eee 100%);
-  top: 2.2px;
-  left: 2.2px; }
+  top: 2px;
+  left: 2px; }
   .safe-toggle .handle:before {
     position: absolute;
     top: -4px;
-    left: -20px;
-    padding: 17px 31px;
+    left: -18px;
+    padding: 15px 27px;
     content: " "; }
 
 .safe-toggle input:checked + .track .handle {
-  -webkit-transform: translate3d(52px, 0, 0);
-  transform: translate3d(52px, 0, 0);
+  -webkit-transform: translate3d(48px, 0, 0);
+  transform: translate3d(48px, 0, 0);
   background-color: #fff; }
 
 .safe-toggle input:disabled + .track {
@@ -13337,6 +13339,11 @@ a.autolinker {
   opacity: 0.4;
   cursor: default !important;
   pointer-events: none; }
+
+.safe-toggle h6 {
+  text-align: center;
+  margin: 5px;
+  color: gray; }
 
 /* -------------------------------------
  * Image Button
@@ -13373,7 +13380,7 @@ a.autolinker {
  * digital display
  * ------------------------------------- */
 .digital-display {
-  text-align: right; }
+  text-align: center; }
   @media (width: 320px) {
     .digital-display h2 {
       font-size: 1.5rem; } }
@@ -13841,6 +13848,66 @@ a.autolinker {
 .home-power-cycle-100 {
   -webkit-box-shadow: 0 0 0rem;
   background: -webkit-linear-gradient(0deg, yellow 50%, transparent 50%), -webkit-linear-gradient(right, transparent 50%, #eee 50%), -webkit-linear-gradient(top, red, orange, yellow); }
+
+.button.button-left {
+  border-color: transparent;
+  background-color: #ccc;
+  color: #444;
+  border-radius: 80px 0 0 80px !important;
+  border: 5px solid #c6c6c6 !important;
+  padding: 0; }
+  .button.button-left:hover {
+    color: #444;
+    text-decoration: none; }
+  .button.button-left.active, .button.button-left.activated {
+    border-color: #a2a2a2;
+    background-color: #b3b3b3; }
+  .button.button-left.button-clear {
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+    color: #c6c6c6; }
+  .button.button-left.button-icon {
+    border-color: transparent;
+    background: none; }
+  .button.button-left.button-outline {
+    border-color: #c6c6c6;
+    background: transparent;
+    color: #c6c6c6; }
+    .button.button-left.button-outline.active, .button.button-left.button-outline.activated {
+      background-color: #c6c6c6;
+      box-shadow: none;
+      color: #fff; }
+
+.button.button-right {
+  border-color: transparent;
+  background-color: #33cccc;
+  color: #fff;
+  border-radius: 0 80px 80px 0 !important;
+  border: 5px solid #30c2c2 !important;
+  padding: 0; }
+  .button.button-right:hover {
+    color: #fff;
+    text-decoration: none; }
+  .button.button-right.active, .button.button-right.activated {
+    border-color: #a2a2a2;
+    background-color: #29a3a3; }
+  .button.button-right.button-clear {
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+    color: #30c2c2; }
+  .button.button-right.button-icon {
+    border-color: transparent;
+    background: none; }
+  .button.button-right.button-outline {
+    border-color: #30c2c2;
+    background: transparent;
+    color: #30c2c2; }
+    .button.button-right.button-outline.active, .button.button-right.button-outline.activated {
+      background-color: #30c2c2;
+      box-shadow: none;
+      color: #fff; }
 
 .button-starter {
   position: absolute;

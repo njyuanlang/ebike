@@ -25,12 +25,15 @@
         </a>
       </div>
       <div class="col col-50"></div>
-      <div class="col col-25 image-button">
-        <div class="row-wrap">
-          <a class="button button-clear {{device.status}}" ng-click="reconnectDevice()" pushvibrate>
-            <img ng-src="img/bluetooth-{{!device || !device.status || device.status === 'disconnected'?'gray':'light'}}.png">
-          </a>
-        </div>
+      <div class="col col-25">
+        <label class="safe-toggle" ng-disabled="device.status !== 'connected'">
+           <input type="checkbox" ng-model="currentBike.safe" ng-checked="currentBike.safe" pushvibrate>
+           <div class="track">
+             <i class="icon ion-alert-circled"></i>
+             <div class="handle"></div>
+           </div>
+           <h6>{{'SAFE_MODE'|translate}}</h6>
+        </label>
       </div>
     </div>
     <div class="row mt-sm">
@@ -51,19 +54,16 @@
       <div class="col"></div>
     </div>
     <div class="row text-center">
-      <div class="col col-50 digital-display">
-        <h2 class="{{device.status}}">{{device.realtime.power||0}}<span>% </span><small> {{'BATTERY_LEVEL'|translate}}</small></h2>
+      <div class="col digital-display">
         <h2 class="{{device.status}}">{{device.realtime.mileage||0}}<span>km</span><small> {{'RANGE_OF_KM'|translate}}</small></h2>
       </div>
-      <div class="col col-50 padding">
-        <label class="safe-toggle" ng-disabled="device.status !== 'connected'">
-           <input type="checkbox" ng-model="currentBike.safe" ng-checked="currentBike.safe" pushvibrate>
-           <div class="track">
-             <i class="icon ion-alert-circled"></i>
-             <div class="handle"></div>
-           </div>
-        </label>
-        <h5>{{'SAFE_MODE'|translate}}</h5>
+    </div>
+    <div class="row text-center">
+      <div class="col col-60 col-offset-20">
+        <div class="button-bar">
+          <a class="button button-small button-left">{{'SMART_PARK'|translate}}</a>
+          <a class="button button-small button-right">{{'SMART_PUSH'|translate}}</a>
+        </div>
       </div>
     </div>
     <div class="row text-center">
