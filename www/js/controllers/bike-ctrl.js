@@ -133,7 +133,7 @@ controllers
 
 .controller('BikesAddCtrl', function($scope, $state, $timeout, $ionicLoading,
    Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService,
-   BLEDevice, MyPreferences, $translate) {
+   BLEDevice, MyPreferences, $translate, $ionicModal) {
 
   var devices = [];
 
@@ -214,17 +214,18 @@ controllers
     .then(function (result) {
       return device.pair(bike.password)
     })
+    // .then(function (result) {
+    //   return device.changePassword(bike.newpassword);
+    // })
     .then(function (result) {
-      return device.changePassword(bike.newpassword);
-    })
-    .then(function (result) {
+      $scope.modal.hide();
       $scope.$ionicGoBack();
       $ionicLoading.show({
         template: '<i class="icon ion-ios-checkmark-outline padding"></i>'+translations.BIND_BIKE_SUCCESS,
         duration: 2000
       })
-      delete bike.newpassword;
-      delete bike.newpassword2;
+      // delete bike.newpassword;
+      // delete bike.newpassword2;
       $rootScope.device = device;
       $rootScope.currentBike.localId = bike.localId;
       $rootScope.currentBike = bike;
@@ -249,39 +250,57 @@ controllers
     })
   }
 
+  $ionicModal.fromTemplateUrl('templates/authorize-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+  // Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+
   $scope.selectEntity = function (item) {
     $scope.bike = angular.copy($scope.currentBike);
     $scope.bike.localId = item.id
     $scope.bike.name = item.name
+    $scope.bike.password = '123456'
 
-    $ionicPopup.show({
-      title: translations.INPUT_BIND_PASSWORD,
-      templateUrl: 'pair-Popup.html',
-      scope: $scope,
-      buttons: [
-        {text: translations.CANCEL},
-        {
-          text: '<b>'+translations.CONFIRM+'</b>',
-          type: 'button-positive',
-          onTap: function (e) {
-            if (!$scope.bike.password || $scope.bike.password.length !== 6) {
-              e.preventDefault();
-            } else if(!$scope.bike.newpassword || $scope.bike.newpassword.length !== 6) {
-              e.preventDefault();
-            } else if($scope.bike.newpassword != $scope.bike.newpassword2) {
-              e.preventDefault();
-            } else {
-              return $scope.bike;
-            }
-          }
-        }
-      ]
-    })
-    .then(tryConnect);
+    tryConnect($scope.bike);
+
+    // $ionicPopup.show({
+    //   title: translations.INPUT_BIND_PASSWORD,
+    //   templateUrl: 'pair-Popup.html',
+    //   scope: $scope,
+    //   buttons: [
+    //     {text: translations.CANCEL},
+    //     {
+    //       text: '<b>'+translations.CONFIRM+'</b>',
+    //       type: 'button-positive',
+    //       onTap: function (e) {
+    //         if (!$scope.bike.password || $scope.bike.password.length !== 6) {
+    //           e.preventDefault();
+    //         } else if(!$scope.bike.newpassword || $scope.bike.newpassword.length !== 6) {
+    //           e.preventDefault();
+    //         } else if($scope.bike.newpassword != $scope.bike.newpassword2) {
+    //           e.preventDefault();
+    //         } else {
+    //           return $scope.bike;
+    //         }
+    //       }
+    //     }
+    //   ]
+    // })
+    // .then(tryConnect);
   }
 
   $scope.goHome = function () {
-    $state.go('tab.home');
+    $scope.openModal();
+    // $state.go('tab.home');
   }
 
   $scope.$on("$ionicView.beforeLeave", function () {

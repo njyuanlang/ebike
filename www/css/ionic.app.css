@@ -31,6 +31,10 @@ $dark:                            #444 !default;
     color: #fff;
     margin-top: 0.5rem !important; }
 
+.authorize-bg {
+  background: url("../img/authorize-bg.png") no-repeat center center fixed;
+  -webkit-background-size: cover !important; }
+
 .transparent-bg {
   background: transparent !important; }
 
@@ -13908,6 +13912,24 @@ a.autolinker {
       background-color: #30c2c2;
       box-shadow: none;
       color: #fff; }
+
+.authorize-bg h4 {
+  margin: 10%;
+  text-align: center; }
+
+.authorize-bg .box {
+  margin: 105% 25% 5% 25%;
+  border: 1px solid #00ccff;
+  color: #00ccff; }
+
+.authorize-bg button {
+  margin: 0 30%;
+  background-color: #00ccff;
+  color: #fff;
+  border-radius: 30px;
+  font-size: 28px;
+  min-width: 120px;
+  min-height: 44px; }
 
 .button-starter {
   position: absolute;
