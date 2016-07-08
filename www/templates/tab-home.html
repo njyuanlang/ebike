@@ -61,8 +61,12 @@
     <div class="row text-center">
       <div class="col col-60 col-offset-20">
         <div class="button-bar">
-          <a class="button button-small button-left">{{'SMART_PARK'|translate}}</a>
-          <a class="button button-small button-right">{{'SMART_PUSH'|translate}}</a>
+          <a class="button button-small button-left" ng-click=device.setWorkmode(30)>
+            {{'SMART_PARK'|translate}}
+          </a>
+          <a class="button button-small button-right" ng-click=device.setWorkmode(46)>
+            {{'SMART_PUSH'|translate}}
+          </a>
         </div>
       </div>
     </div>

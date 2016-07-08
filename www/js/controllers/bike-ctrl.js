@@ -224,8 +224,6 @@ controllers
         template: '<i class="icon ion-ios-checkmark-outline padding"></i>'+translations.BIND_BIKE_SUCCESS,
         duration: 2000
       })
-      // delete bike.newpassword;
-      // delete bike.newpassword2;
       $rootScope.device = device;
       $rootScope.currentBike.localId = bike.localId;
       $rootScope.currentBike = bike;
@@ -259,7 +257,6 @@ controllers
   $scope.openModal = function() {
     $scope.modal.show();
   };
-  // Cleanup the modal when we're done with it!
   $scope.$on('$destroy', function() {
     $scope.modal.remove();
   });
@@ -271,31 +268,6 @@ controllers
     $scope.bike.password = '123456'
 
     tryConnect($scope.bike);
-
-    // $ionicPopup.show({
-    //   title: translations.INPUT_BIND_PASSWORD,
-    //   templateUrl: 'pair-Popup.html',
-    //   scope: $scope,
-    //   buttons: [
-    //     {text: translations.CANCEL},
-    //     {
-    //       text: '<b>'+translations.CONFIRM+'</b>',
-    //       type: 'button-positive',
-    //       onTap: function (e) {
-    //         if (!$scope.bike.password || $scope.bike.password.length !== 6) {
-    //           e.preventDefault();
-    //         } else if(!$scope.bike.newpassword || $scope.bike.newpassword.length !== 6) {
-    //           e.preventDefault();
-    //         } else if($scope.bike.newpassword != $scope.bike.newpassword2) {
-    //           e.preventDefault();
-    //         } else {
-    //           return $scope.bike;
-    //         }
-    //       }
-    //     }
-    //   ]
-    // })
-    // .then(tryConnect);
   }
 
   $scope.goHome = function () {
