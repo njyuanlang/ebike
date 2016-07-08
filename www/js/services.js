@@ -393,7 +393,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     pair: "00001C03-D102-11E1-9B23-00025B00A5A5",
     mode: "00001C04-D102-11E1-9B23-00025B00A5A5",
     antitheft: "00001C05-D102-11E1-9B23-00025B00A5A5",
-    changepassword: "00001C06-D102-11E1-9B23-00025B00A5A5"
+    changepassword: "00001C06-D102-11E1-9B23-00025B00A5A5",
+    statedefine: "00001C07-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.sendOrder = function (hexs) {
     if(!$rootScope.online || !$window.ble) return;
@@ -522,6 +523,23 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         q.resolve();
       }, function (reason) {
         q.reject('设置密码失败');
+      });
+    }
+    return q.promise;
+  };
+  BLEDevice.prototype.statedefine = function (key) {
+    var q = $q.defer()
+
+    if(!$rootScope.online || !$window.ble) {
+      this.bike.customKey = key;
+    } else {
+      var kThis = this;
+      var value = Util.hexToBytes([key])
+      ble.write(this.localId, order.uuid, order.statedefine, value, function () {
+        kThis.bike.customKey = key;
+        q.resolve();
+      }, function (reason) {
+        q.reject('自定义按键失败');
       });
     }
     return q.promise;
