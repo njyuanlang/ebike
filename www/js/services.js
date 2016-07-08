@@ -113,6 +113,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       realtime.speed = res[0]
       realtime.current = res[1]
       $rootScope.$broadcast('realtime.update')
+      if(res[3]) {
+        if(res[3]&0xFF===0x11) {
+          $rootScope.device.bike.antiTheft = true;
+        } else if(res[3]&0xFF===0x22) {
+          $rootScope.device.bike.antiTheft = false;
+        }
+      }
       if($rootScope.device.bike.antiTheft && res[2] == 0x11) {
         // console.log('realtime.warning=======');
       } else {
