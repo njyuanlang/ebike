@@ -10,6 +10,22 @@ controllers
   };
 })
 
+.controller('CustomCtrl', function ($scope) {
+  $scope.workmodes = [
+    {title:"智能泊车", key: 0x4},
+    {title:"智能推行", key: 0x5},
+    {title:"省电", key: 0x1},
+    {title:"爬坡", key: 0x2},
+    {title:"超速", key: 0x3}
+  ];
+
+  $scope.setKey = function (index) {
+    $scope.index = index;
+    var mode = $scope.workmodes[index];
+    $scope.device.statedefine(mode.key);
+  }
+})
+
 .controller('MessagesCtrl', function($scope, $state, $rootScope, $translate) {
 
   var translations = {

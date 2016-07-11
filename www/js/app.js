@@ -479,6 +479,15 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
         }
       }
     })
+    // custom key
+    .state('tab.custom', {
+      url: "/custom",
+      views : {
+        'tab-menu': {
+          templateUrl: "templates/custom.html"
+        }
+      }
+    })
 
 
   // if none of the above states are matched, use this as the fallback

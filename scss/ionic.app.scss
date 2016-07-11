@@ -143,12 +143,23 @@ $authorize-bg:                    '../img/authorize-bg.png';
     border: 1px solid $light;
     background: transparent;
     line-height: 1.0rem;
+    min-height: 4rem;
 
     > img:first-child {
-      max-width: 50px;
-      max-height: 50px;
+      margin-top: 1.5rem;
+      margin-bottom: .5rem;
+      max-width: 2rem;
+      max-height: 2rem;
+    }
+    p {
+      font-size: .9rem;
     }
   }
+}
+
+// Custom Key
+.custom-key {
+  margin: 100px 0;
 }
 
 // Valid Code

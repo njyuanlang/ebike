@@ -50,10 +50,18 @@ $dark:                            #444 !default;
 .menu-grid .row .col {
   border: 1px solid #fff;
   background: transparent;
-  line-height: 1.0rem; }
+  line-height: 1.0rem;
+  min-height: 4rem; }
   .menu-grid .row .col > img:first-child {
-    max-width: 50px;
-    max-height: 50px; }
+    margin-top: 1.5rem;
+    margin-bottom: .5rem;
+    max-width: 2rem;
+    max-height: 2rem; }
+  .menu-grid .row .col p {
+    font-size: .9rem; }
+
+.custom-key {
+  margin: 100px 0; }
 
 .validcode {
   padding: 6px 0 5px 16px;
