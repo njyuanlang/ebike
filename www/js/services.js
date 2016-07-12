@@ -424,13 +424,15 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         console.log('Check pair result...')
         ble.read(kThis.localId, order.uuid, order.pair, function (result) {
           var ret = Util.byteToDecString(result)
+          console.log(result);
+          console.log('----------------------');
           if(ret === "1") {
             $timeout.cancel(pairtimer)
             kThis.onConnected(result)
-            q.resolve()
+            q.resolve(ret)
           } else {
             $timeout.cancel(pairtimer)
-            q.reject('配对密码错误')
+            q.reject('配对密码错误');
           }
         }, function (reason) {
           $timeout.cancel(pairtimer)

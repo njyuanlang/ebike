@@ -218,7 +218,8 @@ controllers
     //   return device.changePassword(bike.newpassword);
     // })
     .then(function (result) {
-      $scope.modal.hide();
+      console.log(result+'------------------');
+      $scope.closeModal();
       $scope.$ionicGoBack();
       $ionicLoading.show({
         template: '<i class="icon ion-ios-checkmark-outline padding"></i>'+translations.BIND_BIKE_SUCCESS,
@@ -233,6 +234,8 @@ controllers
       }, function (res) {
         $state.go('tab.home');
       })
+    }, function (reason) {
+      console.log(reason);
     })
     .catch(function (error) {
       device.disconnect();
@@ -254,10 +257,15 @@ controllers
   }).then(function(modal) {
     $scope.modal = modal;
   });
-  $scope.openModal = function() {
-    $scope.modal.show();
+  $scope.closeModal = function() {
+    if($scope.tryIntervalID) {
+      clearInterval($scope.tryIntervalID);
+      $scope.tryIntervalID = null;
+    }
+    $scope.modal.hide();
   };
   $scope.$on('$destroy', function() {
+    $scope.closeModal();
     $scope.modal.remove();
   });
 
@@ -267,7 +275,10 @@ controllers
     $scope.bike.name = item.name
     $scope.bike.password = '123456'
 
-    tryConnect($scope.bike);
+    $scope.modal.show();
+    $scope.tryIntervalID = setInterval(function () {
+      tryConnect($scope.bike);
+    }, 2000);
   }
 
   $scope.goHome = function () {
