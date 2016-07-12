@@ -112,20 +112,20 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       if(res[1] == 255) res[1] = 0;
       realtime.speed = res[0]
       realtime.current = res[1]
-      $rootScope.$broadcast('realtime.update')
       if(res[3]) {
-        if(res[3]&0xFF===0x11) {
-          $rootScope.device.bike.antiTheft = true;
-        } else if(res[3]&0xFF===0x22) {
-          $rootScope.device.bike.antiTheft = false;
+        if(res[3]==17) {
+          $rootScope.currentBike.antiTheft = true;
+        } else if(res[3]===34) {
+          $rootScope.currentBike.antiTheft = false;
         }
       }
-      if($rootScope.device.bike.antiTheft && res[2] == 0x11) {
+      if($rootScope.currentBike.antiTheft && res[2]==17) {
         // console.log('realtime.warning=======');
       } else {
         // console.log('antiTheft:'+res[2]);
         // console.log('realtime.allclear========');
       }
+      $rootScope.$broadcast('realtime.update')
     }
   }
 
@@ -213,6 +213,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       var hexs = [0xb0, 0xb0]
       hexs[0] += mode
       hexs[1] += mode
+      console.log(hexs);
       this.sendOrder(hexs)
     }
   }
@@ -424,8 +425,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         console.log('Check pair result...')
         ble.read(kThis.localId, order.uuid, order.pair, function (result) {
           var ret = Util.byteToDecString(result)
-          console.log(result);
-          console.log('----------------------');
           if(ret === "1") {
             $timeout.cancel(pairtimer)
             kThis.onConnected(result)
