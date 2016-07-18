@@ -282,7 +282,7 @@ controllers
   }
 
   $scope.goHome = function () {
-    $scope.openModal();
+    $scope.modal.show();
     // $state.go('tab.home');
   }
 
