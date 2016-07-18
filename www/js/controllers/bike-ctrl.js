@@ -218,7 +218,6 @@ controllers
     //   return device.changePassword(bike.newpassword);
     // })
     .then(function (result) {
-      console.log(result+'------------------');
       $scope.closeModal();
       $scope.$ionicGoBack();
       $ionicLoading.show({
@@ -282,8 +281,8 @@ controllers
   }
 
   $scope.goHome = function () {
-    $scope.modal.show();
-    // $state.go('tab.home');
+    // $scope.modal.show();
+    $state.go('tab.home');
   }
 
   $scope.$on("$ionicView.beforeLeave", function () {
