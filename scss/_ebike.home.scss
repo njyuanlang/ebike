@@ -178,38 +178,41 @@ $percent20: round($loops/5);
   }
 }
 
-// Button bar
-$left-color:                        #ccc !default;
-$button-left-bg:                    $left-color !default;
-$button-left-text:                  #444 !default;
-$button-left-border:                darken($left-color, 2.5%) !default;
-$button-left-active-bg:             darken($left-color, 10%) !default;
-$button-left-active-border:         darken($left-color, 10%) !default;
-
-$right-color:                        #33cccc !default;
-$button-right-bg:                    $right-color !default;
-$button-right-text:                  #fff !default;
-$button-right-border:                darken($right-color, 2.5%) !default;
-$button-right-active-bg:             darken($right-color, 10%) !default;
-$button-right-active-border:         darken($right-color, 10%) !default;
+$button-gray-text:      #999 !default;
 
 .button {
 
   &.button-left {
-    @include button-style($button-left-bg, $button-default-border, $button-left-active-bg, $button-default-active-border, $button-left-text);
-    @include button-clear($button-left-border);
-    @include button-outline($button-left-border);
-    border-radius: 80px 0 0 80px!important;
-    border: 5px solid $button-left-border!important;
+    @include button-clear($button-default-border);
     padding: 0;
+    color: $button-gray-text;
+    font-weight: bold;
+    border: 0;
+    background: url(../img/park-gray.png) 0 0 no-repeat;
+    -webkit-background-size: 100% 100%!important;
+    box-shadow: none;
+
+    &.active,
+    &.activated {
+      color: $light;
+      background-image: url(../img/park-light.png);
+    }
   }
 
   &.button-right {
-    @include button-style($button-right-bg, $button-default-border, $button-right-active-bg, $button-default-active-border, $button-right-text);
-    @include button-clear($button-right-border);
-    @include button-outline($button-right-border);
-    border-radius: 0 80px 80px 0!important;
-    border: 5px solid $button-right-border!important;
+    @include button-clear($button-default-border);
     padding: 0;
+    color: $button-gray-text;
+    font-weight: bold;
+    border: 0;
+    background: url(../img/push-gray.png) 0 0 no-repeat;
+    -webkit-background-size: 100% 100%!important;
+    box-shadow: none;
+
+    &.active,
+    &.activated {
+      color: $light;
+      background-image: url(../img/push-light.png);
+    }
   }
 }

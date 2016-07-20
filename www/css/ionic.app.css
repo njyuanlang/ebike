@@ -13863,64 +13863,44 @@ a.autolinker {
   background: -webkit-linear-gradient(0deg, yellow 50%, transparent 50%), -webkit-linear-gradient(right, transparent 50%, #eee 50%), -webkit-linear-gradient(top, red, orange, yellow); }
 
 .button.button-left {
-  border-color: transparent;
-  background-color: #ccc;
-  color: #444;
-  border-radius: 80px 0 0 80px !important;
-  border: 5px solid #c6c6c6 !important;
-  padding: 0; }
-  .button.button-left:hover {
-    color: #444;
-    text-decoration: none; }
-  .button.button-left.active, .button.button-left.activated {
-    border-color: #a2a2a2;
-    background-color: #b3b3b3; }
+  padding: 0;
+  color: #999;
+  font-weight: bold;
+  border: 0;
+  background: url(../img/park-gray.png) 0 0 no-repeat;
+  -webkit-background-size: 100% 100% !important;
+  box-shadow: none; }
   .button.button-left.button-clear {
     border-color: transparent;
     background: none;
     box-shadow: none;
-    color: #c6c6c6; }
+    color: transparent; }
   .button.button-left.button-icon {
     border-color: transparent;
     background: none; }
-  .button.button-left.button-outline {
-    border-color: #c6c6c6;
-    background: transparent;
-    color: #c6c6c6; }
-    .button.button-left.button-outline.active, .button.button-left.button-outline.activated {
-      background-color: #c6c6c6;
-      box-shadow: none;
-      color: #fff; }
+  .button.button-left.active, .button.button-left.activated {
+    color: #fff;
+    background-image: url(../img/park-light.png); }
 
 .button.button-right {
-  border-color: transparent;
-  background-color: #33cccc;
-  color: #fff;
-  border-radius: 0 80px 80px 0 !important;
-  border: 5px solid #30c2c2 !important;
-  padding: 0; }
-  .button.button-right:hover {
-    color: #fff;
-    text-decoration: none; }
-  .button.button-right.active, .button.button-right.activated {
-    border-color: #a2a2a2;
-    background-color: #29a3a3; }
+  padding: 0;
+  color: #999;
+  font-weight: bold;
+  border: 0;
+  background: url(../img/push-gray.png) 0 0 no-repeat;
+  -webkit-background-size: 100% 100% !important;
+  box-shadow: none; }
   .button.button-right.button-clear {
     border-color: transparent;
     background: none;
     box-shadow: none;
-    color: #30c2c2; }
+    color: transparent; }
   .button.button-right.button-icon {
     border-color: transparent;
     background: none; }
-  .button.button-right.button-outline {
-    border-color: #30c2c2;
-    background: transparent;
-    color: #30c2c2; }
-    .button.button-right.button-outline.active, .button.button-right.button-outline.activated {
-      background-color: #30c2c2;
-      box-shadow: none;
-      color: #fff; }
+  .button.button-right.active, .button.button-right.activated {
+    color: #fff;
+    background-image: url(../img/push-light.png); }
 
 .authorize-bg h4 {
   margin: 10%;

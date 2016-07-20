@@ -58,14 +58,16 @@
         <h2 class="{{device.status}}">{{device.realtime.mileage||0}}<span>km</span><small> {{'RANGE_OF_KM'|translate}}</small></h2>
       </div>
     </div>
-    <div class="row text-center mt-xs">
+    <div class="row text-center">
       <div class="col col-60 col-offset-20">
         <div class="button-bar">
-          <a class="button button-small button-left" ng-click=device.setWorkmode(30)>
-            {{'SMART_PARK'|translate}}
+          <a class="button button-left" ng-class="{'active':device.bike.workmode===30}"
+           ng-click=device.setWorkmode(30) pushvibrate>
+           {{'SMART_PARK'|translate}}
           </a>
-          <a class="button button-small button-right" ng-click=device.setWorkmode(46)>
-            {{'SMART_PUSH'|translate}}
+          <a class="button button-right" ng-class="{'active':device.bike.workmode===46}"
+           ng-click=device.setWorkmode(46) pushvibrate>
+           {{'SMART_PUSH'|translate}}
           </a>
         </div>
       </div>
