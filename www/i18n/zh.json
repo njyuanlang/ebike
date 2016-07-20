@@ -110,7 +110,7 @@
   "REMIND_TEMPERATRUE": "温度过高提醒",
   "REMIND_VOLTAGE": "电瓶低电压提醒",
   "REMIND_GUARD": "防盗提醒",
-  "BAKE": "刹车",
+  "BRAKE": "刹车",
   "MOTOR": "电机",
   "CONTROLLER": "控制器",
   "STEERING": "转把",

@@ -52,7 +52,7 @@ angular.module('ebike.directives',[])
     restrict: 'A',
     link: function($scope, $el) {
       $el.bind('click', function () {
-        if($rootScope.buttonVibrate) {
+        if($rootScope.buttonVibrate && $rootScope.online) {
           $cordovaVibration.vibrate(50);
         }
       });
