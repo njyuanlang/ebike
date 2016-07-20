@@ -7,17 +7,20 @@ $authorize-color:            #00ccff !default;
   }
 
   .box {
-    margin: 105% 25% 5% 25%;
-    border: 1px solid $authorize-color;
+    display: block;
+    width: 50%;
+    margin: 105% auto 5% auto;
+    border: 1.5px solid $authorize-color;
     color: $authorize-color;
   }
+
   button {
-    margin: 0 30%;
+    display: block;
+    margin: 0 auto;
+    width: 40%;
     background-color: $authorize-color;
     color: #fff;
-    border-radius: 30px;
-    font-size: 28px;
-    min-width: 120px;
-    min-height: 44px;
+    border-radius: 2rem;
+    font-size: 2rem;
   }
 }

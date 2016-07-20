@@ -214,9 +214,6 @@ controllers
     .then(function (result) {
       return device.pair(bike.password)
     })
-    // .then(function (result) {
-    //   return device.changePassword(bike.newpassword);
-    // })
     .then(function (result) {
       $scope.closeModal();
       $scope.$ionicGoBack();
@@ -244,10 +241,10 @@ controllers
       })
     })
 
-    $ionicLoading.show({
-      template:'<ion-spinner></ion-spinner>'+translations.BINDING_TIPS+bike.name+"...",
-      duration: 30000
-    })
+    // $ionicLoading.show({
+    //   template:'<ion-spinner></ion-spinner>'+translations.BINDING_TIPS+bike.name+"...",
+    //   duration: 30000
+    // })
   }
 
   $ionicModal.fromTemplateUrl('templates/authorize-modal.html', {
@@ -281,12 +278,13 @@ controllers
   }
 
   $scope.goHome = function () {
-    // $scope.modal.show();
-    $state.go('tab.home');
+    $scope.modal.show();
+    // $state.go('tab.home');
   }
 
   $scope.$on("$ionicView.beforeLeave", function () {
     stopScan(true);
+    $scope.closeModal();
     $scope.device.autoconnect()
   })
 

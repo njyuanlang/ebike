@@ -13926,18 +13926,20 @@ a.autolinker {
   text-align: center; }
 
 .authorize-bg .box {
-  margin: 105% 25% 5% 25%;
-  border: 1px solid #00ccff;
+  display: block;
+  width: 50%;
+  margin: 105% auto 5% auto;
+  border: 1.5px solid #00ccff;
   color: #00ccff; }
 
 .authorize-bg button {
-  margin: 0 30%;
+  display: block;
+  margin: 0 auto;
+  width: 40%;
   background-color: #00ccff;
   color: #fff;
-  border-radius: 30px;
-  font-size: 28px;
-  min-width: 120px;
-  min-height: 44px; }
+  border-radius: 2rem;
+  font-size: 2rem; }
 
 .button-starter {
   position: absolute;
