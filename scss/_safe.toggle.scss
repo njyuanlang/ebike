@@ -35,8 +35,9 @@ $safe-toggle-hit-area-expansion:   5px;
   display: inline-block;
   pointer-events: auto;
   margin-top: $safe-toggle-hit-area-expansion*2;
-  margin-left: -$safe-toggle-hit-area-expansion*4;
+  margin-left: -$safe-toggle-hit-area-expansion*2;
   padding: $safe-toggle-hit-area-expansion;
+  z-index: 10;
 
   &.dragging {
     .handle {
