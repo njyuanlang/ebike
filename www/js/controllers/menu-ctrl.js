@@ -24,6 +24,16 @@ controllers
     var mode = $scope.workmodes[index];
     $scope.device.statedefine(mode.key);
   }
+
+  $scope.index = 0;
+  $scope.workmodes.some(function (mode, index) {
+    if(mode.key === $scope.device.bike.customKey) {
+      $scope.index = index;
+      return true;
+    } else {
+      return false;
+    }
+  });
 })
 
 .controller('MessagesCtrl', function($scope, $state, $rootScope, $translate) {
