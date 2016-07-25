@@ -113,15 +113,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       realtime.speed = res[0]
       realtime.current = res[1]
       if(res[3]) {
-        //Prevent from racing between operate and sync
-        if($rootScope.antiTheftSetting) {
-          $rootScope.antiTheftSetting = false;
-        } else {
-          if(res[3]==17) {
-            $rootScope.currentBike.antiTheft = true;
-          } else if(res[3]===34) {
-            $rootScope.currentBike.antiTheft = false;
-          }
+        if(res[3]==17) {
+          $rootScope.currentBike.antiTheft = true;
+        } else if(res[3]===34) {
+          $rootScope.currentBike.antiTheft = false;
         }
       }
       if($rootScope.currentBike.antiTheft && res[2]==17) {
@@ -483,6 +478,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
   BLEDevice.prototype.antiTheft = function (enable) {
     var q = $q.defer()
+    var self = this;
     if(!$rootScope.online || !this.localId || this.status != 'connected') {
       q.resolve(true)
     } else {
@@ -496,9 +492,9 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           q.reject('获取防盗模式失败');
         });
       } else {
-        $rootScope.antiTheftSetting = true;
         var value = Util.hexToBytes(enable?[0xE1, 0xE1]:[0xE2, 0xE2]);
         ble.write(this.localId, order.uuid, order.antitheft, value, function () {
+          self.bike.antitheft = enable;
           q.resolve();
         }, function (reason) {
           console.log('AntiTheft Get:'+JSON.stringify(reason));

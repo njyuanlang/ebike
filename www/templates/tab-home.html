@@ -41,7 +41,7 @@
       <div class="col col-75">
         <div class="home-power-cycle home-power-cycle-{{device.realtime.power}}">
           <div class="overlay image-button" ng-show="device.workmode != 9">
-            <a ng-click="currentBike.antiTheft = !currentBike.antiTheft" pushvibrate>
+            <a ng-click="device.antiTheft(!currentBike.antiTheft)" pushvibrate>
               <img ng-src="img/lock-{{!currentBike.antiTheft?'light':'gray'}}.png">
             </a>
           </div>
