@@ -67,7 +67,7 @@ controllers
       } else if(reason === 'connecting') {
         console.log('prevent from contiuning autoconnect');
       } else if(reason === 'timeout') {
-        $scope.$apply();
+        // $scope.$apply();
       } else {
         $ionicLoading.show({
           template: '<i class="icon ion-ios-close-outline padding"></i>'+translations.CONNECT_BIKE_FAILURE+reason,

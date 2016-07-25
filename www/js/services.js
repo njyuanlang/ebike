@@ -415,7 +415,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     ble.write(this.localId, order.uuid, order.spec, value)
   }
   BLEDevice.prototype.pair = function (password) {
-    console.log('Start Pair...');
+    console.log('Start Pair:'+password);
     var q = $q.defer()
     if(!$rootScope.online) {
       q.resolve()
@@ -447,6 +447,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         checkPassword()
       }, function (reason) {
         $timeout.cancel(pairtimer)
+        console.log(reason);
         q.reject("设备不支持密码配对功能")
       })
     }

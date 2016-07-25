@@ -208,9 +208,10 @@ controllers
   function tryConnect(bike) {
     console.log('===='+JSON.stringify(bike));
     var device = new BLEDevice(bike)
-    device.connect().then(function (result) {
-      return device.readSerialNumber()
-    })
+    device.connect()
+    // .then(function (result) {
+    //   return device.readSerialNumber()
+    // })
     .then(function (result) {
       return device.pair(bike.password)
     })
@@ -240,11 +241,6 @@ controllers
         duration: 5000
       })
     })
-
-    // $ionicLoading.show({
-    //   template:'<ion-spinner></ion-spinner>'+translations.BINDING_TIPS+bike.name+"...",
-    //   duration: 30000
-    // })
   }
 
   $ionicModal.fromTemplateUrl('templates/authorize-modal.html', {
@@ -254,14 +250,15 @@ controllers
     $scope.modal = modal;
   });
   $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  $scope.$on('modal.hidden', function() {
     if($scope.tryIntervalID) {
       clearInterval($scope.tryIntervalID);
       $scope.tryIntervalID = null;
     }
-    $scope.modal.hide();
-  };
+  });
   $scope.$on('$destroy', function() {
-    $scope.closeModal();
     $scope.modal.remove();
   });
 
@@ -269,7 +266,13 @@ controllers
     $scope.bike = angular.copy($scope.currentBike);
     $scope.bike.localId = item.id
     $scope.bike.name = item.name
-    $scope.bike.password = '123456'
+    var password = Date.now()%1000000+'';
+    for (var i = 0; i < 6-password.length; i++) {
+      password += '0';
+    }
+    $scope.bike.password = password;
+    if($scope.bike.password.length)
+    console.log('PASSWORD:'+$scope.bike.password);
 
     $scope.modal.show();
     $scope.tryIntervalID = setInterval(function () {
@@ -284,7 +287,6 @@ controllers
 
   $scope.$on("$ionicView.beforeLeave", function () {
     stopScan(true);
-    $scope.closeModal();
     $scope.device.autoconnect()
   })
 
