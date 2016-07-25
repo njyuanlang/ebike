@@ -2,7 +2,7 @@
   <ion-nav-buttons side="right">
     <a class="button" ng-click="goHome()">{{'HOME'|translate}}</a>
   </ion-nav-buttons>
-  <ion-content class="padding" delegate-handle="mainScroll">
+  <ion-content class="padding" delegate-handle="mainScroll" overflow-scroll="false">
     <ion-refresher pulling-text="{{'PULL_REFRESH_BIKES'|translate}}" refreshing-text="{{'REFRESHING_BIKES'|translate}}" on-refresh="doScan()"></ion-refresher>
 
     <div class="list">
