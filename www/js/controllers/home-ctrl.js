@@ -62,6 +62,7 @@ controllers
     $scope.device.autoconnect().then(function (result) {
 
     }, function (reason) {
+      console.log('Reconnect Error:'+reason);
       if(reason === 'no localId') {
         $state.go('tab.home-bind')
       } else if(reason === 'connecting') {

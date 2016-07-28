@@ -157,7 +157,6 @@ controllers
       if(!result.name || result.name == '' || result.name == '\u0004') {
         result.name = translations.UNNAMED;
       }
-      console.log(result);
       var exist = devices.some(function (item) {
         return item.id === result.id;
       });
@@ -206,16 +205,13 @@ controllers
   $scope.doScan = doScan
 
   function tryConnect(bike) {
-    console.log('===='+JSON.stringify(bike));
     var device = new BLEDevice(bike)
     device.connect()
-    // .then(function (result) {
-    //   return device.readSerialNumber()
-    // })
     .then(function (result) {
       return device.pair(bike.password)
     })
     .then(function (result) {
+      device.disconnect();
       $scope.closeModal();
       $scope.$ionicGoBack();
       $ionicLoading.show({
@@ -223,14 +219,12 @@ controllers
         duration: 2000
       })
       $rootScope.device = device;
-      $rootScope.currentBike.localId = bike.localId;
       $rootScope.currentBike = bike;
       MyPreferences.save();
-      Bike.upsert(bike, function (result) {
+      device.disconnect().then(function () {
         $state.go('tab.home');
-      }, function (res) {
-        $state.go('tab.home');
-      })
+      });
+      Bike.upsert(bike);
     }, function (reason) {
       console.log(reason);
     })

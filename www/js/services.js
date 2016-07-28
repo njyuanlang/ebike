@@ -320,12 +320,12 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           } else {
             console.log('Try out')
             q.reject(reason);
-            kThis.disconnect();
+            // kThis.disconnect();
           }
         };
         var tryConnect = function () {
           var connectTimer = setTimeout(function () {
-            kThis.disconnect();
+            // kThis.disconnect();
             q.reject('timeout');
           }, 5000);
           $cordovaBLE.connect(kThis.localId)
@@ -416,13 +416,11 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       q.resolve()
     } else {
       var pairtimer = $timeout(function () {
-        console.log('Pair timeout');
         q.reject("配对超时,请重新绑定车辆或者重新启动蓝牙再尝试！");
       }, 5000)
       var value = Util.stringToBytes(password)
       var kThis = this
       var checkPassword = function () {
-        console.log('Check pair result...')
         ble.read(kThis.localId, order.uuid, order.pair, function (result) {
           var ret = Util.byteToDecString(result)
           if(ret === "1") {
