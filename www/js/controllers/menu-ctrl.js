@@ -10,7 +10,7 @@ controllers
   };
 })
 
-.controller('CustomCtrl', function ($scope) {
+.controller('CustomCtrl', function ($scope, MyPreferences) {
   $scope.workmodes = [
     {title:"智能泊车", key: 0x4},
     {title:"智能推行", key: 0x5},
@@ -22,7 +22,10 @@ controllers
   $scope.setKey = function (index) {
     $scope.index = index;
     var mode = $scope.workmodes[index];
-    $scope.device.statedefine(mode.key);
+    $scope.device.statedefine(mode.key)
+    .then(function () {
+      MyPreferences.save();
+    });
   }
 
   $scope.index = 0;

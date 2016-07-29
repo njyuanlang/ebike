@@ -320,7 +320,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           } else {
             console.log('Try out')
             q.reject(reason);
-            // kThis.disconnect();
+            kThis.disconnect();
           }
         };
         var tryConnect = function () {
@@ -394,8 +394,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     pair: "00001C03-D102-11E1-9B23-00025B00A5A5",
     mode: "00001C04-D102-11E1-9B23-00025B00A5A5",
     antitheft: "00001C05-D102-11E1-9B23-00025B00A5A5",
-    changepassword: "00001C06-D102-11E1-9B23-00025B00A5A5",
-    statedefine: "00001C07-D102-11E1-9B23-00025B00A5A5"
+    // changepassword: "00001C06-D102-11E1-9B23-00025B00A5A5",
+    statedefine: "00001C06-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.sendOrder = function (hexs) {
     if(!$rootScope.online || !$window.ble) return;
@@ -492,7 +492,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       } else {
         var value = Util.hexToBytes(enable?[0xE1, 0xE1]:[0xE2, 0xE2]);
         ble.write(this.localId, order.uuid, order.antitheft, value, function () {
-          self.bike.antitheft = enable;
+          self.bike.antiTheft = enable;
           q.resolve();
         }, function (reason) {
           console.log('AntiTheft Get:'+JSON.stringify(reason));
@@ -503,32 +503,32 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     return q.promise
   };
 
-  BLEDevice.prototype.changePassword = function (password) {
-    var q = $q.defer()
-    if(password.length !== 6) {
-      q.reject('密码长度不正确');
-    } else if(!$rootScope.online) {
-      this.bike.password = password;
-      q.resolve(true);
-    } else {
-      var array = new Uint8Array(8);
-      array[0] = 0xFE;
-      array[1] = 0xEF;
-      for (var i = 2, l = 8; i < l; i++) {
-        array[i] = password.charCodeAt(i-2);
-      }
-      var value = array.buffer;
-      var kThis = this;
-      ble.write(this.localId, order.uuid, order.changepassword, value, function () {
-        kThis.bike.password = password;
-        console.log('Success Set Password:'+password);
-        q.resolve();
-      }, function (reason) {
-        q.reject('设置密码失败');
-      });
-    }
-    return q.promise;
-  };
+  // BLEDevice.prototype.changePassword = function (password) {
+  //   var q = $q.defer()
+  //   if(password.length !== 6) {
+  //     q.reject('密码长度不正确');
+  //   } else if(!$rootScope.online) {
+  //     this.bike.password = password;
+  //     q.resolve(true);
+  //   } else {
+  //     var array = new Uint8Array(8);
+  //     array[0] = 0xFE;
+  //     array[1] = 0xEF;
+  //     for (var i = 2, l = 8; i < l; i++) {
+  //       array[i] = password.charCodeAt(i-2);
+  //     }
+  //     var value = array.buffer;
+  //     var kThis = this;
+  //     ble.write(this.localId, order.uuid, order.changepassword, value, function () {
+  //       kThis.bike.password = password;
+  //       console.log('Success Set Password:'+password);
+  //       q.resolve();
+  //     }, function (reason) {
+  //       q.reject('设置密码失败');
+  //     });
+  //   }
+  //   return q.promise;
+  // };
   BLEDevice.prototype.statedefine = function (key) {
     var q = $q.defer()
 
