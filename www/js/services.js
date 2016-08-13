@@ -687,16 +687,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 .service('MyPreferences', function ($rootScope, User, $cordovaPreferences, $localstorage) {
 
   function successLoad(options) {
-    // Backward compatibility
-    if(!options) {
-      var dictionary = User.getCurrentId();
-      $cordovaPreferences.fetch('myEBike', dictionary)
-      .success(function (bike) {
-        $rootScope.currentBike = bike;
-        $rootScope.buttonVibrate = true;
-        pref.save(null, dictionary);
-      })
-    }
     options = options || {};
     $rootScope.currentBike = options.bike || $rootScope.currentBike || {};
     $rootScope.buttonVibrate = options.buttonVibrate;
@@ -707,7 +697,22 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     load: function (dictionary) {
       dictionary = dictionary || User.getCurrentId();
       $cordovaPreferences.fetch('MyPreferences', dictionary)
-      .success(successLoad)
+      .success(function (options) {
+        // Backward compatibility
+        if(!options) {
+          var dictionary = User.getCurrentId();
+          $cordovaPreferences.fetch('myEBike', dictionary)
+          .success(function (bike) {
+            successLoad({bike: bike, buttonVibrate:true});
+            pref.save(null, dictionary);
+          })
+          .console.error(function () {
+            console.log("fetch myEBike error: "+arguments);
+          });
+        } else {
+          successLoad(options);
+        }
+      })
       .error(function (error) {
         console.log('Load Preferences Failure:'+error);
         successLoad($localstorage.getObject('#EBIKE#MyPreferences'));
