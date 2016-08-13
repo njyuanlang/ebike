@@ -26,22 +26,23 @@
         </div>
       </div>
     </div>
-    <div class="padding"></div>
-    <div class="row test-bar test-bar-{{$index%2}}" ng-repeat="entity in task.items">
-      <div class="color-lable"></div>
-      <div class="col-20">
-        {{entity | testItem: 'id' }}
-      </div>
-      <div class="col-50">
-        <div id="progressbar" ng-class="{'error':entity.state == 'error' || entity.state == 'broken'}">
-          <div ng-style="{'width': entity.progress/100}"></div>
+    <div class="bottom-bar">
+      <div class="row test-bar test-bar-{{$index%2}}" ng-repeat="entity in task.items">
+        <div class="color-lable"></div>
+        <div class="col-20">
+          {{entity | testItem: 'id' }}
         </div>
-        <!-- <progress max="100" value="{{entity.progress}}"></progress> -->
-      </div>
-      <div class="col-25">
-        <i class="ion-checkmark positive" ng-show="entity.state == 'pass' || entity.state == 'repaired'"></i>
-        <i class="ion-alert assertive" ng-show="entity.state == 'error' || entity.state == 'broken'"></i>
-        {{entity | testItem: 'state' }}
+        <div class="col-50">
+          <div id="progressbar" ng-class="{'error':entity.state == 'error' || entity.state == 'broken'}">
+            <div ng-style="{'width': entity.progress/100}"></div>
+          </div>
+          <!-- <progress max="100" value="{{entity.progress}}"></progress> -->
+        </div>
+        <div class="col-25">
+          <i class="ion-checkmark positive" ng-show="entity.state == 'pass' || entity.state == 'repaired'"></i>
+          <i class="ion-alert assertive" ng-show="entity.state == 'error' || entity.state == 'broken'"></i>
+          {{entity | testItem: 'state' }}
+        </div>
       </div>
     </div>
   </ion-content>

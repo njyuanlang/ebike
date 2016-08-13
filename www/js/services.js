@@ -635,7 +635,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           if(task.items[1].state === 'error' && task.score === 75) {
             task.state = 'pass'
           }
-          if(task.bikeId) {
+          if(task.bikeId && $rootScope.online) {
             Test.create(task, function (result) {
               task.id = result.id
             })
@@ -643,7 +643,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         } else if(task.state === 'repairing') {
           task.score += Math.round(count*100/task.items.length)
           task.state = count === itemLen ? 'repaired':'broken'
-          if(task.bikeId) {
+          if(task.bikeId && $rootScope.online) {
             Test.upsert(task)
           }
         }

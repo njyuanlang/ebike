@@ -13033,6 +13033,11 @@ a.button {
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-direction: normal, normal; }
 
+.bottom-bar {
+  width: 100%;
+  position: absolute;
+  bottom: 0; }
+
 .test-bar {
   text-align: center;
   font-size: 1.0rem;
