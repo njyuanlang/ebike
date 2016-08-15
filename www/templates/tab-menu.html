@@ -18,16 +18,24 @@
           <img src="img/bluetooth-icon.png">
           <p>{{'BIND_BIKE'|translate}}</p>
         </a>
-        <a class="col button" ui-sref="tab.messages()">
+        <!-- <a class="col button" ui-sref="tab.messages()">
           <img src="img/message-icon.png">
           <p>{{'REMIND_MESSAGE'|translate}}</p>
+        </a> -->
+        <a class="col button" ui-sref="tab.custom()">
+          <img src="img/custom-icon.png">
+          <p>{{'CUSTOM_KEY'|translate}}</p>
         </a>
       </div>
       <div class="row">
-        <a class="col button" href="#/tab/services">
+        <a class="col button" ui-sref="tab.setting()">
+          <img src="img/setting-icon.png">
+          <p>{{'SETTING'|translate}}</p>
+        </a>
+        <!-- <a class="col button" href="#/tab/services">
           <img src="img/list-icon.png">
           <p>{{'SERVICE_LICENSE'|translate}}</p>
-        </a>
+        </a> -->
         <a class="col button" ui-sref="intro()">
           <img src="img/help-icon.png">
           <p>{{'HELP_MANUAL'|translate}}</p>
@@ -37,22 +45,14 @@
           <p>{{'ABOUT_US'|translate}}</p>
         </a>
       </div>
-      <div class="row">
-        <!-- <a class="col button" href="#/cruise">
+      <!-- <div class="row">
+        <a class="col button" href="#/cruise">
           <img src="img/dashboard-icon.png">
           <p>横向仪表</p>
-        </a> -->
-        <a class="col button" ui-sref="tab.setting()">
-          <img src="img/setting-icon.png">
-          <p>{{'SETTING'|translate}}</p>
-        </a>
-        <a class="col button" ui-sref="tab.custom()">
-          <img src="img/custom-icon.png">
-          <p>{{'CUSTOM_KEY'|translate}}</p>
         </a>
         <a class="col button">
         </a>
-      </div>
+      </div> -->
 
     </div>
   </ion-content>
