@@ -8,7 +8,7 @@
   <ion-content class="" scroll="false">
 
     <div class="bluetooth-connect text-center" ng-show="device.status!='connected'">
-      <i class="icon ion-ios-close-outline calm" ng-if="device.status!='connecting'"></i>
+      <i class="icon ion-ebike-close-outline calm" ng-if="device.status!='connecting'"></i>
       <ion-spinner class="spinner-calm" icon="spiral" ng-if="device.status=='connecting'"></ion-spinner>
       <h4 class="light" ng-if="device.status==='connecting'">{{'PERIPHERAL_SCANING'|translate}}</h4>
       <h4 class="light" ng-if="device.status!=='connecting'">{{'PERIPHERAL_NOT_FOUND'|translate}}</h4>
@@ -25,20 +25,23 @@
         </a>
       </div>
       <div class="col col-50"></div>
-      <div class="col col-25 image-button">
-        <div class="row-wrap">
-          <a class="button button-clear {{device.status}}" ng-click="reconnectDevice()" pushvibrate>
-            <img ng-src="img/bluetooth-{{!device || !device.status || device.status === 'disconnected'?'gray':'light'}}.png">
-          </a>
-        </div>
+      <div class="col col-25">
+        <label class="safe-toggle" ng-disabled="device.status !== 'connected'">
+           <input type="checkbox" ng-model="currentBike.safe" ng-checked="currentBike.safe" pushvibrate>
+           <div class="track">
+             <i class="icon ion-alert-circled"></i>
+             <div class="handle"></div>
+           </div>
+           <h6>{{'SAFE_MODE'|translate}}</h6>
+        </label>
       </div>
     </div>
-    <div class="row mt-sm">
+    <div class="row mt-md">
       <div class="col"></div>
       <div class="col col-75">
         <div class="home-power-cycle home-power-cycle-{{device.realtime.power}}">
           <div class="overlay image-button" ng-show="device.workmode != 9">
-            <a ng-click="currentBike.antiTheft = !currentBike.antiTheft" pushvibrate>
+            <a ng-click="device.antiTheft(!currentBike.antiTheft)" pushvibrate>
               <img ng-src="img/lock-{{!currentBike.antiTheft?'light':'gray'}}.png">
             </a>
           </div>
@@ -51,38 +54,41 @@
       <div class="col"></div>
     </div>
     <div class="row text-center">
-      <div class="col col-50 digital-display">
-        <h2 class="{{device.status}}">{{device.realtime.power||0}}<span>% </span><small> {{'BATTERY_LEVEL'|translate}}</small></h2>
+      <div class="col digital-display">
         <h2 class="{{device.status}}">{{device.realtime.mileage||0}}<span>km</span><small> {{'RANGE_OF_KM'|translate}}</small></h2>
       </div>
-      <div class="col col-50 padding">
-        <label class="safe-toggle" ng-disabled="device.status !== 'connected'">
-           <input type="checkbox" ng-model="currentBike.safe" ng-checked="currentBike.safe" pushvibrate>
-           <div class="track">
-             <i class="icon ion-alert-circled"></i>
-             <div class="handle"></div>
-           </div>
-        </label>
-        <h5>{{'SAFE_MODE'|translate}}</h5>
+    </div>
+    <div class="row text-center">
+      <div class="col col-60 col-offset-20">
+        <div class="button-bar">
+          <a class="button button-left" ng-class="{'active':device.bike.workmode===30}"
+           ng-click=device.setWorkmode(30) pushvibrate>
+           {{'SMART_PARK'|translate}}
+          </a>
+          <a class="button button-right" ng-class="{'active':device.bike.workmode===46}"
+           ng-click=device.setWorkmode(46) pushvibrate>
+           {{'SMART_PUSH'|translate}}
+          </a>
+        </div>
       </div>
     </div>
     <div class="row text-center">
       <div class="col col-25 image-button col-offset-10">
-        <a class="button button-clear" ng-class="{'disabled': device.bike.workmode == 9}"
+        <a class="button button-clear button-light" ng-class="{'disabled': device.bike.workmode == 9}"
          ng-click="device.setWorkmode(1)" pushvibrate>
           <img src="img/powersave-{{device.bike.workmode%8 === 1?'light':'gray'}}.png">
           {{'SAVE_POWER'|translate}}
         </a>
       </div>
       <div class="col col-25 image-button">
-        <a class="button button-clear" ng-class="{'disabled': device.bike.workmode == 9}"
+        <a class="button button-clear button-light" ng-class="{'disabled': device.bike.workmode == 9}"
          ng-click="device.setWorkmode(2)" pushvibrate>
           <img src="img/climb-{{device.bike.workmode == 2?'light':'gray'}}.png">
           {{'CLIMB'|translate}}
         </a>
       </div>
       <div class="col col-25 image-button">
-        <a class="button button-clear" ng-class="{'disabled': device.bike.workmode == 9}"
+        <a class="button button-clear button-light" ng-class="{'disabled': device.bike.workmode == 9}"
          ng-click="device.setWorkmode(15)" pushvibrate>
           <img src="img/speed-{{device.bike.workmode == 15?'light':'gray'}}.png">
           {{'SPEED'|translate}}

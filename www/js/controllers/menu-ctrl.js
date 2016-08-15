@@ -1,9 +1,6 @@
 controllers
 
 .controller('MenuCtrl', function($scope, $state, User) {
-
-  // $scope.entity = User.getCurrent()
-
 })
 
 .controller('SettingCtrl', function ($scope, MyPreferences) {
@@ -11,6 +8,35 @@ controllers
   $scope.save = function () {
     MyPreferences.save($scope.data);
   };
+})
+
+.controller('CustomCtrl', function ($scope, MyPreferences) {
+  $scope.workmodes = [
+    {title:"智能泊车", key: 0x4},
+    {title:"智能推行", key: 0x5},
+    {title:"省电", key: 0x1},
+    {title:"爬坡", key: 0x2},
+    {title:"超速", key: 0x3}
+  ];
+
+  $scope.setKey = function (index) {
+    $scope.index = index;
+    var mode = $scope.workmodes[index];
+    $scope.device.statedefine(mode.key)
+    .then(function () {
+      MyPreferences.save();
+    });
+  }
+
+  $scope.index = 0;
+  $scope.workmodes.some(function (mode, index) {
+    if(mode.key === $scope.device.bike.customKey) {
+      $scope.index = index;
+      return true;
+    } else {
+      return false;
+    }
+  });
 })
 
 .controller('MessagesCtrl', function($scope, $state, $rootScope, $translate) {

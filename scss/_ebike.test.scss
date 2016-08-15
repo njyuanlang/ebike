@@ -8,7 +8,7 @@ $radial-disk-color:              #bbb;
   from {
     opacity:0;
   }
-  
+
   to {
     opacity:1;
   }
@@ -26,7 +26,7 @@ $radial-disk-color:              #bbb;
     background: transparent;
     padding-bottom: 100%;
     -webkit-box-shadow: 0 0 2.5rem $positive;
-    
+
     .score {
       width:100%;
       position: absolute;
@@ -35,7 +35,7 @@ $radial-disk-color:              #bbb;
       color: orange;
       margin: 45% auto;
     }
-    
+
     @for $i from 1 through 4 {
       .inner-#{$i} {
         border-radius: 50%;
@@ -50,13 +50,13 @@ $radial-disk-color:              #bbb;
           width: 16px;
           height: 16px;
           margin: percentage($i%2*0.7+$inner-percentage) 0 0 percentage($i%2*0.7-$inner-percentage);
-          background-image: 
+          background-image:
           -webkit-radial-gradient(ellipse farthest-side, #40e2ff 50%,transparent 100%);
           -webkit-animation: twinkling 2s infinite ease-in-out;
         }
       }
     }
-    
+
     @for $i from 0 through 8 {
       $rotatedeg: $i*45;
       .diameter-#{$rotatedeg} {
@@ -76,7 +76,7 @@ $radial-disk-color:              #bbb;
   from {
     -webkit-transform: rotate(0deg);
   }
-  
+
   to {
     -webkit-transform: rotate(360deg);
   }
@@ -90,7 +90,7 @@ $radial-disk-color:              #bbb;
   margin: auto;
   border: 0;
   border-radius: 100% 0 0 0;
-  background-image: 
+  background-image:
   -webkit-linear-gradient(right top, $positive, $positive 40%, transparent 60%, transparent);
   -webkit-transform-origin: bottom right;
   -webkit-animation-duration: 3s;
@@ -101,14 +101,19 @@ $radial-disk-color:              #bbb;
 
 // Test Bar
 // -------------------------------
+.bottom-bar {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
 .test-bar {
   text-align: center;
   font-size: 1.0rem;
   padding: 0px;
-  
+
   .col-20, .col-25 {
     margin: 0.5rem 0rem;
-//    display: block;
   }
   .col-20 {
     width: 20%;
@@ -121,12 +126,12 @@ $radial-disk-color:              #bbb;
     margin: 0.8rem 0.3rem;
     width: 50%;
   }
-    
+
   .color-lable {
     display:block;
     width: 5px!important;
   }
-  
+
 }
 .test-bar-0 {
   background: rgba(216, 216, 216, 0.4);
@@ -176,7 +181,7 @@ progress::-webkit-progress-value {
 //    -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.2)),
     -webkit-linear-gradient(left, $positive, $positive);
 //    -webkit-linear-gradient(left, $assertive, $assertive);
-	
+
   background-size: 25px 14px, 100% 100%, 100% 100%;
   -webkit-animation: animate-stripes 5s linear infinite;
   animation: animate-stripes 5s linear infinite;
@@ -189,7 +194,7 @@ progress::-webkit-progress-value {
 }
 
 #progressbar {
-  
+
   > div {
     width: 100%;
     height: 0.85rem;
@@ -204,5 +209,5 @@ progress::-webkit-progress-value {
     border-radius: 50px;
     background-image: -webkit-linear-gradient(left, $assertive, $assertive);
     -webkit-transition: width 100ms;
-  } 
+  }
 }

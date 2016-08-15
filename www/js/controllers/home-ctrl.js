@@ -55,19 +55,20 @@ controllers
     // return setTimeout(function () {
     //   $scope.device.status = 'disconnected';
     //   $scope.$apply();
-    // }, 2000);
+    // }, 5000);
     if(!$scope.device || $scope.device.status!='disconnected') return;
     if(!$scope.online) return $scope.device.onConnected()
 
     $scope.device.autoconnect().then(function (result) {
 
     }, function (reason) {
+      console.log('Reconnect Error:'+reason);
       if(reason === 'no localId') {
         $state.go('tab.home-bind')
       } else if(reason === 'connecting') {
         console.log('prevent from contiuning autoconnect');
       } else if(reason === 'timeout') {
-        $scope.$apply();
+        // $scope.$apply();
       } else {
         $ionicLoading.show({
           template: '<i class="icon ion-ios-close-outline padding"></i>'+translations.CONNECT_BIKE_FAILURE+reason,

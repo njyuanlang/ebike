@@ -66,7 +66,7 @@ controllers
     $rootScope.myPositionMarker.setPosition($rootScope.myPosition);
     $rootScope.myPositionMarker.setMap(map);
   }
-  
+
   function androidLocate() {
     navigator.amaplocation.getCurrentPosition(function (result) {
       console.log("amaplocation==="+JSON.stringify(result));
@@ -75,7 +75,7 @@ controllers
       console.log("Location error: "+JSON.stringify(arguments));
     });
   }
-  
+
   if($scope.isAndroid) {
     androidLocate();
   }
@@ -83,12 +83,12 @@ controllers
   $scope.add = function () {
     $state.go('^.merchant-add');
   };
-  
+
   $scope.navigate = function () {
     if(infoWindow) infoWindow.close();
     $scope.MWalk.search($scope.myPosition, $scope.clouddata._location);
   };
-  
+
   AMap.service(["AMap.Driving"], function() {
     $scope.MWalk = new AMap.Driving({
       panel: result1,
@@ -113,14 +113,14 @@ controllers
   var map = new AMap.Map('container2',{zoom: 15, dragEnable: false, zoomEnable: false});
   var marker = new AMap.Marker({position: $scope.entity._location, map: map});
   var geocoder = null;
-  
+
   AMap.service(["AMap.Geocoder"], function() {
     geocoder = new AMap.Geocoder({
       radius: 1000,
       extensions: "all"
     });
   });
-  
+
   $scope.$on("$ionicView.enter", function () {
     $scope.entity._location = $scope.markerPosition || $scope.entity._location;
     map.setCenter($scope.entity._location);
@@ -150,7 +150,7 @@ controllers
     console.log('==========='+$scope.entity);
     $scope.entity.avatar = "img/logo.png";
   };
-  
+
   $scope.submitForm = function (isValid) {
     $ionicLoading.show({
       template: "正在上传商户信息...",
@@ -172,7 +172,7 @@ controllers
       });
     });
   }
-  
+
 })
 
 .controller('MerchantMarkCtrl', function($scope, $state, $rootScope, $ionicLoading) {
@@ -180,13 +180,13 @@ controllers
   var marker = null;
   var _onclick = function (e) {
     if(marker) return;
-    
+
     marker = new AMap.Marker({
       draggable: true,
       raiseOnDrag: true,
       position : e.lnglat,
       map : map
-    });  
+    });
   };
 
   var map = new AMap.Map('container3',{
@@ -228,5 +228,5 @@ controllers
     marker = null;
     $scope.$ionicGoBack();
   };
-  
+
 })

@@ -83,6 +83,7 @@ $popup-background-color:          $light !default;
 $cruise-bg:                       '../img/cruise-bg.png';
 $cruise-rotate-bg:                '../img/rotation.png';
 $user-bg:                         '../img/user-bg.png';
+$authorize-bg:                    '../img/authorize-bg.png';
 
 //.scroll-bg {
 //  background: url($default-bg) no-repeat center center fixed;
@@ -109,6 +110,11 @@ $user-bg:                         '../img/user-bg.png';
     margin-top: 0.5rem!important;
   }
 }
+.authorize-bg {
+  background: url($authorize-bg) no-repeat center center fixed;
+  -webkit-background-size: cover!important;
+}
+
 
 .transparent-bg {
   background: transparent!important;
@@ -137,12 +143,23 @@ $user-bg:                         '../img/user-bg.png';
     border: 1px solid $light;
     background: transparent;
     line-height: 1.0rem;
+    min-height: 4rem;
 
     > img:first-child {
-      max-width: 50px;
-      max-height: 50px;
+      margin-top: 1.5rem;
+      margin-bottom: .5rem;
+      max-width: 2rem;
+      max-height: 2rem;
+    }
+    p {
+      font-size: .9rem;
     }
   }
+}
+
+// Custom Key
+.custom-key {
+  margin: 100px 0;
 }
 
 // Valid Code
@@ -170,7 +187,7 @@ $user-bg:                         '../img/user-bg.png';
 
 .validcode-disable-bg {
   background-image:
-  -webkit-linear-gradient(left,$light 60%, $dark 40%);
+  -webkit-linear-gradient(left,$light 60%, $stable 40%);
 }
 
 // Include all of Ionic
@@ -180,6 +197,7 @@ $user-bg:                         '../img/user-bg.png';
 @import "chat.bubble";
 @import "www/lib/sass-mediaqueries/media-queries";
 @import "ebike.home";
+@import "ebike.authorize";
 
 // Slide box
 // -------------------------------

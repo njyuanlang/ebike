@@ -112,13 +112,20 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       if(res[1] == 255) res[1] = 0;
       realtime.speed = res[0]
       realtime.current = res[1]
-      $rootScope.$broadcast('realtime.update')
-      if($rootScope.device.bike.antiTheft && res[2] == 0x11) {
+      if(res[3]) {
+        if(res[3]==17) {
+          $rootScope.currentBike.antiTheft = true;
+        } else if(res[3]===34) {
+          $rootScope.currentBike.antiTheft = false;
+        }
+      }
+      if($rootScope.currentBike.antiTheft && res[2]==17) {
         // console.log('realtime.warning=======');
       } else {
         // console.log('antiTheft:'+res[2]);
         // console.log('realtime.allclear========');
       }
+      $rootScope.$broadcast('realtime.update')
     }
   }
 
@@ -206,6 +213,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       var hexs = [0xb0, 0xb0]
       hexs[0] += mode
       hexs[1] += mode
+      console.log(hexs);
       this.sendOrder(hexs)
     }
   }
@@ -317,7 +325,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         };
         var tryConnect = function () {
           var connectTimer = setTimeout(function () {
-            kThis.disconnect();
+            // kThis.disconnect();
             q.reject('timeout');
           }, 5000);
           $cordovaBLE.connect(kThis.localId)
@@ -386,7 +394,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     pair: "00001C03-D102-11E1-9B23-00025B00A5A5",
     mode: "00001C04-D102-11E1-9B23-00025B00A5A5",
     antitheft: "00001C05-D102-11E1-9B23-00025B00A5A5",
-    changepassword: "00001C06-D102-11E1-9B23-00025B00A5A5"
+    // changepassword: "00001C06-D102-11E1-9B23-00025B00A5A5",
+    statedefine: "00001C06-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.sendOrder = function (hexs) {
     if(!$rootScope.online || !$window.ble) return;
@@ -401,28 +410,26 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     ble.write(this.localId, order.uuid, order.spec, value)
   }
   BLEDevice.prototype.pair = function (password) {
-    console.log('Start Pair...');
+    console.log('Start Pair:'+password);
     var q = $q.defer()
     if(!$rootScope.online) {
       q.resolve()
     } else {
       var pairtimer = $timeout(function () {
-        console.log('Pair timeout');
         q.reject("配对超时,请重新绑定车辆或者重新启动蓝牙再尝试！");
       }, 5000)
       var value = Util.stringToBytes(password)
       var kThis = this
       var checkPassword = function () {
-        console.log('Check pair result...')
         ble.read(kThis.localId, order.uuid, order.pair, function (result) {
           var ret = Util.byteToDecString(result)
           if(ret === "1") {
             $timeout.cancel(pairtimer)
             kThis.onConnected(result)
-            q.resolve()
+            q.resolve(ret)
           } else {
             $timeout.cancel(pairtimer)
-            q.reject('配对密码错误')
+            q.reject('配对密码错误');
           }
         }, function (reason) {
           $timeout.cancel(pairtimer)
@@ -433,6 +440,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         checkPassword()
       }, function (reason) {
         $timeout.cancel(pairtimer)
+        console.log(reason);
         q.reject("设备不支持密码配对功能")
       })
     }
@@ -468,6 +476,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
   BLEDevice.prototype.antiTheft = function (enable) {
     var q = $q.defer()
+    var self = this;
     if(!$rootScope.online || !this.localId || this.status != 'connected') {
       q.resolve(true)
     } else {
@@ -483,6 +492,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       } else {
         var value = Util.hexToBytes(enable?[0xE1, 0xE1]:[0xE2, 0xE2]);
         ble.write(this.localId, order.uuid, order.antitheft, value, function () {
+          self.bike.antiTheft = enable;
           q.resolve();
         }, function (reason) {
           console.log('AntiTheft Get:'+JSON.stringify(reason));
@@ -493,28 +503,45 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     return q.promise
   };
 
-  BLEDevice.prototype.changePassword = function (password) {
+  // BLEDevice.prototype.changePassword = function (password) {
+  //   var q = $q.defer()
+  //   if(password.length !== 6) {
+  //     q.reject('密码长度不正确');
+  //   } else if(!$rootScope.online) {
+  //     this.bike.password = password;
+  //     q.resolve(true);
+  //   } else {
+  //     var array = new Uint8Array(8);
+  //     array[0] = 0xFE;
+  //     array[1] = 0xEF;
+  //     for (var i = 2, l = 8; i < l; i++) {
+  //       array[i] = password.charCodeAt(i-2);
+  //     }
+  //     var value = array.buffer;
+  //     var kThis = this;
+  //     ble.write(this.localId, order.uuid, order.changepassword, value, function () {
+  //       kThis.bike.password = password;
+  //       console.log('Success Set Password:'+password);
+  //       q.resolve();
+  //     }, function (reason) {
+  //       q.reject('设置密码失败');
+  //     });
+  //   }
+  //   return q.promise;
+  // };
+  BLEDevice.prototype.statedefine = function (key) {
     var q = $q.defer()
-    if(password.length !== 6) {
-      q.reject('密码长度不正确');
-    } else if(!$rootScope.online) {
-      this.bike.password = password;
-      q.resolve(true);
+
+    if(!$rootScope.online || !$window.ble) {
+      this.bike.customKey = key;
     } else {
-      var array = new Uint8Array(8);
-      array[0] = 0xFE;
-      array[1] = 0xEF;
-      for (var i = 2, l = 8; i < l; i++) {
-        array[i] = password.charCodeAt(i-2);
-      }
-      var value = array.buffer;
       var kThis = this;
-      ble.write(this.localId, order.uuid, order.changepassword, value, function () {
-        kThis.bike.password = password;
-        console.log('Success Set Password:'+password);
+      var value = Util.hexToBytes([key])
+      ble.write(this.localId, order.uuid, order.statedefine, value, function () {
+        kThis.bike.customKey = key;
         q.resolve();
       }, function (reason) {
-        q.reject('设置密码失败');
+        q.reject('自定义按键失败');
       });
     }
     return q.promise;
@@ -608,7 +635,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           if(task.items[1].state === 'error' && task.score === 75) {
             task.state = 'pass'
           }
-          if(task.bikeId) {
+          if(task.bikeId && $rootScope.online) {
             Test.create(task, function (result) {
               task.id = result.id
             })
@@ -616,7 +643,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         } else if(task.state === 'repairing') {
           task.score += Math.round(count*100/task.items.length)
           task.state = count === itemLen ? 'repaired':'broken'
-          if(task.bikeId) {
+          if(task.bikeId && $rootScope.online) {
             Test.upsert(task)
           }
         }
@@ -660,17 +687,32 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 .service('MyPreferences', function ($rootScope, User, $cordovaPreferences, $localstorage) {
 
   function successLoad(options) {
-    options = options || {}
+    options = options || {};
     $rootScope.currentBike = options.bike || $rootScope.currentBike || {};
     $rootScope.buttonVibrate = options.buttonVibrate;
     console.log('Preferences Load:'+JSON.stringify(options));
-  }
+  };
 
-  return {
+  var pref = {
     load: function (dictionary) {
       dictionary = dictionary || User.getCurrentId();
       $cordovaPreferences.fetch('MyPreferences', dictionary)
-      .success(successLoad)
+      .success(function (options) {
+        // Backward compatibility
+        if(!options) {
+          var dictionary = User.getCurrentId();
+          $cordovaPreferences.fetch('myEBike', dictionary)
+          .success(function (bike) {
+            successLoad({bike: bike, buttonVibrate:true});
+            pref.save(null, dictionary);
+          })
+          .console.error(function () {
+            console.log("fetch myEBike error: "+arguments);
+          });
+        } else {
+          successLoad(options);
+        }
+      })
       .error(function (error) {
         console.log('Load Preferences Failure:'+error);
         successLoad($localstorage.getObject('#EBIKE#MyPreferences'));
@@ -695,6 +737,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       })
     }
   }
+
+  return pref;
 })
 
 .factory('TestTask', function ($q) {
@@ -727,6 +771,55 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       var scrollView = $ionicScrollDelegate.$getByHandle(delegateHandle).getScrollView();
 
       if (!scrollView) return;
+
+      if (scrollView.isNative) {
+        var refresher = (angular.element(scrollView.el.children[0].children[0]).controller('ionRefresher'));
+        var child = refresher.__getScrollChild();
+
+        refresher.getRefresherDomMethods().show();
+        refresher.getRefresherDomMethods().activate();
+        refresher.getRefresherDomMethods().start();
+
+        // decelerating to zero velocity
+        function easeOutCubic(t) {
+            return (--t) * t * t + 1;
+        }
+
+        var start = Date.now(),
+            duration = 500,
+            from = 0,
+            Y = 60;
+
+        // scroll loop
+        function scroll() {
+            var currentTime = Date.now(),
+                time = Math.min(1, ((currentTime - start) / duration)),
+            // where .5 would be 50% of time on a linear scale easedT gives a
+            // fraction based on the easing method
+                easedT = easeOutCubic(time);
+
+            overscroll(parseInt((easedT * (Y - from)) + from, 10));
+
+            if (time < 1)
+                ionic.requestAnimationFrame(scroll);
+        };
+        ionic.requestAnimationFrame(scroll);
+
+        var listener = angular.element(scrollView.el.children[0].children[0]).scope().$on("scroll.refreshComplete", function () {
+            from = 60;
+            Y = 0;
+            start = Date.now();
+            ionic.requestAnimationFrame(scroll);
+
+            refresher.getRefresherDomMethods().tail();
+            refresher.getRefresherDomMethods().deactivate();
+            refresher.getRefresherDomMethods().hide();
+
+            listener();
+        });
+
+        return;
+      }
 
       scrollView.__publish(
         scrollView.__scrollLeft, -scrollView.__refreshHeight,

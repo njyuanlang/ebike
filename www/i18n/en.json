@@ -130,5 +130,8 @@
   "BUTTON_VIBRATE": "Button Vibrate",
   "PERIPHERAL_SCANING": "Peripheral Scaning",
   "PERIPHERAL_NOT_FOUND": "Peripheral Not Found",
-  "RESCAN": "Rescan"
+  "RESCAN": "Rescan",
+  "SMART_PARK": "Smart Park",
+  "SMART_PUSH": "Smart Push",
+  "CUSTOM_KEY": "Custom Key"
 }

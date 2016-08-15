@@ -1,0 +1,18 @@
+<ion-view title="遥控器自定义" ng-controller="CustomCtrl">
+	<ion-content>
+    <div class="row padding">
+      <div class="col custom-key padding">
+        <img src="img/customkey.png" class="mv100" />
+      </div>
+      <div class="col">
+        <div class="row responsive-sm">
+          <div class="col" ng-repeat="m in workmodes">
+            <button class="button button-block"
+              ng-class="$index===index?'button-positive':'button-light'"
+              ng-click="setKey($index)">{{m.title}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

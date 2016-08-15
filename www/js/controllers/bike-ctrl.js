@@ -73,9 +73,9 @@ controllers
       brand: brand,
       model:item,
       workmode:0,
-      wheeldiameter: 16,
-      voltage: 60,
-      current: 20,
+      wheeldiameter: '16',
+      voltage: '60',
+      current: '20',
       "name": brand.name
     }
 
@@ -84,7 +84,7 @@ controllers
 })
 
 .controller('WheelDiametersCtrl', function($scope, $state, Bike, MyPreferences) {
-  $scope.entities = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26]
+  $scope.entities = ['2~4', '4~6', '6~8', '10', '12', '14', '16', '18', '20', '22', '24', '26'];
 
   $scope.selectEntity = function (item) {
     if($scope.registering) {
@@ -100,7 +100,7 @@ controllers
 })
 
 .controller('VoltagesCtrl', function($scope, $state, Bike, MyPreferences) {
-  $scope.entities = [18, 24, 36, 48, 60, 72]
+  $scope.entities = ['18~24', '36', '48', '60', '72']
 
   $scope.selectEntity = function (item) {
     if($scope.registering) {
@@ -116,7 +116,7 @@ controllers
 })
 
 .controller('CurrentsCtrl', function($scope, $state, Bike, MyPreferences) {
-  $scope.entities = [8, 10, 12, 20, 30, 36]
+  $scope.entities = ['8~10', '12', '20', '30', '36']
 
   $scope.selectEntity = function (item) {
     if($scope.registering) {
@@ -133,7 +133,7 @@ controllers
 
 .controller('BikesAddCtrl', function($scope, $state, $timeout, $ionicLoading,
    Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService,
-   BLEDevice, MyPreferences, $translate) {
+   BLEDevice, MyPreferences, $translate, $ionicModal) {
 
   var devices = [];
 
@@ -157,7 +157,6 @@ controllers
       if(!result.name || result.name == '' || result.name == '\u0004') {
         result.name = translations.UNNAMED;
       }
-      console.log(result);
       var exist = devices.some(function (item) {
         return item.id === result.id;
       });
@@ -206,34 +205,28 @@ controllers
   $scope.doScan = doScan
 
   function tryConnect(bike) {
-    console.log('===='+JSON.stringify(bike));
     var device = new BLEDevice(bike)
-    device.connect().then(function (result) {
-      return device.readSerialNumber()
-    })
+    device.connect()
     .then(function (result) {
       return device.pair(bike.password)
     })
     .then(function (result) {
-      return device.changePassword(bike.newpassword);
-    })
-    .then(function (result) {
+      device.disconnect();
+      $scope.closeModal();
       $scope.$ionicGoBack();
       $ionicLoading.show({
         template: '<i class="icon ion-ios-checkmark-outline padding"></i>'+translations.BIND_BIKE_SUCCESS,
         duration: 2000
       })
-      delete bike.newpassword;
-      delete bike.newpassword2;
       $rootScope.device = device;
-      $rootScope.currentBike.localId = bike.localId;
       $rootScope.currentBike = bike;
       MyPreferences.save();
-      Bike.upsert(bike, function (result) {
+      device.disconnect().then(function () {
         $state.go('tab.home');
-      }, function (res) {
-        $state.go('tab.home');
-      })
+      });
+      Bike.upsert(bike);
+    }, function (reason) {
+      console.log(reason);
     })
     .catch(function (error) {
       device.disconnect();
@@ -242,45 +235,47 @@ controllers
         duration: 5000
       })
     })
-
-    $ionicLoading.show({
-      template:'<ion-spinner></ion-spinner>'+translations.BINDING_TIPS+bike.name+"...",
-      duration: 30000
-    })
   }
+
+  $ionicModal.fromTemplateUrl('templates/authorize-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  $scope.$on('modal.hidden', function() {
+    if($scope.tryIntervalID) {
+      clearInterval($scope.tryIntervalID);
+      $scope.tryIntervalID = null;
+    }
+  });
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
 
   $scope.selectEntity = function (item) {
     $scope.bike = angular.copy($scope.currentBike);
     $scope.bike.localId = item.id
     $scope.bike.name = item.name
+    var password = Date.now()%1000000+'';
+    for (var i = 0; i < 6-password.length; i++) {
+      password += '0';
+    }
+    $scope.bike.password = password;
+    if($scope.bike.password.length)
+    console.log('PASSWORD:'+$scope.bike.password);
 
-    $ionicPopup.show({
-      title: translations.INPUT_BIND_PASSWORD,
-      templateUrl: 'pair-Popup.html',
-      scope: $scope,
-      buttons: [
-        {text: translations.CANCEL},
-        {
-          text: '<b>'+translations.CONFIRM+'</b>',
-          type: 'button-positive',
-          onTap: function (e) {
-            if (!$scope.bike.password || $scope.bike.password.length !== 6) {
-              e.preventDefault();
-            } else if(!$scope.bike.newpassword || $scope.bike.newpassword.length !== 6) {
-              e.preventDefault();
-            } else if($scope.bike.newpassword != $scope.bike.newpassword2) {
-              e.preventDefault();
-            } else {
-              return $scope.bike;
-            }
-          }
-        }
-      ]
-    })
-    .then(tryConnect);
+    $scope.modal.show();
+    $scope.tryIntervalID = setInterval(function () {
+      tryConnect($scope.bike);
+    }, 2000);
   }
 
   $scope.goHome = function () {
+    // $scope.modal.show();
     $state.go('tab.home');
   }
 

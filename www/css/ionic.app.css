@@ -31,6 +31,10 @@ $dark:                            #444 !default;
     color: #fff;
     margin-top: 0.5rem !important; }
 
+.authorize-bg {
+  background: url("../img/authorize-bg.png") no-repeat center center fixed;
+  -webkit-background-size: cover !important; }
+
 .transparent-bg {
   background: transparent !important; }
 
@@ -46,10 +50,18 @@ $dark:                            #444 !default;
 .menu-grid .row .col {
   border: 1px solid #fff;
   background: transparent;
-  line-height: 1.0rem; }
+  line-height: 1.0rem;
+  min-height: 4rem; }
   .menu-grid .row .col > img:first-child {
-    max-width: 50px;
-    max-height: 50px; }
+    margin-top: 1.5rem;
+    margin-bottom: .5rem;
+    max-width: 2rem;
+    max-height: 2rem; }
+  .menu-grid .row .col p {
+    font-size: .9rem; }
+
+.custom-key {
+  margin: 100px 0; }
 
 .validcode {
   padding: 6px 0 5px 16px;
@@ -66,7 +78,7 @@ $dark:                            #444 !default;
   background-image: -webkit-linear-gradient(left, #fff 60%, #0ddba9 40%); }
 
 .validcode-disable-bg {
-  background-image: -webkit-linear-gradient(left, #fff 60%, #000 40%); }
+  background-image: -webkit-linear-gradient(left, #fff 60%, #ececee 40%); }
 
 /*!
   Ionicons, v2.0.1
@@ -820,7 +832,8 @@ $dark:                            #444 !default;
 .ion-woman:before,
 .ion-wrench:before,
 .ion-xbox:before,
-.ion-ebike:before {
+.ion-ebike:before,
+.ion-ebike-close-outline:before {
   display: inline-block;
   font-family: "Ionicons";
   speak: none;
@@ -10621,7 +10634,8 @@ a.button {
 .ion-woman:before,
 .ion-wrench:before,
 .ion-xbox:before,
-.ion-ebike:before {
+.ion-ebike:before,
+.ion-ebike-close-outline:before {
   display: inline-block;
   font-family: "Ionicons";
   speak: none;
@@ -11278,6 +11292,9 @@ a.button {
 
 .ion-ebike:before {
   content: ""; }
+
+.ion-ebike-close-outline:before {
+  content: ""; }
 
 .ion-edit:before {
   content: ""; }
@@ -13016,6 +13033,11 @@ a.button {
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-direction: normal, normal; }
 
+.bottom-bar {
+  width: 100%;
+  position: absolute;
+  bottom: 0; }
+
 .test-bar {
   text-align: center;
   font-size: 1.0rem;
@@ -13100,13 +13122,14 @@ progress::-webkit-progress-value {
 
 .bar-footer textarea {
   resize: none;
-  height: 25px; }
+  height: 25px;
+  width: 100%; }
 
 /* fixes an ios bug bear */
 button.ion-android-send {
   padding-top: 2px; }
 
-/* add this to keep your footer buttons down 
+/* add this to keep your footer buttons down
 at the bottom as the textarea resizes */
 .footer-btn-wrap {
   position: relative;
@@ -13260,8 +13283,10 @@ a.autolinker {
   position: relative;
   display: inline-block;
   pointer-events: auto;
-  margin: -5px;
-  padding: 5px; }
+  margin-top: 10px;
+  margin-left: -10px;
+  padding: 5px;
+  z-index: 10; }
   .safe-toggle input:checked + .track {
     border-color: orange;
     background-color: orange; }
@@ -13281,17 +13306,18 @@ a.autolinker {
   transition-property: background-color, border;
   display: inline-block;
   box-sizing: border-box;
-  width: 80px;
-  height: 28px;
-  border: solid 2px #757575;
+  width: 70px;
+  height: 22px;
+  border: solid 1px #757575;
   border-radius: 20px;
   background-color: #757575;
   content: ' ';
   cursor: pointer;
-  pointer-events: none; }
+  pointer-events: none;
+  text-align: center; }
 
 .safe-toggle .icon {
-  font-size: 22px;
+  font-size: 20px;
   vertical-align: top;
   color: #fff; }
 
@@ -13307,22 +13333,22 @@ a.autolinker {
   transition: 0.2s ease-in-out;
   position: absolute;
   display: block;
-  width: 33.6px;
-  height: 33.6px;
-  border-radius: 24px;
+  width: 28px;
+  height: 28px;
+  border-radius: 20px;
   background: -webkit-radial-gradient(#eee 35%, #fff 40%, #eee 100%);
-  top: 2.2px;
-  left: 2.2px; }
+  top: 2px;
+  left: 2px; }
   .safe-toggle .handle:before {
     position: absolute;
     top: -4px;
-    left: -20px;
-    padding: 17px 31px;
+    left: -18px;
+    padding: 15px 27px;
     content: " "; }
 
 .safe-toggle input:checked + .track .handle {
-  -webkit-transform: translate3d(52px, 0, 0);
-  transform: translate3d(52px, 0, 0);
+  -webkit-transform: translate3d(48px, 0, 0);
+  transform: translate3d(48px, 0, 0);
   background-color: #fff; }
 
 .safe-toggle input:disabled + .track {
@@ -13332,6 +13358,11 @@ a.autolinker {
   opacity: 0.4;
   cursor: default !important;
   pointer-events: none; }
+
+.safe-toggle h6 {
+  text-align: center;
+  margin: 5px;
+  color: gray; }
 
 /* -------------------------------------
  * Image Button
@@ -13356,6 +13387,8 @@ a.autolinker {
     padding: 2% 12.5%;
     width: 100%;
     height: 100%; }
+    .bluetooth-connect .spinner svg g {
+      stroke-width: 1; }
   .bluetooth-connect i {
     position: relative;
     font-size: 16rem; }
@@ -13366,7 +13399,7 @@ a.autolinker {
  * digital display
  * ------------------------------------- */
 .digital-display {
-  text-align: right; }
+  text-align: center; }
   @media (width: 320px) {
     .digital-display h2 {
       font-size: 1.5rem; } }
@@ -13834,6 +13867,66 @@ a.autolinker {
 .home-power-cycle-100 {
   -webkit-box-shadow: 0 0 0rem;
   background: -webkit-linear-gradient(0deg, yellow 50%, transparent 50%), -webkit-linear-gradient(right, transparent 50%, #eee 50%), -webkit-linear-gradient(top, red, orange, yellow); }
+
+.button.button-left {
+  padding: 0;
+  color: #999;
+  font-weight: bold;
+  border: 0;
+  background: url(../img/park-gray.png) 0 0 no-repeat;
+  -webkit-background-size: 100% 100% !important;
+  box-shadow: none; }
+  .button.button-left.button-clear {
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+    color: transparent; }
+  .button.button-left.button-icon {
+    border-color: transparent;
+    background: none; }
+  .button.button-left.active, .button.button-left.activated {
+    color: #fff;
+    background-image: url(../img/park-light.png); }
+
+.button.button-right {
+  padding: 0;
+  color: #999;
+  font-weight: bold;
+  border: 0;
+  background: url(../img/push-gray.png) 0 0 no-repeat;
+  -webkit-background-size: 100% 100% !important;
+  box-shadow: none; }
+  .button.button-right.button-clear {
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+    color: transparent; }
+  .button.button-right.button-icon {
+    border-color: transparent;
+    background: none; }
+  .button.button-right.active, .button.button-right.activated {
+    color: #fff;
+    background-image: url(../img/push-light.png); }
+
+.authorize-bg h4 {
+  margin: 10%;
+  text-align: center; }
+
+.authorize-bg .box {
+  display: block;
+  width: 50%;
+  margin: 105% auto 5% auto;
+  border: 1.5px solid #00ccff;
+  color: #00ccff; }
+
+.authorize-bg button {
+  display: block;
+  margin: 0 auto;
+  width: 40%;
+  background-color: #00ccff;
+  color: #fff;
+  border-radius: 2rem;
+  font-size: 2rem; }
 
 .button-starter {
   position: absolute;

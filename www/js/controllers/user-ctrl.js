@@ -74,7 +74,7 @@ controllers
         template: '<i class="icon ion-ios-close-outline padding"></i>',
         duration: 2000
       }
-      console.trace(JSON.stringify(arguments));
+      console.log(JSON.stringify(arguments));
       option.template += $filter('loginErrorPrompt')(res.data && res.data.error.message)
       $ionicLoading.show(option)
     })

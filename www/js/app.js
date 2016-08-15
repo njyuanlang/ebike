@@ -189,20 +189,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
     }
   });
 
-  $rootScope.$watch('currentBike.antiTheft', function (newValue, oldValue) {
-    if(newValue !== oldValue) {
-      $rootScope.device.antiTheft(newValue)
-      .then(function (result) {
-        console.log('Success Set AntiTheft:'+newValue);
-      }, function (reason) {
-        $ionicLoading.show({
-          template: '<i class="icon ion-ios-information-outline padding"></i>'+reason,
-          duration: 2000
-        });
-      });
-    }
-  });
-
   $rootScope.isAndroid = ionic.Platform.isAndroid()
 
   $ionicPlatform.on('pause', function () {
@@ -492,6 +478,15 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       views: {
         'tab-menu': {
           templateUrl: "templates/setting.html"
+        }
+      }
+    })
+    // custom key
+    .state('tab.custom', {
+      url: "/custom",
+      views : {
+        'tab-menu': {
+          templateUrl: "templates/custom.html"
         }
       }
     })

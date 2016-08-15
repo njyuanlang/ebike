@@ -1,11 +1,11 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
 <!--
-2016-1-13: Created with FontForge (http://fontforge.org)
+2016-6-13: Created with FontForge (http://fontforge.org)
 -->
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
 <metadata>
-Created by FontForge 20150913 at Wed Jan 13 13:17:16 2016
+Created by FontForge 20150913 at Mon Jun 13 13:59:17 2016
  By GuanBo
 Copyright (c) 2016, GuanBo
 </metadata>
@@ -557,6 +557,9 @@ c6 -7 -2 -19 -8 -23c-4 -2 -12 -24 -16 -29c-2 -4 -12 -6 -16 -7c-3 0 -7 -9 -9 -11c
 c-7 16 1 30 10 43c9 14 -7 20 -10 32c-1 6 -7 6 -6 12c1 7 -4 5 -9 9c-12 8 -1 20 -7 26c-43 -70 -36 -162 16 -224c1 -1 0 -1 1 -2h1c3 -4 6 -8 9 -11s7 -6 10 -9z" />
     <glyph glyph-name="ion-easel" unicode="&#xf3c2;" 
 d="M48 112v192h352v-192h-352zM432 352c9 0 16 -7 16 -16v-256c0 -9 -7 -16 -16 -16h-416c-9 0 -16 7 -16 16v256c0 9 7 16 16 16h416zM416 96v224h-384v-224h384zM48 -32l29 80h31l-28 -80h-32zM239 416l17 -48h-64l17 48h30zM340 48h31l29 -80h-32zM208 0v48h32v-48h-32z
+" />
+    <glyph glyph-name="ion-ebike-close-outline" unicode="&#xf138;" horiz-adv-x="416" 
+d="M355 339c81 -81 81 -213 0 -294s-213 -81 -294 0s-81 213 0 294s213 81 294 0zM352 48c79 79 79 209 0 288c-80 80 -212 79 -291 -3c-75 -78 -75 -203 0 -281c79 -82 211 -84 291 -4zM248 237l5 -5l-40 -40l40 -40l-5 -5l-40 39l-40 -39l-5 6l39 39l-39 39l5 6l40 -39z
 " />
     <glyph glyph-name="ion-ebike" unicode="&#xf13b;" horiz-adv-x="476" 
 d="M296 398c3 3 5 3 16 -1c26 -9 45 -31 57 -68c4 -12 4 -12 8 -11c38 10 84 -19 96 -61c13 -45 -19 -99 -63 -105c-10 -1 -9 0 -6 -24c12 -108 -27 -142 -165 -142c-137 0 -177 33 -167 137c3 29 3 28 -6 29c-42 6 -73 55 -64 100c17 82 138 90 163 11c3 -9 4 -11 6 -8
