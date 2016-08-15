@@ -3,13 +3,18 @@
   <ion-content class="padding">
 
     <div class="list">
-      <div class="item">
-        {{'BIKE_NAME'|translate}}： {{currentBike.name || 'UNNAMED'|translate}}
-      </div>
-      <div class="item">
-        {{'BIKE_BRAND'|translate}}：
-        {{currentBike.brand.name}} | {{currentBike.model}}
-      </div>
+      <label class="item item-input">
+        <span class="input-label">{{'BIKE_NAME'|translate}}</span>
+        <input type="text" ng-model="currentBike.name">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">{{'BIKE_BRAND'|translate}}</span>
+        <input type="text" ng-model="currentBike.brand.name">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">{{'BIKE_BRAND'|translate}}</span>
+        <input type="text" ng-model="currentBike.model">
+      </label>
     </div>
 
     <!-- <div class="list">
@@ -43,7 +48,7 @@
     </div>
 
     <a ui-sref="brands()" class="button button-block button-large button-positive" ng-if="!registering">
-      {{'CHANGE_BIKE'|translate}}
+      {{'COMPLETE'|translate}}
     </a>
 
   </ion-content>

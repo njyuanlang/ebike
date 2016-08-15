@@ -133,5 +133,6 @@
   "RESCAN": "Rescan",
   "SMART_PARK": "Smart Park",
   "SMART_PUSH": "Smart Push",
-  "CUSTOM_KEY": "Custom Key"
+  "CUSTOM_KEY": "Custom Key",
+  "COMPLETE": "Complete"
 }
