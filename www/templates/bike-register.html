@@ -3,23 +3,19 @@
   <ion-content class="padding" scroll="true">
 
     <div class="list card">
-      <div class="item">
-        {{'BIKE_NAME'|translate}}： {{registerBike.name || 'UNNAMED'|translate}}
-      </div>
-      <div class="item">
-        {{'BIKE_BRAND'|translate}}：
-        {{registerBike.brand.name}} | {{registerBike.model}}
-      </div>
+      <label class="item item-input">
+        <span class="input-label">{{'BIKE_NAME'|translate}}</span>
+        <input type="text" ng-model="registerBike.name">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">{{'BIKE_BRAND'|translate}}</span>
+        <input type="text" ng-model="registerBike.brand.name">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">{{'BIKE_BRAND'|translate}}</span>
+        <input type="text" ng-model="registerBike.model">
+      </label>
     </div>
-
-    <!-- <div class="list card">
-      <ion-toggle ng-model="registerBike.safe" ng-checked="registerBike.safe">
-       {{'SAFE_MODE'|translate}}
-      </ion-toggle>
-      <ion-toggle ng-model="registerBike.antiTheft" ng-checked="registerBike.antiTheft">
-       {{'ANTITHEFT_MODE'|translate}}
-      </ion-toggle>
-    </div> -->
 
     <div class="list card">
       <div class="item item-icon-right" ui-sref='register-voltage()'>

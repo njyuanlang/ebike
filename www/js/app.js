@@ -126,7 +126,16 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
         user.password = '123456';
         User.login(user).$promise.then(function () {
           $rootScope.$broadcast('user.DidLogin');
-          $state.go('tab.home');
+          $rootScope.registerBike = {
+            brand: {name: 'Unknown'},
+            model: 'Unknown',
+            workmode:0,
+            wheeldiameter: '16',
+            voltage: '18~24',
+            current: '12',
+            "name": 'UNNAMED'
+          }
+          $state.go('bike-register', {bikeId: 'create'})
         }, next);
       }
       tryLogin(entity, function (err) {
