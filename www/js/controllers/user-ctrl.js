@@ -8,9 +8,9 @@ controllers
       brand: {name: '宝旭'},
       model:'演示型号',
       workmode:0,
-      wheeldiameter: 12,
-      voltage: 48,
-      current: 20,
+      wheeldiameter: 16,
+      voltage: 24,
+      current: 12,
       "name": "宝旭牌电动车"
     }
     $state.go('tab.home');
