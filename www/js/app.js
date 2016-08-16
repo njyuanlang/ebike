@@ -19,7 +19,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 .run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen,
   $cordovaStatusbar, $ionicHistory, $cordovaNetwork, User, RemoteStorage, $http,
   $ionicPopup, MyPreferences, BLEDevice, $ionicLoading, $cordovaGlobalization,
-  $translate, $cordovaDevice) {
+  $translate) {
 
   function setLanguage() {
     if(typeof navigator.globalization !== "undefined") {
@@ -27,6 +27,9 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
         $rootScope.language = language.value.split('-')[0];
         $translate.use($rootScope.language);
       });
+    } else {
+      // For Debug on browser
+      $translate.use('en');
     }
   }
   $ionicPlatform.ready(function() {
@@ -98,10 +101,12 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
     }
 
     if(User.isAuthenticated()) {
+      //For Debug on browser
+      // $rootScope.online = false;
       $rootScope.$broadcast('user.DidLogin');
     } else {
       var entity = {
-        username: $cordovaDevice.getUUID(),
+        username: navigator.device&&device.uuid||'testuser',
         password: '123456',
         realm: 'globalclient'
       }

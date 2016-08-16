@@ -26,6 +26,10 @@ controllers
     });
   };
 
+  $scope.save = function () {
+    Bike.upsert($rootScope.currentBike);
+    MyPreferences.save();
+  }
 })
 
 .controller('BrandsCtrl', function($scope, $state, Brand) {

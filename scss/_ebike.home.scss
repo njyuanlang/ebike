@@ -17,6 +17,15 @@
   }
 }
 
+.image-button-sm a {
+  > img {
+    width: 70%;
+  }
+  h6 {
+    margin-top: 0;
+  }
+}
+
 /* -------------------------------------
  * Bluetooth connecting
  * ------------------------------------- */
@@ -181,6 +190,10 @@ $percent20: round($loops/5);
 $button-gray-text:      #999 !default;
 
 .button {
+
+  min-height: 36px;
+  font-size: 12px;
+  line-height: 33px;
 
   &.button-left {
     @include button-clear($button-default-border);
