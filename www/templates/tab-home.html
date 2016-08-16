@@ -32,7 +32,7 @@
              <i class="icon ion-alert-circled"></i>
              <div class="handle"></div>
            </div>
-           <h6>{{'SAFE_MODE'|translate}}</h6>
+           <h6><small>{{'SAFE_MODE'|translate}}</small></h6>
         </label>
       </div>
     </div>
@@ -55,11 +55,11 @@
     </div>
     <div class="row text-center">
       <div class="col digital-display">
-        <h2 class="{{device.status}}">{{device.realtime.mileage||0}}<span>km</span><small> {{'RANGE_OF_KM'|translate}}</small></h2>
+        <h2 class="{{device.status}}"><small>{{'REMAIN'|translate}}</small> {{device.realtime.mileage||0}}<span>km</span></h2>
       </div>
     </div>
     <div class="row text-center">
-      <div class="col col-60 col-offset-20">
+      <div class="col col-50 col-offset-25">
         <div class="button-bar">
           <a class="button button-left" ng-class="{'active':device.bike.workmode===30}"
            ng-click=device.setWorkmode(30) pushvibrate>
@@ -73,25 +73,25 @@
       </div>
     </div>
     <div class="row text-center">
-      <div class="col col-25 image-button col-offset-10">
+      <div class="col col-30 image-button image-button-sm col-offset-5">
         <a class="button button-clear button-light" ng-class="{'disabled': device.bike.workmode == 9}"
          ng-click="device.setWorkmode(1)" pushvibrate>
           <img src="img/powersave-{{device.bike.workmode%8 === 1?'light':'gray'}}.png">
-          {{'SAVE_POWER'|translate}}
+          <h6>{{'SAVE_POWER'|translate}}</h6>
         </a>
       </div>
-      <div class="col col-25 image-button">
+      <div class="col col-30 image-button image-button-sm">
         <a class="button button-clear button-light" ng-class="{'disabled': device.bike.workmode == 9}"
          ng-click="device.setWorkmode(2)" pushvibrate>
           <img src="img/climb-{{device.bike.workmode == 2?'light':'gray'}}.png">
-          {{'CLIMB'|translate}}
+          <h6>{{'CLIMB'|translate}}</h6>
         </a>
       </div>
-      <div class="col col-25 image-button">
+      <div class="col col-30 image-button image-button-sm">
         <a class="button button-clear button-light" ng-class="{'disabled': device.bike.workmode == 9}"
          ng-click="device.setWorkmode(15)" pushvibrate>
           <img src="img/speed-{{device.bike.workmode == 15?'light':'gray'}}.png">
-          {{'SPEED'|translate}}
+          <h6>{{'SPEED'|translate}}</h6>
         </a>
       </div>
     </div>

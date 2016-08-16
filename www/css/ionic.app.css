@@ -13373,6 +13373,12 @@ a.autolinker {
   .image-button a > img {
     width: 100%; }
 
+.image-button-sm a > img {
+  width: 70%; }
+
+.image-button-sm a h6 {
+  margin-top: 0; }
+
 /* -------------------------------------
  * Bluetooth connecting
  * ------------------------------------- */
@@ -13868,45 +13874,48 @@ a.autolinker {
   -webkit-box-shadow: 0 0 0rem;
   background: -webkit-linear-gradient(0deg, yellow 50%, transparent 50%), -webkit-linear-gradient(right, transparent 50%, #eee 50%), -webkit-linear-gradient(top, red, orange, yellow); }
 
-.button.button-left {
-  padding: 0;
-  color: #999;
-  font-weight: bold;
-  border: 0;
-  background: url(../img/park-gray.png) 0 0 no-repeat;
-  -webkit-background-size: 100% 100% !important;
-  box-shadow: none; }
-  .button.button-left.button-clear {
-    border-color: transparent;
-    background: none;
-    box-shadow: none;
-    color: transparent; }
-  .button.button-left.button-icon {
-    border-color: transparent;
-    background: none; }
-  .button.button-left.active, .button.button-left.activated {
-    color: #fff;
-    background-image: url(../img/park-light.png); }
-
-.button.button-right {
-  padding: 0;
-  color: #999;
-  font-weight: bold;
-  border: 0;
-  background: url(../img/push-gray.png) 0 0 no-repeat;
-  -webkit-background-size: 100% 100% !important;
-  box-shadow: none; }
-  .button.button-right.button-clear {
-    border-color: transparent;
-    background: none;
-    box-shadow: none;
-    color: transparent; }
-  .button.button-right.button-icon {
-    border-color: transparent;
-    background: none; }
-  .button.button-right.active, .button.button-right.activated {
-    color: #fff;
-    background-image: url(../img/push-light.png); }
+.button {
+  min-height: 36px;
+  font-size: 12px;
+  line-height: 33px; }
+  .button.button-left {
+    padding: 0;
+    color: #999;
+    font-weight: bold;
+    border: 0;
+    background: url(../img/park-gray.png) 0 0 no-repeat;
+    -webkit-background-size: 100% 100% !important;
+    box-shadow: none; }
+    .button.button-left.button-clear {
+      border-color: transparent;
+      background: none;
+      box-shadow: none;
+      color: transparent; }
+    .button.button-left.button-icon {
+      border-color: transparent;
+      background: none; }
+    .button.button-left.active, .button.button-left.activated {
+      color: #fff;
+      background-image: url(../img/park-light.png); }
+  .button.button-right {
+    padding: 0;
+    color: #999;
+    font-weight: bold;
+    border: 0;
+    background: url(../img/push-gray.png) 0 0 no-repeat;
+    -webkit-background-size: 100% 100% !important;
+    box-shadow: none; }
+    .button.button-right.button-clear {
+      border-color: transparent;
+      background: none;
+      box-shadow: none;
+      color: transparent; }
+    .button.button-right.button-icon {
+      border-color: transparent;
+      background: none; }
+    .button.button-right.active, .button.button-right.activated {
+      color: #fff;
+      background-image: url(../img/push-light.png); }
 
 .authorize-bg h4 {
   margin: 10%;
