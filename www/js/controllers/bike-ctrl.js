@@ -281,8 +281,8 @@ controllers
   }
 
   $scope.goHome = function () {
-    // $scope.modal.show();
-    $state.go('tab.home');
+    $scope.modal.show();
+    // $state.go('tab.home');
   }
 
   $scope.$on("$ionicView.beforeLeave", function () {

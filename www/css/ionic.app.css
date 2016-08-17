@@ -13942,7 +13942,7 @@ a.autolinker {
 
 .authorize-bg .box {
   display: block;
-  width: 50%;
+  width: 66%;
   margin: 105% auto 5% auto;
   border: 1.5px solid #00ccff;
   color: #00ccff; }
@@ -13954,7 +13954,7 @@ a.autolinker {
   background-color: #00ccff;
   color: #fff;
   border-radius: 2rem;
-  font-size: 2rem; }
+  font-size: 1.8rem; }
 
 .button-starter {
   position: absolute;
