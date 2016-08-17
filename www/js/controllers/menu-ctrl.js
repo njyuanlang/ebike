@@ -12,11 +12,11 @@ controllers
 
 .controller('CustomCtrl', function ($scope, MyPreferences, $ionicPopup) {
   $scope.workmodes = [
-    {title:"智能泊车", key: 0x4},
-    {title:"智能推行", key: 0x5},
-    {title:"省电", key: 0x1},
-    {title:"爬坡", key: 0x2},
-    {title:"超速", key: 0x3}
+    {title:"SMART_PARK", key: 0x4},
+    {title:"SMART_PUSH", key: 0x5},
+    {title:"SAVE_POWER", key: 0x1},
+    {title:"CLIMB", key: 0x2},
+    {title:"SPEED", key: 0x3}
   ];
 
   $scope.setKey = function (index) {
