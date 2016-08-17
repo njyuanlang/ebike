@@ -135,5 +135,8 @@
   "SMART_PUSH": "Pushing",
   "CUSTOM_KEY": "Remote",
   "COMPLETE": "Complete",
-  "BIKE_MODEL": "Bike Model"
+  "BIKE_MODEL": "Bike Model",
+  "AUTHORIZED_TIPS": "Keep pressing the two buttons to complete the identification of the owner",
+  "3_PROMPT_RINGS": "Bike rings three times",
+  "QUIT": "Quit"
 }

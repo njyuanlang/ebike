@@ -8,7 +8,7 @@ $authorize-color:            #00ccff !default;
 
   .box {
     display: block;
-    width: 50%;
+    width: 66%;
     margin: 105% auto 5% auto;
     border: 1.5px solid $authorize-color;
     color: $authorize-color;
@@ -21,6 +21,6 @@ $authorize-color:            #00ccff !default;
     background-color: $authorize-color;
     color: #fff;
     border-radius: 2rem;
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 }
