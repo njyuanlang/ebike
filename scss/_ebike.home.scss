@@ -191,10 +191,6 @@ $button-gray-text:      #999 !default;
 
 .button {
 
-  min-height: 36px;
-  font-size: 12px;
-  line-height: 33px;
-
   &.button-left {
     @include button-clear($button-default-border);
     padding: 0;
@@ -227,5 +223,13 @@ $button-gray-text:      #999 !default;
       color: $light;
       background-image: url(../img/push-light.png);
     }
+  }
+}
+
+.button {
+  &.button-left, &.button-right {
+    min-height: 36px;
+    font-size: 12px;
+    line-height: 33px;    
   }
 }

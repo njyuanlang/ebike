@@ -27,9 +27,9 @@
   "BIKE_BRAND": "Bike Brand",
   "SAFE_MODE": "Safe mode",
   "ANTITHEFT_MODE": "AntiTheft Mode",
-  "BATTERY_VOLTAGE": "Battery Voltage",
-  "BATTERY_CURRENT": "Battery Current",
-  "WHEEL_DIAMETER": "Wheel Diameter",
+  "BATTERY_VOLTAGE": "Voltage",
+  "BATTERY_CURRENT": "Capacity",
+  "WHEEL_DIAMETER": "Diameter",
   "INCH": "inch",
   "COMPLETE": "Complete",
   "CHANGE_BIKE": "Change Bike",
@@ -134,5 +134,6 @@
   "SMART_PARK": "Parking",
   "SMART_PUSH": "Pushing",
   "CUSTOM_KEY": "Remote",
-  "COMPLETE": "Complete"
+  "COMPLETE": "Complete",
+  "BIKE_MODEL": "Bike Model"
 }
