@@ -127,7 +127,7 @@
   "STATE_REPAIRING": "Repairing...",
   "STATE_REPAIRED": "Repaired",
   "STATE_BROKEN": "Broken, contact service",
-  "BUTTON_VIBRATE": "Button Vibrate",
+  "BUTTON_VIBRATE": "Vibrating alert",
   "PERIPHERAL_SCANING": "Device Scaning",
   "PERIPHERAL_NOT_FOUND": "Device not found",
   "RESCAN": "Search again",
