@@ -117,7 +117,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 
     if(User.isAuthenticated()) {
       //For Debug on browser
-      $rootScope.online = false;
+      // $rootScope.online = false;
       $rootScope.$broadcast('user.DidLogin');
     } else {
       var entity = {
