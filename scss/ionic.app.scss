@@ -16,7 +16,7 @@ $dark:                            #444 !default;
 */
 
 // The path for our ionicons font files, relative to the built CSS in www/css
-$ionicons-font-path: "../lib/ionic/release/fonts" !default;
+$ionicons-font-path: "../fonts" !default;
 
 // Colors
 // -------------------------------
@@ -149,7 +149,7 @@ $user-bg:                         '../img/user-bg.png';
 .validcode {
   padding: 6px 0 5px 16px;
   height:100%;
-  
+
   > input {
     width: 50%;
     display: inline!important;
@@ -163,12 +163,12 @@ $user-bg:                         '../img/user-bg.png';
 }
 
 .validcode-bg {
-  background-image: 
+  background-image:
   -webkit-linear-gradient(left,$light 60%, $energized 40%);
 }
 
 .validcode-disable-bg {
-  background-image: 
+  background-image:
   -webkit-linear-gradient(left,$light 60%, $dark 40%);
 }
 
@@ -255,7 +255,7 @@ $loops2: round(100 / $step2);
   width: 100%;
   position: absolute;
   bottom: 0;
-  
+
   .row {
     position: relative;
     > h1 {
@@ -373,7 +373,7 @@ $backColor:                           #2f3439;
   	padding-top:15%!important;
   }
 }
-  
+
 /* -------------------------------------
  * Mixin for progress-% class
  * ------------------------------------- */
@@ -400,7 +400,7 @@ $percent20: round($loops/5);
     }
     @else {
       $nextdeg: 360deg - $increment * $i;
-      background-image: 
+      background-image:
       -webkit-linear-gradient($nextdeg, $barColor 50%, transparent 50%),
       -webkit-linear-gradient(180deg, $barColor 50%, $backColor 50%);
     }
@@ -408,7 +408,7 @@ $percent20: round($loops/5);
 }
 
 
-// Cruise 
+// Cruise
 // -------------------------------
 .cruise {
   text-align: center;
@@ -446,13 +446,13 @@ $speed-gauge-height: 12rem;
     border:0 solid transparent;
     text-align: center;
     bottom: -2rem;
-    
+
     > h1 {
       margin-top:15%;
       font-size: 5rem;
     }
   }
-  
+
   .speed-gauge-pointer {
     -webkit-border-radius: 100% 0 0 100%;
     position: absolute;
@@ -460,16 +460,16 @@ $speed-gauge-height: 12rem;
     height: 1.2em;
     background: red;
     @media (height: 320px){
-        bottom: 1.5rem;    
+        bottom: 1.5rem;
     }
     @media (height: 360px){
-      bottom: 0.2rem;    
+      bottom: 0.2rem;
     }
     @media (height: 375px){
-      bottom: -0.4rem;    
+      bottom: -0.4rem;
     }
     @media (height: 414px){
-      bottom: -1.6rem;    
+      bottom: -1.6rem;
     }
     -webkit-transform-origin: bottom right;
     -webkit-transition-duration: 400ms;
@@ -509,11 +509,11 @@ $angularSpeed: 180deg/$maxSpeed;
 // Item for chat
 .chat {
 
-  .item {    
+  .item {
     .item-content {
       background-color: transparent !important;
     }
-    
+
     h2 {
       font-size: 1.2rem;
     }
@@ -526,7 +526,7 @@ $angularSpeed: 180deg/$maxSpeed;
   .item-note {
     font-size: 1.0rem;
   }
-  
+
 }
 
 // merchant map
@@ -559,7 +559,7 @@ $angularSpeed: 180deg/$maxSpeed;
   }
 }
 
-// Item 
+// Item
 .item {
   margin: 5px;
   &.user-bg {

@@ -1,7 +1,7 @@
 controllers
 
 .controller('BikeCtrl', function($scope, $state, Bike, $rootScope, $ionicLoading, MyPreferences) {
-  
+
   $rootScope.registering = $state.params.bikeId && $state.params.bikeId === 'create';
 
   $scope.register = function () {
@@ -9,7 +9,7 @@ controllers
       $rootScope.registering = false;
       $rootScope.currentBike = result;
       MyPreferences.save();
-      $state.go('tab.home');   
+      $state.go('tab.home');
     }, function (reason) {
       console.log(JSON.stringify(reason));
       $ionicLoading.show({
@@ -26,11 +26,11 @@ controllers
   var pages = 0;
   var isMoreData = true;
   var loading = false;
-  
+
   $scope.selectEntity = function (item) {
     $state.go('models', {brandId: item.id})
   }
-  
+
   $scope.loadMoreData = function () {
     if(loading) return;
     loading = true;
@@ -46,11 +46,11 @@ controllers
       $scope.$broadcast('scroll.infiniteScrollComplete');
     });
   }
-  
+
   $scope.$on('$ionicView.enter', function() {
     $scope.loadMoreData();
   });
-  
+
   $scope.moreDataCanBeLoaded = function () {
     return isMoreData;
   }
@@ -63,21 +63,21 @@ controllers
 
   $scope.selectEntity = function (item) {
     $rootScope.registerBike = {
-      brand: brand, 
-      model:item, 
+      brand: brand,
+      model:item,
       workmode:0,
-      wheeldiameter: 16,
-      voltage: 48,
-      current: 20,
+      wheeldiameter: '16',
+      voltage: '18~24',
+      current: '12',
       "name": brand.name+"牌电动车"
     }
-    
+
     $state.go('bike-register', {bikeId: 'create'})
   }
 })
 
 .controller('WheelDiametersCtrl', function($scope, $state, Bike, MyPreferences) {
-  $scope.entities = [10, 12, 14, 16, 18, 20, 22, 24, 26]
+  $scope.entities = ['2~4', '4~6', '6~8', '10', '12', '14', '16', '18', '20', '22', '24', '26']
 
   $scope.selectEntity = function (item) {
     if($scope.registering) {
@@ -93,7 +93,7 @@ controllers
 })
 
 .controller('VoltagesCtrl', function($scope, $state, Bike, MyPreferences) {
-  $scope.entities = [36, 48, 60, 72]
+  $scope.entities = ['18~24', '36', '48', '60', '72']
 
   $scope.selectEntity = function (item) {
     if($scope.registering) {
@@ -109,7 +109,7 @@ controllers
 })
 
 .controller('CurrentsCtrl', function($scope, $state, Bike, MyPreferences) {
-  $scope.entities = [12, 20, 30, 36]
+  $scope.entities = ['8~10', '12', '20', '30', '36']
 
   $scope.selectEntity = function (item) {
     if($scope.registering) {
@@ -125,7 +125,7 @@ controllers
 })
 
 .controller('BikesAddCtrl', function($scope, $state, $timeout, $ionicLoading, Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService, BLEDevice, MyPreferences) {
-  
+
   var devices = [];
 
   function scanSuccessCb(result) {
@@ -142,11 +142,11 @@ controllers
       }
     }
   }
-  
+
   function scanErrorCb(reason) {
     $scope.$broadcast('scroll.refreshComplete')
   }
-  
+
   function stopScan(isForce) {
     if(isForce || devices.length > 0) {
       $scope.scanTimer = null;
@@ -159,7 +159,7 @@ controllers
 
   function doScan() {
     if(!$scope.online) return;
-    
+
     $scope.device.disconnect()
     .then(function () {
       if($window.ble) {
@@ -173,7 +173,7 @@ controllers
         }, function (error) {
           $rootScope.$broadcast('bluetooth.disabled');
           $timeout(scanErrorCb, 2000);
-        })      
+        })
       } else {
         $timeout(scanErrorCb, 2000);
       }
@@ -218,14 +218,14 @@ controllers
         duration: 5000
       })
     })
-    
+
     $ionicLoading.show({
       // template:'<i class="icon ion-loading-c ion-loading padding"></i>请稍后，正在连接'+bike.name+"...",
       template:'<ion-spinner></ion-spinner>请稍后，正在连接'+bike.name+"...",
       duration: 30000
     })
   }
-  
+
   $scope.selectEntity = function (item) {
     $scope.bike = angular.copy($scope.currentBike);
     $scope.bike.localId = item.id
@@ -256,21 +256,21 @@ controllers
         }
       ]
     })
-    .then(tryConnect);     
+    .then(tryConnect);
   }
-    
+
   $scope.goHome = function () {
     $state.go('tab.home');
   }
-  
+
   $scope.$on("$ionicView.beforeLeave", function () {
     stopScan(true);
     $scope.device.autoconnect()
   })
-  
+
   $scope.$on("$ionicView.enter", function () {
     $scope.entities = [];
     if($scope.online) PtrService.triggerPtr('mainScroll');
   })
-    
+
 })
