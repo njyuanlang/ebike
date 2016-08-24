@@ -13932,9 +13932,9 @@ a.autolinker {
     background-image: url(../img/push-light.png); }
 
 .button.button-left, .button.button-right {
-  min-height: 36px;
-  font-size: 12px;
-  line-height: 33px; }
+  min-height: 44px;
+  font-size: 16px;
+  line-height: 40px; }
 
 .authorize-bg h4 {
   margin: 10%;
