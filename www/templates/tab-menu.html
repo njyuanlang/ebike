@@ -1,7 +1,7 @@
 <ion-view title="{{'ME'|translate}}" hide-back-button="true" cache-view="false" show-tabs>
   <ion-content has-header="true"  scroll="false" padding="false">
-    <!-- <a class="item item-avatar item-icon-right user-bg" href="#/tab/account">
-      <img src="{{avatar || 'img/user-icon.png'}}">
+    <a class="item item-avatar item-icon-right user-bg">
+      <!-- <img src="{{avatar || 'img/user-icon.png'}}">
       <h2>{{currentUser.name || currentUser.username}}</h2>
       <small>
         {{currentUser.created | date : 'yyyy-MM-dd'}} {{'REGISTER'|translate}}
@@ -18,24 +18,16 @@
           <img src="img/bluetooth-icon.png">
           <p>{{'BIND_BIKE'|translate}}</p>
         </a>
-        <!-- <a class="col button" ui-sref="tab.messages()">
+        <a class="col button" ui-sref="tab.messages()">
           <img src="img/message-icon.png">
           <p>{{'REMIND_MESSAGE'|translate}}</p>
-        </a> -->
-        <a class="col button" ui-sref="tab.custom()">
-          <img src="img/custom-icon.png">
-          <p>{{'CUSTOM_KEY'|translate}}</p>
         </a>
       </div>
       <div class="row">
-        <a class="col button" ui-sref="tab.setting()">
-          <img src="img/setting-icon.png">
-          <p>{{'SETTING'|translate}}</p>
-        </a>
-        <!-- <a class="col button" href="#/tab/services">
+        <a class="col button" href="#/tab/services">
           <img src="img/list-icon.png">
           <p>{{'SERVICE_LICENSE'|translate}}</p>
-        </a> -->
+        </a>
         <a class="col button" ui-sref="intro()">
           <img src="img/help-icon.png">
           <p>{{'HELP_MANUAL'|translate}}</p>
@@ -45,14 +37,22 @@
           <p>{{'ABOUT_US'|translate}}</p>
         </a>
       </div>
-      <!-- <div class="row">
-        <a class="col button" href="#/cruise">
+      <div class="row">
+        <!-- <a class="col button" href="#/cruise">
           <img src="img/dashboard-icon.png">
           <p>横向仪表</p>
+        </a> -->
+        <a class="col button" ui-sref="tab.setting()">
+          <img src="img/setting-icon.png">
+          <p>{{'SETTING'|translate}}</p>
+        </a>
+        <a class="col button" ui-sref="tab.custom()">
+          <img src="img/custom-icon.png">
+          <p>{{'CUSTOM_KEY'|translate}}</p>
         </a>
         <a class="col button">
         </a>
-      </div> -->
+      </div>
 
     </div>
   </ion-content>
