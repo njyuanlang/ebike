@@ -19,7 +19,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 .run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen,
   $cordovaStatusbar, $ionicHistory, $cordovaNetwork, User, RemoteStorage, $http,
   $ionicPopup, MyPreferences, BLEDevice, $ionicLoading, $cordovaGlobalization,
-  $translate) {
+  $translate, AnonymousUser) {
 
   function setLanguage() {
     if(typeof navigator.globalization !== "undefined") {
@@ -105,35 +105,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       // $rootScope.online = false;
       $rootScope.$broadcast('user.DidLogin');
     } else {
-      var entity = {
-        username: navigator.device&&device.uuid||'testuser',
-        password: '123456',
-        realm: 'globalclient'
-      }
-      entity.email = entity.username+'@ebike.com';
-      function tryLogin(user, next) {
-        console.log(arguments);
-        user.password = '123456';
-        User.login(user).$promise.then(function () {
-          $rootScope.$broadcast('user.DidLogin');
-          $rootScope.registerBike = {
-            brand: {name: 'Unknown'},
-            model: 'Unknown',
-            workmode:0,
-            wheeldiameter: '16',
-            voltage: '18~24',
-            current: '12',
-            "name": 'UNNAMED'
-          }
-          $state.go('bike-register', {bikeId: 'create'})
-        }, next);
-      }
-      tryLogin(entity, function (err) {
-        if(err) {
-          console.log(err);
-          User.create(entity).$promise.then(tryLogin);
-        }
-      });
+      AnonymousUser.login();
     }
   });
 
@@ -158,6 +130,10 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
           console.log(JSON.stringify(arguments));
         })
     }
+  })
+
+  $rootScope.$on('user.DidLogout', function (event, args) {
+    AnonymousUser.login();
   })
 
   $rootScope.$watch('currentBike', function (newValue, oldValue) {
@@ -513,12 +489,14 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 })
 
 .config(function ($httpProvider) {
-  $httpProvider.interceptors.push(function($q, $location, LoopBackAuth) {
+  $httpProvider.interceptors.push(function($q, $location, LoopBackAuth, $rootScope) {
     return {
       responseError: function(rejection) {
         if (rejection.status == 401) {
           LoopBackAuth.clearUser();
           LoopBackAuth.clearStorage();
+          $rootScope.$broadcast('user.DidLogout')
+          // AnonymousUser.login();
           $location.path('/tab/home')
         }
         return $q.reject(rejection);

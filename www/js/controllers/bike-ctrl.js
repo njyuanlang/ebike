@@ -29,6 +29,7 @@ controllers
   $scope.save = function () {
     Bike.upsert($rootScope.currentBike);
     MyPreferences.save();
+    $scope.$ionicGoBack();
   }
 })
 

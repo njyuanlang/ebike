@@ -885,3 +885,40 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
   }
 }])
+
+.service('AnonymousUser', ['User', '$rootScope', '$state', function (User, $rootScope, $state) {
+
+  this.login = function () {
+    var entity = {
+      username: navigator.device&&device.uuid||'testuser',
+      password: '123456',
+      realm: 'globalclient'
+    }
+    entity.email = entity.username+'@ebike.com';
+    function tryLogin(user, next) {
+      user.password = '123456';
+      User.login(user).$promise.then(function () {
+        $rootScope.$broadcast('user.DidLogin');
+      }, next);
+    }
+    tryLogin(entity, function (err) {
+      if(err) {
+        console.log(err);
+        User.create(entity).$promise.then(function (user) {
+          tryLogin(user, function (err) {
+            $rootScope.registerBike = {
+              brand: {name: 'Unknown'},
+              model: 'Unknown',
+              workmode:0,
+              wheeldiameter: '16',
+              voltage: '18~24',
+              current: '12',
+              "name": 'UNNAMED'
+            }
+            $state.go('bike-register', {bikeId: 'create'})
+          });
+        });
+      }
+    });
+  }
+}])
