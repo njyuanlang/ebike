@@ -1,0 +1,11 @@
+android {
+    defaultConfig {
+        manifestPlaceholders = [AMAP_API_KEY_VALUE : "05509f4cba48c6e7955545ca468363c1",
+        UMENG_APPKEY_VALUE: "5677b62567e58e556a002108", UMENG_CHANNEL_VALUE: ""]
+    }
+    buildTypes {
+        release {
+            manifestPlaceholders = [AMAP_API_KEY_VALUE : "40497085a34dc8067bbaf630388a61db"]
+        }
+    }
+}
