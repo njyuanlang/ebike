@@ -61,11 +61,11 @@
     <div class="row text-center">
       <div class="col col-60 col-offset-20">
         <div class="button-bar">
-          <a class="button button-left" ng-class="{'active':device.bike.workmode===30}"
+          <a class="button button-left" ng-class="{'active':device.bike.workmode==30}"
            ng-click=device.setWorkmode(30) pushvibrate>
            {{'SMART_PARK'|translate}}
           </a>
-          <a class="button button-right" ng-class="{'active':device.bike.workmode===46}"
+          <a class="button button-right" ng-class="{'active':device.bike.workmode==46}"
            ng-click=device.setWorkmode(46) pushvibrate>
            {{'SMART_PUSH'|translate}}
           </a>

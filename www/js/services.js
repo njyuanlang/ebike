@@ -208,12 +208,20 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   BLEDevice.prototype.setWorkmode = function (mode) {
     if (this.status !== 'connected') return;
     if(this.bike.workmode == mode) mode = 0;
-    this.bike.workmode = mode
+    if(this.bike.workmode==30||this.bike.workmode==46) {
+      var cancelMode = this.bike.workmode+1;
+      if($rootScope.online) {
+        var hexs = [0xb0+cancelMode, 0xb0+cancelMode];
+        console.log(cancelMode);
+        this.sendOrder(hexs)
+      }
+    }
+    this.bike.workmode = mode;
     if($rootScope.online) {
       var hexs = [0xb0, 0xb0]
       hexs[0] += mode
       hexs[1] += mode
-      console.log(hexs);
+      console.log(mode);
       this.sendOrder(hexs)
     }
   }
