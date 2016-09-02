@@ -482,6 +482,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 })
 
 .config(function ($ionicConfigProvider) {
+  $ionicConfigProvider.views.swipeBackEnabled(false);
   $ionicConfigProvider.tabs.style('standard');
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.navBar.alignTitle('center');
