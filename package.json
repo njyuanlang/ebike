@@ -15,9 +15,6 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
-    "https://github.com/don/cordova-plugin-ble-central.git",
-    "net.yoik.cordova.plugins.screenorientation",
-    "org.apache.cordova.splashscreen",
-    "org.apache.cordova.statusbar"
+    "https://github.com/don/cordova-plugin-ble-central.git"
   ]
 }

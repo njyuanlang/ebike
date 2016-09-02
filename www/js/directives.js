@@ -33,7 +33,7 @@ angular.module('ebike.directives',[])
             } else {
               ionic.Platform.exitApp();
             }
-          }, 100);
+          }, 101);
         }
       });
       $scope.$on("$ionicView.leave", function () {

@@ -183,7 +183,7 @@ controllers
   function doScan() {
     if(!$scope.online) return;
 
-    $scope.device.disconnect()
+    $rootScope.device.disconnect()
     .then(function () {
       if($window.ble) {
         ble.isEnabled(function (result) {
@@ -211,22 +211,27 @@ controllers
       return device.pair(bike.password)
     })
     .then(function (result) {
-      device.disconnect();
-      $scope.closeModal();
+      return $scope.closeModal();
+    })
+    .then(function (result) {
       $scope.$ionicGoBack();
-      $ionicLoading.show({
-        template: '<i class="icon ion-ios-checkmark-outline padding"></i>'+translations.BIND_BIKE_SUCCESS,
-        duration: 2000
-      })
       $rootScope.device = device;
       $rootScope.currentBike = bike;
       MyPreferences.save();
-      device.disconnect().then(function () {
-        $state.go('tab.home');
-      });
       Bike.upsert(bike);
+      return result;
     }, function (reason) {
       console.log(reason);
+    })
+    .then(function (result) {
+      return $ionicLoading.show({
+        template: '<i class="icon ion-ios-checkmark-outline padding"></i>'+translations.BIND_BIKE_SUCCESS,
+        duration: 2000
+      });
+    })
+    .then(function () {
+      device.antiTheft(false);
+      $state.go('tab.home');
     })
     .catch(function (error) {
       device.disconnect();
@@ -244,12 +249,13 @@ controllers
     $scope.modal = modal;
   });
   $scope.closeModal = function() {
-    $scope.modal.hide();
+    return $scope.modal.hide();
   };
   $scope.$on('modal.hidden', function() {
     if($scope.tryIntervalID) {
       clearInterval($scope.tryIntervalID);
       $scope.tryIntervalID = null;
+      console.log('Stop tryIntervalID');
     }
   });
   $scope.$on('$destroy', function() {
@@ -281,7 +287,6 @@ controllers
 
   $scope.$on("$ionicView.beforeLeave", function () {
     stopScan(true);
-    $scope.device.autoconnect()
   })
 
   $scope.$on("$ionicView.enter", function () {

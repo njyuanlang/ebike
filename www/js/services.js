@@ -321,7 +321,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           kThis.status = 'connected';
         }
         var handleError = function (reason) {
-          console.log('Retry '+tryCount+' times')
+          console.log('Retry '+tryCount+' times');
           if(++tryCount < 3) {
             if(/not found.$/.test(reason) || /pair error/.test(reason)) {
               ble.scan([], 3, function () {}, function () {});
@@ -343,19 +343,19 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           $cordovaBLE.connect(kThis.localId)
           .then(function (result) {
             clearTimeout(connectTimer);
-            return kThis.pair(kThis.bike.password)
-            .then(function (result) {
-              console.log('Success Connected.');
-              connectSucceed(result);
-            }, function (reason) {
-              console.log('Pair Error: '+reason);
-              kThis.disconnect();
-              handleError('pair error');
-            });
+            return kThis.pair(kThis.bike.password);
           }, function (reason) {
             console.log('Connect Error: '+reason);
             handleError(reason);
           })
+          .then(function (result) {
+            console.log('Success Connected.');
+            connectSucceed(result);
+          }, function (reason) {
+            console.log('Pair Error: '+reason);
+            kThis.disconnect();
+            handleError('pair error');
+          });
         };
         this.isConnected().then(connectSucceed, tryConnect);
       }
