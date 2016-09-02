@@ -213,7 +213,11 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       if($rootScope.online) {
         var hexs = [0xb0+cancelMode, 0xb0+cancelMode];
         console.log(cancelMode);
-        this.sendOrder(hexs)
+        this.sendOrder(hexs);
+      }
+      if(mode === 0) {
+        this.bike.workmode = mode;
+        return;
       }
     }
     this.bike.workmode = mode;
