@@ -96,21 +96,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       })
     }
 
-    // $rootScope.$on('bluetooth.disabled', function (event, args) {
-    //   if(!ionic.Platform.isIOS()) {
-    //     $ionicPopup.confirm({
-    //       title: '打开蓝牙',
-    //       subTitle: '允许“帮大师”连接到车辆',
-    //       cancelText: '取消',
-    //       okText: '设置'
-    //     }).then(function (res) {
-    //       if(res) {
-    //         ble.showBluetoothSettings();
-    //       }
-    //     });
-    //   }
-    // });
-
     if(User.isAuthenticated()) {
       $rootScope.$broadcast('user.DidLogin');
     } else {
