@@ -211,6 +211,7 @@ controllers
       return device.pair(bike.password)
     })
     .then(function (result) {
+      console.log('closeModal');
       return $scope.closeModal();
     })
     .then(function (result) {
@@ -219,26 +220,19 @@ controllers
       $rootScope.currentBike = bike;
       MyPreferences.save();
       Bike.upsert(bike);
-      return result;
-    }, function (reason) {
-      console.log(reason);
-    })
-    .then(function (result) {
       return $ionicLoading.show({
         template: '<i class="icon ion-ios-checkmark-outline padding"></i>'+translations.BIND_BIKE_SUCCESS,
         duration: 2000
       });
     })
-    .then(function () {
+    .then(function (result) {
       device.antiTheft(false);
       $state.go('tab.home');
+      return result;
     })
     .catch(function (error) {
-      device.disconnect();
-      $ionicLoading.show({
-        template: '<i class="icon ion-ios-close-outline padding"></i>'+translations.BIND_BIKE_FAILURE+':'+error,
-        duration: 5000
-      })
+      console.log(error);
+      // device.disconnect();
     })
   }
 
