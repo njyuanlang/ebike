@@ -21,6 +21,7 @@ controllers
 
   $scope.$on('$ionicView.enter', function (event) {
     if(!$scope.online) return $scope.device.onConnected();
+    if(!$scope.currentUser) return;
     if(!$scope.currentBike || !$scope.currentBike.id) {
       $state.go('brands', {id:'create'});
     } else {
