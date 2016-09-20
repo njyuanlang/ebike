@@ -28,7 +28,7 @@ controllers
     });
   }
 
-  $scope.index = 0;
+  $scope.index = 4;
   $scope.workmodes.some(function (mode, index) {
     if(mode.key === $scope.device.bike.customKey) {
       $scope.index = index;
