@@ -210,6 +210,11 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       templateUrl: "templates/cities.html",
       controller: 'CitiesCtrl'
     })
+    .state('account', {
+      url: "/account",
+      templateUrl: "templates/account.html",
+      controller: 'AccountCtrl'
+    })
 
     .state('tab', {
       url: '/tab',
@@ -324,6 +329,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
         }
       }
     })
+
     .state('tab.bike', {
       url: "/bikes/:bikeId",
       views: {

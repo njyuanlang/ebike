@@ -93,9 +93,7 @@ controllers
 
 })
 
-.controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading,
-  User, $localstorage, Authmessage, $filter, $ionicHistory, $rootScope,
-  $ionicNavBarDelegate, $translate) {
+.controller('RegisterCtrl', function($scope, $state, $interval, $ionicLoading, User, $localstorage, Authmessage, $filter, $ionicHistory, $rootScope, $ionicNavBarDelegate, $translate) {
 
   var translations = {
     GET_AUTH_CODE: '',
@@ -107,6 +105,7 @@ controllers
   };
   $scope.entity = {realm: "client"}
   $scope.$on("$ionicView.enter", function (event) {
+    $rootScope.userRegistering = false;
     $scope.isReset = $state.params.reset == '1';
     $translate(Object.keys(translations)).then(function (result) {
       translations = result;
@@ -149,7 +148,8 @@ controllers
         })
         $localstorage.setObject('$$LastLoginData$$', {username: entity.username, password: entity.password})
         $rootScope.$broadcast('user.DidLogin');
-        $state.go('provinces')
+        $rootScope.userRegistering = true;
+        $state.go('provinces');
       })
     }, function (res) {
       var option = {
@@ -186,11 +186,12 @@ controllers
   }
 })
 
-.controller('AccountCtrl', function($scope, $state, User, $localstorage, $ionicHistory, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http, $rootScope, LoopBackAuth, $ionicActionSheet) {
+.controller('AccountCtrl', function($scope, $state, User, $localstorage, $ionicPopup, $cordovaCamera, $jrCrop, $cordovaFile, $cordovaFileTransfer, Upload, RemoteStorage, $http, $rootScope, LoopBackAuth, $ionicActionSheet) {
 
   $scope.entity = User.getCurrent()
 
   $scope.logout = function () {
+    $scope.$ionicGoBack();
     if($rootScope.online) {
       if($scope.device) $scope.device.disconnect();
       User.logout().$promise
@@ -205,7 +206,14 @@ controllers
       console.log('logout Trial');
       $rootScope.online = true;
     }
-    $state.go('entry');
+    setTimeout(function () {
+      $state.go('entry');
+    }, 500);
+  }
+
+  $scope.copmleteRegister = function () {
+    $state.go('tab.home');
+    $rootScope.userRegistering = false;
   }
 
   var uploadAvatar = function () {
@@ -323,10 +331,11 @@ controllers
 
 })
 
-.controller('ProvincesCtrl', function ($scope, $state, ChinaRegion, $ionicNavBarDelegate, User, $ionicLoading) {
+.controller('ProvincesCtrl', function ($scope, $state, ChinaRegion,
+  $ionicNavBarDelegate, User, $ionicLoading) {
   $scope.entities = ChinaRegion.provinces
   $scope.goCities = function (item) {
-    $state.go('cities', {province: JSON.stringify(item)})
+    $state.go('cities', {province: JSON.stringify(item)});
   };
   $scope.$on("$ionicView.enter", function (event) {
     $scope.getLocalCity();
@@ -363,7 +372,11 @@ controllers
             province: result.geocodes[0].addressComponent.province,
             city: $scope.currentCity
           }});
-          $state.go('tab.account');
+          if($scope.userRegistering) {
+            $state.go('account');
+          } else {
+            $state.go('tab.account');
+          }
         } else {
           $ionicLoading.show({
             template: '<i class="icon ion-minus-circled padding"></i>选择城市失败：'+result.info,
@@ -376,9 +389,9 @@ controllers
   };
 })
 
-.controller('CitiesCtrl', function ($scope, $state, ChinaRegion, User, $rootScope, $window) {
+.controller('CitiesCtrl', function ($scope, $state, ChinaRegion, User, $rootScope) {
   var province = JSON.parse($state.params.province)
-  $scope.entities = province.sub
+  $scope.entities = province.sub;
 
   $scope.selectEntity = function (item) {
     User.getCurrent(function (user) {
@@ -389,7 +402,11 @@ controllers
       User.prototype$updateAttributes({ id: user.id }, { region: user.region}, function () {
       })
     });
-    $state.go('tab.account');
+    if($rootScope.userRegistering) {
+      $state.go('account');
+    } else {
+      $state.go('tab.account');
+    }
   }
 
 })

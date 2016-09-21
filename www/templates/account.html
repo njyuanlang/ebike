@@ -33,8 +33,11 @@
       </a>
     </div>
 
-    <a ng-click="logout()" class="button button-block button-large button-assertive icon ion-log-out">
+    <a ng-if="!userRegistering" ng-click="logout()" class="button button-block button-large button-assertive icon ion-log-out">
       {{'LOGOUT'|translate}}
+    </a>
+    <a ng-if="userRegistering" ng-click="copmleteRegister()" class="button button-block button-large button-positive">
+      {{'COMPLETE'|translate}}
     </a>
 
   </ion-content>
