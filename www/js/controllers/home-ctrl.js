@@ -21,7 +21,7 @@ controllers
 
   $scope.$on('$ionicView.enter', function (event) {
     if(!$scope.online) return $scope.device.onConnected();
-    if(!$scope.currentUser) return;
+    if(!$scope.currentUser) return console.log('return due to anoymous: '+$scope.device);;
     if(!$scope.currentBike || !$scope.currentBike.id) {
       $state.go('brands', {id:'create'});
     } else {
@@ -71,6 +71,7 @@ controllers
       } else if(reason === 'timeout') {
         // $scope.$apply();
       } else {
+        if(/not find/.test(reason)) reason = '没有找到车辆，请靠近车辆重试！';
         $ionicLoading.show({
           template: '<i class="icon ion-ios-close-outline padding"></i>'+translations.CONNECT_BIKE_FAILURE+reason,
           duration: 2000

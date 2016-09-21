@@ -247,7 +247,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     repair: "0000B00B-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.onConnected = function (result) {
-    this.status = 'connected'
+    this.status = 'connected';
     RTMonitor.startNotifications(this.localId)
     this.startReminder()
     this.sendSpec()
@@ -323,7 +323,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         var handleError = function (reason) {
           console.log('Retry '+tryCount+' times');
           if(++tryCount < 3) {
-            if(/not found.$/.test(reason) || /pair error/.test(reason)) {
+            if(/not find/.test(reason) || /pair error/.test(reason)) {
               ble.scan([], 3, function () {}, function () {});
               $timeout(tryConnect, 3000);
             } else {
@@ -337,24 +337,21 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         };
         var tryConnect = function () {
           var connectTimer = setTimeout(function () {
-            // kThis.disconnect();
             q.reject('timeout');
           }, 5000);
           $cordovaBLE.connect(kThis.localId)
           .then(function (result) {
             clearTimeout(connectTimer);
             return kThis.pair(kThis.bike.password);
-          }, function (reason) {
-            console.log('Connect Error: '+reason);
-            handleError(reason);
           })
           .then(function (result) {
             console.log('Success Connected.');
             connectSucceed(result);
-          }, function (reason) {
-            console.log('Pair Error: '+reason);
-            kThis.disconnect();
-            handleError('pair error');
+          })
+          .catch(function (reason) {
+            console.log('Error: '+reason);
+            // kThis.disconnect();
+            handleError(reason);
           });
         };
         this.isConnected().then(connectSucceed, tryConnect);
@@ -367,6 +364,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
 
   BLEDevice.prototype.disconnect = function () {
+    if(this.status === 'disconnected') return $q.resolve();
     this.onDisconnected();
     if(!$window.ble || !this.localId) {
       var q = $q.defer();
