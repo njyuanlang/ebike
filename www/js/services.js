@@ -547,7 +547,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       setTimeout(q.resolve, 10);
     } else if(this.status !== 'connected'|| !$window.ble) {
       setTimeout(function () {
-        q.reject('未连接设备，无法设置自定义键');
+        q.reject('重置功能请连接车辆');
       }, 10);
     } else {
       var kThis = this;
