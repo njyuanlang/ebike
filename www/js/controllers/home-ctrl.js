@@ -1,7 +1,7 @@
 controllers
 
 .controller('HomeCtrl', function($scope, $state, $ionicLoading, User,
-  $localstorage, $translate, $cordovaVibration) {
+  $localstorage, $translate, $cordovaVibration, $ionicPopup) {
 
   var translations = {
     OPEN_WITH_KEY: '',
@@ -84,6 +84,21 @@ controllers
 
   $scope.$on('home.reconnect', reconnectDevice);
 
+  $scope.setWorkmode = function (mode) {
+    if($scope.device.bike.workmode===30&&mode!==30) {
+      $ionicPopup.alert({
+        title: '提示',
+        template: '请点击智能泊车按钮，取消泊车状态再切换到其他状态'
+      })
+    } else if($scope.device.bike.workmode===46&&mode!==46) {
+      $ionicPopup.alert({
+        title: '提示',
+        template: '请点击智能推行按钮，取消推行状态再切换到其他状态'
+      })
+    } else {
+      $scope.device.setWorkmode(mode);
+    }
+  }
   $scope.init = function () {
   }
 })

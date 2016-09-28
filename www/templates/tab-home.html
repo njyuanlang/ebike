@@ -62,11 +62,11 @@
       <div class="col col-60 col-offset-20">
         <div class="button-bar">
           <a class="button button-left" ng-class="{'active':device.bike.workmode==30}"
-           ng-click=device.setWorkmode(30) pushvibrate>
+           ng-click=setWorkmode(30) pushvibrate>
            {{'SMART_PARK'|translate}}
           </a>
           <a class="button button-right" ng-class="{'active':device.bike.workmode==46}"
-           ng-click=device.setWorkmode(46) pushvibrate>
+           ng-click=setWorkmode(46) pushvibrate>
            {{'SMART_PUSH'|translate}}
           </a>
         </div>
@@ -75,21 +75,21 @@
     <div class="row text-center">
       <div class="col col-25 image-button col-offset-10">
         <a class="button button-clear button-light" ng-class="{'disabled': device.bike.workmode == 9}"
-         ng-click="device.setWorkmode(1)" pushvibrate>
+         ng-click="setWorkmode(1)" pushvibrate>
           <img src="img/powersave-{{device.bike.workmode%8 === 1?'light':'gray'}}.png">
           {{'SAVE_POWER'|translate}}
         </a>
       </div>
       <div class="col col-25 image-button">
         <a class="button button-clear button-light" ng-class="{'disabled': device.bike.workmode == 9}"
-         ng-click="device.setWorkmode(2)" pushvibrate>
+         ng-click="setWorkmode(2)" pushvibrate>
           <img src="img/climb-{{device.bike.workmode == 2?'light':'gray'}}.png">
           {{'CLIMB'|translate}}
         </a>
       </div>
       <div class="col col-25 image-button">
         <a class="button button-clear button-light" ng-class="{'disabled': device.bike.workmode == 9}"
-         ng-click="device.setWorkmode(15)" pushvibrate>
+         ng-click="setWorkmode(15)" pushvibrate>
           <img src="img/speed-{{device.bike.workmode == 15?'light':'gray'}}.png">
           {{'SPEED'|translate}}
         </a>
