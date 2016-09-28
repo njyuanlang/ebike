@@ -10,7 +10,7 @@ controllers
   };
 })
 
-.controller('CustomCtrl', function ($scope, MyPreferences) {
+.controller('CustomCtrl', function ($scope, MyPreferences, $ionicPopup) {
   $scope.workmodes = [
     {title:"智能泊车", key: 0x4},
     {title:"智能推行", key: 0x5},
@@ -20,11 +20,16 @@ controllers
   ];
 
   $scope.setKey = function (index) {
-    $scope.index = index;
     var mode = $scope.workmodes[index];
     $scope.device.statedefine(mode.key)
     .then(function () {
+      $scope.index = index;
       MyPreferences.save();
+    }, function (err) {
+      $ionicPopup.alert({
+        title: '提示',
+        template: err
+      });
     });
   }
 

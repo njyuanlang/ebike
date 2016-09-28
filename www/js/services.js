@@ -542,8 +542,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   BLEDevice.prototype.statedefine = function (key) {
     var q = $q.defer()
 
-    if(!$rootScope.online || !$window.ble) {
+    if(!$rootScope.online) {
       this.bike.customKey = key;
+      setTimeout(q.resolve, 10);
+    } else if(this.status !== 'connected'|| !$window.ble) {
+      setTimeout(function () {
+        q.reject('未连接设备，无法设置自定义键');
+      }, 10);
     } else {
       var kThis = this;
       var value = Util.hexToBytes([key])
