@@ -92,6 +92,14 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
   var fakeIntervals = {}
 
+  var workmodes = [
+    0, //0x00 normal
+    1, //0x01 saving
+    2, //0x02 climb
+    15, //0x03 speed
+    30, //0x04 park
+    46, //0x05 push
+  ]
   var noitficationCbs = {
     power: function (result) {
       var res = new Uint8Array(result)
@@ -125,6 +133,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         // console.log('antiTheft:'+res[2]);
         // console.log('realtime.allclear========');
       }
+      var idx = res[4]||0;
+      // console.log('Update======='+res[3]+';'+res[4]);
+      $rootScope.device.bike.workmode = workmodes[idx];
+      // $rootScope.currentBike.workmode = workmodes[idx];
       $rootScope.$broadcast('realtime.update')
     }
   }
@@ -208,18 +220,18 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   BLEDevice.prototype.setWorkmode = function (mode) {
     if (this.status !== 'connected') return;
     if(this.bike.workmode == mode) mode = 0;
-    if(this.bike.workmode==30||this.bike.workmode==46) {
-      var cancelMode = this.bike.workmode+1;
-      if($rootScope.online) {
-        var hexs = [0xb0+cancelMode, 0xb0+cancelMode];
-        console.log(cancelMode);
-        this.sendOrder(hexs);
-      }
-      if(mode === 0) {
-        this.bike.workmode = mode;
-        return;
-      }
-    }
+    // if(this.bike.workmode==30||this.bike.workmode==46) {
+    //   var cancelMode = this.bike.workmode+1;
+    //   if($rootScope.online) {
+    //     var hexs = [0xb0+cancelMode, 0xb0+cancelMode];
+    //     console.log(cancelMode);
+    //     this.sendOrder(hexs);
+    //   }
+    //   if(mode === 0) {
+    //     this.bike.workmode = mode;
+    //     return;
+    //   }
+    // }
     this.bike.workmode = mode;
     if($rootScope.online) {
       var hexs = [0xb0, 0xb0]
@@ -282,6 +294,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   BLEDevice.prototype.onDisconnected = function () {
     console.log('Start onDisconnected:'+this.status);
     this.status = 'disconnected'
+    this.bike.workmode = 0;
     if(this.connectingInterval) {
       console.log('Cancel Interval');
       $interval.cancel(this.connectingInterval)
