@@ -171,13 +171,10 @@ controllers
   }
 
   function stopScan(isForce) {
-    if(isForce || devices.length > 0) {
-      $scope.scanTimer = null;
-      $scope.entities = devices;
-      $scope.$broadcast('scroll.refreshComplete');
-    } else {
-      doScan();
-    }
+    $scope.scanTimer = null;
+    if($scope.scanTimer) $timeout.cancel($scope.scanTimer)
+    $scope.entities = devices;
+    $scope.$broadcast('scroll.refreshComplete');
   }
 
   function doScan() {
@@ -204,35 +201,33 @@ controllers
   }
   $scope.doScan = doScan
 
-  function tryConnect(bike) {
-    var device = new BLEDevice(bike)
+  function tryConnect(device) {
     device.connect()
     .then(function (result) {
-      return device.pair(bike.password)
-    })
-    .then(function (result) {
-      console.log('closeModal');
       return $scope.closeModal();
     })
     .then(function (result) {
+      return $rootScope.device.isConnected()
+    })
+    .then(function (result) {
       $scope.$ionicGoBack();
+      $rootScope.device = null;
       $rootScope.device = device;
-      $rootScope.currentBike = bike;
+      $rootScope.currentBike = device.bike;
       MyPreferences.save();
-      Bike.upsert(bike);
+      Bike.upsert(device.bike);
       return $ionicLoading.show({
         template: '<i class="icon ion-ios-checkmark-outline padding"></i>'+translations.BIND_BIKE_SUCCESS,
         duration: 2000
       });
     })
     .then(function (result) {
-      device.antiTheft(false);
+      $rootScope.device.antiTheft(false);
       $state.go('tab.home');
       return result;
     })
     .catch(function (error) {
       console.log(error);
-      // device.disconnect();
     })
   }
 
@@ -268,9 +263,14 @@ controllers
     if($scope.bike.password.length)
     console.log('PASSWORD:'+$scope.bike.password);
 
+    var device = new BLEDevice($scope.bike)
     $scope.modal.show();
     $scope.tryIntervalID = setInterval(function () {
-      tryConnect($scope.bike);
+      // device.isConnected().then(function () {
+      //   $rootScope.device.antiTheft(false);
+      //   $state.go('tab.home');
+      // }, tryConnect);
+      tryConnect(device);
     }, 2000);
   }
 

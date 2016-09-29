@@ -110,8 +110,10 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 
   $rootScope.$on('user.DidLogin', function (event, args) {
     var userId = User.getCurrentId();
-    $rootScope.currentUser = User.getCurrent();
-    MyPreferences.load(userId);
+    MyPreferences.load(userId)
+    .finally(function () {
+      $rootScope.currentUser = User.getCurrent();
+    });
     if(!$rootScope.avatar) {
       $rootScope.avatar = 'img/user-icon.png';
       RemoteStorage.getAvatar(userId)
@@ -125,7 +127,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
   })
 
   $rootScope.$watch('currentBike', function (newValue, oldValue) {
-    if((!$rootScope.online || (newValue && newValue.id)) && newValue !== oldValue) {
+    if((!$rootScope.online || (newValue&&newValue.id&&newValue.localId))
+    && (!oldValue || newValue.localId!==oldValue.localId)) {
       if(!$rootScope.device || $rootScope.device.localId != newValue.localId) {
         $rootScope.device = new BLEDevice(newValue);
         $rootScope.device.autoconnect();

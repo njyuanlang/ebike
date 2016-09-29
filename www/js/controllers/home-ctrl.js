@@ -1,7 +1,7 @@
 controllers
 
 .controller('HomeCtrl', function($scope, $state, $ionicLoading, User,
-  $localstorage, $translate, $cordovaVibration, $ionicPopup) {
+  $localstorage, $translate, $cordovaVibration, $ionicPopup, $rootScope) {
 
   var translations = {
     OPEN_WITH_KEY: '',
@@ -13,15 +13,15 @@ controllers
   });
 
   $scope.$on( 'realtime.update', function (event) {
-    if($scope.device.bike.workmode === 9 && $scope.device.realtime.power > 24) {
-      $scope.device.setWorkmode(0)
+    if($rootScope.device.bike.workmode === 9 && $rootScope.device.realtime.power > 24) {
+      $rootScope.device.setWorkmode(0)
     }
     $scope.$apply()
   })
 
   $scope.$on('$ionicView.enter', function (event) {
-    if(!$scope.online) return $scope.device.onConnected();
-    if(!$scope.currentUser) return console.log('return due to anoymous: '+$scope.device);;
+    if(!$scope.online) return $rootScope.device.onConnected();
+    if(!$scope.currentUser) return console.log('return due to anoymous: '+$rootScope.device);;
     if(!$scope.currentBike || !$scope.currentBike.id) {
       $state.go('brands', {id:'create'});
     } else {
@@ -30,8 +30,8 @@ controllers
   })
 
   $scope.goTest = function () {
-    if($scope.device.status === 'connected') {
-      if(!$scope.device.realtime.offline) {
+    if($rootScope.device.status === 'connected') {
+      if(!$rootScope.device.realtime.offline) {
         $state.go('tab.test')
       } else {
         $ionicLoading.show({
@@ -48,19 +48,19 @@ controllers
   }
 
   $scope.endure = function () {
-    $scope.device.setWorkmode(9)
+    $rootScope.device.setWorkmode(9)
   }
 
   var reconnectDevice = function () {
-    // $scope.device.status = 'connecting';
+    // $rootScope.device.status = 'connecting';
     // return setTimeout(function () {
-    //   $scope.device.status = 'disconnected';
+    //   $rootScope.device.status = 'disconnected';
     //   $scope.$apply();
     // }, 5000);
-    if(!$scope.device || $scope.device.status!='disconnected') return;
-    if(!$scope.online) return $scope.device.onConnected()
+    if(!$rootScope.device || $rootScope.device.status!='disconnected') return;
+    if(!$scope.online) return $rootScope.device.onConnected()
 
-    $scope.device.autoconnect().then(function (result) {
+    $rootScope.device.autoconnect().then(function (result) {
 
     }, function (reason) {
       console.log('Reconnect Error:'+reason);
@@ -85,18 +85,18 @@ controllers
   $scope.$on('home.reconnect', reconnectDevice);
 
   $scope.setWorkmode = function (mode) {
-    if($scope.device.bike.workmode===30&&mode!==30) {
+    if($rootScope.device.bike.workmode===30&&mode!==30) {
       $ionicPopup.alert({
         title: '提示',
         template: '请点击智能泊车按钮，取消泊车状态再切换到其他状态'
       })
-    } else if($scope.device.bike.workmode===46&&mode!==46) {
+    } else if($rootScope.device.bike.workmode===46&&mode!==46) {
       $ionicPopup.alert({
         title: '提示',
         template: '请点击智能推行按钮，取消推行状态再切换到其他状态'
       })
     } else {
-      $scope.device.setWorkmode(mode);
+      $rootScope.device.setWorkmode(mode);
     }
   }
   $scope.init = function () {

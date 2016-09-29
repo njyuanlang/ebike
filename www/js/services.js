@@ -60,7 +60,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
 })
 
-.factory('RTMonitor', function ($rootScope, $interval, Cruise, $cordovaVibration) {
+.factory('RTMonitor', function ($rootScope, $interval, Cruise, $window) {
   var service = {
     uuid: "0000D000-D102-11E1-9B23-00025B00A5A5",
     power: "0000D00A-D102-11E1-9B23-00025B00A5A5",// power mileage
@@ -134,7 +134,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         // console.log('realtime.allclear========');
       }
       var idx = res[4]||0;
-      // console.log('Update======='+res[3]+';'+res[4]);
+      console.log('Update==speed====='+res[3]+';'+res[4]);
       $rootScope.device.bike.workmode = workmodes[idx];
       // $rootScope.currentBike.workmode = workmodes[idx];
       $rootScope.$broadcast('realtime.update')
@@ -144,10 +144,14 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   var uploadInterval = null
   var notify = function(localId, characteristic) {
     if($rootScope.online) {
+      console.log('startNotification '+characteristic);
       if(localId) {
         ble.startNotification(localId, service.uuid, service[characteristic], noitficationCbs[characteristic])
       }
-      stopNotify(localId, characteristic)
+      if(fakeIntervals[characteristic]) {
+        $interval.cancel(fakeIntervals[characteristic])
+        fakeIntervals[characteristic] = null;
+      }
     } else {
       if(!fakeIntervals[characteristic]) {
         fakeIntervals[characteristic] = $interval(function () {
@@ -157,6 +161,12 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
   }
   var stopNotify = function (localId, characteristic) {
+    if($rootScope.online&&$window.ble) {
+      console.log('stopNotification '+characteristic);
+      if(localId) {
+        ble.stopNotification(localId, service.uuid, service[characteristic])
+      }
+    }
     if(fakeIntervals[characteristic]) {
       $interval.cancel(fakeIntervals[characteristic])
       fakeIntervals[characteristic] = null;
@@ -237,7 +247,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       var hexs = [0xb0, 0xb0]
       hexs[0] += mode
       hexs[1] += mode
-      console.log(mode);
       this.sendOrder(hexs)
     }
   }
@@ -245,10 +254,15 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   BLEDevice.prototype.connect = function () {
     if(!this.localId) return $q.reject('车辆标示ID不能为空！');
     var connectTimer = setTimeout(this.disconnect, 5000);
+    var kThis = this;
     return $cordovaBLE.connect(this.localId).then(function (result) {
       clearTimeout(connectTimer);
       return result;
-    }, function (reason) {
+    })
+    .then(function (result) {
+      return kThis.pair();
+    })
+    .catch(function (reason) {
       return $q.reject('无法连接车辆:'+reason);
     })
   }
@@ -260,7 +274,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
   BLEDevice.prototype.onConnected = function (result) {
     this.status = 'connected';
-    RTMonitor.startNotifications(this.localId)
+    this.realtime.startNotifications(this.localId)
     this.startReminder()
     this.sendSpec()
     this.setWorkmode(0)
@@ -300,19 +314,20 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       $interval.cancel(this.connectingInterval)
       this.connectingInterval = null
     }
-    RTMonitor.stopNotifications(this.localId)
+    this.realtime.stopNotifications(this.localId)
   };
 
   BLEDevice.prototype.isConnected = function () {
     var q = $q.defer()
+    var kThis = this;
     if($window.ble && $rootScope.online) {
       $cordovaBLE.isConnected(this.localId).then(function (result) {
-        q.resolve(result)
+        q.resolve(kThis)
       }, function (reason) {
-        q.reject(reason)
+        q.reject(kThis)
       })
     } else {
-      q.resolve({})
+      q.resolve(this)
     }
     return q.promise
   }
@@ -329,14 +344,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       } else {
         this.status = 'connecting';
         var tryCount = 0;
-        var connectSucceed = function (result) {
-          q.resolve(result);
-          kThis.status = 'connected';
-        }
+        var connectTimer = setTimeout(function () {
+          q.reject('timeout');
+        }, 5000);
         var handleError = function (reason) {
           console.log('Retry '+tryCount+' times');
           if(++tryCount < 3) {
-            if(/not find/.test(reason) || /pair error/.test(reason)) {
+            if(/not found/.test(reason) || /not find/.test(reason) || /pair error/.test(reason)) {
               ble.scan([], 3, function () {}, function () {});
               $timeout(tryConnect, 3000);
             } else {
@@ -344,30 +358,29 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
             }
           } else {
             console.log('Try out')
+            if(typeof reason === 'object') {
+              console.log(JSON.stringify(reason));
+            }
             q.reject(reason);
             kThis.disconnect();
           }
         };
         var tryConnect = function () {
-          var connectTimer = setTimeout(function () {
-            q.reject('timeout');
-          }, 5000);
           $cordovaBLE.connect(kThis.localId)
           .then(function (result) {
             clearTimeout(connectTimer);
-            return kThis.pair(kThis.bike.password);
+            return kThis.pair();
           })
           .then(function (result) {
             console.log('Success Connected.');
-            connectSucceed(result);
+            q.resolve(result);
           })
           .catch(function (reason) {
             console.log('Error: '+reason);
-            // kThis.disconnect();
             handleError(reason);
           });
         };
-        this.isConnected().then(connectSucceed, tryConnect);
+        this.isConnected().then(q.resolve, tryConnect);
       }
     } else {
       q.reject('no localId')
@@ -386,7 +399,14 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       },0);
       return q.promise;
     } else {
-      return $cordovaBLE.disconnect(this.localId);
+      return $cordovaBLE.disconnect(this.localId)
+      .then(function (result) {
+        console.log('disconnect success'+result);
+        return result
+      }, function (error) {
+        console.log('disconnect Failure '+error);
+        return error;
+      });
     }
   }
 
@@ -433,6 +453,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     ble.write(this.localId, order.uuid, order.spec, value)
   }
   BLEDevice.prototype.pair = function (password) {
+    password = password||this.bike.password;
     console.log('Start Pair:'+password);
     var q = $q.defer()
     if(!$rootScope.online) {
@@ -440,18 +461,17 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     } else {
       var pairtimer = $timeout(function () {
         q.reject("配对超时,请重新绑定车辆或者重新启动蓝牙再尝试！");
-      }, 5000)
+      }, 2000)
       var value = Util.stringToBytes(password)
       var kThis = this
       var checkPassword = function () {
         ble.read(kThis.localId, order.uuid, order.pair, function (result) {
+          $timeout.cancel(pairtimer)
           var ret = Util.byteToDecString(result)
           if(ret === "1") {
-            $timeout.cancel(pairtimer)
             kThis.onConnected(result)
             q.resolve(ret)
           } else {
-            $timeout.cancel(pairtimer)
             q.reject('配对密码错误');
           }
         }, function (reason) {
@@ -712,7 +732,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
 })
 
-.service('MyPreferences', function ($rootScope, User, $cordovaPreferences, $localstorage) {
+.service('MyPreferences', function ($rootScope, User, $cordovaPreferences, $localstorage, $q) {
 
   function successLoad(options) {
     options = options || {};
@@ -723,28 +743,33 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
   var pref = {
     load: function (dictionary) {
+      var q = $q.defer()
       dictionary = dictionary || User.getCurrentId();
       $cordovaPreferences.fetch('MyPreferences', dictionary)
       .success(function (options) {
         // Backward compatibility
         if(!options) {
-          var dictionary = User.getCurrentId();
           $cordovaPreferences.fetch('myEBike', dictionary)
           .success(function (bike) {
             successLoad({bike: bike, buttonVibrate:true});
             pref.save(null, dictionary);
+            q.resolve()
           })
-          .console.error(function () {
+          .error(function (err) {
             console.log("fetch myEBike error: "+arguments);
+            q.reject(error);
           });
         } else {
           successLoad(options);
+          q.resolve();
         }
       })
       .error(function (error) {
         console.log('Load Preferences Failure:'+error);
         successLoad($localstorage.getObject('#EBIKE#MyPreferences'));
-      })
+        q.resolve();
+      });
+      return q.promise;
     },
     save: function (options, dictionary) {
       options = options || {
