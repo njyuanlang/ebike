@@ -263,13 +263,15 @@ controllers
     if($scope.bike.password.length)
     console.log('PASSWORD:'+$scope.bike.password);
 
-    var device = new BLEDevice($scope.bike)
+    var device;
+    if($scope.bike.localId===$scope.currentBike.localId) {
+      device = $rootScope.device;
+      device.bike.password = $scope.bike.password;
+    } else {
+      device = new BLEDevice($scope.bike);
+    }
     $scope.modal.show();
     $scope.tryIntervalID = setInterval(function () {
-      // device.isConnected().then(function () {
-      //   $rootScope.device.antiTheft(false);
-      //   $state.go('tab.home');
-      // }, tryConnect);
       tryConnect(device);
     }, 2000);
   }
