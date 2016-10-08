@@ -12,7 +12,7 @@ controllers
     translations = result;
   });
 
-  $scope.$on( 'realtime.update', function (event) {
+  $scope.$on('realtime.update', function (event) {
     if($rootScope.device.bike.workmode === 9 && $rootScope.device.realtime.power > 24) {
       $rootScope.device.setWorkmode(0)
     }
@@ -22,11 +22,7 @@ controllers
   $scope.$on('$ionicView.enter', function (event) {
     if(!$scope.online) return $rootScope.device.onConnected();
     if(!$scope.currentUser) return console.log('return due to anoymous: '+$rootScope.device);;
-    if(!$scope.currentBike || !$scope.currentBike.id) {
-      $state.go('brands', {id:'create'});
-    } else {
-      reconnectDevice();
-    }
+    reconnectDevice();
   })
 
   $scope.goTest = function () {
@@ -57,7 +53,14 @@ controllers
     //   $rootScope.device.status = 'disconnected';
     //   $scope.$apply();
     // }, 5000);
-    if(!$rootScope.device || $rootScope.device.status!='disconnected') return;
+    if(!$scope.currentBike || !$scope.currentBike.id) {
+      return $state.go('brands', {id:'create'});
+    }
+    if(!$rootScope.device) {
+      return $state.go('tab.home-bind');
+    } else if($rootScope.device.status!='disconnected') {
+      return console.log('reconnectDevice status:'+$rootScope.device.status);
+    }
     if(!$scope.online) return $rootScope.device.onConnected()
 
     $rootScope.device.autoconnect().then(function (result) {

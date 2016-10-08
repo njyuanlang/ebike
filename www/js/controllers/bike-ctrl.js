@@ -178,28 +178,32 @@ controllers
   }
 
   function doScan() {
+    if($window.ble) {
+      ble.isEnabled(function (result) {
+        devices = []
+        $scope.entities = []
+        $scope.$apply()
+        if($scope.scanTimer) $timeout.cancel($scope.scanTimer)
+        $scope.scanTimer = $timeout(stopScan, 5000)
+        ble.scan([], 5, scanSuccessCb, scanErrorCb)
+      }, function (error) {
+        $rootScope.$broadcast('bluetooth.disabled');
+        $timeout(scanErrorCb, 2000);
+      })
+    } else {
+      $timeout(scanErrorCb, 2000);
+    }
+  }
+
+  $scope.doScan = function () {
     if(!$scope.online) return;
 
-    $rootScope.device.disconnect()
-    .then(function () {
-      if($window.ble) {
-        ble.isEnabled(function (result) {
-          devices = []
-          $scope.entities = []
-          $scope.$apply()
-          if($scope.scanTimer) $timeout.cancel($scope.scanTimer)
-          $scope.scanTimer = $timeout(stopScan, 5000)
-          ble.scan([], 5, scanSuccessCb, scanErrorCb)
-        }, function (error) {
-          $rootScope.$broadcast('bluetooth.disabled');
-          $timeout(scanErrorCb, 2000);
-        })
-      } else {
-        $timeout(scanErrorCb, 2000);
-      }
-    });
+    if (!$rootScope.device) {
+      doScan();
+    } else {
+      $rootScope.device.disconnect().then(doScan);
+    }
   }
-  $scope.doScan = doScan
 
   function tryConnect(device) {
     device.connect()
@@ -207,11 +211,7 @@ controllers
       return $scope.closeModal();
     })
     .then(function (result) {
-      return $rootScope.device.isConnected()
-    })
-    .then(function (result) {
       $scope.$ionicGoBack();
-      $rootScope.device = null;
       $rootScope.device = device;
       $rootScope.currentBike = device.bike;
       MyPreferences.save();

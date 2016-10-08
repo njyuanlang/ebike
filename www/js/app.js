@@ -90,7 +90,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 
     if(window.ble) {
       ble.isEnabled(function (result) {
-        ble.scan([], 10, function () {}, function () {})
+        ble.scan([], 5, function () {}, function () {})
       }, function (error) {
         $rootScope.$broadcast('bluetooth.disabled');
       })

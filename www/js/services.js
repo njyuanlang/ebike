@@ -144,9 +144,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   var uploadInterval = null
   var notify = function(localId, characteristic) {
     if($rootScope.online) {
-      console.log('startNotification '+characteristic);
       if(localId) {
-        ble.startNotification(localId, service.uuid, service[characteristic], noitficationCbs[characteristic])
+        ble.startNotification(localId, service.uuid, service[characteristic], noitficationCbs[characteristic], function () {
+          console.log('startNotification Failure: '+characteristic);
+        })
       }
       if(fakeIntervals[characteristic]) {
         $interval.cancel(fakeIntervals[characteristic])
@@ -162,9 +163,12 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
   var stopNotify = function (localId, characteristic) {
     if($rootScope.online&&$window.ble) {
-      console.log('stopNotification '+characteristic);
       if(localId) {
-        ble.stopNotification(localId, service.uuid, service[characteristic])
+        ble.stopNotification(localId, service.uuid, service[characteristic], function () {
+          console.log('stopNotification Success: '+characteristic);
+        }, function () {
+          console.log('stopNotification Failure: '+characteristic);
+        })
       }
     }
     if(fakeIntervals[characteristic]) {
@@ -314,7 +318,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       $interval.cancel(this.connectingInterval)
       this.connectingInterval = null
     }
-    this.realtime.stopNotifications(this.localId)
+    // this.realtime.stopNotifications(this.localId)
   };
 
   BLEDevice.prototype.isConnected = function () {
