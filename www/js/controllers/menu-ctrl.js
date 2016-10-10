@@ -34,14 +34,16 @@ controllers
   }
 
   $scope.index = 4;
-  $scope.workmodes.some(function (mode, index) {
-    if(mode.key === $scope.device.bike.customKey) {
-      $scope.index = index;
-      return true;
-    } else {
-      return false;
-    }
-  });
+  if($scope.device) {
+    $scope.workmodes.some(function (mode, index) {
+      if(mode.key === $scope.device.bike.customKey) {
+        $scope.index = index;
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
 })
 
 .controller('MessagesCtrl', function($scope, $state, $rootScope, $translate) {
@@ -69,8 +71,12 @@ controllers
   }
 
   $scope.init = function () {
-    $scope.device.startReminder()
-    $scope.entities = Object.keys($scope.device.reminder)
+    if($scope.device) {
+      $scope.device.startReminder()
+      $scope.entities = Object.keys($scope.device.reminder)
+    } else {
+      $scope.entities = [];
+    }
   }
 
 })
