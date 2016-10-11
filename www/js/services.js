@@ -234,19 +234,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   BLEDevice.prototype.setWorkmode = function (mode) {
     if (this.status !== 'connected') return;
     if(this.bike.workmode == mode) mode = 0;
-    // if(this.bike.workmode==30||this.bike.workmode==46) {
-    //   var cancelMode = this.bike.workmode+1;
-    //   if($rootScope.online) {
-    //     var hexs = [0xb0+cancelMode, 0xb0+cancelMode];
-    //     console.log(cancelMode);
-    //     this.sendOrder(hexs);
-    //   }
-    //   if(mode === 0) {
-    //     this.bike.workmode = mode;
-    //     return;
-    //   }
-    // }
     this.bike.workmode = mode;
+    console.log('setWorkmode: '+mode);
     if($rootScope.online) {
       var hexs = [0xb0, 0xb0]
       hexs[0] += mode
@@ -361,7 +350,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
               tryConnect();
             }
           } else {
-            console.log('Try out')
+            console.log('Try out: '+reason)
             if(typeof reason === 'object') {
               console.log(JSON.stringify(reason));
             }
