@@ -23,7 +23,7 @@ controllers
     if(!$scope.device) {
       $ionicPopup.alert({
         title: '提示',
-        template: '重置功能请连接车辆'
+        template: '<div style="text-align: center">重置功能请连接车辆</div>'
       });
     }
     var mode = $scope.workmodes[index];
@@ -34,7 +34,7 @@ controllers
     }, function (err) {
       $ionicPopup.alert({
         title: '提示',
-        template: err
+        template: '<div style="text-align: center">'+err+'</div>'
       });
     });
   }
