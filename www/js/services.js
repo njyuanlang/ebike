@@ -127,12 +127,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
           $rootScope.currentBike.antiTheft = false;
         }
       }
-      if($rootScope.currentBike.antiTheft && res[2]==17) {
-        // console.log('realtime.warning=======');
-      } else {
-        // console.log('antiTheft:'+res[2]);
-        // console.log('realtime.allclear========');
-      }
       var idx = res[4]||0;
       console.log('Update==speed====='+res[3]+';'+res[4]);
       $rootScope.device.bike.workmode = workmodes[idx];

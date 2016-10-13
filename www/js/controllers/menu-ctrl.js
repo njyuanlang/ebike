@@ -20,6 +20,12 @@ controllers
   ];
 
   $scope.setKey = function (index) {
+    if(!$scope.device) {
+      $ionicPopup.alert({
+        title: '提示',
+        template: '重置功能请连接车辆'
+      });
+    }
     var mode = $scope.workmodes[index];
     $scope.device.statedefine(mode.key)
     .then(function () {
