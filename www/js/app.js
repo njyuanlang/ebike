@@ -29,7 +29,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       });
     } else {
       // For Debug on browser
-      $translate.use('en');
+      $rootScope.language = 'en';
+      $translate.use($rootScope.language);
     }
   }
   $ionicPlatform.ready(function() {
@@ -448,6 +449,15 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       views: {
         'tab-menu': {
           templateUrl: "templates/about.html"
+        }
+      }
+    })
+    // Guide
+    .state('tab.guide', {
+      url: "/guide",
+      views: {
+        'tab-menu': {
+          templateUrl: "templates/guide.html"
         }
       }
     })

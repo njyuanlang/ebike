@@ -10,7 +10,16 @@ controllers
   };
 })
 
-.controller('CustomCtrl', function ($scope, MyPreferences, $ionicPopup) {
+.controller('CustomCtrl', function ($scope, MyPreferences, $ionicPopup, $translate) {
+
+  var translations = {
+    TIPS: '',
+    CUSTOM_KEY_NEDD_CONNECTING: ''
+  };
+  $translate(Object.keys(translations)).then(function (result) {
+    translations = result;
+  });
+
   $scope.workmodes = [
     {title:"SMART_PARK", key: 0x4},
     {title:"SMART_PUSH", key: 0x5},
@@ -21,9 +30,9 @@ controllers
 
   $scope.setKey = function (index) {
     if(!$scope.device) {
-      $ionicPopup.alert({
-        title: '提示',
-        template: '<div style="text-align: center">重置功能请连接车辆</div>'
+      return $ionicPopup.alert({
+        title: translations.TIPS,
+        template: '<div style="text-align: center">'+translations.CUSTOM_KEY_NEDD_CONNECTING+'</div>'
       });
     }
     var mode = $scope.workmodes[index];
@@ -33,7 +42,7 @@ controllers
       MyPreferences.save();
     }, function (err) {
       $ionicPopup.alert({
-        title: '提示',
+        title: translations.TIPS,
         template: '<div style="text-align: center">'+err+'</div>'
       });
     });

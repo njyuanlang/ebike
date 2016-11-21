@@ -6,7 +6,10 @@ controllers
   var translations = {
     OPEN_WITH_KEY: '',
     REQUIRE_CONNECT_BIKE_TIPS: '',
-    CONNECT_BIKE_FAILURE: ''
+    CONNECT_BIKE_FAILURE: '',
+    TIPS:'',
+    CANCEL_PARKING_BEFORE_SWITCH:'',
+    CANCEL_PUSHING_BEFORE_SWITCH:''
   };
   $translate(Object.keys(translations)).then(function (result) {
     translations = result;
@@ -90,13 +93,13 @@ controllers
   $scope.setWorkmode = function (mode) {
     if($rootScope.device.bike.workmode===30&&mode!==31) {
       $ionicPopup.alert({
-        title: '提示',
-        template: '请点击智能泊车按钮，取消泊车状态再切换到其他状态'
+        title: translations.TIPS,
+        template: translations.CANCEL_PARKING_BEFORE_SWITCH
       })
     } else if($rootScope.device.bike.workmode===46&&mode!==47) {
       $ionicPopup.alert({
         title: '提示',
-        template: '请点击智能推行按钮，取消推行状态再切换到其他状态'
+        template: translations.CANCEL_PUSHING_BEFORE_SWITCH
       })
     } else {
       $rootScope.device.setWorkmode(mode);

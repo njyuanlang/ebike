@@ -138,5 +138,10 @@
   "BIKE_MODEL": "Bike Model",
   "AUTHORIZED_TIPS": "Keep pressing the two buttons to complete the identification of the owner",
   "3_PROMPT_RINGS": "Bike rings three times",
-  "QUIT": "Quit"
+  "QUIT": "Quit",
+  "TIPS": "Tips",
+  "CUSTOM_KEY_NEDD_CONNECTING": "Connect vehicle to reset functions",
+  "CANCEL_PARKING_BEFORE_SWITCH": "Click the \"Parking\" button to cancel the status and then switch to other status",
+  "CANCEL_PUSHING_BEFORE_SWITCH": "Click the \"Pushing\" button to cancel the status and then switch to other status",
+  "GUIDE":"Guide"
 }

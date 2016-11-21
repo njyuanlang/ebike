@@ -138,5 +138,10 @@
   "BIKE_MODEL": "车辆型号",
   "AUTHORIZED_TIPS": "同时按住如图两个按键进行车主身份识别",
   "3_PROMPT_RINGS": "车辆发出三声响",
-  "QUIT": "退出"
+  "QUIT": "退出",
+  "TIPS": "提示",
+  "CUSTOM_KEY_NEDD_CONNECTING": "重置功能请连接车辆",
+  "CANCEL_PARKING_BEFORE_SWITCH": "请点击\"智能泊车\"按钮，取消泊车状态再切换到其他状态",
+  "CANCEL_PUSHING_BEFORE_SWITCH": "请点击\"智能推行\"按钮，取消推行状态再切换到其他状态",
+  "GUIDE":"帮助手册"
 }
