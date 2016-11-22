@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget android-versionCode="4595" id="com.extensivepro.ebikeglobal" ios-CFBundleVersion="4595" version="4.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>帮大师</name>
+<widget android-versionCode="4597" id="com.extensivepro.ebikeglobal" ios-CFBundleVersion="4597" version="4.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>eMaster</name>
   <description>
     电动车手机管理应用
     </description>

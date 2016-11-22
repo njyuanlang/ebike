@@ -1,19 +1,7 @@
 controllers
 
 .controller('HomeCtrl', function($scope, $state, $ionicLoading, User,
-  $localstorage, $translate, $cordovaVibration, $ionicPopup, $rootScope) {
-
-  var translations = {
-    OPEN_WITH_KEY: '',
-    REQUIRE_CONNECT_BIKE_TIPS: '',
-    CONNECT_BIKE_FAILURE: '',
-    TIPS:'',
-    CANCEL_PARKING_BEFORE_SWITCH:'',
-    CANCEL_PUSHING_BEFORE_SWITCH:''
-  };
-  $translate(Object.keys(translations)).then(function (result) {
-    translations = result;
-  });
+  $localstorage, $cordovaVibration, $ionicPopup, $rootScope, $filter) {
 
   $scope.$on('realtime.update', function (event) {
     if($rootScope.device.bike.workmode === 9 && $rootScope.device.realtime.power > 24) {
@@ -25,6 +13,7 @@ controllers
   $scope.$on('$ionicView.enter', function (event) {
     if(!$scope.online) return $rootScope.device.onConnected();
     if(!$scope.currentUser) return console.log('return due to anoymous: '+$rootScope.device);;
+
     reconnectDevice();
   })
 
@@ -34,13 +23,13 @@ controllers
         $state.go('tab.test')
       } else {
         $ionicLoading.show({
-          template: '<i class="icon ion-ios-information-outline padding"></i>'+translations.OPEN_WITH_KEY,
+          template: '<i class="icon ion-ios-information-outline padding"></i>'+$filter('translate')('OPEN_WITH_KEY'),
           duration: 2000
         })
       }
     } else {
       $ionicLoading.show({
-        template: '<i class="icon ion-ios-information-outline padding"></i>'+translations.REQUIRE_CONNECT_BIKE_TIPS,
+        template: '<i class="icon ion-ios-information-outline padding"></i>'+$filter('translate')('REQUIRE_CONNECT_BIKE_TIPS'),
         duration: 2000
       })
     }
@@ -79,7 +68,7 @@ controllers
       } else {
         if(/not find/.test(reason)) reason = '没有找到车辆，请靠近车辆重试！';
         $ionicLoading.show({
-          template: '<i class="icon ion-ios-close-outline padding"></i>'+translations.CONNECT_BIKE_FAILURE+reason,
+          template: '<i class="icon ion-ios-close-outline padding"></i>'+$filter('translate')('CONNECT_BIKE_FAILURE')+reason,
           duration: 2000
         })
       }
@@ -91,15 +80,16 @@ controllers
   $scope.$on('home.reconnect', reconnectDevice);
 
   $scope.setWorkmode = function (mode) {
+
     if($rootScope.device.bike.workmode===30&&mode!==31) {
       $ionicPopup.alert({
-        title: translations.TIPS,
-        template: translations.CANCEL_PARKING_BEFORE_SWITCH
+        title: $filter('translate')('TIPS'),
+        template: $filter('translate')('CANCEL_PARKING_BEFORE_SWITCH')
       })
     } else if($rootScope.device.bike.workmode===46&&mode!==47) {
       $ionicPopup.alert({
-        title: '提示',
-        template: translations.CANCEL_PUSHING_BEFORE_SWITCH
+        title: $filter('translate')('TIPS'),
+        template: $filter('translate')('CANCEL_PUSHING_BEFORE_SWITCH')
       })
     } else {
       $rootScope.device.setWorkmode(mode);

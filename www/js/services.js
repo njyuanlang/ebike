@@ -128,7 +128,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         }
       }
       var idx = res[4]||0;
-      console.log('Update==speed====='+res[3]+';'+res[4]);
+      // console.log('Update==speed====='+res[3]+';'+res[4]);
       $rootScope.device.bike.workmode = workmodes[idx];
       // $rootScope.currentBike.workmode = workmodes[idx];
       $rootScope.$broadcast('realtime.update')
@@ -567,7 +567,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       setTimeout(q.resolve, 10);
     } else if(this.status !== 'connected'|| !$window.ble) {
       setTimeout(function () {
-        q.reject('重置功能请连接车辆');
+        q.reject('CUSTOM_KEY_NEED_CONNECTING');
       }, 10);
     } else {
       var kThis = this;
@@ -886,11 +886,12 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
 }])
 
-.service('AnonymousUser', ['User', '$rootScope', '$state', function (User, $rootScope, $state) {
+.service('AnonymousUser', ['User', '$rootScope', '$state', function (User, $rootScope, $state, $cordovaDevice) {
 
   this.login = function () {
+    // var device = $cordovaDevice.getDevice();
     var entity = {
-      username: navigator.device&&device.uuid||'testuser',
+      username: device&&device.uuid||'testuser',
       password: '123456',
       realm: 'globalclient'
     }
@@ -903,7 +904,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
     tryLogin(entity, function (err) {
       if(err) {
-        console.log(err);
+        console.log(JSON.stringify(err));
         User.create(entity).$promise.then(function (user) {
           tryLogin(user, function (err) {
             $rootScope.registerBike = {
@@ -917,6 +918,8 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
             }
             $state.go('bike-register', {bikeId: 'create'})
           });
+        }, function (err) {
+          console.log('AnonymousUser Create:'+JSON.stringify(err));
         });
       }
     });

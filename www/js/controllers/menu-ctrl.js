@@ -10,15 +10,7 @@ controllers
   };
 })
 
-.controller('CustomCtrl', function ($scope, MyPreferences, $ionicPopup, $translate) {
-
-  var translations = {
-    TIPS: '',
-    CUSTOM_KEY_NEDD_CONNECTING: ''
-  };
-  $translate(Object.keys(translations)).then(function (result) {
-    translations = result;
-  });
+.controller('CustomCtrl', function ($scope, MyPreferences, $ionicPopup, $filter) {
 
   $scope.workmodes = [
     {title:"SMART_PARK", key: 0x4},
@@ -31,8 +23,8 @@ controllers
   $scope.setKey = function (index) {
     if(!$scope.device) {
       return $ionicPopup.alert({
-        title: translations.TIPS,
-        template: '<div style="text-align: center">'+translations.CUSTOM_KEY_NEDD_CONNECTING+'</div>'
+        title: $filter('translate')('TIPS'),
+        template: '<div style="text-align: center">'+$filter('translate')('CUSTOM_KEY_NEED_CONNECTING')+'</div>'
       });
     }
     var mode = $scope.workmodes[index];
@@ -42,8 +34,8 @@ controllers
       MyPreferences.save();
     }, function (err) {
       $ionicPopup.alert({
-        title: translations.TIPS,
-        template: '<div style="text-align: center">'+err+'</div>'
+        title: $filter('translate')('TIPS'),
+        template: '<div style="text-align: center">'+($filter('translate')(err)||err)+'</div>'
       });
     });
   }

@@ -25,7 +25,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
     if(typeof navigator.globalization !== "undefined") {
       $cordovaGlobalization.getPreferredLanguage().then(function(language) {
         $rootScope.language = language.value.split('-')[0];
-        $translate.use($rootScope.language);
+        var translate = $translate.use($rootScope.language);
       });
     } else {
       // For Debug on browser

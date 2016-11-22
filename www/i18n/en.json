@@ -140,7 +140,7 @@
   "3_PROMPT_RINGS": "Bike rings three times",
   "QUIT": "Quit",
   "TIPS": "Tips",
-  "CUSTOM_KEY_NEDD_CONNECTING": "Connect vehicle to reset functions",
+  "CUSTOM_KEY_NEED_CONNECTING": "Connect vehicle to reset functions",
   "CANCEL_PARKING_BEFORE_SWITCH": "Click the \"Parking\" button to cancel the status and then switch to other status",
   "CANCEL_PUSHING_BEFORE_SWITCH": "Click the \"Pushing\" button to cancel the status and then switch to other status",
   "GUIDE":"Guide"
