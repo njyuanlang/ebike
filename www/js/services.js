@@ -434,8 +434,21 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
   BLEDevice.prototype.sendSpec = function () {
     if(!$rootScope.online || !$window.ble) return;
-    if(this.bike.wheeldiameter < 10) this.bike.wheeldiameter = 10;
-    var hexs = [this.bike.voltage, this.bike.current, 0, this.bike.wheeldiameter]
+    var wheeldiameter = this.bike.wheeldiameter;
+    if(wheeldiameter==='2~4') wheeldiameter = 10;
+    else if(wheeldiameter==='4~6') wheeldiameter = 10;
+    else if(wheeldiameter==='6~8') wheeldiameter = 10;
+
+    var voltage = this.bike.voltage;
+    if(voltage==='18~24') voltage = 36;
+
+    var current = this.bike.current;
+    if(current==='8~10') current = 12;
+
+//    console.log(wheeldiameter);
+//    console.log(voltage);
+//    console.log(current);
+    var hexs = [voltage, current, 0, wheeldiameter]
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.spec, value)
   }

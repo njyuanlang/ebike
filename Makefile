@@ -4,6 +4,6 @@ android:
 	ionic run android
 ios:
 	cordova prepare ios
-	open platforms/ios/帮大师.xcodeproj
+	open platforms/ios/eMaster.xcodeproj
 
 .PHONY : android ios
