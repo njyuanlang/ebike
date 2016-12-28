@@ -49,4 +49,4 @@ gulp.task('git-check', function(done) {
   done();
 });
 
-gulp.task('serve:before', ['default']);
+gulp.task('serve:before', ['sass', 'watch']);

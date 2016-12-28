@@ -1,8 +1,8 @@
 <ion-view title="{{'BRAND'|translate}}" hide-back-button="true" ng-init="init()"  show-tabs>
   <ion-nav-buttons side="right">
-    <a class="button button-clear" ng-click="endure()"
-      ng-class="device.realtime.power > 0 || device.status!='connected'?'disabled':'button-positive'"
-      ng-if="device.workmode != 9">{{'POWERLESS_ENDURE'|translate}}</a>
+    <a class="button button-clear button-positive" ng-click="endure()">
+      {{'POWERLESS_ENDURE'|translate}}
+    </a>
   </ion-nav-buttons>
 
   <ion-content class="" scroll="false">
@@ -40,18 +40,19 @@
       <div class="col"></div>
       <div class="col col-75">
         <div class="home-power-cycle home-power-cycle-{{device.realtime.power}}">
-          <div class="overlay image-button" ng-show="device.workmode != 9">
+          <div class="overlay image-button">
             <a ng-click="device.antiTheft(!currentBike.antiTheft)" pushvibrate>
               <img ng-src="img/lock-{{!currentBike.antiTheft?'light':'gray'}}.png">
             </a>
           </div>
-          <div class="overlay" ng-show="device.workmode == 9">
-            <h3 class="assertive">{{'POWERLESS_ENDURE'|translate}}{{'MODE'|translate}}</h3>
-            <label>{{'POWERLESS_ENDURE_TIPS'|translate}}</label>
-          </div>
         </div>
       </div>
       <div class="col"></div>
+    </div>
+    <div class="row powerless-overlay" ng-show="device.bike.workmode==9&&!device.realtime.offline">
+      <i class="icon ion-alert-circled"></i>
+      <h4 class="">{{'POWERLESS_ENDURE'|translate}}</h4>
+      <p class="">{{'POWERLESS_ENDURE_TIPS'|translate}}</p>
     </div>
     <div class="row text-center">
       <div class="col digital-display">
@@ -76,7 +77,7 @@
       <div class="col col-30 image-button image-button-sm col-offset-5">
         <a class="button button-clear button-light" ng-class="{'disabled': device.bike.workmode == 9}"
          ng-click="setWorkmode(1)" pushvibrate>
-          <img src="img/powersave-{{device.bike.workmode%8 === 1?'light':'gray'}}.png">
+          <img src="img/powersave-{{device.bike.workmode%8===1?'light':'gray'}}.png">
           <h6>{{'SAVE_POWER'|translate}}</h6>
         </a>
       </div>

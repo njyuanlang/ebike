@@ -899,12 +899,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
 }])
 
-.service('AnonymousUser', ['User', '$rootScope', '$state', function (User, $rootScope, $state, $cordovaDevice) {
+.service('AnonymousUser', ['User', '$rootScope', '$state', function (User, $rootScope, $state) {
 
   this.login = function () {
-    // var device = $cordovaDevice.getDevice();
+    var dev = window.device;
+
     var entity = {
-      username: device&&device.uuid||'testuser',
+      username: dev&&dev.uuid||'testuser',
       password: '123456',
       realm: 'globalclient'
     }

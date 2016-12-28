@@ -1,6 +1,8 @@
 {
   "name": "ebike",
   "app_id": "com.extensivepro.ebike",
+  "v2": false,
+  "typescript": false,
   "gulpStartupTasks": [
     "sass",
     "watch"

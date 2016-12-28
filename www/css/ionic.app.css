@@ -13932,6 +13932,23 @@ a.autolinker {
   font-size: 16px;
   line-height: 40px; }
 
+.powerless-overlay {
+  position: absolute;
+  top: 38%;
+  text-align: center;
+  background: rgba(221, 221, 221, 0.9);
+  margin-top: -6.5rem !important;
+  z-index: 100;
+  display: inline-table;
+  padding: 10px 0; }
+  .powerless-overlay i {
+    font-size: 45px;
+    margin: 10px 0 0 0;
+    color: #ef473a; }
+  .powerless-overlay p {
+    margin-left: 28%;
+    margin-right: 28%; }
+
 .authorize-bg h4 {
   margin: 10%;
   text-align: center; }

@@ -56,6 +56,14 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       cordova.getAppVersion.getVersionCode(function (build) {
         $rootScope.appBuild = build;
       });
+
+      if(User.isAuthenticated()) {
+        //For Debug on browser
+        // $rootScope.online = false;
+        $rootScope.$broadcast('user.DidLogin');
+      } else {
+        AnonymousUser.login();
+      }
     } else {
       $rootScope.appVersion = '4.0.0';
       $rootScope.appBuild = '1000';
@@ -101,17 +109,10 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       })
     }
 
-    if(User.isAuthenticated()) {
-      //For Debug on browser
-      // $rootScope.online = false;
-      $rootScope.$broadcast('user.DidLogin');
-    } else {
-      AnonymousUser.login();
-    }
   });
 
   $rootScope.hideTabs = false;
-  $rootScope.online = true
+  $rootScope.online = true;
   $rootScope.avatar = null;
   $rootScope.buttonVibrate = true;
 

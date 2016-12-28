@@ -54,7 +54,7 @@
   "REMAIN": "剩余",
   "RANGE_OF_KM": "续航公里",
   "LOW_POWER_TIPS": "请尽快充电或开启无电续航！",
-  "POWERLESS_ENDURE_TIPS": "无电续航中请尽快充电！",
+  "POWERLESS_ENDURE_TIPS": "此功能仅限本次使用，请尽快充电！",
   "OVERLOAD_PROMPT": "车辆超载！",
   "TEMPERATURE_PROMPT": "温度过高！",
   "SAVE_POWER": "省电",

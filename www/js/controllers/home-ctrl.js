@@ -36,7 +36,15 @@ controllers
   }
 
   $scope.endure = function () {
-    $rootScope.device.setWorkmode(9)
+    var device = $rootScope.device;
+    if(!device.realtime.offline) {
+      device.setWorkmode(9);
+    } else {
+      $ionicPopup.alert({
+        title: '提示',
+        template: '请开启电源！'
+      });
+    }
   }
 
   var reconnectDevice = function () {
