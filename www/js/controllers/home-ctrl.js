@@ -4,9 +4,9 @@ controllers
   $localstorage, $cordovaVibration, $ionicPopup, $rootScope, $filter) {
 
   $scope.$on('realtime.update', function (event) {
-    if($rootScope.device.bike.workmode === 9 && $rootScope.device.realtime.power > 24) {
-      $rootScope.device.setWorkmode(0)
-    }
+    // if($rootScope.device.bike.workmode === 9 && $rootScope.device.realtime.power > 24) {
+    //   $rootScope.device.setWorkmode(0)
+    // }
     $scope.$apply()
   })
 

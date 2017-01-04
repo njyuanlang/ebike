@@ -99,6 +99,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     15, //0x03 speed
     30, //0x04 park
     46, //0x05 push
+    9 //0x06 powerless
   ]
   var noitficationCbs = {
     power: function (result) {
@@ -227,9 +228,9 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
   BLEDevice.prototype.setWorkmode = function (mode) {
     if (this.status !== 'connected') return;
+    console.log('setWorkmode: '+mode+' from: '+this.bike.workmode);
     if(this.bike.workmode == mode) mode = 0;
     this.bike.workmode = mode;
-    console.log('setWorkmode: '+mode);
     if($rootScope.online) {
       var hexs = [0xb0, 0xb0]
       hexs[0] += mode
