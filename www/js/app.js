@@ -5,13 +5,14 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9UIWebViewPatch','ebike.controllers', 'ebike.services', 'ebike.filters', 'ebike.directives'])
 
-.constant('defaultLanguage', 'zh')
-.config(function($stateProvider, $urlRouterProvider, $translateProvider, defaultLanguage) {
+.constant('isGlobalVersion', false)
+.config(function($stateProvider, $urlRouterProvider, $translateProvider, isGlobalVersion) {
   $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
   $translateProvider.useStaticFilesLoader({
     'prefix': 'i18n/',
     'suffix': '.json'
   });
+  var defaultLanguage = isGlobalVersion?'en':'zh';
   $translateProvider.preferredLanguage(defaultLanguage);
   $translateProvider.fallbackLanguage(defaultLanguage);
 })
@@ -19,20 +20,22 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 .run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen,
   $cordovaStatusbar, $ionicHistory, $cordovaNetwork, User, RemoteStorage, $http,
   $ionicPopup, MyPreferences, BLEDevice, $ionicLoading, $cordovaGlobalization,
-  $translate, AnonymousUser) {
+  $translate, AnonymousUser, isGlobalVersion) {
 
   function setLanguage() {
     if(typeof navigator.globalization !== "undefined") {
       $cordovaGlobalization.getPreferredLanguage().then(function(language) {
         $rootScope.language = language.value.split('-')[0];
-        var translate = $translate.use($rootScope.language);
+        $translate.use($rootScope.language);
       });
     } else {
       // For Debug on browser
-      $rootScope.language = 'en';
+      $rootScope.language = isGlobalVersion?'en':'zh';
       $translate.use($rootScope.language);
     }
   }
+
+  $rootScope.isGlobalVersion = isGlobalVersion;
   $ionicPlatform.ready(function() {
 
     setLanguage();
@@ -62,7 +65,11 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
         // $rootScope.online = false;
         $rootScope.$broadcast('user.DidLogin');
       } else {
-        AnonymousUser.login();
+        if(isGlobalVersion) {
+          AnonymousUser.login();
+        } else {
+          $state.go('entry');
+        }
       }
     } else {
       $rootScope.appVersion = '4.0.0';
@@ -135,7 +142,9 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
   })
 
   $rootScope.$on('user.DidLogout', function (event, args) {
-    AnonymousUser.login();
+    if(isGlobalVersion) {
+      AnonymousUser.login();
+    }
   })
 
   $rootScope.$watch('currentBike', function (newValue, oldValue) {
@@ -507,8 +516,11 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
           LoopBackAuth.clearUser();
           LoopBackAuth.clearStorage();
           $rootScope.$broadcast('user.DidLogout')
-          // AnonymousUser.login();
-          $location.path('/tab/home')
+          if(isGlobalVersion) {
+            AnonymousUser.login();
+          } else {
+            $location.path('/tab/home')
+          }
         }
         return $q.reject(rejection);
       }

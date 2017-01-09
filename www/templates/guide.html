@@ -1,5 +1,5 @@
 <ion-view title="{{'GUIDE'|translate}}">
-	<ion-content padding="true">
+	<ion-content padding="true" ng-show="isGlobalVersion">
     <h4>A.Suitable type requirements</h4>
     <ol class="padding-left">
       <li>a.Android system to be 4.3 or higher;</li>
@@ -41,4 +41,46 @@
       <li>Horizontal screen display function could be used when your phone is in rotating-screen mode only,make sure that the phone screen is unlocked.</li>
     </ol>
   </ion-content>
+	<ion-content padding="true" ng-hide="isGlobalVersion">
+		<h4>一、适配机型要求</h4>
+    <ol class="padding-left">
+      <li>a.Android系统： 4.3版本以上；</li>
+      <li>b.IOS系统：6.0版本以上（即：4S以上）；</li>
+      <li>c.手机蓝牙版本需4.0以上。</li>
+    </ol>
+    <h4>二、搜索不到蓝牙信号怎么办</h4>
+    <ol class="padding-left">
+      <li>a.确认手机蓝牙处于打开状态；</li>
+      <li>b.确认已选择车辆品牌，并已选择车辆的各项参数；</li>
+      <li>c.确认车辆不在已连接状态。</li>
+    </ol>
+    <h4>三、唯一身份识别</h4>
+    <ol class="padding-left">
+      <li>a.唯一身份识别为APP与车辆连接的必备过程；</li>
+      <li>b.点击“BX-*****”蓝牙信号后，进入授权页面，同时按下遥控器上的：帮大师键+锁车键即可完成身份识别。</li>
+    </ol>
+    <h4>四、遥控器自定义功能</h4>
+    <ol class="padding-left">
+      <li>a.设置“帮大师”键的功能需在车辆连接成功的状态下；</li>
+      <li>b.“帮大师”键的功能只能选择任意一个行驶模式作为常用功能。</li>
+    </ol>
+    <h4>五、遥控器上“帮大师”键的使用</h4>
+    <ol class="padding-left">
+      <li>a.默认自定义功能为“超速”模式，可根据需要自行更改；</li>
+      <li>b.使用之前需保持车辆速度为“零”状态；</li>
+      <li>c.每次使用完需重启电动车电门锁，方可进入正常行驶状态。</li>
+    </ol>
+    <h4>六、行驶模式间的切换</h4>
+    <ol class="padding-left">
+      <li>当前行驶模式处于“智能泊车”或“智能推行”状态时，若想切换成其他的行驶模式，请先根据提示退出当前行驶模式。</li>
+    </ol>
+    <h4>七、安全模式</h4>
+    <ol class="padding-left">
+      <li>在行驶过程中若遇转动转把速度无法提升时，你可能进入了限速行驶状态，请将“安全模式”的按钮关闭（将按钮划至左侧）。</li>
+    </ol>
+    <h4>八、手机横屏后，为什么不能显示横屏仪表</h4>
+    <ol class="padding-left">
+      <li>确认手机横屏锁是否被锁上，解锁后即可体验横屏仪表。</li>
+    </ol>
+	</ion-content>
 </ion-view>
