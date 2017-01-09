@@ -38,7 +38,9 @@ controllers
   $scope.endure = function () {
     var device = $rootScope.device;
     if(!device.realtime.offline) {
-      device.setWorkmode(9);
+      if($scope.device.bike.workmode!==9) {
+        device.setWorkmode(9);
+      }
     } else {
       $ionicPopup.alert({
         title: '提示',

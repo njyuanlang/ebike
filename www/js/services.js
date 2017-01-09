@@ -230,7 +230,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     if (this.status !== 'connected') return;
     console.log('setWorkmode: '+mode+' from: '+this.bike.workmode);
     if(this.bike.workmode == mode) mode = 0;
-    this.bike.workmode = mode;
+    // this.bike.workmode = mode;
     if($rootScope.online) {
       var hexs = [0xb0, 0xb0]
       hexs[0] += mode
