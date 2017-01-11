@@ -191,8 +191,6 @@ $button-gray-text:      #999 !default;
 
 .button {
 
-  min-height: 2.6rem!important;
-
   &.button-left {
     @include button-clear($button-default-border);
     padding: 0;
@@ -202,6 +200,7 @@ $button-gray-text:      #999 !default;
     background: url(../img/park-gray.png) 0 0 no-repeat;
     -webkit-background-size: 100% 100%!important;
     box-shadow: none;
+    min-height: 2.6rem!important;
 
     &.active,
     &.activated {
@@ -219,6 +218,7 @@ $button-gray-text:      #999 !default;
     background: url(../img/push-gray.png) 0 0 no-repeat;
     -webkit-background-size: 100% 100%!important;
     box-shadow: none;
+    min-height: 2.6rem!important;
 
     &.active,
     &.activated {
@@ -261,5 +261,5 @@ $button-gray-text:      #999 !default;
 }
 
 .mt {
-  margin-top: 1rem!important;
+  margin-top: 0.8rem!important;
 }
