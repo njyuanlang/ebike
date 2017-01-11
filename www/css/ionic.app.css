@@ -31,10 +31,6 @@ $dark:                            #444 !default;
     color: #fff;
     margin-top: 0.5rem !important; }
 
-.authorize-bg {
-  background: url("../img/authorize-bg.png") no-repeat center center fixed;
-  -webkit-background-size: cover !important; }
-
 .transparent-bg {
   background: transparent !important; }
 
@@ -13954,14 +13950,19 @@ a.autolinker {
 .mt {
   margin-top: 0.8rem !important; }
 
+.authorize-bg {
+  background: url("../img/authorize-bg.png") no-repeat center center fixed;
+  -webkit-background-size: cover !important; }
+
 .authorize-bg h4 {
-  margin: 10%;
+  margin: 12% 15%;
   text-align: center; }
 
 .authorize-bg .box {
   display: block;
-  width: 66%;
+  width: 50%;
   margin: 105% auto 5% auto;
+  padding: 3px 0;
   border: 1.5px solid #00ccff;
   color: #00ccff; }
 

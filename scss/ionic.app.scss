@@ -83,7 +83,6 @@ $popup-background-color:          $light !default;
 $cruise-bg:                       '../img/cruise-bg.png';
 $cruise-rotate-bg:                '../img/rotation.png';
 $user-bg:                         '../img/user-bg.png';
-$authorize-bg:                    '../img/authorize-bg.png';
 
 //.scroll-bg {
 //  background: url($default-bg) no-repeat center center fixed;
@@ -110,11 +109,6 @@ $authorize-bg:                    '../img/authorize-bg.png';
     margin-top: 0.5rem!important;
   }
 }
-.authorize-bg {
-  background: url($authorize-bg) no-repeat center center fixed;
-  -webkit-background-size: cover!important;
-}
-
 
 .transparent-bg {
   background: transparent!important;

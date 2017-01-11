@@ -1,15 +1,22 @@
 $authorize-color:            #00ccff !default;
+$authorize-bg:                    '../img/authorize-bg.png';
+
+.authorize-bg {
+  background: url($authorize-bg) no-repeat center center fixed;
+  -webkit-background-size: cover!important;
+}
 
 .authorize-bg {
   h4 {
-    margin: 10%;
+    margin: 12% 15%;
     text-align: center;
   }
 
   .box {
     display: block;
-    width: 66%;
+    width: 50%;
     margin: 105% auto 5% auto;
+    padding: 3px 0;
     border: 1.5px solid $authorize-color;
     color: $authorize-color;
   }
