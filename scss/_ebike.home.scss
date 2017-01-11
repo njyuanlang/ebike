@@ -191,6 +191,8 @@ $button-gray-text:      #999 !default;
 
 .button {
 
+  min-height: 2.6rem!important;
+
   &.button-left {
     @include button-clear($button-default-border);
     padding: 0;
@@ -256,4 +258,8 @@ $button-gray-text:      #999 !default;
     margin-left: 28%;
     margin-right: 28%;
   }
+}
+
+.mt {
+  margin-top: 1rem!important;
 }

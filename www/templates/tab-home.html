@@ -59,8 +59,8 @@
         <h2 class="{{device.status}}"><small>{{'REMAIN'|translate}}</small> {{device.realtime.mileage||0}}<span>km</span></h2>
       </div>
     </div> -->
-    <div class="row text-center padding-vertical">
-      <div class="col col-50 col-offset-25">
+    <div class="row text-center mt">
+      <div class="col col-60 col-offset-20">
         <div class="button-bar">
           <a class="button button-left" ng-class="{'active':device.bike.workmode==30}"
            ng-click=setWorkmode(device.bike.workmode==30?31:30) pushvibrate>
@@ -73,7 +73,7 @@
         </div>
       </div>
     </div>
-    <div class="row text-center">
+    <div class="row text-center mt">
       <div class="col col-30 image-button image-button-sm col-offset-5">
         <a class="button button-clear button-light" ng-class="{'disabled': device.bike.workmode == 9}"
          ng-click="setWorkmode(1)" pushvibrate>
