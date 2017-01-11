@@ -2,7 +2,7 @@
 
   <ion-content class="padding">
 
-    <div class="list">
+    <div class="list" ng-if="isGlobalVersion">
       <label class="item item-input">
         <span class="input-label">{{'BIKE_NAME'|translate}}</span>
         <input type="text" ng-model="currentBike.name">
@@ -15,6 +15,15 @@
         <span class="input-label">{{'BIKE_MODEL'|translate}}</span>
         <input type="text" ng-model="currentBike.model">
       </label>
+    </div>
+    <div class="list" ng-if="!isGlobalVersion">
+      <div class="item">
+        {{'BIKE_NAME'|translate}}： {{currentBike.name || 'UNNAMED'|translate}}
+      </div>
+      <div class="item">
+        {{'BIKE_BRAND'|translate}}：
+        {{currentBike.brand.name}} | {{currentBike.model}}
+      </div>
     </div>
 
     <!-- <div class="list">
@@ -47,7 +56,10 @@
       </div>
     </div>
 
-    <a ng-click="save()" class="button button-block button-large button-positive">
+    <a ui-sref="brands()" class="button button-block button-large button-positive" ng-if="!isGlobalVersion">
+      {{'CHANGE_BIKE'|translate}}
+    </a>
+    <a ng-click="save()" class="button button-block button-large button-positive" ng-if="isGlobalVersion">
       {{'COMPLETE'|translate}}
     </a>
 
