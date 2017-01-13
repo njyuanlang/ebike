@@ -36,7 +36,15 @@ controllers
     if(!$scope.online) return $scope.device.onConnected()
 
     $scope.promptRotate = Math.abs(window.orientation) !== 90
-    // $scope.promptRotate = false
+    $scope.promptRotate = false;
+    var ratio = window.devicePixelRatio || 1;
+    $scope.screen = {
+      w: window.screen.width*ratio,
+      h: window.screen.height*ratio,
+      w2: screen.width,
+      h2: screen.height
+    }
+    console.log(JSON.stringify($scope.screen));
 
     $scope.workmodeIdx = workmodes.indexOf($scope.device.bike.workmode);
   }

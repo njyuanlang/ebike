@@ -14593,6 +14593,9 @@ a.autolinker {
     border: 0 solid transparent;
     text-align: center;
     bottom: -2rem; }
+    @media (height: 432px) {
+      .speed-gauge .speed-gauge-digital {
+        bottom: -2.8rem; } }
     .speed-gauge .speed-gauge-digital > h1 {
       margin-top: 15%;
       font-size: 5rem; }
@@ -14610,13 +14613,19 @@ a.autolinker {
         bottom: 1.5rem; } }
     @media (height: 360px) {
       .speed-gauge .speed-gauge-pointer {
-        bottom: 0.2rem; } }
+        bottom: -0.5rem; } }
+    @media (height: 393px) {
+      .speed-gauge .speed-gauge-pointer {
+        bottom: -2.0rem; } }
     @media (height: 375px) {
       .speed-gauge .speed-gauge-pointer {
         bottom: -0.4rem; } }
     @media (height: 414px) {
       .speed-gauge .speed-gauge-pointer {
         bottom: -1.6rem; } }
+    @media (height: 432px) {
+      .speed-gauge .speed-gauge-pointer {
+        bottom: -2.8rem; } }
 
 .speed-gauge-0 {
   -webkit-transform: rotate(0deg); }

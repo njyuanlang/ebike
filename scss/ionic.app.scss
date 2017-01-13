@@ -460,6 +460,9 @@ $speed-gauge-height: 12rem;
     border:0 solid transparent;
     text-align: center;
     bottom: -2rem;
+    @media (height: 432px){
+      bottom: -2.8rem;
+    }
 
     > h1 {
       margin-top:15%;
@@ -477,13 +480,19 @@ $speed-gauge-height: 12rem;
         bottom: 1.5rem;
     }
     @media (height: 360px){
-      bottom: 0.2rem;
+      bottom: -0.5rem;
+    }
+    @media (height: 393px){
+      bottom: -2.0rem;
     }
     @media (height: 375px){
       bottom: -0.4rem;
     }
     @media (height: 414px){
       bottom: -1.6rem;
+    }
+    @media (height: 432px){
+      bottom: -2.8rem;
     }
     -webkit-transform-origin: bottom right;
     -webkit-transition-duration: 400ms;
