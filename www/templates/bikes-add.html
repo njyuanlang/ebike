@@ -17,28 +17,4 @@
     </div>
 
   </ion-content>
-  <script id="pair-Popup.html" type="text/ng-template">
-    <form name="pairForm" novalidate>
-      <div class="list">
-        <div class="item item-input item-stacked-label">
-          <input name="password" type="tel" ng-model="bike.password" placeholder="{{'INPUT_PASSWORD'| translate}}" ng-minlength="6" ng-maxlength="6" required autofocus>
-          <span class="assertive input-label" ng-show="pairForm.password.$invalid && !pairForm.password.$pristine">
-            {{'PASSWORD_SHOULD_BE_6_NUMBER'| translate}}
-          </span>
-        </div>
-        <div class="item item-input item-stacked-label">
-          <input name="newpassword" type="tel" ng-model="bike.newpassword" placeholder="{{'INPUT_NEW_PASSWORD'| translate}}" ng-minlength="6" ng-maxlength="6" required>
-          <span class="assertive input-label" ng-show="pairForm.newpassword.$invalid && !pairForm.newpassword.$pristine">
-            {{'PASSWORD_SHOULD_BE_6_NUMBER'| translate}}
-          </span>
-        </div>
-        <div class="item item-input item-stacked-label">
-          <input type="tel" ng-model="bike.newpassword2" placeholder="{{'INPUT_PASSWORD_AGAIN'| translate}}" required>
-          <span class="assertive input-label" ng-show="bike.newpassword !== bike.newpassword2 && !pairForm.newpassword2.$pristine">
-            {{'INPUT_PASSWORD_DIFFERENT'|translate}}
-          </span>
-        </div>
-      </div>
-    </form>
-  </script>
 </ion-view>

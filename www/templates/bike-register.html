@@ -2,7 +2,7 @@
 
   <ion-content class="padding" scroll="true">
 
-    <div class="list card">
+    <div class="list" ng-if="isGlobalVersion">
       <label class="item item-input">
         <span class="input-label">{{'BIKE_NAME'|translate}}</span>
         <input type="text" ng-model="registerBike.name">
@@ -16,8 +16,17 @@
         <input type="text" ng-model="registerBike.model">
       </label>
     </div>
+    <div class="list" ng-if="!isGlobalVersion">
+      <div class="item">
+        {{'BIKE_NAME'|translate}}： {{registerBike.name || 'UNNAMED'|translate}}
+      </div>
+      <div class="item">
+        {{'BIKE_BRAND'|translate}}：
+        {{registerBike.brand.name}} | {{registerBike.model}}
+      </div>
+    </div>
 
-    <div class="list card">
+    <div class="list">
       <div class="item item-icon-right" ui-sref='register-voltage()'>
         {{'BATTERY_VOLTAGE'|translate}}
         <span class="item-note">{{registerBike.voltage|| 0}} V</span>
@@ -30,7 +39,7 @@
       </div>
     </div>
 
-    <div class="list card">
+    <div class="list">
       <div class="item item-icon-right" ui-sref='register-wheeldiameter()'>
         {{'WHEEL_DIAMETER'|translate}}
         <span class="item-note">{{registerBike.wheeldiameter|| 0}} {{'INCH'|translate}}</span>
