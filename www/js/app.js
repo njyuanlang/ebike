@@ -59,6 +59,10 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       cordova.getAppVersion.getVersionCode(function (build) {
         $rootScope.appBuild = build;
       });
+      
+      if(window.MobileAccessibility){
+          window.MobileAccessibility.usePreferredTextZoom(false);
+      }
 
       if(User.isAuthenticated()) {
         //For Debug on browser

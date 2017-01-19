@@ -6,7 +6,6 @@
   </ion-nav-buttons>
 
   <ion-content class="" scroll="false">
-
     <div class="bluetooth-connect text-center" ng-show="device.status!='connected'">
       <i class="icon ion-ebike-close-outline calm" ng-if="device.status!='connecting'"></i>
       <ion-spinner class="spinner-calm" icon="spiral" ng-if="device.status=='connecting'"></ion-spinner>
@@ -54,11 +53,6 @@
       <h4 class="">{{'POWERLESS_ENDURE'|translate}}</h4>
       <p class="">{{'POWERLESS_ENDURE_TIPS'|translate}}</p>
     </div>
-    <!-- <div class="row text-center">
-      <div class="col digital-display">
-        <h2 class="{{device.status}}"><small>{{'REMAIN'|translate}}</small> {{device.realtime.mileage||0}}<span>km</span></h2>
-      </div>
-    </div> -->
     <div class="row text-center mt">
       <div class="col col-60 col-offset-20">
         <div class="button-bar">
