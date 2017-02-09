@@ -1,7 +1,7 @@
 controllers
 
 .controller('HomeCtrl', function($scope, $state, $ionicLoading, User,
-  $localstorage, $cordovaVibration, $ionicPopup, $rootScope, $filter) {
+  $localstorage, $cordovaVibration, $ionicPopup, $rootScope, $filter, AnonymousUser) {
 
   $scope.$on('realtime.update', function (event) {
     // if($rootScope.device.bike.workmode === 9 && $rootScope.device.realtime.power > 24) {
@@ -54,7 +54,11 @@ controllers
     //   $scope.$apply();
     // }, 5000);
     if(!$scope.currentBike || !$scope.currentBike.id) {
-      return $state.go('brands', {id:'create'});
+      if($scope.isGlobalVersion) {
+        return AnonymousUser.registerBike();
+      } else {
+        return $state.go('brands', {id:'create'});
+      }
     }
     if(!$rootScope.device) {
       return $state.go('tab.home-bind');
