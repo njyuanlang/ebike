@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9UIWebViewPatch','ebike.controllers', 'ebike.services', 'ebike.filters', 'ebike.directives'])
 
-.constant('isGlobalVersion', false)
+.constant('isGlobalVersion', true)
 .config(function($stateProvider, $urlRouterProvider, $translateProvider, isGlobalVersion) {
   $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
   $translateProvider.useStaticFilesLoader({
@@ -59,7 +59,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       cordova.getAppVersion.getVersionCode(function (build) {
         $rootScope.appBuild = build;
       });
-      
+
       if(window.MobileAccessibility){
           window.MobileAccessibility.usePreferredTextZoom(false);
       }

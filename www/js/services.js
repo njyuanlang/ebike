@@ -904,6 +904,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
 
   this.login = function () {
     var dev = window.device;
+    var _this = this;
 
     var entity = {
       username: dev&&dev.uuid||'testuser',
@@ -912,9 +913,10 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
     entity.email = entity.username+'@ebike.com';
     function tryLogin(user, next) {
-      user.password = '123456';
+      user.password = entity.password;
       User.login(user).$promise.then(function () {
         $rootScope.$broadcast('user.DidLogin');
+        next();
       }, next);
     }
     tryLogin(entity, function (err) {
@@ -922,21 +924,27 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         console.log(JSON.stringify(err));
         User.create(entity).$promise.then(function (user) {
           tryLogin(user, function (err) {
-            $rootScope.registerBike = {
-              brand: {name: 'Unknown'},
-              model: 'Unknown',
-              workmode:0,
-              wheeldiameter: '16',
-              voltage: '18~24',
-              current: '12',
-              "name": 'UNNAMED'
-            }
-            $state.go('bike-register', {bikeId: 'create'})
+            _this.registerBike()
           });
         }, function (err) {
           console.log('AnonymousUser Create:'+JSON.stringify(err));
         });
+      } else {
+        _this.registerBike();
       }
     });
+  }
+
+  this.registerBike = function () {
+    $rootScope.registerBike = {
+      brand: {name: 'Unknown'},
+      model: 'Unknown',
+      workmode:0,
+      wheeldiameter: '16',
+      voltage: '18~24',
+      current: '12',
+      "name": 'UNNAMED'
+    }
+    $state.go('bike-register', {bikeId: 'create'})
   }
 }])
