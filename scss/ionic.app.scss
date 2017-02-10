@@ -242,6 +242,11 @@ $user-bg:                         '../img/user-bg.png';
   > h1 {
     font-size: 2.2rem;
   }
+  > h3 {
+    color: $light!important;
+    font-size: 1.6rem;
+    margin: 10% 0 -10% 0;
+  }
 }
 
 .round-button a.button {
@@ -352,20 +357,20 @@ $backColor:                           #2f3439;
     > h3 {
     	margin: 12% 0 0 0;
       @media (height: 320px){
-        font-size: 2.8rem;
-        line-height: 2.4rem;
+        font-size: 2.6rem;
+        line-height: 3rem;
       }
       @media (height: 360px){
         font-size: 3.5rem;
         line-height: 3.5rem;
       }
       @media (height: 375px){
-        font-size: 4.0rem;
-        line-height: 4.0rem;
+        font-size: 3.5rem;
+        line-height: 4.2rem;
       }
       @media (height: 414px){
-        font-size: 4.5rem;
-        line-height: 4.0rem;
+        font-size: 4.0rem;
+        line-height: 4.5rem;
       }
     }
     > h4 {
@@ -373,7 +378,8 @@ $backColor:                           #2f3439;
       font-size: 1.2rem;
     }
     > label {
-      font-size: 1.3rem;
+      margin: 0;
+      font-size: 1.0rem;
       color: $dark;
     }
   }
@@ -465,8 +471,8 @@ $speed-gauge-height: 12rem;
     }
 
     > h1 {
-      margin-top:15%;
-      font-size: 5rem;
+      margin-top:25%;
+      font-size: 4rem;
     }
   }
 

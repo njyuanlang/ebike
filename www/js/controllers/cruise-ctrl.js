@@ -36,7 +36,7 @@ controllers
     if(!$scope.online) return $scope.device.onConnected()
 
     $scope.promptRotate = Math.abs(window.orientation) !== 90
-    // $scope.promptRotate = false;
+    $scope.promptRotate = false;
 
     $scope.workmodeIdx = workmodes.indexOf($scope.device.bike.workmode);
   }

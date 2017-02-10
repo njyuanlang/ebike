@@ -14014,6 +14014,10 @@ a.autolinker {
   text-decoration: none; }
   .round-button a > h1 {
     font-size: 2.2rem; }
+  .round-button a > h3 {
+    color: #fff !important;
+    font-size: 1.6rem;
+    margin: 10% 0 -10% 0; }
 
 .round-button a.button {
   background: transparent; }
@@ -14111,25 +14115,26 @@ a.autolinker {
     margin: 12% 0 0 0; }
     @media (height: 320px) {
       .col .power-cycle .overlay > h3 {
-        font-size: 2.8rem;
-        line-height: 2.4rem; } }
+        font-size: 2.6rem;
+        line-height: 3rem; } }
     @media (height: 360px) {
       .col .power-cycle .overlay > h3 {
         font-size: 3.5rem;
         line-height: 3.5rem; } }
     @media (height: 375px) {
       .col .power-cycle .overlay > h3 {
-        font-size: 4.0rem;
-        line-height: 4.0rem; } }
+        font-size: 3.5rem;
+        line-height: 4.2rem; } }
     @media (height: 414px) {
       .col .power-cycle .overlay > h3 {
-        font-size: 4.5rem;
-        line-height: 4.0rem; } }
+        font-size: 4.0rem;
+        line-height: 4.5rem; } }
   .col .power-cycle .overlay > h4 {
     padding-top: 5%;
     font-size: 1.2rem; }
   .col .power-cycle .overlay > label {
-    font-size: 1.3rem;
+    margin: 0;
+    font-size: 1.0rem;
     color: #000; }
 
 .powerless {
@@ -14597,8 +14602,8 @@ a.autolinker {
       .speed-gauge .speed-gauge-digital {
         bottom: -2.8rem; } }
     .speed-gauge .speed-gauge-digital > h1 {
-      margin-top: 15%;
-      font-size: 5rem; }
+      margin-top: 25%;
+      font-size: 4rem; }
   .speed-gauge .speed-gauge-pointer {
     -webkit-border-radius: 100% 0 0 100%;
     position: absolute;

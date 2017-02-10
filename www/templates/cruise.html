@@ -5,7 +5,7 @@
       <div class="col col-25">
         <div class="power-cycle power-cycle-{{device.realtime.power}}">
           <div class="overlay" ng-if="device.bike.workmode != 9">
-            <h3>{{device.realtime.power}}<small>%</small></h3>
+            <h3>{{device.realtime.power||100}}<small>%</small></h3>
             <label><small>{{'BATTERY_LEVEL'|translate}}</small></label>
           </div>
           <a class="overlay powerless" ng-if="device.bike.workmode !=9 && device.realtime.power <= 0" ng-click="device.setWorkmode(9)">
@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="col col-50">
-        <h1 class="text-center"><small>{{'REMAIN'|translate}}</small> {{device.realtime.mileage}} <small>{{'RANGE_OF_KM'| translate}}</small></h1>
+        <h2 class="text-center light"><small>{{'REMAIN'|translate}}</small> {{device.realtime.mileage}} <small>{{'RANGE_OF_KM'| translate}}</small></h2>
         <div>
           <span class="assertive" ng-show="device.realtime.power <= 0 && device.bike.workmode != 9">{{'LOW_POWER_TIPS'|translate}}</span>
           <span class="assertive" ng-show="device.bike.workmode == 9">{{'POWERLESS_ENDURE_TIPS'|translate}}</span>
@@ -29,12 +29,12 @@
         <div class="round-button round-button-lg">
           <div class="round-button-circle lg-2x">
             <a class="button light" ng-click="switchWorkmode()" ng-class="{'disabled': device.bike.workmode == 9}">
-              <h1 ng-if="device.bike.workmode == 1" translate='SAVE_POWER'></h1>
-              <h1 ng-if="device.bike.workmode == 0" translate='NORMAL'></h1>
-              <h1 ng-if="device.bike.workmode == 2" translate='CLIMB'></h1>
-              <h1 ng-if="device.bike.workmode == 9" translate='POWERLESS'></h1>
-              <h1 ng-if="device.bike.workmode == 15" translate='SPEED'></h1>
-              {{'MODE'|translate}}
+              <h3 ng-if="device.bike.workmode == 1" translate='SAVE_POWER'></h3>
+              <h3 ng-if="!device||device.bike.workmode == 0" translate='NORMAL'></h3>
+              <h3 ng-if="device.bike.workmode == 2" translate='CLIMB'></h3>
+              <h3 ng-if="device.bike.workmode == 9" translate='POWERLESS'></h3>
+              <h3 ng-if="device.bike.workmode == 15" translate='SPEED'></h3>
+              <h4>{{'MODE'|translate}}</h4>
             </a>
           </div>
 
