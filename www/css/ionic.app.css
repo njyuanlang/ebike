@@ -13955,13 +13955,13 @@ a.autolinker {
   -webkit-background-size: cover !important; }
 
 .authorize-bg h4 {
-  margin: 12% 15%;
+  margin: 10% 15%;
   text-align: center; }
 
 .authorize-bg .box {
   display: block;
   width: 50%;
-  margin: 105% auto 5% auto;
+  margin: 100% auto 5% auto;
   padding: 3px 0;
   border: 1.5px solid #00ccff;
   color: #00ccff; }
