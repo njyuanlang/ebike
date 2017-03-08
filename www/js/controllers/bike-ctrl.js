@@ -138,7 +138,7 @@ controllers
 
 .controller('BikesAddCtrl', function($scope, $state, $timeout, $ionicLoading,
    Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService,
-   BLEDevice, MyPreferences, $translate, $ionicModal) {
+   BLEDevice, MyPreferences, $translate, $ionicModal, $ionicHistory) {
 
   var devices = [];
 
@@ -283,7 +283,10 @@ controllers
 
   $scope.goHome = function () {
     // $scope.modal.show();
-    $state.go('tab.home');
+    $ionicHistory.goBack();
+    $ionicHistory.clearCache().then(function () {
+      $state.go('tab.home');
+    })
   }
 
   $scope.$on("$ionicView.beforeLeave", function () {
