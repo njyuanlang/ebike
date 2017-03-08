@@ -143,5 +143,6 @@
   "CUSTOM_KEY_NEED_CONNECTING": "重置功能请连接车辆",
   "CANCEL_PARKING_BEFORE_SWITCH": "请点击\"智能泊车\"按钮，取消泊车状态再切换到其他状态",
   "CANCEL_PUSHING_BEFORE_SWITCH": "请点击\"智能推行\"按钮，取消推行状态再切换到其他状态",
-  "GUIDE":"帮助手册"
+  "GUIDE":"帮助手册",
+  "REGISTER_BIKE": "登记车辆"
 }
