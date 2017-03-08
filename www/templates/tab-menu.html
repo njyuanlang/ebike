@@ -38,12 +38,12 @@
           <p>{{'ABOUT_US'|translate}}</p>
         </a>
       </div>
-      <div class="row">
-        <a class="col button" ui-sref="tab.messages()" ng-if="!isGlobalVersion">
+      <div class="row" ng-if="!isGlobalVersion">
+        <a class="col button" ui-sref="tab.messages()">
           <img src="img/message-icon.png">
           <p>{{'REMIND_MESSAGE'|translate}}</p>
         </a>
-        <a class="col button" href="#/tab/services" ng-if="!isGlobalVersion">
+        <a class="col button" href="#/tab/services">
           <img src="img/list-icon.png">
           <p>{{'SERVICE_LICENSE'|translate}}</p>
         </a>
