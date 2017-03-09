@@ -5,7 +5,6 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9UIWebViewPatch','ebike.controllers', 'ebike.services', 'ebike.filters', 'ebike.directives'])
 
-.constant('isGlobalVersion', true)
 .config(function($stateProvider, $urlRouterProvider, $translateProvider, isGlobalVersion) {
   $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
   $translateProvider.useStaticFilesLoader({

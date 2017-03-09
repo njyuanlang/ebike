@@ -6,6 +6,9 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var args = require('yargs').argv;
+var cordovaConfig = require('gulp-cordova-config');
+var xeditor = require("gulp-xml-editor");
 
 var paths = {
   sass: ['./scss/**/*.scss']
@@ -48,5 +51,24 @@ gulp.task('git-check', function(done) {
   }
   done();
 });
+
+gulp.task('config', function () {
+  var ver = args&&args.ver || 'standard';
+  var appId = 'com.extensivepro.ebike';
+  var appName = '帮大师';
+  if(ver!='standard') appId += ver;
+  if(/^global/.test(ver)) appName = 'eMaster';
+
+  gulp.src('./config/'+ver+'.js')
+    .pipe(rename({ basename: 'ver' }))
+    .pipe(gulp.dest('./www/js/'))
+
+  gulp.src('./config.xml')
+    .pipe(xeditor([
+      {path:'.', attr: {id: appId}},
+      {path:'//xmlns:name', text: appName}
+    ],'http://www.w3.org/ns/widgets'))
+    .pipe(gulp.dest('./'))
+})
 
 gulp.task('serve:before', ['sass', 'watch']);
