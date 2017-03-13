@@ -1,4 +1,4 @@
-<ion-view title="{{'REGISTER_BIKE'|translate}}" cache-view="false">
+<ion-view title="{{'REGISTER_BIKE'|translate}}" cache-view="false" hide-nav-bar="false">
 
   <ion-content class="padding" scroll="true">
 
@@ -49,6 +49,9 @@
 
     <a ng-click="register()" class="button button-block button-large button-balanced">
       {{'COMPLETE'|translate}}
+    </a>
+    <a ng-click="$ionicGoBack()" class="button button-block button-large">
+      {{'CANCEL'|translate}}
     </a>
   </ion-content>
 </ion-view>

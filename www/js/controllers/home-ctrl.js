@@ -53,13 +53,6 @@ controllers
     //   $rootScope.device.status = 'disconnected';
     //   $scope.$apply();
     // }, 5000);
-    if(!$scope.currentBike || !$scope.currentBike.id) {
-      if($scope.isGlobalVersion) {
-        return AnonymousUser.registerBike();
-      } else {
-        return $state.go('brands', {id:'create'});
-      }
-    }
     if(!$rootScope.device) {
       return $state.go('tab.home-bind');
     } else if($rootScope.device.status!='disconnected') {

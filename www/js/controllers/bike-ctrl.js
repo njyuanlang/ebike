@@ -1,6 +1,6 @@
 controllers
 
-.controller('BikeCtrl', function($scope, $state, Bike, $rootScope, $ionicLoading, MyPreferences, $translate) {
+.controller('BikeCtrl', function($scope, $state, Bike, $rootScope, $ionicLoading, MyPreferences, $translate, $ionicHistory) {
 
   $rootScope.registering = $state.params.bikeId && $state.params.bikeId === 'create';
 
@@ -16,11 +16,17 @@ controllers
       $rootScope.registering = false;
       $rootScope.currentBike = result;
       MyPreferences.save();
-      $state.go('tab.home');
+      $scope.$ionicGoBack();
+      // $state.go('tab.home');
     }, function (reason) {
-      console.log(JSON.stringify(reason));
+      var message = reason;
+      if(reason&&reason.data&&reason.data.error) {
+        message = reason.data.error.message;
+      } else if(reason.status==-1) {
+        message = 'no internet'
+      }
       $ionicLoading.show({
-        template: translations.REGISTER_BIKE_FAILURE+":"+reason.data.error.message,
+        template: translations.REGISTER_BIKE_FAILURE+":"+message,
         duration: 2000
       });
     });
@@ -138,7 +144,7 @@ controllers
 
 .controller('BikesAddCtrl', function($scope, $state, $timeout, $ionicLoading,
    Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService,
-   BLEDevice, MyPreferences, $translate, $ionicModal, $ionicHistory) {
+   BLEDevice, MyPreferences, $translate, $ionicModal, $ionicHistory, AnonymousUser) {
 
   var devices = [];
 
@@ -291,6 +297,23 @@ controllers
 
   $scope.$on("$ionicView.beforeLeave", function () {
     stopScan(true);
+  })
+
+  $scope.$on("$ionicView.afterEnter", function () {
+
+    if(!$scope.currentBike || !$scope.currentBike.id) {
+      if($scope.tryRegisterBike) {
+        $scope.$ionicGoBack();
+      } else {
+        $scope.tryRegisterBike = true;
+        if($scope.isGlobalVersion) {
+          return AnonymousUser.registerBike();
+        } else {
+          return $state.go('brands', {id:'create'});
+        }
+      }
+    }
+
   })
 
   $scope.$on("$ionicView.enter", function () {
