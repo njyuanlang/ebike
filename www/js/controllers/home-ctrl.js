@@ -54,7 +54,12 @@ controllers
     //   $scope.$apply();
     // }, 5000);
     if(!$rootScope.device) {
-      return $state.go('tab.home-bind');
+      if($scope.try2RegisterDevice) {
+        $scope.try2RegisterDevice = false;
+        return $state.go('tab.home-bind');
+      } else {
+        return;
+      }
     } else if($rootScope.device.status!='disconnected') {
       return console.log('reconnectDevice status:'+$rootScope.device.status);
     }
@@ -80,9 +85,10 @@ controllers
     });
   }
 
-  $scope.reconnectDevice = reconnectDevice
-
-  $scope.$on('home.reconnect', reconnectDevice);
+  $scope.reconnectDevice = function () {
+    $scope.try2RegisterDevice = true;
+    reconnectDevice()
+  }
 
   $scope.setWorkmode = function (mode) {
 
