@@ -15005,5 +15005,5 @@ a.autolinker {
 .box > img {
   width: 100%; }
 
-.bar a.button-long, .bar button.button-long {
+.platform-android .bar a.button-long, .platform-android .bar button.button-long {
   min-width: 108px; }
