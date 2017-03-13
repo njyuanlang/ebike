@@ -613,3 +613,12 @@ $angularSpeed: 180deg/$maxSpeed;
     width: 100%;
   }
 }
+
+// buttons-right fix android long button text
+.bar {
+  a, button {
+    &.button-long {
+      min-width: 108px;
+    }
+  }
+}
