@@ -239,7 +239,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
   }
 
-  BLEDevice.prototype.connect = function () {
+  BLEDevice.prototype.connect = function (newPassword) {
     if(!this.localId) return $q.reject('车辆标示ID不能为空！');
     var connectTimer = setTimeout(this.disconnect, 5000);
     var kThis = this;
@@ -249,6 +249,13 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     })
     .then(function (result) {
       return kThis.pair();
+    })
+    .then(function (result) {
+      if(newPassword) {
+        return kThis.changePassword(newPassword);
+      } else {
+        return result;
+      }
     })
     .catch(function (reason) {
       return $q.reject('无法连接车辆:'+reason);
@@ -425,7 +432,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     pair: "00001C03-D102-11E1-9B23-00025B00A5A5",
     mode: "00001C04-D102-11E1-9B23-00025B00A5A5",
     antitheft: "00001C05-D102-11E1-9B23-00025B00A5A5",
-    // changepassword: "00001C06-D102-11E1-9B23-00025B00A5A5",
+    changepassword: "00001C06-D102-11E1-9B23-00025B00A5A5",
     statedefine: "00001C06-D102-11E1-9B23-00025B00A5A5"
   }
   BLEDevice.prototype.sendOrder = function (hexs) {
@@ -446,9 +453,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     var current = this.bike.current;
     if(current==='8~10') current = 12;
 
-//    console.log(wheeldiameter);
-//    console.log(voltage);
-//    console.log(current);
     var hexs = [voltage, current, 0, wheeldiameter]
     var value = Util.hexToBytes(hexs)
     ble.write(this.localId, order.uuid, order.spec, value)
@@ -547,32 +551,33 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     return q.promise
   };
 
-  // BLEDevice.prototype.changePassword = function (password) {
-  //   var q = $q.defer()
-  //   if(password.length !== 6) {
-  //     q.reject('密码长度不正确');
-  //   } else if(!$rootScope.online) {
-  //     this.bike.password = password;
-  //     q.resolve(true);
-  //   } else {
-  //     var array = new Uint8Array(8);
-  //     array[0] = 0xFE;
-  //     array[1] = 0xEF;
-  //     for (var i = 2, l = 8; i < l; i++) {
-  //       array[i] = password.charCodeAt(i-2);
-  //     }
-  //     var value = array.buffer;
-  //     var kThis = this;
-  //     ble.write(this.localId, order.uuid, order.changepassword, value, function () {
-  //       kThis.bike.password = password;
-  //       console.log('Success Set Password:'+password);
-  //       q.resolve();
-  //     }, function (reason) {
-  //       q.reject('设置密码失败');
-  //     });
-  //   }
-  //   return q.promise;
-  // };
+  BLEDevice.prototype.changePassword = function (password) {
+    var q = $q.defer()
+    if(password.length !== 6) {
+      q.reject('密码长度不正确');
+    } else if(!$rootScope.online) {
+      this.bike.password = password;
+      q.resolve(true);
+    } else {
+      var array = new Uint8Array(8);
+      array[0] = 0xFE;
+      array[1] = 0xEF;
+      for (var i = 2, l = 8; i < l; i++) {
+        array[i] = password.charCodeAt(i-2);
+      }
+      var value = array.buffer;
+      var kThis = this;
+      ble.write(this.localId, order.uuid, order.changepassword, value, function () {
+        kThis.bike.password = password;
+        console.log('Success Set Password:'+password);
+        q.resolve();
+      }, function (reason) {
+        q.reject('设置密码失败');
+      });
+    }
+    return q.promise;
+  };
+
   BLEDevice.prototype.statedefine = function (key) {
     var q = $q.defer()
 
@@ -921,7 +926,6 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     }
     tryLogin(entity, function (err) {
       if(err) {
-        console.log(JSON.stringify(err));
         User.create(entity).$promise.then(function (user) {
           tryLogin(user, function (err) {
             _this.registerBike()

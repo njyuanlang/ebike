@@ -132,6 +132,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
     .finally(function () {
       $rootScope.currentUser = User.getCurrent();
     });
+    return;
     if(!$rootScope.avatar) {
       $rootScope.avatar = 'img/user-icon.png';
       RemoteStorage.getAvatar(userId)
@@ -147,6 +148,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
   $rootScope.$on('user.DidLogout', function (event, args) {
     if(isGlobalVersion) {
       AnonymousUser.login();
+    } else {
+      $state.go('entry');
     }
   })
 

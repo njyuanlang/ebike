@@ -12,7 +12,7 @@ controllers
 
   $scope.$on('$ionicView.enter', function (event) {
     if(!$scope.online) return $rootScope.device.onConnected();
-    if(!$scope.currentUser) return console.log('return due to anoymous: '+$rootScope.device);;
+    if(!$scope.currentUser) return $rootScope.$broadcast('user.DidLogout');
 
     reconnectDevice();
   })

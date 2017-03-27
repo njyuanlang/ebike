@@ -144,7 +144,7 @@ controllers
 
 .controller('BikesAddCtrl', function($scope, $state, $timeout, $ionicLoading,
    Bike, $ionicPopup, $rootScope, $window, $ionicScrollDelegate, PtrService,
-   BLEDevice, MyPreferences, $translate, $ionicModal, $ionicHistory, AnonymousUser) {
+   BLEDevice, MyPreferences, $translate, $ionicModal, $ionicHistory, AnonymousUser, isSimpleVersion) {
 
   var devices = [];
 
@@ -216,8 +216,8 @@ controllers
     }
   }
 
-  function tryConnect(device) {
-    device.connect()
+  function tryConnect(device, newPassword) {
+    device.connect(newPassword)
     .then(function (result) {
       return $scope.closeModal();
     })
@@ -266,28 +266,71 @@ controllers
     $scope.bike = angular.copy($scope.currentBike);
     $scope.bike.localId = item.id
     $scope.bike.name = item.name
-    var password = Date.now()%1000000+'';
-    for (var i = 0; i < 6-password.length; i++) {
-      password += '0';
-    }
-    $scope.bike.password = password;
-    if($scope.bike.password.length)
-    console.log('PASSWORD:'+$scope.bike.password);
-
-    var device;
-    if($scope.bike.localId===$scope.currentBike.localId) {
-      device = $rootScope.device;
-      device.bike.password = $scope.bike.password;
+    if(isSimpleVersion) {
+      var passwordPopup = $ionicPopup.show({
+        title: translations.INPUT_BIND_PASSWORD,
+        templateUrl: 'templates/modifypassword-popup.html',
+        scope: $scope,
+        buttons: [
+          {text: translations.CANCEL},
+          {
+            text: translations.CONFIRM,
+            type: 'button-positive',
+            onTap: function (e) {
+              var ctrl = $scope.formController;
+              if(ctrl && ctrl.$valid
+                && ctrl.newPassword.$modelValue===ctrl.newPassword2.$modelValue) {
+                return $scope.formController.newPassword.$modelValue;
+              } else {
+                e.preventDefault();
+              }
+            }
+          }
+        ]
+      });
+      
+      passwordPopup.then(function(res) {
+        if(res) {
+          console.log('PASSWORD:'+$scope.bike.password);
+          console.log('NEW_PASSWORD:'+res);
+          var device;
+          if($scope.bike.localId===$scope.currentBike.localId) {
+            device = $rootScope.device;
+            device.bike.password = $scope.bike.password;
+          } else {
+            device = new BLEDevice($scope.bike);
+          }
+          tryConnect(device, res);
+        }
+      });
     } else {
-      device = new BLEDevice($scope.bike);
+      var password = Date.now()%1000000+'';
+      for (var i = 0; i < 6-password.length; i++) {
+        password += '0';
+      }
+      $scope.bike.password = password;
+      console.log('PASSWORD:'+$scope.bike.password);
+
+      var device;
+      if($scope.bike.localId===$scope.currentBike.localId) {
+        device = $rootScope.device;
+        device.bike.password = $scope.bike.password;
+      } else {
+        device = new BLEDevice($scope.bike);
+      }
+      $scope.modal.show();
+      $scope.tryIntervalID = setInterval(function () {
+        tryConnect(device);
+      }, 2000);
     }
-    $scope.modal.show();
-    $scope.tryIntervalID = setInterval(function () {
-      tryConnect(device);
-    }, 2000);
+  }
+
+  $scope.setFormController = function (formController) {
+    $scope.formController = formController;
   }
 
   $scope.goHome = function () {
+    return $scope.selectEntity({})
     // $scope.modal.show();
     $ionicHistory.goBack();
     $ionicHistory.clearCache().then(function () {

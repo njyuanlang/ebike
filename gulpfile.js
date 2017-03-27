@@ -57,7 +57,9 @@ gulp.task('config', function () {
   var appId = 'com.extensivepro.ebike';
   var appName = '帮大师';
   if(ver!='standard') appId += ver;
-  if(/^global/.test(ver)) appName = 'eMaster';
+  if(ver==='simple') appName += '简易版';
+  if(ver==='global') appName = 'eMaster';
+  if(ver==='globalsimple') appName = 'eMaster-I';
 
   gulp.src('./config/'+ver+'.js')
     .pipe(rename({ basename: 'ver' }))
