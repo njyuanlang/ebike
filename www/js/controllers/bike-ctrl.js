@@ -16,8 +16,8 @@ controllers
       $rootScope.registering = false;
       $rootScope.currentBike = result;
       MyPreferences.save();
-      $scope.$ionicGoBack();
-      // $state.go('tab.home');
+      // $scope.$ionicGoBack();
+      $state.go('tab.home');
     }, function (reason) {
       var message = reason;
       if(reason&&reason.data&&reason.data.error) {
@@ -238,6 +238,7 @@ controllers
       return result;
     })
     .catch(function (error) {
+      $ionicLoading.hide();
       console.log(error);
     })
   }
@@ -288,7 +289,7 @@ controllers
           }
         ]
       });
-      
+
       passwordPopup.then(function(res) {
         if(res) {
           console.log('PASSWORD:'+$scope.bike.password);
@@ -300,6 +301,9 @@ controllers
           } else {
             device = new BLEDevice($scope.bike);
           }
+          $ionicLoading.show({
+            template: "<ion-spinner></ion-spinner>"
+          })
           tryConnect(device, res);
         }
       });
@@ -330,7 +334,7 @@ controllers
   }
 
   $scope.goHome = function () {
-    return $scope.selectEntity({})
+    // return $scope.selectEntity({})
     // $scope.modal.show();
     $ionicHistory.goBack();
     $ionicHistory.clearCache().then(function () {

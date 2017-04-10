@@ -65,6 +65,7 @@ controllers
         template: '<i class="icon ion-ios-checkmark-outline padding"></i>登录成功',
         duration: 1000
       })
+      $rootScope.currentUser = accessToken.user;
       $localstorage.setObject('$$LastLoginData$$', $scope.entity)
       $rootScope.$broadcast('user.DidLogin');
       $state.go('tab.home');

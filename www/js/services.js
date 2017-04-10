@@ -541,6 +541,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
         var value = Util.hexToBytes(enable?[0xE1, 0xE1]:[0xE2, 0xE2]);
         ble.write(this.localId, order.uuid, order.antitheft, value, function () {
           self.bike.antiTheft = enable;
+          $rootScope.currentBike.antiTheft = enable;
           q.resolve();
         }, function (reason) {
           console.log('AntiTheft Get:'+JSON.stringify(reason));

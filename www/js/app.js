@@ -132,7 +132,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
     .finally(function () {
       $rootScope.currentUser = User.getCurrent();
     });
-    return;
     if(!$rootScope.avatar) {
       $rootScope.avatar = 'img/user-icon.png';
       RemoteStorage.getAvatar(userId)
