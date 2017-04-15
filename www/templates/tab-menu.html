@@ -19,16 +19,12 @@
           <img src="img/bluetooth-icon.png">
           <p>{{'BIND_BIKE'|translate}}</p>
         </a>
-        <a class="col button" ui-sref="tab.custom()">
-          <img src="img/custom-icon.png">
-          <p>{{'CUSTOM_KEY'|translate}}</p>
-        </a>
-      </div>
-      <div class="row">
         <a class="col button" ui-sref="tab.setting()">
           <img src="img/setting-icon.png">
           <p>{{'SETTING'|translate}}</p>
         </a>
+      </div>
+      <div class="row">
         <a class="col button" ui-sref="tab.guide()">
           <img src="img/help-icon.png">
           <p>{{'HELP_MANUAL'|translate}}</p>
@@ -37,15 +33,25 @@
           <img src="img/about-icon.png">
           <p>{{'ABOUT_US'|translate}}</p>
         </a>
+        <a class="col button" ui-sref="tab.custom()" ng-if="!isSimpleVersion">
+          <img src="img/custom-icon.png">
+          <p>{{'CUSTOM_KEY'|translate}}</p>
+        </a>
+        <a class="col button" href="#/tab/services" ng-if="isSimpleVersion&&!isGlobalVersion">
+          <img src="img/list-icon.png">
+          <p>{{'SERVICE_LICENSE'|translate}}</p>
+        </a>
       </div>
       <div class="row" ng-if="!isGlobalVersion">
         <a class="col button" ui-sref="tab.messages()">
           <img src="img/message-icon.png">
           <p>{{'REMIND_MESSAGE'|translate}}</p>
         </a>
-        <a class="col button" href="#/tab/services">
+        <a class="col button" href="#/tab/services" ng-if="!isSimpleVersion">
           <img src="img/list-icon.png">
           <p>{{'SERVICE_LICENSE'|translate}}</p>
+        </a>
+        <a class="col button" ng-if="isSimpleVersion">
         </a>
         <!-- <a class="col button" href="#/cruise">
           <img src="img/dashboard-icon.png">

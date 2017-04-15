@@ -19,7 +19,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 .run(function($ionicPlatform, $state, $rootScope, $cordovaSplashscreen,
   $cordovaStatusbar, $ionicHistory, $cordovaNetwork, User, RemoteStorage, $http,
   $ionicPopup, MyPreferences, BLEDevice, $ionicLoading, $cordovaGlobalization,
-  $translate, AnonymousUser, isGlobalVersion) {
+  $translate, AnonymousUser, isGlobalVersion, isSimpleVersion) {
 
   function setLanguage() {
     if(typeof navigator.globalization !== "undefined") {
@@ -35,6 +35,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
   }
 
   $rootScope.isGlobalVersion = isGlobalVersion;
+  $rootScope.isSimpleVersion = isSimpleVersion;
   $ionicPlatform.ready(function() {
 
     setLanguage();
