@@ -228,7 +228,7 @@ controllers
       MyPreferences.save();
       Bike.upsert(device.bike);
       return $ionicLoading.show({
-        template: '<i class="icon ion-ios-checkmark-outline padding"></i>'+translations.BIND_BIKE_SUCCESS,
+        template: '<i class="icon ion-ios-checkmark-outline padding-right ion-2x"></i>'+translations.BIND_BIKE_SUCCESS,
         duration: 2000
       });
     })
@@ -238,8 +238,10 @@ controllers
       return result;
     })
     .catch(function (error) {
-      $ionicLoading.hide();
-      console.log(error);
+      $ionicLoading.show({
+        template: '<i class="icon ion-ios-close-outline padding-right ion-2x"></i> '+error,
+        duration: 3000
+      });
     })
   }
 
