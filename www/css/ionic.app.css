@@ -14000,6 +14000,9 @@ a.autolinker {
   margin: auto;
   padding-bottom: 90%;
   border: 12px solid #0ddba9; }
+  @media (height: 360px) {
+    .round-button-lg .round-button-circle {
+      padding-bottom: 84%; } }
   .round-button-lg .round-button-circle > a {
     font-size: 1.5rem;
     line-height: 0.9rem; }
@@ -14018,8 +14021,10 @@ a.autolinker {
     font-size: 2.2rem; }
   .round-button a > h3 {
     color: #fff !important;
-    font-size: 1.6rem;
-    margin: 10% 0 -10% 0; }
+    font-size: 2.0rem;
+    margin: 5% 0 -10% 0; }
+  .round-button a h4 {
+    padding: 8px 0; }
 
 .round-button a.button {
   background: transparent; }
@@ -14114,7 +14119,7 @@ a.autolinker {
       .col .power-cycle .overlay > h1 {
         font-size: 8.5rem; } }
   .col .power-cycle .overlay > h3 {
-    margin: 12% 0 0 0; }
+    margin: 16% 0 0 0; }
     @media (height: 320px) {
       .col .power-cycle .overlay > h3 {
         font-size: 2.6rem;
