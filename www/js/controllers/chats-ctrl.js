@@ -1,7 +1,7 @@
 controllers
 
 .controller('ChatsCtrl', function ($scope, $state, Message, RemoteStorage, $timeout, $rootScope, PtrService) {
-  
+
   var syncTimer = null;
   var syncDone = function () {
     if(syncTimer) {
@@ -12,7 +12,9 @@ controllers
   }
   $scope.sync = function () {
     Message.chats(function (results) {
-      $scope.chats = results;
+      $scope.chats = results.filter(function (result) {
+        return result.user.manufacturerId==$scope.currentBike.brand.manufacturerId;
+      });
       results.forEach(function (item) {
         item.avatar = 'img/user-icon.png';
         // RemoteStorage.getAvatar(item._id).success(function (buffer) {
@@ -23,32 +25,32 @@ controllers
     }, function (reason) {
       syncDone();
     });
-    
+
     syncTimer = $timeout(syncDone, 5000);
   }
-  
+
   $scope.showDetail = function (chat) {
     $rootScope.currentChat = chat;
     $state.go('tab.chat');
   }
-  
+
   $scope.remove = function (chat) {
     var index = $scope.chats.indexOf(chat);
     $scope.chats.splice(index, 1);
   }
-  
+
   $scope.$on("$ionicView.enter", function () {
     PtrService.triggerPtr('messageScroll');
   });
 })
 
 .controller('ChatCtrl', function ($scope, $rootScope, $state, Message, $ionicActionSheet, $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
-  
+
   $scope.messages = [];
   $scope.input = {
     message: localStorage['userMessage-' + $scope.currentChat.user.id] || ''
   };
-  
+
   var latestTime = 0;
   var earliestTime = Math.round(Date.now()/1000);;
   var messageCheckTimer;
@@ -62,7 +64,7 @@ controllers
     console.log('UserMessages $ionicView.enter');
 
     getMessages();
-    
+
     $timeout(function() {
       footerBar = document.body.querySelector('.bar-footer');
       scroller = document.body.querySelector('.scroll-content');
@@ -111,7 +113,7 @@ controllers
       viewScroll.scrollBottom(true);
     });
   }
-  
+
   var fetchEarlierTimer = null;
   var fetchEarlierDone = function () {
     if(fetchEarlierTimer) {
@@ -154,7 +156,7 @@ controllers
     // you can't see the effect of this in the browser it needs to be used on a real device
     // for some reason the one time blur event is not firing in the browser but does on devices
     keepKeyboardOpen();
-    
+
     Message.create(message).$promise.then(function(message) {
       $scope.input.message = '';
 
@@ -171,7 +173,7 @@ controllers
       }, 0);
     });
   };
-  
+
   // this keeps the keyboard open on a device only after sending a message, it is non obtrusive
   function keepKeyboardOpen() {
     console.log('keepKeyboardOpen');
@@ -205,7 +207,7 @@ controllers
 
             break;
         }
-        
+
         return true;
       }
     });
@@ -219,22 +221,22 @@ controllers
       // go to other users profile
     }
   };
-  
+
   // I emit this event from the monospaced.elastic directive, read line 480
   $scope.$on('taResize', function(e, ta) {
     console.log('taResize');
     if (!ta) return;
-    
+
     var taHeight = ta[0].offsetHeight;
     console.log('taHeight: ' + taHeight);
-    
+
     if (!footerBar) return;
-    
+
     var newFooterHeight = taHeight + 10;
     newFooterHeight = (newFooterHeight > 44) ? newFooterHeight : 44;
-    
+
     footerBar.style.height = newFooterHeight + 'px';
-    scroller.style.bottom = newFooterHeight + 'px'; 
+    scroller.style.bottom = newFooterHeight + 'px';
   });
 })
 
