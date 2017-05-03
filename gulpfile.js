@@ -55,11 +55,11 @@ gulp.task('git-check', function(done) {
 gulp.task('config', function () {
   var ver = args&&args.ver || 'standard';
   var appId = 'com.extensivepro.ebike';
-  var appName = '帮大师';
+  var appName = 'eMaster';
   if(ver!='standard') appId += ver;
-  if(ver==='simple') appName += '简易版';
-  if(ver==='global') appName = 'eMaster';
-  if(ver==='globalsimple') appName = 'eMaster-I';
+  // if(ver==='standard') appName += 'Plus';
+  // if(ver==='global') appName = 'eMaster-I';
+  // if(ver==='globalsimple') appName = 'eMaster';
 
   gulp.src('./config/'+ver+'.js')
     .pipe(rename({ basename: 'ver' }))
