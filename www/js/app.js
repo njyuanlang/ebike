@@ -109,7 +109,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
     if(navigator.splashscreen) {
       setTimeout(function() {
         navigator.splashscreen.hide()
-      }, 300);
+      }, 2000);
     }
 
     if(window.ble) {
