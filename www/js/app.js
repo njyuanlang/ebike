@@ -38,6 +38,12 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
   $rootScope.isSimpleVersion = isSimpleVersion;
   $ionicPlatform.ready(function() {
 
+    if(navigator.splashscreen) {
+      setTimeout(function() {
+        navigator.splashscreen.hide()
+      }, 2000);
+    }
+
     setLanguage();
 
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -104,12 +110,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
           screen.lockOrientation('portrait-primary')
         }
       })
-    }
-
-    if(navigator.splashscreen) {
-      setTimeout(function() {
-        navigator.splashscreen.hide()
-      }, 2000);
     }
 
     if(window.ble) {
