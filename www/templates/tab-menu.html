@@ -41,6 +41,8 @@
           <img src="img/list-icon.png">
           <p>{{'SERVICE_LICENSE'|translate}}</p>
         </a>
+        <a class="col button" ng-if="isSimpleVersion&&isGlobalVersion">
+        </a>
       </div>
       <div class="row" ng-if="!isGlobalVersion">
         <a class="col button" ui-sref="tab.messages()">
