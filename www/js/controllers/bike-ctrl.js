@@ -35,7 +35,13 @@ controllers
   $scope.save = function () {
     Bike.upsert($rootScope.currentBike);
     MyPreferences.save();
-    $scope.$ionicGoBack();
+    // $scope.$ionicGoBack();
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true,
+      disableBack: true,
+      historyRoot: true
+    });
+    $state.go('tab.menu');
   }
 })
 
