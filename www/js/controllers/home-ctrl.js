@@ -37,6 +37,7 @@ controllers
 
   $scope.endure = function () {
     var device = $rootScope.device;
+    // return $state.go('cruise');
     if(!device.realtime.offline) {
       device.setWorkmode(9);
     } else {
