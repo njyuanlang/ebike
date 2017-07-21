@@ -929,18 +929,20 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       if(err) {
         User.create(entity).$promise.then(function (user) {
           tryLogin(user, function (err) {
-            _this.registerBike()
+            // _this.registerBike()
           });
         }, function (err) {
           console.log('AnonymousUser Create:'+JSON.stringify(err));
         });
       } else {
-        _this.registerBike();
+        // _this.registerBike();
       }
     });
   }
 
   this.registerBike = function () {
+    if ($rootScope.currentBike.id) return;
+
     $rootScope.registerBike = {
       brand: {name: 'Unknown'},
       model: 'Unknown',
@@ -949,7 +951,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       voltage: '18~24',
       current: '12',
       "name": 'UNNAMED'
-    }
-    $state.go('bike-register', {bikeId: 'create'})
+    };
+    $state.go('bike-register', {bikeId: 'create'});
   }
 }])

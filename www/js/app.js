@@ -132,6 +132,9 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
     MyPreferences.load(userId)
     .finally(function () {
       $rootScope.currentUser = User.getCurrent();
+      if (isGlobalVersion) {
+        AnonymousUser.registerBike();
+      }
     });
     if(!$rootScope.avatar) {
       $rootScope.avatar = 'img/user-icon.png';
