@@ -244,6 +244,7 @@ controllers
       return result;
     })
     .catch(function (error) {
+      if (!isSimpleVersion) return;
       $ionicLoading.show({
         template: '<i class="icon ion-ios-close-outline padding-right ion-2x"></i> '+error,
         duration: 3000
