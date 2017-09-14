@@ -517,7 +517,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
   $ionicConfigProvider.navBar.alignTitle('center');
 })
 
-.config(function ($httpProvider) {
+.config(function ($httpProvider, LoopBackResourceProvider) {
   $httpProvider.interceptors.push(function($q, $location, LoopBackAuth, $rootScope) {
     return {
       responseError: function(rejection) {
@@ -535,6 +535,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       }
     };
   });
+
+  LoopBackResourceProvider.setUrlBase('https://api.baoxu360.com/api');
 })
 
 
