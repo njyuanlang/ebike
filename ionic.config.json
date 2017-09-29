@@ -1,8 +1,6 @@
 {
   "name": "ebike",
   "app_id": "com.extensivepro.ebike",
-  "v2": false,
-  "typescript": false,
   "gulpStartupTasks": [
     "sass",
     "watch"
@@ -17,5 +15,9 @@
       "browser": "crosswalk",
       "version": "10.39.235.15"
     }
-  ]
+  ],
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic1"
 }
