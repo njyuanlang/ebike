@@ -45,7 +45,7 @@ controllers
   }
 
   $scope.tryLogin = function () {
-    if(navigator.connection && $cordovaNetwork.isOffline()) {
+    if(navigator.connection && window.Connection && $cordovaNetwork.isOffline()) {
       return $ionicLoading.show({
         template: '<i class="icon ion-minus-circled padding"></i>请连接到互联网',
         duration: 1000

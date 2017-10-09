@@ -1,9 +1,19 @@
 <ion-view view-title="标记商家">
   <ion-nav-buttons side="right">
-    <a class="button" ng-click="confirm()">确定</a>
+    <a class="button" ui-sref="tab.merchant-add">下一步</a>
   </ion-nav-buttons>
 
   <ion-content class="">
-    <div id="container3"></div>
+    <div id="container3" style="height: 300px"></div>
+    <div class="list" style="height: 400px">
+      <div class="item item-icon-right">
+        {{positionResult.regeocode&&positionResult.regeocode.pois[0].name}}
+        <i class="icon balanced ion-android-radio-button-on"></i>
+      </div>
+      <a class="item" ng-repeat="poi in positionResult.regeocode.pois" ng-click="selectPoi(poi)">
+        {{poi.name}}
+        <p>{{poi.address}}</p>
+      </a>
+    </div>
   </ion-content>
 </ion-view>

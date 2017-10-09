@@ -9,10 +9,12 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <access origin="http://webapi.amap.com/" />
+    <access origin="https://webapi.amap.com/" />
     <access origin="http://121.40.108.30:3000/api/" />
     <access origin="http://alog.umeng.com/app_logs/" />
     <access launch-external="yes" origin="tel:*" />
+    <allow-navigation href="*" />
+    <allow-intent href="*" />
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />

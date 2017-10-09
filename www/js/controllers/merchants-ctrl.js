@@ -6,15 +6,19 @@ controllers
   var map = new AMap.Map('container',{
     zoom: 15
   });
+  var geolocation;
 
   AMap.plugin(['AMap.Geolocation', 'AMap.CloudDataLayer'],function(){
 
     if(!$scope.isAndroid) {
-      var geolocation = new AMap.Geolocation({
+      geolocation = new AMap.Geolocation({
         enableHighAccuracy: false,//是否使用高精度定位，默认:true
         timeout: 5000,          //超过10秒后停止定位，默认：无穷大
         maximumAge: 3000,           //定位结果缓存0毫秒，默认：0
-        showMarker: false,
+        // showMarker: false,
+        showButton: true,
+        buttonPosition: 'LB',
+        buttonOffset: new AMap.Pixel(10, 20),
         zoomToAccuracy:true      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
       });
       map.addControl(geolocation);
@@ -44,7 +48,6 @@ controllers
         appendTo: $ionicBody.get()
       }).then(function (result) {
         infoWindow = new AMap.InfoWindow({
-          // content: document.getElementById('info'),
           content: result.element[0],
           closeWhenClickMap: true,
           // isCustom: true,
@@ -76,14 +79,6 @@ controllers
     });
   }
 
-  if($scope.isAndroid) {
-    androidLocate();
-  }
-
-  $scope.add = function () {
-    $state.go('^.merchant-add');
-  };
-
   $scope.navigate = function () {
     if(infoWindow) infoWindow.close();
     $scope.MWalk.search($scope.myPosition, $scope.clouddata._location);
@@ -95,13 +90,22 @@ controllers
       map: map
     });
   });
+
+  $scope.$on('$ionicView.enter', function () {
+    if($scope.isAndroid) {
+      androidLocate();
+    } else {
+      geolocation.getCurrentPosition();
+    }
+    if ($scope.MWalk) {
+      $scope.MWalk.clear();
+    }
+  })
 })
 
-.controller('MerchantAddCtrl', function($scope, $state, Poi, $ionicLoading) {
+.controller('MerchantAddCtrl', function($scope, $state, Poi, $ionicLoading, $ionicPopup) {
 
-  $scope.entity = {
-    _location: $scope.myPosition,
-  };
+  $scope.entity = {};
   $scope.ability = {
     anybrand: true,
     charge: true,
@@ -110,53 +114,40 @@ controllers
     wheel3: true
   }
 
-  var map = new AMap.Map('container2',{zoom: 15, dragEnable: false, zoomEnable: false});
-  var marker = new AMap.Marker({position: $scope.entity._location, map: map});
-  var geocoder = null;
-
-  AMap.service(["AMap.Geocoder"], function() {
-    geocoder = new AMap.Geocoder({
-      radius: 1000,
-      extensions: "all"
-    });
-  });
-
   $scope.$on("$ionicView.enter", function () {
-    $scope.entity._location = $scope.markerPosition || $scope.entity._location;
-    map.setCenter($scope.entity._location);
-    marker.setPosition($scope.entity._location);
-    if(geocoder) {
-      geocoder.getAddress($scope.entity._location, function(status, result){
-        if(status=='error') {
-          console.log('amap service error');
-        }
-        if(status=='no_data') {
-          console.log("no data, try other key words");
-        }
-        else {
-          var ac = result.regeocode.addressComponent;
-          $scope.entity.province = ac.province;
-          $scope.entity.city = ac.city;
-          $scope.entity.district = ac.district;
-          $scope.entity._address = ac.street+ac.streetNumber;
-          $scope.$apply();
-          console.log(result);
-        }
-      });
-    }
+    var ac = $scope.positionResult.regeocode.addressComponent;
+    $scope.entity.province = ac.province;
+    $scope.entity.city = ac.city;
+    $scope.entity.district = ac.district;
+    $scope.entity._address = ac.street+ac.streetNumber;
+    $scope.$apply();
   });
 
   $scope.chooseImage = function () {
-    console.log('==========='+$scope.entity);
+    // console.log('==========='+$scope.entity);
     $scope.entity.avatar = "img/logo.png";
   };
+
+  $scope.setAddress = function () {
+    $ionicPopup.prompt({
+      title: '输入地址',
+      // template: ' Template',
+      defaultText: $scope.entity._address,
+      cancelText: '取消',
+      okText: '保存'
+    }).then(function(res) {
+      if (res) {
+        $scope.entity._address = res;
+      }
+    });
+  }
 
   $scope.submitForm = function (isValid) {
     $ionicLoading.show({
       template: "正在上传商户信息...",
       duration: 10000
     });
-    $scope.entity._location = $scope.entity._location.toString();
+    $scope.entity._location = $scope.positionResult.position.toString();
     var abilityJSON = JSON.stringify($scope.ability);
     $scope.entity.ability = abilityJSON.substr(1, abilityJSON.length-2);
     Poi.create($scope.entity, function (value) {
@@ -164,7 +155,7 @@ controllers
         template: "上传商户信息成功",
         duration: 1000
       })
-      $scope.$ionicGoBack();
+      $scope.$ionicGoBack(-2);
     }, function (res) {
       $ionicLoading.show({
         template: "上传商户信息失败",
@@ -175,58 +166,35 @@ controllers
 
 })
 
-.controller('MerchantMarkCtrl', function($scope, $state, $rootScope, $ionicLoading) {
+.controller('MerchantMarkCtrl', function($scope, $state, $rootScope) {
 
-  var marker = null;
-  var _onclick = function (e) {
-    if(marker) return;
-
-    marker = new AMap.Marker({
-      draggable: true,
-      raiseOnDrag: true,
-      position : e.lnglat,
-      map : map
+  $scope.positionResult = {};
+  var map;
+  AMapUI.loadUI(['misc/PositionPicker'], function(PositionPicker) {
+    map = new AMap.Map('container3',{
+        zoom:16,
+        center: $scope.myPosition
+    })
+    var positionPicker = new PositionPicker({
+        mode:'dragMap',
+        map:map
     });
-  };
 
-  var map = new AMap.Map('container3',{
-    zoom: 15,
-    center: $scope.myPosition
+    positionPicker.on('success', function (positionResult) {
+      // console.log(positionResult);
+      $scope.positionResult = positionResult;
+      $rootScope.positionResult = positionResult;
+      $scope.$apply();
+    });
+
+    positionPicker.start();
   });
-  map.on('click', _onclick);
 
-  AMap.plugin(['AMap.CloudDataLayer'],function(){
-    var cloudDataLayer = new AMap.CloudDataLayer('55ffc0afe4b0ead8fa4df390', {
-      clickable: true
-    });
-    cloudDataLayer.setMap(map);
-
-    AMap.event.addListener(cloudDataLayer, 'click', function (result) {
-      var clouddata = result.data;
-      var content = "<h3><font face='微软雅黑'color='#36F'>"+clouddata._name+"</font></h3><hr/>"+
-        "<font color='#000'>地址："+clouddata._address+"<br/>"+
-        "电话："+clouddata.telephone+"<br/>"+
-        "创建时间："+clouddata._createtime+"</font>";
-      var infoWindow = new AMap.InfoWindow({
-        content: content,
-        size: new AMap.Size(300, 0),
-        autoMove: true,
-        offset: new AMap.Pixel(0, -25)
-      });
-      infoWindow.open(map, clouddata._location);
-    });
-  })
+  $scope.selectPoi = function (poi) {
+    map.setCenter(poi.location);
+  };
 
   $scope.confirm = function () {
-    if(!marker) {
-      return $ionicLoading.show({
-        template: "请在地图上标记位置！",
-        duration: 2000
-      });
-    }
-    $rootScope.markerPosition = marker.getPosition();
-    marker = null;
-    $scope.$ionicGoBack();
+    $state.go('tab.merchant-add');
   };
-
 })

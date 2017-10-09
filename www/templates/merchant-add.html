@@ -1,52 +1,41 @@
 <ion-view title="{{'REGISTER_MERCHANT'|translate}}">
-  <ion-content has-header="true" class="padding">
+  <ion-content has-header="true" class="">
     <form name="merchantForm" ng-submit="submitForm(merchantForm.$valid)" novalidate>
+      <div class="list">
+        <ion-item class="item-icon-left item-icon-right" ng-click="setAddress()">
+          <i class="icon ion-location balanced"></i>
+          {{entity._address}}
+          <p>{{entity.province}} {{entity.city}} {{entity.district}}</p>
+          <i class="icon ion-ios-arrow-right"></i>
+        </ion-item>
+      </div>
 
-      <div class="card">
+      <div class="list">
+        <div class="item item-divider">{{'REQUIRED'|translate}}</div>
         <label class="item item-input item-stacked-label item-light">
-          <span class="input-label">
-            {{'MERCHANT_NAME'|translate}}：{{'REQUIRED'|translate}}
-          </span>
+          <span class="input-label">{{'MERCHANT_NAME'|translate}}</span>
           <input type="text" placeholder="例如：XXX电动车维修部" ng-model="entity._name" name="name" required>
           <span class="assertive input-label" ng-show="merchantForm.name.$invalid && !merchantForm.name.$pristine">
             {{'MERCHANT_NAME'|translate}}{{'SHOULD_NOT_EMPTY'|translate}}
           </span>
         </label>
-      </div>
-
-      <div class="card">
-        <div class="item item-divider">{{'CONTACT'|translate}}</div>
-        <div class="item" ui-sref="tab.merchant-mark()">
-          <div id="container2"></div>
-          <a class="button button-block button-royal icon-left ion-location">{{'MARK_ADDRESS_TIPS'|translate}}</a>
-        </div>
-        <div class="item item-stacked-label item-light">
-          <span class="input-label">{{'REGION'|translate}}  {{entity.province}} {{entity.city}} {{entity.district}}</span>
-        </div>
-        <label class="item item-input item-stacked-label item-light">
-          <span class="input-label">{{'ADDRESS'|translate}}：{{'REQUIRED'|translate}}</span>
-          <input type="text" placeholder="例如：迎翠路7号" ng-model="entity._address" name="address" required>
-          <span class="assertive input-label" ng-show="merchantForm.address.$invalid && !merchantForm.address.$pristine">
-            地址不能为空
-          </span>
-        </label>
-        <label class="item item-input item-stacked-label item-light">
-          <span class="input-label">{{'LINK_MAN'|translate}}：{{'REQUIRED'|translate}}</span>
+        <label class="item item-input item-light">
+          <span class="input-label">{{'LINK_MAN'|translate}}</span>
           <input type="text" placeholder="例如：李明" ng-model="entity.linkman" name="linkman" required>
           <span class="assertive input-label" ng-show="merchantForm.linkman.$invalid && !merchantForm.telephone.$pristine">
             联系人不能为空
           </span>
         </label>
-        <label class="item item-input item-stacked-label item-light">
-          <span class="input-label">电话：必填</span>
-          <input type="tel" placeholder="请输入手机号码或者区号＋固定电话" ng-model="entity.telephone" name="telephone" required>
+        <label class="item item-input item-light">
+          <span class="input-label">电话</span>
+          <input type="tel" placeholder="请输入手机号码" ng-model="entity.telephone" name="telephone" required>
           <span class="assertive input-label" ng-show="merchantForm.telephone.$invalid && !merchantForm.telephone.$pristine">
             电话不能为空
           </span>
         </label>
       </div>
 
-      <div class="card">
+      <div class="list">
         <div class="item item-divider">支持</div>
         <ion-toggle ng-model="entity.anybrand" toggle-class="toggle-balance">维修任意品牌</ion-toggle>
         <ion-toggle ng-model="ability.charge" toggle-class="toggle-balance">可充电</ion-toggle>
