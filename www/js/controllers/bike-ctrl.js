@@ -344,7 +344,7 @@ controllers
 
   $scope.goHome = function () {
     // return $scope.selectEntity({})
-    // $scope.modal.show();
+    // return $scope.modal.show();
     $ionicHistory.goBack();
     $ionicHistory.clearCache().then(function () {
       $state.go('tab.home');
