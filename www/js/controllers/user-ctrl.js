@@ -38,7 +38,7 @@ controllers
 
 .controller('LoginCtrl', function($scope, $rootScope, $state, User, $ionicLoading, $filter, $localstorage, $cordovaNetwork, $ionicHistory, $timeout) {
 
-  $scope.entity = {realm: 'client'}
+  $scope.entity = {realm: 'client', rememberMe: true}
   var lastLoginData = $localstorage.getObject('$$LastLoginData$$')
   for(key in lastLoginData) {
     $scope.entity[key] = lastLoginData[key]
@@ -67,8 +67,7 @@ controllers
       })
       $rootScope.currentUser = accessToken.user;
       $localstorage.setObject('$$LastLoginData$$', $scope.entity)
-      $rootScope.$broadcast('user.DidLogin');
-      $state.go('tab.home');
+      $rootScope.$broadcast('user.DidLogin', {redirect: 'tab.home'});
     }, function (res) {
       $timeout.cancel($scope.loginPromise)
       var option = {
@@ -148,9 +147,8 @@ controllers
           duration: 1000
         })
         $localstorage.setObject('$$LastLoginData$$', {username: entity.username, password: entity.password})
-        $rootScope.$broadcast('user.DidLogin');
         $rootScope.userRegistering = true;
-        $state.go('provinces');
+        $rootScope.$broadcast('user.DidLogin', {redirect: 'provinces'});
       })
     }, function (res) {
       var option = {

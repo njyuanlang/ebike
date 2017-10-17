@@ -58,6 +58,18 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       StatusBar.styleDefault();
     }
 
+    if(User.isAuthenticated()) {
+      //For Debug on browser
+      // $rootScope.online = false;
+      $rootScope.$broadcast('user.DidLogin', {redirect:'tab.home'});
+    } else {
+      if(isGlobalVersion) {
+        AnonymousUser.login();
+      } else {
+        $state.go('entry');
+      }
+    }
+
     if(window.cordova) {
       cordova.getAppVersion.getVersionNumber(function(version) {
         $rootScope.appVersion = version;
@@ -68,18 +80,6 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 
       if(window.MobileAccessibility){
           window.MobileAccessibility.usePreferredTextZoom(false);
-      }
-
-      if(User.isAuthenticated()) {
-        //For Debug on browser
-        // $rootScope.online = false;
-        $rootScope.$broadcast('user.DidLogin');
-      } else {
-        if(isGlobalVersion) {
-          AnonymousUser.login();
-        } else {
-          $state.go('entry');
-        }
       }
     } else {
       $rootScope.appVersion = '4.0.0';
@@ -134,6 +134,8 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
       $rootScope.currentUser = User.getCurrent();
       if (isGlobalVersion) {
         AnonymousUser.registerBike();
+      } else if (args.redirect) {
+        $state.go(args.redirect);
       }
     });
     if(!$rootScope.avatar) {
