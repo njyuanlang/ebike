@@ -5,17 +5,17 @@ cordova build --release android
 cd $(dirname $0)/platforms/android/build/outputs/apk
 
 UNSIGNED_APK=android-release-unsigned.apk
-OUTPUT_APK=ebike.apk
+OUTPUT_APK=emaster.apk
 KEYSTORE=~/.android/yuanlang-release.keystore
 
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $KEYSTORE $UNSIGNED_APK yuanlang
 
-rm ebike.apk
+rm $OUTPUT_APK
 
 zipalign -v 4 $UNSIGNED_APK $OUTPUT_APK
 
 # adb install -r ebike.apk
-scp ebike.apk deploy@121.40.108.30:ebike-backend/client/.
+scp $OUTPUT_APK deploy@121.40.108.30:ebike-backend/client/.
 # cp ebike.apk ~/Downloads/
 
 # ====Debug Android====
