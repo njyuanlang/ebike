@@ -55,19 +55,21 @@ gulp.task('config', function () {
   var appId = 'com.extensivepro.ebike';
   var appName = 'eMaster';
   if(ver!='standard') appId += ver;
-  // if(ver==='standard') appName += 'Plus';
-  // if(ver==='global') appName = 'eMaster';
-  // if(ver==='standardglobal') appName = 'eMaster-I';
+  if(ver==='standard') appName += '帮大师Plus';
+  if(ver==='simple') appName += '帮大师';
+  if(ver==='global') appName = 'eMaster';
+  if(ver==='standardglobal') appName = 'eMaster-I';
 
   gulp.src('./config/'+ver+'.js')
     .pipe(rename({ basename: 'ver' }))
     .pipe(gulp.dest('./www/js/'))
 
+  var xmls = [
+    {path:'.', attr: {id: appId}},
+    {path:'//xmlns:platform/xmlns:name', text: appName}
+  ]
   gulp.src('./config.xml')
-    .pipe(xeditor([
-      {path:'.', attr: {id: appId}},
-      {path:'//xmlns:name', text: appName}
-    ],'http://www.w3.org/ns/widgets'))
+    .pipe(xeditor(xmls,'http://www.w3.org/ns/widgets'))
     .pipe(gulp.dest('./'))
 })
 
