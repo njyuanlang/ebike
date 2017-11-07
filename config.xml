@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="4711" id="com.extensivepro.ebikeglobal" ios-CFBundleVersion="4711" version="4.0.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="4713" id="com.extensivepro.ebikeglobal" ios-CFBundleVersion="4713" version="4.0.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>eMaster</name>
     <description>
     电动车手机管理应用
@@ -90,18 +90,12 @@
     <plugin name="cordova-plugin-amaplocation" spec="https://github.com/guanbo/cordova-plugin-amaplocation.git" />
     <plugin name="cordova-plugin-app-preferences" spec="~0.99.3" />
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
-    <plugin name="cordova-plugin-ble-central" spec="~1.0.0">
-        <variable name="BLUETOOTH_USAGE_DESCRIPTION" value="control bike" />
-    </plugin>
     <plugin name="cordova-plugin-camera" spec="~2.3.0">
         <variable name="CAMERA_USAGE_DESCRIPTION" value="upload avatar" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="upload avatar" />
     </plugin>
     <plugin name="cordova-plugin-device" spec="~1.1.4" />
     <plugin name="cordova-plugin-file-transfer" spec="~1.6.0" />
-    <plugin name="cordova-plugin-geolocation" spec="~1.0.1">
-        <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="upload poi" />
-    </plugin>
     <plugin name="cordova-plugin-globalization" spec="~1.0.3" />
     <plugin name="cordova-plugin-insomnia" spec="https://github.com/EddyVerbruggen/Insomnia-PhoneGap-Plugin.git" />
     <plugin name="cordova-plugin-network-information" spec="~1.2.1" />
@@ -113,4 +107,10 @@
     <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
     <plugin name="phonegap-plugin-mobile-accessibility" spec="https://github.com/phonegap/phonegap-mobile-accessibility.git" />
     <plugin name="cordova-plugin-file" spec="~4.3.0" />
+    <plugin name="cordova-plugin-ble-central" spec="^1.1.4">
+        <variable name="BLUETOOTH_USAGE_DESCRIPTION" value="control bike" />
+    </plugin>
+    <plugin name="cordova-plugin-geolocation" spec="^2.4.3">
+        <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="upload poi" />
+    </plugin>
 </widget>
