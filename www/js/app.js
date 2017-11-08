@@ -520,7 +520,7 @@ angular.module('ebike', ['ionic', 'ngCordova', 'pascalprecht.translate', 'ngIOS9
 })
 
 .config(function ($httpProvider, LoopBackResourceProvider) {
-  $httpProvider.interceptors.push(function($q, $location, LoopBackAuth, $rootScope) {
+  $httpProvider.interceptors.push(function($q, $location, LoopBackAuth, $rootScope, isGlobalVersion) {
     return {
       responseError: function(rejection) {
         if (rejection.status == 401) {

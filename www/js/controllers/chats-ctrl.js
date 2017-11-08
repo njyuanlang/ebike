@@ -12,9 +12,10 @@ controllers
   }
   $scope.sync = function () {
     Message.chats(function (results) {
-      $scope.chats = results.filter(function (result) {
-        return result.user.manufacturerId==$scope.currentBike.brand.manufacturerId;
-      });
+      // $scope.chats = results.filter(function (result) {
+      //   return result.message.FromUserName==$scope.currentBike.brand.manufacturerId;
+      // });
+      $scope.chats = results;
       results.forEach(function (item) {
         item.avatar = 'img/user-icon.png';
         // RemoteStorage.getAvatar(item._id).success(function (buffer) {
