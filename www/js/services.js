@@ -906,7 +906,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
 }])
 
-.service('AnonymousUser', ['User', '$rootScope', '$state', function (User, $rootScope, $state) {
+.service('AnonymousUser', ['User', '$rootScope', '$state', function (User, $rootScope, $state, Bike, MyPreferences) {
 
   this.login = function () {
     var dev = window.device;
@@ -952,6 +952,21 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
       current: '12',
       "name": 'UNNAMED'
     };
-    $state.go('bike-register', {bikeId: 'create'});
+    // $state.go('bike-register', {bikeId: 'create'});
+
+    Bike.create($scope.registerBike, function (result) {
+      $rootScope.registering = false;
+      $rootScope.currentBike = result;
+      MyPreferences.save();
+    }, function (reason) {
+      var message = reason;
+      if(reason&&reason.data&&reason.data.error) {
+        message = reason.data.error.message;
+      } else if(reason.status==-1) {
+        message = 'no internet'
+      }
+      console.log(message);
+    });
+    $state.go('tab.home');
   }
 }])
