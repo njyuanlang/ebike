@@ -1,5 +1,5 @@
 <ion-view title="{{'GUIDE'|translate}}">
-	<ion-content padding="true" ng-show="isGlobalVersion">
+	<ion-content padding="true" ng-show="isGlobalVersion&&!isSimpleVersion">
     <h4>A.Suitable type requirements</h4>
     <ol class="padding-left">
       <li>a.Android system to be 4.3 or higher;</li>
@@ -41,10 +41,10 @@
       <li>Horizontal screen display function could be used when your phone is in rotating-screen mode only,make sure that the phone screen is unlocked.</li>
     </ol>
   </ion-content>
-	<ion-content padding="true" ng-hide="isGlobalVersion">
+	<ion-content padding="true" ng-hide="isGlobalVersion&&!isSimpleVersion">
 		<h4>一、APP版本</h4>
     <ol class="padding-left">
-      <li>南京宝旭信息技术有限公司结合不同的应用场景，现已推出多个应用版本，如：帮大师、帮大师plus、emaster等，请根据车辆配置的硬件类型，下载相对应的APP。版本之间的区别，请在帮大师官网（www.baoxu360.com）及公共号“帮大师”中查阅。</li>
+      <li>南京宝旭信息技术有限公司结合不同的应用场景，现已推出多个应用版本，如：帮大师、帮大师plus、帮大师-M、emaster-I等，请根据车辆配置的硬件类型，下载相对应的APP。版本之间的区别，请在帮大师官网（www.baoxu360.com）及公共号“帮大师”中查阅。</li>
     </ol>
 		<h4>二、适配机型要求</h4>
     <ol class="padding-left">
