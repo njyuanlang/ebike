@@ -56,8 +56,8 @@ gulp.task('config', function () {
   var appName = 'eMaster';
   if(ver!='standard') appId += ver;
   if(ver==='standard') appName = '帮大师Plus';
-  if(ver==='simple') appName = '帮大师';
-  if(ver==='global') appName = '帮大师-M';
+  if(ver==='simple') appName = '帮大师SE';
+  if(ver==='global') appName = '帮大师';
   if(ver==='standardglobal') appName = 'eMaster-I';
 
   gulp.src('./config/'+ver+'.js')

@@ -289,7 +289,8 @@ controllers
             onTap: function (e) {
               var ctrl = $scope.formController;
               if(ctrl && ctrl.$valid
-                && ctrl.newPassword.$modelValue===ctrl.newPassword2.$modelValue) {
+                // && ctrl.newPassword.$modelValue===ctrl.newPassword2.$modelValue
+              ) {
                 return $scope.formController.newPassword.$modelValue;
               } else {
                 e.preventDefault();
