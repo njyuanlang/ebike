@@ -302,6 +302,7 @@ controllers
 
       passwordPopup.then(function(res) {
         if(res) {
+          $scope.bike.password = $scope.bike.password||'123456';
           console.log('PASSWORD:'+$scope.bike.password);
           console.log('NEW_PASSWORD:'+res);
           var device;

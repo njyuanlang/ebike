@@ -906,7 +906,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
   }
 }])
 
-.service('AnonymousUser', ['User', '$rootScope', '$state', function (User, $rootScope, $state, Bike, MyPreferences) {
+.service('AnonymousUser', ['User', '$rootScope', '$state', 'Bike', 'MyPreferences', function (User, $rootScope, $state, Bike, MyPreferences) {
 
   this.login = function () {
     var dev = window.device;
@@ -954,7 +954,7 @@ angular.module('ebike.services', ['ebike-services', 'region.service', 'jrCrop'])
     };
     // $state.go('bike-register', {bikeId: 'create'});
 
-    Bike.create($scope.registerBike, function (result) {
+    Bike.create($rootScope.registerBike, function (result) {
       $rootScope.registering = false;
       $rootScope.currentBike = result;
       MyPreferences.save();
