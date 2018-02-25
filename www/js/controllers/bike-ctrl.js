@@ -277,6 +277,7 @@ controllers
     $scope.bike.localId = item.id
     $scope.bike.name = item.name
     if(isSimpleVersion) {
+      $scope.bike.password = $scope.bike.password||"123456"
       var passwordPopup = $ionicPopup.show({
         title: translations.INPUT_BIND_PASSWORD,
         templateUrl: 'templates/modifypassword-popup.html',
